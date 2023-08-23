@@ -1,0 +1,13 @@
+@font-face {
+    font-family: "ibt";
+    src: url("Inter-SemiBold.ttf");
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "iwz";
+    src: url("Inter-Regular.ttf");
+    font-weight: normal;
+    font-style: normal;
+}
