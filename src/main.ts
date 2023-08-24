@@ -6,18 +6,22 @@ import './assets/text/text.css';
 import "./tailwindcss.css"
 import * as ElementPlusIconsVue from '@element-plus/icons-vue';
 
-
+import 'xe-utils'
+import VXETable from 'vxe-table'
+import 'vxe-table/lib/style.css'
 // import 'element-plus/dist/index.css';
 
 const app = createApp(App);
 app.use(createPinia());
 app.use(router);
-
+app.use(VXETable);
 // 注册elementplus图标
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
     app.component(key, component);
 
 }
+
+
 // // 自定义权限指令
 // app.directive('permiss', {
 //     mounted(el, binding) {

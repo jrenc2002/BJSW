@@ -1,15 +1,15 @@
 <template>
   <div
       style="background: radial-gradient(116.01% 64.30% at 17.78% 99.56%, rgba(202, 242, 211, 0.50) 0%, rgba(161, 217, 203, 0.00) 100%), linear-gradient(90deg, #C3E3D2 0%, #83BA9B 100%);"
-      class="w-full h-screen rounded-[28px] flex absolute z-10 bg-gradient-to-r from-[#C9D6FF] via-[#E2E2E2] to-[#E9E4F0]">
+      class="w-full h-screen rounded-[15px] flex absolute z-10 bg-gradient-to-r from-[#C9D6FF] via-[#E2E2E2] to-[#E9E4F0]">
     <!-- 左侧样式 -->
     <!-- 'w-1/5' 意味着当抽屉可见时，其占据 1/5 的屏幕宽度。'w-0' 意味着当抽屉不可见时，其宽度为 0 -->
     <div v-bind:class="{ 'w-[15rem]': isDrawerVisible.visible, 'w-0': !isDrawerVisible.visible }"
-         class="drawer h-full   relative rounded-3xl flex items-center pl-[0.3rem] pt-[0.2rem] pb-[0.2rem] overflow-hidden transition-all duration-300 ease-in-out">
+         class="drawer h-full   relative rounded-[15px] flex items-center pl-[0.3rem] pt-[0.2rem] pb-[0.2rem] overflow-hidden transition-all duration-300 ease-in-out">
 
       <!-- 根据计算设置元素的宽度和高度，并设置元素的背景颜色，同时定义了元素的类名 -->
       <div :style="{ width: 'calc(100% )', height: 'calc(100% - 0.3rem)' }"
-           class="box-border  shadow bg-white   rounded-3xl flex flex-col p-[0.5rem] justify-center items-center gap-6 inline-flex bg-opacity-80">
+           class="box-border  shadow bg-white   rounded-[15px] flex flex-col p-[0.5rem] justify-center items-center gap-6 inline-flex bg-opacity-80">
         <!-- 创建一个用户卡片组件 -->
         <!-- 定义一个导航区域，标明其角色为"Sidebar" -->
         <nav v-if="isDrawerVisible.visible" class="flex flex-1 flex-col w-[100%]  relative      " aria-label="Sidebar">
@@ -27,7 +27,7 @@
          class="right-side h-full relative flex flex-col justify-start items-start pl-[0.3rem] pt-[0.3rem] transition-all duration-300 ease-in-out ">
       <!-- 右侧白底 -->
       <div :style="{ width: 'calc(100% - 0.3rem)', height: 'calc(100% - 0.3rem)' }"
-           class="box-border shadow bg-white bg-opacity-80 rounded-3xl flex flex-col justify-center items-center gap-6 inline-flex transform-origin: left">
+           class="box-border shadow bg-white bg-opacity-80 rounded-[15px] flex flex-col justify-center items-center gap-6 inline-flex transform-origin: left">
         <router-view v-slot="{ Component }">
           <transition name="move" mode="out-in">
             <keep-alive>
