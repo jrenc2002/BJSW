@@ -1,21 +1,20 @@
 <template>
   <div class="h-[calc(100%-1.5rem)] w-[calc(100%-1.5rem)] ">
     <!--    标题-->
-    <div class="h-[8%] self-stretch justify-start items-center gap-4 inline-flex ">
+    <div class="h-[6%] self-stretch justify-start items-center gap-4 inline-flex ">
       <div class="text-xl leading-10 text-zinc-900 text-2xl font-medium leading-loose left-4 relative">数据总览</div>
     </div>
     <!--    表格栏-->
     <div class=" rounded-2xl bg-white w-[100%] h-[92%]  bottom-0  shadow items-center justify-center flex ">
-      <div
-          class="rounded-2xl bg-white h-[calc(100%-1.5rem)] w-[calc(100%-1.5rem)]  items-center justify-center flex   ">
+      <div class="rounded-2xl bg-white h-[calc(100%-1.5rem)] w-[calc(100%-1.5rem)]  items-center justify-center flex   ">
 
         <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8 w-[100%]  h-[100%] rounded-2xl ">
-          <div
-              class="rounded-2xl inline-block min-w-full min-h-full py-2 align-middle sm:px-6 lg:px-8 items-center justify-center flex ">
+          <div class="rounded-2xl inline-block min-w-full min-h-full py-2 align-middle sm:px-6 lg:px-2 items-center justify-center flex ">
             <table class="min-w-full min-h-full rounded-2xl ">
               <thead class=" h-[100%] rounded-2xl">
-              <tr class="  h-[2rem] bg-[#DAF0E4] rounded-2xl  ">
-                <th scope="col" class="justify-center  items-center  w-[11%] text-sm font-semibold text-gray-900  rounded-tl-lg"></th>
+              <tr class="h-[2.9rem] bg-[#DAF0E4] rounded-2xl  ">
+                <th scope="col"
+                    class="justify-center  items-center  w-[10rem] text-sm font-semibold text-gray-900  rounded-tl-lg"></th>
                 <th scope="col" class="justify-center items-center  w-[11%]  text-sm font-semibold text-gray-900 ">F1
                 </th>
                 <th scope="col" class="justify-center items-center  w-[11%] text-sm font-semibold text-gray-900">F2</th>
@@ -25,24 +24,24 @@
                 </th>
                 <th scope="col" class="justify-center items-center  w-[11%] text-sm font-semibold text-gray-900">F6</th>
                 <th scope="col" class="justify-center items-center w-[11%]  text-sm font-semibold text-gray-900">F7</th>
-                <th scope="col" class="justify-center items-center w-[11%]  text-sm font-semibold text-gray-900 rounded-tr-lg">F8
+                <th scope="col"
+                    class="justify-center items-center w-[11%]  text-sm font-semibold text-gray-900 rounded-tr-lg">F8
                 </th>
               </tr>
               </thead>
               <tbody>
-              <tr v-for="overdata in overdata" :key="overdata.id" class="bg-[#DAF0E4] w-[12vw]  ">
-                <td class="text-sm font-medium  text-gray-900     ">
-                      <div class="flex justify-center items-center ">
-                        <div v-if="overdata.id>=4" class="rounded-[5px] shadow bg-white w-[94%] h-[5vh] p-1 text-center flex justify-center items-center">
-                          {{ overdata.label }}
-                        </div>
-                        <div v-else>
-                          {{ overdata.label }}
-                        </div>
+              <tr v-for="overdata in overdata" :key="overdata.id" class=" h-[6vh] bg-[#DAF0E4]  ">
+                <td class="text-sm font-medium  text-gray-900 p-0 " :class="overdata.id==13?'rounded-bl-lg':''">
+                  <div class="flex justify-center items-center h-full">
+                    <button v-if="overdata.id>=4"
+                         class="rounded-[5px] shadow bg-white w-[94%] h-[5vh]  text-center flex justify-center items-center">
+                      {{ overdata.label }}
+                    </button>
+                    <div v-else>
+                      {{ overdata.label }}
+                    </div>
 
-                      </div>
-
-
+                  </div>
                 </td>
                 <td class="flex-1 border border-gray-200 bg-white whitespace-nowrap  text-sm font-medium text-gray-900 ">
                   {{ overdata.F1 }}
@@ -65,7 +64,8 @@
                 <td class="w-[11%]  border border-gray-200 bg-white whitespace-nowrap  text-sm text-gray-500">
                   {{ overdata.F7 }}
                 </td>
-                <td class="w-[11%]  border border-gray-200 bg-white whitespace-nowrap  text-sm text-gray-500 ">
+                <td :class="overdata.id==13?'rounded-lg border border-gray-200':'border border-gray-200'" class="w-[11%] bg-white whitespace-nowrap  text-sm text-gray-500 "
+                    >
                   {{ overdata.F8 }}
                 </td>
               </tr>
@@ -97,23 +97,9 @@ const overdata = [
   {id: 11, label: '泵2/g', F1: '113', F2: '112', F3: '124', F4: '117', F5: '118', F6: '106', F7: '134', F8: '134'},
   {id: 12, label: '泵3/g', F1: '123', F2: '122', F3: '134', F4: '127', F5: '128', F6: '116', F7: '124', F8: '144'},
   {id: 13, label: '泵4/g', F1: '133', F2: '132', F3: '144', F4: '137', F5: '138', F6: '126', F7: '114', F8: '154'},
+
 ];
 
-const columns = [
-  {key: 1, label: '运行状态'},
-  {key: 2, label: '运行时间'},
-  {key: 3, label: '发酵批号'},
-  {key: 4, label: '温度/℃'},
-  {key: 5, label: 'PH/PH'},
-  {key: 6, label: '溶氧/%'},
-  {key: 7, label: '转速/rpm'},
-  {key: 8, label: '补速ml/h'},
-  {key: 9, label: '补料周期/开度'},
-  {key: 10, label: '泵1/g'},
-  {key: 11, label: '泵2/g'},
-  {key: 12, label: '泵3/g'},
-  {key: 12, label: '泵4/g'},
-]
 </script>
 <style>
 .trunits {

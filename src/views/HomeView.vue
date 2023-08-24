@@ -23,7 +23,7 @@
     <!-- 右侧样式 -->
     <!-- 'w-4/5' 意味着当抽屉可见时，右侧样式占据 4/5 的屏幕宽度。'w-full' 和 'ml-[-0.3rem]' 意味着当抽屉不可见时，右侧样式占据全屏，且左侧有 0.3rem 的间隙 -->
     <div @dblclick="toggleDrawer"
-         v-bind:class="{ 'w-[calc(100%-15rem)]': isDrawerVisible.visible, 'w-full': !isDrawerVisible.visible, 'ml-[-0.3rem]': !isDrawerVisible.visible }"
+         :class="{ 'w-[calc(100%-15rem)]': isDrawerVisible.visible, 'w-full': !isDrawerVisible.visible, 'ml-[-0.3rem]': !isDrawerVisible.visible }"
          class="right-side h-full relative flex flex-col justify-start items-start pl-[0.3rem] pt-[0.3rem] transition-all duration-300 ease-in-out ">
       <!-- 右侧白底 -->
       <div :style="{ width: 'calc(100% - 0.3rem)', height: 'calc(100% - 0.3rem)' }"
@@ -39,7 +39,6 @@
       </div>
     </div>
   </div>
-
 
 
 </template>
@@ -70,6 +69,12 @@ const updateWindowSize = () => {
 onMounted(() => {
   window.addEventListener('resize', updateWindowSize);
   updateWindowSize();
+  window.Electron.ipcRenderer.invoke('init-db').then(
+      (res) => {
+        console.log(res);
+      }
+  );
+
 });
 
 // 使用 Vue3 的生命周期钩子函数 onUnmounted，在组件卸载之前移除窗口大小变化的监听事件

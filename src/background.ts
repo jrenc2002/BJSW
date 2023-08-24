@@ -7,12 +7,11 @@ import { app, protocol, BrowserWindow } from 'electron'
 
 // 导入 createProtocol 来注册 app 协议，让 Electron 可以加载 app:// URLs
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
-// import { handleDatabaseApi } from './db-api'
+import {createInitDB} from './db-api'
 // 导入 electron-devtools-installer 包，用于在 Electron 应用中安装 Vue Devtools
 import installExtension, { VUEJS3_DEVTOOLS } from 'electron-devtools-installer'
 
-// const sqlite3 = require('sqlite3').verbose();
-// let db = new sqlite3.Database('./database.db');
+
 const path = require('path');
 // 判断当前是否是开发模式
 const isDevelopment = process.env.NODE_ENV !== 'production'
@@ -31,7 +30,7 @@ async function createWindow() {
     webPreferences: {
       // 使用 pluginOptions.nodeIntegration，不要修改
       // 更多信息请查看 nklayman.github.io/vue-cli-plugin-electron-builder/guide/security.html#node-integration
-      // preload: path.join(__dirname, '../src/preload.js'),
+      preload: path.join(__dirname, '../src/preload.js'),
       nodeIntegration: (process.env
           .ELECTRON_NODE_INTEGRATION as unknown) as boolean,
       contextIsolation: !process.env.ELECTRON_NODE_INTEGRATION
@@ -82,8 +81,7 @@ app.on('ready', async () => {
   //   // }
   // }
   createWindow();
-
-  // handleDatabaseApi();
+  createInitDB();
 })
 
 // 在开发模式下，当从父进程收到请求时，优雅地退出

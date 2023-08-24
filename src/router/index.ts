@@ -52,7 +52,6 @@ const routes: Array<RouteRecordRaw> = [
             }
         ]
     },
-
     {
         path: '/loginview',
         name: 'LoginView',

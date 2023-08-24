@@ -5,6 +5,6 @@ const { contextBridge, ipcRenderer } = require('electron');
 console.log('preload.js');
 
 // window.electron.ipcRenderer.invoke(type, params).then(resp => {});
-contextBridge.exposeInMainWorld('electron', {
+contextBridge.exposeInMainWorld('Electron', {
    ipcRenderer,
 });
