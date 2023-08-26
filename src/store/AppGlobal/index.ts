@@ -10,11 +10,15 @@ const state = () => {
         pageChance: 1,
         // 分页名称
         pageName: [
-            {id: 1, name: '一号工厂', href: '#'},
-            {id: 2, name: '二号工厂', href: '#'},
-            {id: 3, name: '三号工厂', href: '#'},
-            {id: 4, name: '四号工厂', href: '#'},
-            {id: 5, name: '五号工厂', href: '#'},
+            {id: 1, name: '设备A', href: '#', deviceNum:"BAB-00"},
+            {id: 2, name: '设备b', href: '#', deviceNum:"AAB-00"},
+            {id: 3, name: '三号工厂', href: '#', deviceNum:"BAA-00"},
+            {id: 4, name: '四号工厂', href: '#', deviceNum:"BBB-00"},
+            {id: 5, name: '五号工厂', href: '#', deviceNum:"BBB-00"},
+            {id: 6, name: '32工厂', href: '#', deviceNum:"AAB-00"},
+            {id: 7, name: '31工厂', href: '#', deviceNum:"BAA-00"},
+            {id: 8, name: '33工厂', href: '#', deviceNum:"BAB-00"},
+            {id: 9, name: '34工厂', href: '#', deviceNum:"BBA-00"},
         ],
 
 

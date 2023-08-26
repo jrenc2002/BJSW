@@ -7,19 +7,32 @@ const sqlite3 = sqlite3Lib.verbose();
 const dbPath = path.join(__dirname, '../src/database.db');
 const db = new sqlite3.Database(dbPath);
 
-
 export function createInitDB(): any {
-    ipcMain.handle('init-db', (event: IpcMainInvokeEvent) => {
-        return new Promise<string>((resolve, reject) => {
-            console.log("Database path:", dbPath);
-
-            console.log('init-db');
-            try {
-                db.prepare(`
-             CREATE TABLE  IF NOT EXISTS fermentation_data (
-                            id INTEGER PRIMARY KEY, -- 数据ID
-                            batch_name TEXT,        -- 批次名
-                            can_number TEXT,        -- 罐号
+    ipcMain.handle('init-db', async (event: IpcMainInvokeEvent) => {
+        console.log("Database path:", dbPath);
+        console.log('init-db');
+        const runQuery = (query: string) => {
+            return new Promise((res, rej) => {
+                db.prepare(query).run(err => {
+                    if (err) rej(err);
+                    else res("true");
+                });
+            });
+        };
+        try {
+            await runQuery(`
+                CREATE TABLE IF NOT EXISTS fermentation_batch (
+                    id INTEGER PRIMARY KEY, 
+                    batch_name TEXT,        
+                    can_number TEXT,        
+                    start_time TEXT,
+                    UNIQUE(batch_name, can_number)      
+                );
+            `);
+            await runQuery(`
+                CREATE TABLE IF NOT EXISTS fermentation_data (
+                            data_id INTEGER PRIMARY KEY,
+                            batch_id INTEGER,       -- 这是外键，与fermentation_batch的id对应
                             time TEXT,              -- 时间
                             timing_PH REAL,         -- 实时PH值
                             acid_speed REAL,        -- 酸泵实时送料速率
@@ -75,22 +88,43 @@ export function createInitDB(): any {
                             feed_motor_flag INTEGER,   -- 补料泵开启标志位
                             feed_motor_cu_limit INTEGER,  -- 补料关联转速上限值
                             feed_motor_cl_limit INTEGER,  -- 补料关联转速下限值
-                            start_flag INTEGER         -- 发酵开始标志位
-                        );
-              `).run(function (err: any) {
-                    if (err) {
-                        console.error('Error while initializing the database:', err);
-                        reject(err);
-                    } else {
-                        resolve("数据库初始化成功");
-                    }
-                });
+                            start_flag INTEGER,         -- 发酵开始标志位
+                            FOREIGN KEY(batch_id) REFERENCES fermentation_batch(id)  --这是外键
+                );
+            `);
+            return "数据库初始化成功";
 
-            }catch (error) {
-                console.error('Unexpected error while initializing the database:', error);
-                reject(error);
-            }
+        } catch (error) {
+            console.error('Unexpected error while initializing the database:', error);
+            return "数据库初始化失败";
+        }
 
+    });
+    ipcMain.handle('get-fermentation-batch-data', async (event: IpcMainInvokeEvent, can_number: string) => {
+        return new Promise((resolve, reject) => {
+            const query = 'SELECT * FROM fermentation_batch WHERE can_number = ?';
+            db.all(query, [can_number],(err, rows) => {
+                if (err) {
+                    console.error("Error fetching data from fermentation_batch:", err);
+                    reject(err);
+                } else {
+                    resolve(rows);
+                }
+            });
+        });
+    });
+    ipcMain.handle('get-fermentation-data-by-batch-id', async (event: IpcMainInvokeEvent, batch_id: number) => {
+        return new Promise((resolve, reject) => {
+            const query = 'SELECT * FROM fermentation_data WHERE batch_id = ?';
+            db.all(query, [batch_id], (err, rows) => {
+                if (err) {
+                    console.error("Error fetching data from fermentation_data by batch_id:", err);
+                    reject(err);
+                } else {
+                    resolve(rows);
+                }
+            });
         });
     });
 }
+
