@@ -6,74 +6,91 @@
     </div>
     <!--    表格栏-->
     <div class=" rounded-2xl bg-white w-[100%] h-[92%]  bottom-0  shadow items-center justify-center flex ">
-      <div class="rounded-2xl bg-white h-[calc(100%-1.5rem)] w-[calc(100%-1.5rem)]  items-center justify-center flex   ">
+      <div
+          class="rounded-2xl bg-white h-[calc(100%-1.5rem)] w-[calc(100%-1.5rem)]  items-center justify-center flex    ">
+        <div class=" w-full h-full">
+          <div class=" box-border overflow-x-hidden w-full h-full flex">
+            <template v-if="props.tableData.length > 0">
+              <div class="float-left h-[100%] bg-[#E8F6ED] shadow border rounded-2xl z-40">
+                <div class=" mt-3 w-[10rem]">
+                  <table class=" py-4 ">
+                    <tr>
+                      <th class="flex items-center justify-center gap-2   ">
+                        <svg fill="none" height="16" viewBox="0 0 16 16" width="16" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M15 4H8V5H15V4Z" fill="#19161D"/>
+                          <path d="M3 5.295L1.705 4L1 4.705L3 6.705L7 2.705L6.295 2L3 5.295Z" fill="#19161D"/>
+                          <path d="M15 11H8V12H15V11Z" fill="#19161D"/>
+                          <path d="M3 12.295L1.705 11L1 11.705L3 13.705L7 9.705L6.295 9L3 12.295Z" fill="#19161D"/>
+                        </svg>
+                        设置界面
 
-        <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8 w-[100%]  h-[100%] rounded-2xl ">
-          <div class="rounded-2xl inline-block min-w-full min-h-full py-2 align-middle sm:px-6 lg:px-2 items-center justify-center flex ">
-            <table class="min-w-full min-h-full rounded-2xl ">
-              <thead class=" h-[100%] rounded-2xl">
-              <tr class="h-[2.9rem] bg-[#DAF0E4] rounded-2xl  ">
-                <th scope="col"
-                    class="justify-center  items-center  w-[10rem] text-sm font-semibold text-gray-900  rounded-tl-lg"></th>
-                <th scope="col" class="justify-center items-center  w-[11%]  text-sm font-semibold text-gray-900 ">F1
-                </th>
-                <th scope="col" class="justify-center items-center  w-[11%] text-sm font-semibold text-gray-900">F2</th>
-                <th scope="col" class="justify-center items-center w-[11%]  text-sm font-semibold text-gray-900">F3</th>
-                <th scope="col" class="justify-center items-center  w-[11%] text-sm font-semibold text-gray-900">F4</th>
-                <th scope="col" class="justify-center items-center  w-[11%] text-sm font-semibold text-gray-900 ">F5
-                </th>
-                <th scope="col" class="justify-center items-center  w-[11%] text-sm font-semibold text-gray-900">F6</th>
-                <th scope="col" class="justify-center items-center w-[11%]  text-sm font-semibold text-gray-900">F7</th>
-                <th scope="col"
-                    class="justify-center items-center w-[11%]  text-sm font-semibold text-gray-900 rounded-tr-lg">F8
-                </th>
-              </tr>
-              </thead>
-              <tbody>
-              <tr v-for="overdata in overdata" :key="overdata.id" class=" h-[6vh] bg-[#DAF0E4]  ">
-                <td class="text-sm font-medium  text-gray-900 p-0 " :class="overdata.id==13?'rounded-bl-lg':''">
-                  <div class="flex justify-center items-center h-full">
-                    <button v-if="overdata.id>=4"
-                         class="rounded-[5px] shadow bg-white w-[94%] h-[5vh]  text-center flex justify-center items-center">
-                      {{ overdata.label }}
-                    </button>
-                    <div v-else>
-                      {{ overdata.label }}
-                    </div>
+                      </th>
+                    </tr>
+                  </table>
+                </div>
+                <div
+                    ref="firstColLayer"
+                    class="w-full overflow-hidden "
+                >
+                  <table class="mb-4 shadow  bg-[#E8F6ED] py-4">
+                    <tr v-for="(col, index) in firstCol" :key="index" class=" w-full  ">
+                      <td class="w-full  flex justify-center items-center   ">
+                        <div
+                            :class="[col!='运行状态'&&col!='运行时间'&&col!='发酵批号' ? 'bg-white  rounded-[8px] shadow hover:bg-[#FAFAFA] cursor-pointer' : '','w-[90%] h-[90%] flex justify-center items-center ']">
+                          {{ col }}
 
-                  </div>
-                </td>
-                <td class="flex-1 border border-gray-200 bg-white whitespace-nowrap  text-sm font-medium text-gray-900 ">
-                  {{ overdata.F1 }}
-                </td>
-                <td class="w-[11%] border border-gray-200 bg-white whitespace-nowrap p-4  text-sm font-medium text-gray-900 ">
-                  {{ overdata.F2 }}
-                </td>
-                <td class="w-[11%] border border-gray-200 bg-white whitespace-nowrap  text-sm text-gray-500">
-                  {{ overdata.F3 }}
-                </td>
-                <td class="w-[11%] border border-gray-200 bg-white whitespace-nowrap  text-sm text-gray-500">
-                  {{ overdata.F4 }}
-                </td>
-                <td class="w-[11%]  border border-gray-200 bg-white whitespace-nowrap  text-sm text-gray-500 ">
-                  {{ overdata.F5 }}
-                </td>
-                <td class="w-[11%] border border-gray-200 bg-white whitespace-nowrap  text-sm text-gray-500">
-                  {{ overdata.F6 }}
-                </td>
-                <td class="w-[11%]  border border-gray-200 bg-white whitespace-nowrap  text-sm text-gray-500">
-                  {{ overdata.F7 }}
-                </td>
-                <td :class="overdata.id==13?'rounded-lg border border-gray-200':'border border-gray-200'" class="w-[11%] bg-white whitespace-nowrap  text-sm text-gray-500 "
-                    >
-                  {{ overdata.F8 }}
-                </td>
-              </tr>
-              </tbody>
-            </table>
+                        </div>
+
+                      </td>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+              <div class="right-div ">
+                <!--窗口-->
+                <div ref="firstRowLayer" class="right-div1 bg-[#F1F1F1] mt-3">
+                  <table :style="{ width: (firstRow.length+1 ) * 8.2+ 'rem' }" class="right-table1">
+                    <tr>
+                      <th v-for="(row, index) in firstRow" :key="index" class="first-row-style w-[8.2rem]  ">{{
+                          row
+                        }}
+                      </th>
+                    </tr>
+                  </table>
+                </div>
+                <div
+                    ref="tableContainer"
+                    class="right-div2"
+                    @scroll="tableScroll()"
+                >
+                  <table :style="{ width: (firstRow.length +1 ) * 8.2 + 'rem' }" class="right-table2">
+                    <tr v-for="(body,index) in tableBodyRows" :key="index">
+                      <td v-for="(col, i) in tableBodyCols" :key="col.props + i"
+                          class="w-[8.2rem] text-center border-l border-b hover:bg-[#FAFAFA] cursor-pointer">{{ body[col.props] }}
+                      </td>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+            </template>
+            <template v-else>
+              <div class="empty-content">
+                <table
+                    :style="{ width: (headerData.length - 1) * 100 + 'px', height: '10rem', overflow: 'auto' }"
+                >
+                  <thead class="table-header">
+                  <tr>
+                    <th v-for="(item) in props.headerData" :key="item.title">{{ item.title }}</th>
+                  </tr>
+                  </thead>
+
+                  <van-empty class="empty-res" description="空空如也！"/>
+                </table>
+              </div>
+            </template>
           </div>
-
         </div>
+
       </div>
     </div>
 
@@ -82,35 +99,193 @@
 
 </template>
 
-<script setup lang="ts">
-const overdata = [
-  {id: 1, label: '运行状态', F1: '23', F2: '12', F3: '24', F4: '67', F5: '78', F6: '56', F7: '234', F8: '34'},
-  {id: 2, label: '运行时间', F1: '13', F2: '22', F3: '34', F4: '47', F5: '28', F6: '16', F7: '124', F8: '44'},
-  {id: 3, label: '发酵批号', F1: '33', F2: '32', F3: '44', F4: '27', F5: '38', F6: '26', F7: '214', F8: '54'},
-  {id: 4, label: '温度/℃', F1: '43', F2: '42', F3: '54', F4: '37', F5: '48', F6: '36', F7: '204', F8: '64'},
-  {id: 5, label: 'PH/PH', F1: '53', F2: '52', F3: '64', F4: '57', F5: '58', F6: '46', F7: '194', F8: '74'},
-  {id: 6, label: '溶氧/%', F1: '63', F2: '62', F3: '74', F4: '67', F5: '68', F6: '56', F7: '184', F8: '84'},
-  {id: 7, label: '转速/rpm', F1: '73', F2: '72', F3: '84', F4: '77', F5: '78', F6: '66', F7: '174', F8: '94'},
-  {id: 8, label: '补速ml/h', F1: '83', F2: '82', F3: '94', F4: '87', F5: '88', F6: '76', F7: '164', F8: '104'},
-  {id: 9, label: '补料周期/开度', F1: '93', F2: '92', F3: '104', F4: '97', F5: '98', F6: '86', F7: '154', F8: '114'},
-  {id: 10, label: '泵1/g', F1: '103', F2: '102', F3: '114', F4: '107', F5: '108', F6: '96', F7: '144', F8: '124'},
-  {id: 11, label: '泵2/g', F1: '113', F2: '112', F3: '124', F4: '117', F5: '118', F6: '106', F7: '134', F8: '134'},
-  {id: 12, label: '泵3/g', F1: '123', F2: '122', F3: '134', F4: '127', F5: '128', F6: '116', F7: '124', F8: '144'},
-  {id: 13, label: '泵4/g', F1: '133', F2: '132', F3: '144', F4: '137', F5: '138', F6: '126', F7: '114', F8: '154'},
+<script lang='ts' setup>
+import {computed, Ref, ref,} from 'vue'
+interface TableDataItem {
+  name: string;
+  F1: number;
+  F2: number;
+  F3: number;
+  F4: number;
+  F5: number;
+  F6: number;
+  F7: number;
+  F8: number;
 
+  [key: string]: string | number;
+}
+
+interface HeaderItem {
+  title: string;
+  props: string;
+}
+
+const headerData: HeaderItem[] = [
+  { title: '姓名', props: 'name' },
+  { title: 'F1', props: 'F1' },
+  { title: 'F2', props: 'F2' },
+  { title: 'F3', props: 'F3' },
+  { title: 'F4', props: 'F4' },
+  { title: 'F5', props: 'F5' },
+  { title: 'F6', props: 'F6' },
+  { title: 'F7', props: 'F7' },
+  { title: 'F8', props: 'F8' },
+
+  // 你可以按需增加其他列
 ];
 
+
+const tableData: TableDataItem[] = [
+  { name: '运行状态', F1: 30, F2: 31, F3: 32, F4: 33, F5: 34, F6: 35, F7: 36, F8: 37 },
+  { name: '运行时间', F1: 25, F2: 26, F3: 27, F4: 28, F5: 29, F6: 30, F7: 31, F8: 32 },
+  { name: '发酵批号', F1: 28, F2: 29, F3: 30, F4: 31, F5: 32, F6: 33, F7: 34, F8: 35 },
+  { name: '温度/°C', F1: 30, F2: 31, F3: 32, F4: 33, F5: 34, F6: 35, F7: 36, F8: 37 },
+  { name: 'PH/PH', F1: 25, F2: 26, F3: 27, F4: 28, F5: 29, F6: 30, F7: 31, F8: 32 },
+  { name: '溶氧/%', F1: 28, F2: 29, F3: 30, F4: 31, F5: 32, F6: 33, F7: 34, F8: 35 },
+  { name: '转速/rpm', F1: 30, F2: 31, F3: 32, F4: 33, F5: 34, F6: 35, F7: 36, F8: 37 },
+  { name: '泵1/g', F1: 25, F2: 26, F3: 27, F4: 28, F5: 29, F6: 30, F7: 31, F8: 32 },
+  { name: '泵2/g', F1: 28, F2: 29, F3: 30, F4: 31, F5: 32, F6: 33, F7: 34, F8: 35 },
+  { name: '泵3/g', F1: 30, F2: 31, F3: 32, F4: 33, F5: 34, F6: 35, F7: 36, F8: 37 },
+  { name: '泵4/g', F1: 25, F2: 26, F3: 27, F4: 28, F5: 29, F6: 30, F7: 31, F8: 32 },
+  { name: '泵5/g', F1: 28, F2: 29, F3: 30, F4: 31, F5: 32, F6: 33, F7: 34, F8: 35 }
+];
+
+
+const props = {
+  headerData: headerData,
+  tableData: tableData
+};
+
+
+const tableContainer: Ref<HTMLDivElement | null> = ref(null);
+const firstRowLayer: Ref<HTMLDivElement | null> = ref(null);
+const firstColLayer: Ref<HTMLDivElement | null> = ref(null);
+
+
+const firstCol = computed(() => props.tableData.map(p => {
+  const pArr = Object.keys(p);
+  return p[pArr[0]]
+}))
+
+
+const firstRow = computed(() => {
+  const rows: string[] = [];
+  props.headerData.forEach((f, i) => {
+    if (i !== 0) {
+      rows.push(f.title)
+    }
+  })
+  return rows;
+})
+
+
+const tableBodyRows = computed(() => {
+  let arr: { [key: string]: any }[] = [];
+  props.tableData.forEach((f, index) => {
+
+    let res: { [key: string]: any } = {};
+    for (const key in f) {
+      if (Object.prototype.hasOwnProperty.call(f, key)) {
+        if (key !== props.headerData[0].title) {
+          res[key] = f[key]
+        }
+      }
+    }
+    arr.push(res)
+  })
+  return arr
+})
+
+const tableBodyCols = computed(() => {
+  let arr: { title: string, props: string }[] = []
+  props.headerData.forEach((f, i) => {
+    if (i !== 0) {
+      arr.push(f)
+    }
+  })
+  return arr;
+})
+
+
+const tableScroll = () => {
+
+  firstRowLayer.value!.scrollLeft = tableContainer.value!.scrollLeft;
+
+  firstColLayer.value!.scrollTop = tableContainer.value!.scrollTop;
+}
 </script>
-<style>
-.trunits {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 11%;
-  font-size: 0.875rem; /* 14px assuming base font-size is 16px */
-  font-weight: 600; /* font-semibold */
-  color: #1a202c; /* text-gray-900 assuming standard Tailwind CSS colors */
+<style lang="scss" scoped>
+
+
+table {
+  border-collapse: collapse;
+  margin: 0 auto;
+  width: 100%;
+  border-spacing: 0;
+
+}
+
+//
+th {
+  //word-break: break-all;
+  //word-wrap: break-word;
+  //height: 40px;
+  //width: 100px;
+  //vertical-align: middle;
+  //text-align: center;
+  //border-left: 1px solid #999;
+  //background: #d9d9d9;
+  //box-sizing: border-box;
+  height: 4.5rem;
+
+}
+
+td {
+  //word-break: break-all;
+  //word-wrap: break-word;
+  //width: 100px;
+  //text-align: center;
+  //vertical-align: middle;
+  //line-height: 30px;
+  //border-left: 1px solid #999;
+  //box-sizing: border-box;
+  height: 4.5rem;
+}
+
+//
+//tr {
+//  border-top: 1px solid #999;
+//  box-sizing: border-box;
+//}
+
+
+.right-div {
+  float: left;
+  width: calc(100vw - 100px);
+  margin-left: -1px;
+}
+
+.right-div1 {
+  width: 89%;
+  overflow: hidden;
+
+  .first-row-style {
+    box-sizing: border-box;
+  }
+}
+
+.right-div2 {
+  width: 89%;
+  overflow: auto;
+}
+
+.right-table2 {
+  overflow: hidden;
 }
 
 
+.empty-content {
+  width: 100%;
+  overflow: auto;
+}
 </style>

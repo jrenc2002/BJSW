@@ -9,11 +9,11 @@
 
     <vxe-table
         ref="tableRef"
-        height="300"
-        :show-overflow="showOverflow"
-        :row-config="{isHover: true}"
+        :data="tableData"
         :export-config="{}"
-        :data="tableData">
+        :row-config="{isHover: true}"
+        :show-overflow="showOverflow"
+        height="300">
       <vxe-column type="checkbox" width="60"></vxe-column>
       <vxe-column type="seq" width="60"></vxe-column>
       <vxe-colgroup title="Group1">
@@ -21,16 +21,16 @@
       </vxe-colgroup>
       <vxe-colgroup title="Group2">
         <vxe-column field="attr1" title="自动转换"></vxe-column>
-        <vxe-column field="amount" title="导出数值" cell-type="number"></vxe-column>
-        <vxe-column field="num" title="导出字符串" cell-type="string" sortable></vxe-column>
+        <vxe-column cell-type="number" field="amount" title="导出数值"></vxe-column>
+        <vxe-column cell-type="string" field="num" sortable title="导出字符串"></vxe-column>
       </vxe-colgroup>
     </vxe-table>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
-import { VxeTableInstance, VxeButtonEvents } from 'vxe-table'
+import {ref} from 'vue'
+import {VxeTableInstance, VxeButtonEvents} from 'vxe-table'
 
 interface RowVO {
   name: string
@@ -43,20 +43,12 @@ const tableRef = ref<VxeTableInstance<RowVO>>()
 
 const showOverflow = ref(false)
 
-const tableData = ref<RowVO[]>([
-  { name: 'test1', attr1: 'test1', amount: '12953.6985', num: 1259326 },
-  { name: 'tesfg t1', attr1: '154645623546345', amount: '45646464888888654654', num: 4564566456645 },
-  { name: 'sdf sgfd fdg', attr1: 1231242, amount: '4564564545646.6985', num: 0 },
-  { name: 'test1', attr1: true, amount: '12953.6985', num: 54646646 },
-  { name: 'aaa\n换行bb\n换行gg', attr1: '0', amount: '0', num: '645645645665567645234326456' },
-  { name: 'te st1', attr1: false, amount: '1231231213123.456', num: '45645645645646456' },
-  { name: 'tesf \n换行g t6', attr1: 'test2', amount: '99999.08', num: 9999.88 }
-])
+const tableData = ref<RowVO[]>([])
 
 const exportDataEvent: VxeButtonEvents.Click = () => {
   const $table = tableRef.value
   if ($table) {
-    $table.exportData({ type: 'csv' })
+    $table.exportData({type: 'csv'})
   }
 }
 
