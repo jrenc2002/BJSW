@@ -33,6 +33,7 @@ async function createWindow() {
       preload: path.join(__dirname, '../src/preload.js'),
       nodeIntegration: (process.env
           .ELECTRON_NODE_INTEGRATION as unknown) as boolean,
+
       contextIsolation: !process.env.ELECTRON_NODE_INTEGRATION
     }
   })

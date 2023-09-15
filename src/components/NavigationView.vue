@@ -20,14 +20,13 @@
         </li>
         <!-- 遍历导航项数据，为每一个导航项创建一个列表项 -->
         <li v-for="item in navigation" :key="item.name">
-          <router-link :class="[item.current ? 'bg-white text-green-600 rounded-xl shadow' : 'text-gray-700 hover:text-gray-600 hover:bg-white',
-          'group flex gap-x-3  rounded-md p-3 text-sm leading-6 font-semibold']"
-                       :to="item.href">
-            <!-- 使用 img 元素来渲染图标，并根据导航项的当前状态动态绑定类名 -->
-            <img :class="[item.current ? 'text-indigo-600' : 'text-gray-400 ', 'h-6 w-6 shrink-0']"
+          <router-link
+              :to="item.href"
+              :class="['group flex gap-x-3  rounded-md p-3 text-sm leading-6 font-semibold']"
+              active-class="bg-white text-green-600 rounded-xl shadow">
+            <img :class="['h-6 w-6 shrink-0']"
                  :src="item.icon"
                  aria-hidden="true"/>
-            <!-- 显示导航项的名称 -->
             {{ item.name }}
           </router-link>
         </li>
@@ -118,6 +117,12 @@ const navigation = computed(() => [
     href: '/batchview',
     icon: route.path === '/batchview' ? PiciImg1 : PiciImg,
     current: route.path === '/batchview'
+  },
+  {
+    name: '测试页面',
+    href: '/testview',
+    icon: route.path === '/testview' ? PiciImg1 : PiciImg,
+    current: route.path === '/testview'
   },
 
 ])

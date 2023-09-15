@@ -1,5 +1,6 @@
 <template>
-  <div :id="props.id" ref="rootRef" :style="{ width: '80%', height: '80%' }"></div>
+<!--  <div :id="props.id" ref="rootRef" :style="{ width: '80%', height: '80%' }"></div>-->
+  <button disabled></button>
 </template>
 <script lang="ts" name="checkReport" setup>
 import {defineProps, onMounted, ref} from 'vue';
@@ -24,7 +25,6 @@ const line = () => {
         return [pt[0], '10%'];
       }
     },
-
 
     xAxis: {
       type: 'time',
@@ -68,6 +68,7 @@ const line = () => {
         dataZoom: {
           yAxisIndex: 'none'
         },
+        magicType: { type: ['line', 'bar'] },
         dataView: { readOnly: false },
         restore: {},
         saveAsImage: {}

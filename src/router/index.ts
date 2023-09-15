@@ -49,6 +49,15 @@ const routes: Array<RouteRecordRaw> = [
                     permiss: '1',
                 },
                 component: () => import(/* webpackChunkName: "login" */ '../views/BatchView.vue'),
+            },
+            {
+                path: '/testview',
+                name: 'TestView',
+                meta: {
+                    title: '批次比较',
+                    permiss: '1',
+                },
+                component: () => import(/* webpackChunkName: "login" */ '../views/TextView.vue'),
             }
         ]
     },
