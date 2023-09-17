@@ -171,9 +171,11 @@ import XEUtils from 'xe-utils'
 import XEClipboard from 'xe-clipboard'
 import {useAppGlobal} from '@/store/AppGlobal'
 import { TransitionRoot } from '@headlessui/vue'
+import {useDeviceManage} from '@/store/DeviceManage'
 
 const isShowing = ref(true)
 const AppGlobal = useAppGlobal()
+const DeviceManage=useDeviceManage()
 // 批次数据
 const batchdata = ref()
 
@@ -437,7 +439,7 @@ const selectBatch = (batch) => {
 
 //  查询批次列表数据
 const updateBatchData = () => {
-  window.Electron.ipcRenderer.invoke('get-fermentation-batch-data', AppGlobal.pageName[AppGlobal.pageChance - 1].deviceNum).then(
+  window.Electron.ipcRenderer.invoke('get-fermentation-batch-data', DeviceManage.deviceList[AppGlobal.pageChance - 1].deviceNum).then(
       (res) => {
         console.log(res);
         batchdata.value = res

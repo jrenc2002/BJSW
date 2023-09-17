@@ -1,13 +1,17 @@
 <template>
-  <div class="h-[90vh] w-[80vw] shadow bg-white rounded-2xl ">
+  <div class="h-[94vh] transition-all duration-300 ease-in-out shadow bg-white rounded-2xl" :class="[AppGlobal.isDrawerState? 'w-[calc(94vw-15rem)]':'w-[94vw]']">
+
     <!--    标题-->
     <div class="h-[4%] self-stretch justify-start items-center  inline-flex mt-3  w-full ">
-      <div class="text-xl leading-10 text-zinc-900 text-2xl font-medium leading-loose left-4 relative">溶氧控制</div>
-      <div class="bg-[#F5F5F5] right-9 absolute w-7 h-7 justify-center items-center flex rounded-2xl hover:bg-[#F8F8F8] btn-circle cursor-pointer" @click="closePop">
-        <svg fill="none" height="16" viewBox="0 0 16 16" width="16" xmlns="http://www.w3.org/2000/svg">
-          <path d="M12 4.7L11.3 4L8 7.3L4.7 4L4 4.7L7.3 8L4 11.3L4.7 12L8 8.7L11.3 12L12 11.3L8.7 8L12 4.7Z"
-                fill="#19161D"/>
-        </svg>
+      <div class="w-[calc(10rem)] text-xl leading-10 text-zinc-900 text-2xl font-medium leading-loose left-4 relative">溶氧控制</div>
+      <div class="w-[calc(100%-10rem)] relative justify-end flex mr-3 ">
+
+        <div class="bg-[#F5F5F5] right-0 relative w-7 h-7 justify-center items-center flex rounded-2xl hover:bg-[#F8F8F8] cursor-pointer" @click="closePop">
+          <svg fill="none" height="16" viewBox="0 0 16 16" width="16" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 4.7L11.3 4L8 7.3L4.7 4L4 4.7L7.3 8L4 11.3L4.7 12L8 8.7L11.3 12L12 11.3L8.7 8L12 4.7Z"
+                  fill="#19161D"/>
+          </svg>
+        </div>
       </div>
     </div>
     <!--    表格栏-->
@@ -35,7 +39,7 @@
                 <table class="mb-4 shadow  bg-[#E8F6ED] py-4">
                   <tr v-for="(col, index) in firstCol" :key="index" class=" w-full  ">
                     <td class="w-full  flex justify-center items-center   ">
-                      <div @click="popManager(col)">
+                      <div >
                         {{ col }}
 
                       </div>
@@ -66,29 +70,26 @@
                 <table :style="{ width: (firstRow.length +1 ) * 8.2 + 'rem' }">
                   <tr v-for="(body,index) in tableBodyRows" :key="index">
                     <template v-for="(col, i) in tableBodyCols" :key="col.props + i">
-                      <td v-if="index==0" class="w-[8.2rem] text-center border-l border-b cursor-pointer">
+                      <td v-if="index==0||index==10" class="w-[8.2rem] text-center border-l border-b ">
                         <details class="dropdown ">
                           <summary v-if="body[col.props]==0" class="m-1 btn w-[7rem] ">停止</summary>
                           <summary v-if="body[col.props]==1"
-                                   class="m-1 btn w-[7rem] text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3]">自动
+                                   class="m-1 btn w-[7rem] text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3]">关联
                           </summary>
-                          <summary v-if="body[col.props]==2"
-                                   class="m-1 btn w-[7rem]  text-[#776B00] bg-[#FAF3B7] hover:bg-[#E5E0AA]">顺控
-                          </summary>
+
 
                           <ul class="p-2 shadow-xl menu dropdown-content z-[1] bg-base-100 rounded-box w-[7rem] broder">
                             <li class="text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2] rounded" @click="col.props=0"><a>停止</a>
                             </li>
                             <li class="text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] mt-2 rounded"
-                                @click="col.props=1"><a>自动</a></li>
-                            <li class="text-[#776B00] bg-[#FAF3B7] hover:bg-[#E5E0AA] mt-2 rounded"
-                                @click="col.props=2"><a>顺控</a></li>
+                                @click="col.props=1"><a>关联</a></li>
+
                           </ul>
                         </details>
                       </td>
 
-                      <td v-if="index!=0"
-                          class="w-[8.2rem] text-center border-l border-b hover:bg-[#FAFAFA] cursor-pointer">
+                      <td v-else
+                          class="w-[8.2rem] text-center border-l border-b hover:bg-[#FAFAFA] ">
                         {{ body[col.props] }}
                       </td>
                     </template>
@@ -118,7 +119,8 @@ import {computed, Ref, ref, watch, onUnmounted, onMounted, reactive} from 'vue'
 import PopupManger from "@/components/PopupManger.vue";
 import {usePopupMangerState} from "@/store/PopupMangerState";
 import {PopupType} from "@/store/PopupMangerState";
-
+import {useAppGlobal} from '@/store/AppGlobal'
+const AppGlobal=useAppGlobal();
 const PopupMangerState = usePopupMangerState()
 
 interface TableDataItem {
@@ -135,25 +137,8 @@ interface TableDataItem {
   [key: string]: string | number;
 }
 
-const name_translation = {
-  '运行状态': 'None',
-  '运行时间': 'None',
-  '发酵批号': 'None',
-  '温度': 'Temperature',
-  'PH值': 'PHValue',
-  '溶氧': 'DissolvedOxygen',
-  '转速': 'RPM',
-  '酸液泵': 'Acidpump',
-  '碱液泵': 'Lyepump',
-  '补料泵': 'Feedpump',
-  '消泡剂泵': 'Defoamerpump'
-}
 
 
-const popManager = (val: any) => {
-  PopupMangerState.updateIsShowPop(true)
-  PopupMangerState.updatePopupContent(name_translation[val])
-}
 
 interface HeaderItem {
   title: string;
@@ -185,18 +170,21 @@ const headerData: HeaderItem[] = [
 
 
 const tableData: TableDataItem[] = [
-  {name: '状态', F1: 1, F2: 1, F3: 2, F4: 1, F5: 0, F6: 1, F7: 2, F8: 1},
+  {name: '转速控制', F1: 1, F2: 1, F3: 0, F4: 1, F5: 0, F6: 1, F7: 0, F8: 1},
   {name: '测量值', F1: 25, F2: 26, F3: 27, F4: 28, F5: 29, F6: 30, F7: 31, F8: 32},
   {name: '设定值', F1: 28, F2: 29, F3: 30, F4: 31, F5: 32, F6: 33, F7: 34, F8: 35},
-  {name: '控制周期', F1: 30, F2: 31, F3: 32, F4: 33, F5: 34, F6: 35, F7: 36, F8: 37},
-  {name: '比例P', F1: 25, F2: 26, F3: 27, F4: 28, F5: 29, F6: 30, F7: 31, F8: 32},
-  {name: '积分I', F1: 28, F2: 29, F3: 30, F4: 31, F5: 32, F6: 33, F7: 34, F8: 35},
-  {name: '微分D', F1: 30, F2: 31, F3: 32, F4: 33, F5: 34, F6: 35, F7: 36, F8: 37},
-  {name: '最大加热', F1: 25, F2: 26, F3: 27, F4: 28, F5: 29, F6: 30, F7: 31, F8: 32},
-  {name: '最大冷却', F1: 28, F2: 29, F3: 30, F4: 31, F5: 32, F6: 33, F7: 34, F8: 35},
+  {name: 'DO上限', F1: 28, F2: 29, F3: 30, F4: 31, F5: 32, F6: 33, F7: 34, F8: 35},
+  {name: 'DO下限', F1: 28, F2: 29, F3: 30, F4: 31, F5: 32, F6: 33, F7: 34, F8: 35},
+  {name: '转速上限', F1: 28, F2: 29, F3: 30, F4: 31, F5: 32, F6: 33, F7: 34, F8: 35},
+  {name: '转速下限', F1: 30, F2: 31, F3: 32, F4: 33, F5: 34, F6: 35, F7: 36, F8: 37},
   {name: '控制死区', F1: 30, F2: 31, F3: 32, F4: 33, F5: 34, F6: 35, F7: 36, F8: 37},
   {name: '报警上限', F1: 25, F2: 26, F3: 27, F4: 28, F5: 29, F6: 30, F7: 31, F8: 32},
-  {name: '报警下限', F1: 25, F2: 26, F3: 27, F4: 28, F5: 29, F6: 30, F7: 31, F8: 32},
+  {name: '报警下限', F1: 28, F2: 29, F3: 30, F4: 31, F5: 32, F6: 33, F7: 34, F8: 35},
+  {name: '氧气控制', F1: 1, F2: 1, F3: 0, F4: 1, F5: 0, F6: 1, F7: 0, F8: 1},
+  {name: '控制周期', F1: 28, F2: 29, F3: 30, F4: 31, F5: 32, F6: 33, F7: 34, F8: 35},
+  {name: '控制比例', F1: 25, F2: 26, F3: 27, F4: 28, F5: 29, F6: 30, F7: 31, F8: 32},
+  {name: '加氧上限', F1: 25, F2: 26, F3: 27, F4: 28, F5: 29, F6: 30, F7: 31, F8: 32},
+  {name: '加氧下限', F1: 25, F2: 26, F3: 27, F4: 28, F5: 29, F6: 30, F7: 31, F8: 32},
 
 
 ];

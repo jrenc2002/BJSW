@@ -1,9 +1,10 @@
 <template>
-  <div class="h-[90vh] w-[80vw] shadow bg-white rounded-2xl ">
-    <!--    标题-->
+  <div class="h-[94vh] transition-all duration-300 ease-in-out shadow bg-white rounded-2xl" :class="[AppGlobal.isDrawerState? 'w-[calc(94vw-15rem)]':'w-[94vw]']">
+
+<!--    标题-->
     <div class="h-[4%] self-stretch justify-start items-center  inline-flex mt-3  w-full ">
-      <div class="w-[10%] text-xl leading-10 text-zinc-900 text-2xl font-medium leading-loose left-4 relative">温度控制</div>
-      <div class="w-[90%] relative justify-end flex mr-3 ">
+      <div class="w-[calc(10rem)] text-xl leading-10 text-zinc-900 text-2xl font-medium leading-loose left-4 relative">温度控制</div>
+      <div class="w-[calc(100%-10rem)] relative justify-end flex mr-3 ">
 
         <div class="bg-[#F5F5F5] right-0 relative w-7 h-7 justify-center items-center flex rounded-2xl hover:bg-[#F8F8F8] cursor-pointer" @click="closePop">
           <svg fill="none" height="16" viewBox="0 0 16 16" width="16" xmlns="http://www.w3.org/2000/svg">
@@ -38,7 +39,7 @@
                 <table class="mb-4 shadow  bg-[#E8F6ED] py-4">
                   <tr v-for="(col, index) in firstCol" :key="index" class=" w-full  ">
                     <td class="w-full  flex justify-center items-center   ">
-                      <div @click="popManager(col)">
+                      <div >
                         {{ col }}
 
                       </div>
@@ -121,7 +122,8 @@ import {computed, Ref, ref, watch, onUnmounted, onMounted, reactive} from 'vue'
 import PopupManger from "@/components/PopupManger.vue";
 import {usePopupMangerState} from "@/store/PopupMangerState";
 import {PopupType} from "@/store/PopupMangerState";
-
+import {useAppGlobal} from '@/store/AppGlobal'
+const AppGlobal=useAppGlobal();
 const PopupMangerState = usePopupMangerState()
 
 interface TableDataItem {
@@ -138,25 +140,8 @@ interface TableDataItem {
   [key: string]: string | number;
 }
 
-const name_translation = {
-  '运行状态': 'None',
-  '运行时间': 'None',
-  '发酵批号': 'None',
-  '温度': 'Temperature',
-  'PH值': 'PHValue',
-  '溶氧': 'DissolvedOxygen',
-  '转速': 'RPM',
-  '酸液泵': 'Acidpump',
-  '碱液泵': 'Lyepump',
-  '补料泵': 'Feedpump',
-  '消泡剂泵': 'Defoamerpump'
-}
 
 
-const popManager = (val: any) => {
-  PopupMangerState.updateIsShowPop(true)
-  PopupMangerState.updatePopupContent(name_translation[val])
-}
 
 interface HeaderItem {
   title: string;
@@ -192,12 +177,11 @@ const tableData: TableDataItem[] = [
   {name: '测量值', F1: 25, F2: 26, F3: 27, F4: 28, F5: 29, F6: 30, F7: 31, F8: 32},
   {name: '设定值', F1: 28, F2: 29, F3: 30, F4: 31, F5: 32, F6: 33, F7: 34, F8: 35},
   {name: '控制周期', F1: 30, F2: 31, F3: 32, F4: 33, F5: 34, F6: 35, F7: 36, F8: 37},
+  {name: '周期开度', F1: 30, F2: 31, F3: 32, F4: 33, F5: 34, F6: 35, F7: 36, F8: 37},
   {name: '比例P', F1: 25, F2: 26, F3: 27, F4: 28, F5: 29, F6: 30, F7: 31, F8: 32},
   {name: '积分I', F1: 28, F2: 29, F3: 30, F4: 31, F5: 32, F6: 33, F7: 34, F8: 35},
   {name: '微分D', F1: 30, F2: 31, F3: 32, F4: 33, F5: 34, F6: 35, F7: 36, F8: 37},
-  {name: '最大加热', F1: 25, F2: 26, F3: 27, F4: 28, F5: 29, F6: 30, F7: 31, F8: 32},
-  {name: '最大冷却', F1: 28, F2: 29, F3: 30, F4: 31, F5: 32, F6: 33, F7: 34, F8: 35},
-  {name: '控制死区', F1: 30, F2: 31, F3: 32, F4: 33, F5: 34, F6: 35, F7: 36, F8: 37},
+  {name: '控制死区', F1: 28, F2: 29, F3: 30, F4: 31, F5: 32, F6: 33, F7: 34, F8: 35},
   {name: '报警上限', F1: 25, F2: 26, F3: 27, F4: 28, F5: 29, F6: 30, F7: 31, F8: 32},
   {name: '报警下限', F1: 25, F2: 26, F3: 27, F4: 28, F5: 29, F6: 30, F7: 31, F8: 32},
 

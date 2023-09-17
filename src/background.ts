@@ -31,8 +31,7 @@ async function createWindow() {
       // 使用 pluginOptions.nodeIntegration，不要修改
       // 更多信息请查看 nklayman.github.io/vue-cli-plugin-electron-builder/guide/security.html#node-integration
       preload: path.join(__dirname, '../src/preload.js'),
-      nodeIntegration: (process.env
-          .ELECTRON_NODE_INTEGRATION as unknown) as boolean,
+      nodeIntegration: (process.env.ELECTRON_NODE_INTEGRATION as unknown) as boolean,
 
       contextIsolation: !process.env.ELECTRON_NODE_INTEGRATION
     }
@@ -69,18 +68,18 @@ app.on('activate', () => {
 // 当 Electron 完成初始化并准备创建浏览器窗口时，将调用此方法
 // 某些 API 只能在此事件发生后才能使用
 app.on('ready', async () => {
-  // if (isDevelopment && !process.env.IS_TEST) {
-  //   // 安装 Vue Devtools
-  //   // try {
-  //   //   await installExtension(VUEJS3_DEVTOOLS)
-  //   // } catch (e: unknown) {
-  //   //   if (e instanceof Error) {
-  //   //     console.error('Vue Devtools failed to install:', e.message)
-  //   //   } else {
-  //   //     console.error('Vue Devtools failed to install:', e)
-  //   //   }
-  //   // }
-  // }
+
+    // 安装 Vue Devtools
+    try {
+      await installExtension(VUEJS3_DEVTOOLS)
+    } catch (e: unknown) {
+      if (e instanceof Error) {
+        console.error('Vue Devtools failed to install:', e.message)
+      } else {
+        console.error('Vue Devtools failed to install:', e)
+      }
+    }
+
   createWindow();
   createInitDB();
 })

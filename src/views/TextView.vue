@@ -150,8 +150,7 @@ const name_translation = {
 
 
 const popManager =(val:any)=>{
-  PopupMangerState.updateIsShowPop(true)
-  PopupMangerState.updatePopupContent(name_translation[val])
+
   console.log(PopupMangerState.isShowPop)
   console.log(PopupMangerState.popupContent)
 }
@@ -265,7 +264,6 @@ const tableBodyCols = computed(() => {
 const tableScroll = () => {
 
   firstRowLayer.value!.scrollLeft = tableContainer.value!.scrollLeft;
-
   firstColLayer.value!.scrollTop = tableContainer.value!.scrollTop;
 }
 

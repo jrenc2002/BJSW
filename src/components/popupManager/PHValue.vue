@@ -1,13 +1,17 @@
 <template>
-  <div class="h-[90vh] w-[80vw] shadow bg-white rounded-2xl ">
+  <div class="h-[94vh] transition-all duration-300 ease-in-out shadow bg-white rounded-2xl" :class="[AppGlobal.isDrawerState? 'w-[calc(94vw-15rem)]':'w-[94vw]']">
+
     <!--    标题-->
     <div class="h-[4%] self-stretch justify-start items-center  inline-flex mt-3  w-full ">
-      <div class="text-xl leading-10 text-zinc-900 text-2xl font-medium leading-loose left-4 relative">PH控制</div>
-      <div class="bg-[#F5F5F5] right-9 absolute w-7 h-7 justify-center items-center flex rounded-2xl hover:bg-[#F8F8F8] btn-circle cursor-pointer" @click="closePop">
-        <svg fill="none" height="16" viewBox="0 0 16 16" width="16" xmlns="http://www.w3.org/2000/svg">
-          <path d="M12 4.7L11.3 4L8 7.3L4.7 4L4 4.7L7.3 8L4 11.3L4.7 12L8 8.7L11.3 12L12 11.3L8.7 8L12 4.7Z"
-                fill="#19161D"/>
-        </svg>
+      <div class="w-[calc(10rem)] text-xl leading-10 text-zinc-900 text-2xl font-medium leading-loose left-4 relative">PH值控制</div>
+      <div class="w-[calc(100%-10rem)] relative justify-end flex mr-3 ">
+
+        <div class="bg-[#F5F5F5] right-0 relative w-7 h-7 justify-center items-center flex rounded-2xl hover:bg-[#F8F8F8] cursor-pointer" @click="closePop">
+          <svg fill="none" height="16" viewBox="0 0 16 16" width="16" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 4.7L11.3 4L8 7.3L4.7 4L4 4.7L7.3 8L4 11.3L4.7 12L8 8.7L11.3 12L12 11.3L8.7 8L12 4.7Z"
+                  fill="#19161D"/>
+          </svg>
+        </div>
       </div>
     </div>
     <!--    表格栏-->
@@ -66,7 +70,7 @@
                 <table :style="{ width: (firstRow.length +1 ) * 8.2 + 'rem' }">
                   <tr v-for="(body,index) in tableBodyRows" :key="index">
                     <template v-for="(col, i) in tableBodyCols" :key="col.props + i">
-                      <td v-if="index==0" class="w-[8.2rem] text-center border-l border-b cursor-pointer">
+                      <td v-if="index==0" class="w-[8.2rem] text-center border-l border-b ">
                         <details class="dropdown ">
                           <summary v-if="body[col.props]==0" class="m-1 btn w-[7rem] ">停止</summary>
                           <summary v-if="body[col.props]==1"
@@ -88,7 +92,7 @@
                       </td>
 
                       <td v-if="index!=0"
-                          class="w-[8.2rem] text-center border-l border-b hover:bg-[#FAFAFA] cursor-pointer">
+                          class="w-[8.2rem] text-center border-l border-b hover:bg-[#FAFAFA] ">
                         {{ body[col.props] }}
                       </td>
                     </template>
@@ -118,7 +122,8 @@ import {computed, Ref, ref, watch, onUnmounted, onMounted, reactive} from 'vue'
 import PopupManger from "@/components/PopupManger.vue";
 import {usePopupMangerState} from "@/store/PopupMangerState";
 import {PopupType} from "@/store/PopupMangerState";
-
+import {useAppGlobal} from '@/store/AppGlobal'
+const AppGlobal=useAppGlobal();
 const PopupMangerState = usePopupMangerState()
 
 interface TableDataItem {
@@ -184,23 +189,22 @@ const headerData: HeaderItem[] = [
 ];
 
 
+
 const tableData: TableDataItem[] = [
   {name: '状态', F1: 1, F2: 1, F3: 2, F4: 1, F5: 0, F6: 1, F7: 2, F8: 1},
   {name: '测量值', F1: 25, F2: 26, F3: 27, F4: 28, F5: 29, F6: 30, F7: 31, F8: 32},
   {name: '设定值', F1: 28, F2: 29, F3: 30, F4: 31, F5: 32, F6: 33, F7: 34, F8: 35},
   {name: '控制周期', F1: 30, F2: 31, F3: 32, F4: 33, F5: 34, F6: 35, F7: 36, F8: 37},
+  {name: '周期开度', F1: 30, F2: 31, F3: 32, F4: 33, F5: 34, F6: 35, F7: 36, F8: 37},
   {name: '比例P', F1: 25, F2: 26, F3: 27, F4: 28, F5: 29, F6: 30, F7: 31, F8: 32},
   {name: '积分I', F1: 28, F2: 29, F3: 30, F4: 31, F5: 32, F6: 33, F7: 34, F8: 35},
   {name: '微分D', F1: 30, F2: 31, F3: 32, F4: 33, F5: 34, F6: 35, F7: 36, F8: 37},
-  {name: '最大加热', F1: 25, F2: 26, F3: 27, F4: 28, F5: 29, F6: 30, F7: 31, F8: 32},
-  {name: '最大冷却', F1: 28, F2: 29, F3: 30, F4: 31, F5: 32, F6: 33, F7: 34, F8: 35},
   {name: '控制死区', F1: 30, F2: 31, F3: 32, F4: 33, F5: 34, F6: 35, F7: 36, F8: 37},
   {name: '报警上限', F1: 25, F2: 26, F3: 27, F4: 28, F5: 29, F6: 30, F7: 31, F8: 32},
   {name: '报警下限', F1: 25, F2: 26, F3: 27, F4: 28, F5: 29, F6: 30, F7: 31, F8: 32},
 
 
 ];
-
 
 const props = {
   headerData: headerData,

@@ -126,5 +126,62 @@ export function createInitDB(): any {
             });
         });
     });
+    // 添加新的发酵批次
+    ipcMain.handle('add-fermentation-batch', async (event: IpcMainInvokeEvent, batchData: { batch_name: string, can_number: string, start_time: string }) => {
+        return new Promise((resolve, reject) => {
+            const query = `INSERT INTO fermentation_batch(batch_name, can_number, start_time) VALUES (?, ?, ?)`;
+            db.run(query, [batchData.batch_name, batchData.can_number, batchData.start_time], function(err: Error) {
+                if (err) {
+                    console.error("Error adding data to fermentation_batch:", err);
+                    reject(err);
+                } else {
+                    resolve(this.lastID);  // 返回新插入数据的ID
+                }
+            });
+        });
+    });
+
+    // 添加新的发酵数据
+    ipcMain.handle('add-fermentation-data', async (event: IpcMainInvokeEvent, data: any) => {
+        return new Promise((resolve, reject) => {
+            const query = `
+            INSERT INTO fermentation_data(
+                batch_id, time, timing_PH, acid_speed, lye_speed, target_PH, acid_KP, acid_KI, acid_KD, 
+                lye_KP, lye_KI, lye_KD, acid_ml, lye_ml, acid_handle_speed_set, lye_handle_speed_set, 
+                PH_flag, Ph_auto_handle, timing_temp, heatpower, target_temp, Temp_KP, Temp_KI, Temp_KD, 
+                water_flag, temp_flag, cool_water_autoflag, timing_DO, oxy_ratio, target_DO, target_oxy_ratio,
+                DO_KP, DO_KI, DO_KD, DO_flag, target_motor_speed, timing_motor_speed, motor_speed_l_limit,
+                motor_speed_u_limit, motor_speed_autoflag, oxy_flag, clean_speed, clean_ml, clean_single_time, 
+                clean_flag, feed_speed, feed_ml, feed_DO_cu_limit, feed_DO_cl_limit, feed_DO_connect_flag, 
+                feed_flag, feed_motor_connect_flag, feed_DO_motor_connect_flag, feed_motor_flag, feed_motor_cu_limit, 
+                feed_motor_cl_limit, start_flag
+            ) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 
+                    ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        `;
+            db.run(query, [
+                data.batch_id, data.time, data.timing_PH, data.acid_speed, data.lye_speed, data.target_PH, data.acid_KP,
+                data.acid_KI, data.acid_KD, data.lye_KP, data.lye_KI, data.lye_KD, data.acid_ml, data.lye_ml,
+                data.acid_handle_speed_set, data.lye_handle_speed_set, data.PH_flag, data.Ph_auto_handle,
+                data.timing_temp, data.heatpower, data.target_temp, data.Temp_KP, data.Temp_KI, data.Temp_KD,
+                data.water_flag, data.temp_flag, data.cool_water_autoflag, data.timing_DO, data.oxy_ratio, data.target_DO,
+                data.target_oxy_ratio, data.DO_KP, data.DO_KI, data.DO_KD, data.DO_flag, data.target_motor_speed,
+                data.timing_motor_speed, data.motor_speed_l_limit, data.motor_speed_u_limit, data.motor_speed_autoflag,
+                data.oxy_flag, data.clean_speed, data.clean_ml, data.clean_single_time, data.clean_flag, data.feed_speed,
+                data.feed_ml, data.feed_DO_cu_limit, data.feed_DO_cl_limit, data.feed_DO_connect_flag, data.feed_flag,
+                data.feed_motor_connect_flag, data.feed_DO_motor_connect_flag, data.feed_motor_flag, data.feed_motor_cu_limit,
+                data.feed_motor_cl_limit, data.start_flag
+            ], function(err: Error) {
+                if (err) {
+                    console.error("Error adding data to fermentation_data:", err);
+                    reject(err);
+                } else {
+                    resolve(this.lastID);  // 返回新插入数据的ID
+                }
+            });
+        });
+    });
+
+
 }
 
