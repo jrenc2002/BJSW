@@ -81,10 +81,9 @@ interface SetData {
 interface Device {
     id: number;
     name: string;
-    href: string;
     deviceNum: string;
     ip: string;
-    port: number;
+    port?: number; // 这意味着 port 是可选的
     state: boolean;
     nowdata: SetData|null;
     devicesocket: any;
@@ -160,7 +159,7 @@ const state = (): {
 } => {
     return {
         deviceList: [
-            {id: 1, name: '设备A', href: '#', deviceNum: "BAB-00", ip: '192.168.1.3', port: 2000, state: false, nowdata: null, devicesocket: null},
+            {id: 0, name: '设备A',  deviceNum: "BAB-00", ip: '192.168.1.3', port: 2000, state: false, nowdata: null, devicesocket: null},
 
         ]
     }
@@ -172,8 +171,23 @@ const state = (): {
 export const useDeviceManage = defineStore('DeviceManage', {
     state,
     actions: {
+        addDevice(ip: string, port: number,nameDevice:string){
+            const newId = this.deviceList.length;
+            const newDevice: Device = {
+                id: newId,
+                name: nameDevice,
+                deviceNum: `BAB-${newId}`,
+                ip: ip,
+                port: port,
+                state: false,
+                nowdata: null,
+                devicesocket: null
+            };
 
-        updateDeviceList(index:number,newDeviceData: (SetData|number)) {
+            this.deviceList.push(newDevice);
+            return newId;
+        },
+        updateDeviceListData(index:number, newDeviceData: (SetData|number)) {
             console.log(newDeviceData)
             if (typeof newDeviceData === 'number') {
                 if (newDeviceData===-1)console.log("Error")
@@ -196,6 +210,9 @@ export const useDeviceManage = defineStore('DeviceManage', {
             this.deviceList[index].nowdata = newDeviceData;
             console.log(newDeviceData)
             console.log(this.deviceList[index].nowdata)
+        },
+        updateDeviceList(newDeviceList: Device[]) {
+            this.deviceList= newDeviceList;
         }
 
 

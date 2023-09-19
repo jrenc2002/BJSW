@@ -69,16 +69,16 @@ app.on('activate', () => {
 // 某些 API 只能在此事件发生后才能使用
 app.on('ready', async () => {
 
-    // 安装 Vue Devtools
-    try {
-      await installExtension(VUEJS3_DEVTOOLS)
-    } catch (e: unknown) {
-      if (e instanceof Error) {
-        console.error('Vue Devtools failed to install:', e.message)
-      } else {
-        console.error('Vue Devtools failed to install:', e)
-      }
-    }
+    // // 安装 Vue Devtools
+    // try {
+    //   await installExtension(VUEJS3_DEVTOOLS)
+    // } catch (e: unknown) {
+    //   if (e instanceof Error) {
+    //     console.error('Vue Devtools failed to install:', e.message)
+    //   } else {
+    //     console.error('Vue Devtools failed to install:', e)
+    //   }
+    // }
 
   createWindow();
   createInitDB();

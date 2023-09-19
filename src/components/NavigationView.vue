@@ -91,7 +91,7 @@
     <div>
       <Transition name="fade">
         <div v-if="isExpanded" class="
-              w-[12rem] h-[232px] border-[2px] border-[#83BA9B] rounded-[14px] fixed bottom-4  bg-white">
+              w-[12rem] h-[255px] border-[2px] border-[#83BA9B] rounded-[14px] fixed bottom-4  bg-white">
           <div class="absolute right-0 p-2 cursor-pointer" @click="toggle">
             <svg fill="none" height="18" viewBox="0 0 15 15" width="18" xmlns="http://www.w3.org/2000/svg">
               <path d="M12 4.7L11.3 4L8 7.3L4.7 4L4 4.7L7.3 8L4 11.3L4.7 12L8 8.7L11.3 12L12 11.3L8.7 8L12 4.7Z"
@@ -103,30 +103,55 @@
               新增设备
             </div>
 
-<!--            <div class="w-[96%] h-px m-2 bg-zinc-300"></div>-->
+            <!--            <div class="w-[96%] h-px m-2 bg-zinc-300"></div>-->
 
             <div class="isolate -space-y-px rounded-md ">
 
-              <div class="relative rounded-md rounded-b-none px-3 pb-1.5 pt-2.5 ring-1 ring-inset ring-gray-300 focus-within:z-10 focus-within:ring-2 focus-within:ring-indigo-600">
-                <label for="name" class="block text-xs font-medium text-gray-900">IP地址</label>
-                <input type="text" name="name" id="name" class="block w-full border-0 p-0 text-gray-900 placeholder:text-gray-400 sm:text-sm sm:leading-6" placeholder="192.168.1.2" />
+              <div
+                  class="relative rounded-md rounded-b-none px-3 pb-1.5 pt-2.5 ring-1 ring-inset ring-gray-300 focus-within:z-10 focus-within:ring-2 focus-within:ring-indigo-600">
+                <div class="flex w-full mb-1">
+                  <label class="block text-xs font-medium text-gray-900 w-2/3 mr-1" for="name">IP地址</label>
+                  <label class="block text-xs font-medium text-gray-900 " for="name">端口</label>
+                </div>
+                <div class="flex">
+                  <input id="name" class="block w-2/3 border p-0 text-gray-900 placeholder:text-gray-400 sm:text-sm sm:leading-6 pl-1 mr-1" name="name"
+                         placeholder="192.168.1.2" v-model="ipAddress"
+                         type="text"/>
+                  <input id="name" class="block w-1/3 border p-0 text-gray-900 placeholder:text-gray-400 sm:text-sm sm:leading-6 pl-1" name="name"
+                         placeholder="2000" v-model="port"
+                         type="text"/>
+                </div>
               </div>
-              <div class="relative rounded-md rounded-t-none px-3 pb-1.5 pt-2.5 ring-1 ring-inset ring-gray-300 focus-within:z-10 focus-within:ring-2 focus-within:ring-indigo-600">
-                <label for="job-title" class="block text-xs font-medium text-gray-900">设备名称</label>
-                <input type="text" name="job-title" id="job-title" class="block w-full border-0 p-0 text-gray-900 placeholder:text-gray-400  sm:text-sm sm:leading-6 " placeholder="F1" />
+              <div
+                  class="relative rounded-md rounded-t-none px-3 pb-1.5 pt-2.5 ring-1 ring-inset ring-gray-300 focus-within:z-10 focus-within:ring-2 focus-within:ring-indigo-600">
+                <label class="block text-xs font-medium text-gray-900 mb-1" for="job-title">设备名称</label>
+                <input id="job-title" class="block w-full border p-0 text-gray-900 placeholder:text-gray-400  sm:text-sm sm:leading-6 pl-1 " name="job-title"
+                       placeholder="F1"  v-model="nameDevice"
+                       type="text"/>
+
               </div>
+
             </div>
             <div class="w-[100%] h-9 flex items-center justify-begin">
+
               <button
-                  type="button"
                   className="flex items-center justify-begin w-20 mt-6 ml-2 inline-flex items-center rounded-md bg-green-700 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-800   focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                  type="button"
+                  @click="newDevice"
               >
                 <div class="ml-1">确定</div>
-                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg" class="ml-1.5">
-                  <path fill-rule="evenodd" clip-rule="evenodd" d="M6 10.375C8.41625 10.375 10.375 8.41625 10.375 6C10.375 3.58375 8.41625 1.625 6 1.625C3.58375 1.625 1.625 3.58375 1.625 6C1.625 8.41625 3.58375 10.375 6 10.375ZM6 11.25C8.89949 11.25 11.25 8.89949 11.25 6C11.25 3.10051 8.89949 0.75 6 0.75C3.10051 0.75 0.75 3.10051 0.75 6C0.75 8.89949 3.10051 11.25 6 11.25Z" fill="white"/>
+                <svg class="ml-1.5" fill="none" height="12" viewBox="0 0 12 12" width="12"
+                     xmlns="http://www.w3.org/2000/svg">
+                  <path clip-rule="evenodd" d="M6 10.375C8.41625 10.375 10.375 8.41625 10.375 6C10.375 3.58375 8.41625 1.625 6 1.625C3.58375 1.625 1.625 3.58375 1.625 6C1.625 8.41625 3.58375 10.375 6 10.375ZM6 11.25C8.89949 11.25 11.25 8.89949 11.25 6C11.25 3.10051 8.89949 0.75 6 0.75C3.10051 0.75 0.75 3.10051 0.75 6C0.75 8.89949 3.10051 11.25 6 11.25Z"
+                        fill="white"
+                        fill-rule="evenodd"/>
                 </svg>
 
               </button>
+            </div>
+            <div class="ml-2 mt-5 text-green-600 ">
+
+              {{ message }}
             </div>
           </div>
 
@@ -136,7 +161,7 @@
               bg-white rounded-[50px] border-[2px] border-[#83BA9B] justify-center flex items-center w-10 h-10
            items-center flex fixed bottom-4  " @click="toggle">
           <div class="w-4 h-4 relative justify-center flex items-center">
-            <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <svg fill="none" height="10" viewBox="0 0 10 10" width="10" xmlns="http://www.w3.org/2000/svg">
               <path d="M5.5 4.5V0H4.5V4.5H0V5.5H4.5V10H5.5V5.5H10V4.5H5.5Z" fill="#19161D"/>
             </svg>
 
@@ -164,7 +189,6 @@ import PiciImg from '@/assets/image/pici.png'
 import PiciImg1 from '@/assets/image/pici1.png'
 import {useAppGlobal} from '@/store/AppGlobal'
 import {useDeviceManage} from '@/store/DeviceManage'
-
 
 
 const route = useRoute()
@@ -238,6 +262,32 @@ const enterEdit = (id: number) => {
   updateName.value = ''
 }
 
+
+// 新建设备
+const ipAddress = ref('');
+const port = ref('');
+const message = ref('');
+const nameDevice = ref('');
+const isValidDevice = (Ip,Port) => {
+
+  const isSameIpDevica = !DeviceManage.deviceList.some(device => device.ip === Ip && device.port === Port);
+
+  const ipPatternIp = /^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
+  const ipPatternPort = /^(102[4-9]|10[3-9][0-9]|1[1-9][0-9]{2}|[2-9][0-9]{3}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$/;
+  return ipPatternIp.test(Ip)&&ipPatternPort.test(Port)&&isSameIpDevica;
+};
+
+const newDevice = ()=>{
+  if (isValidDevice(ipAddress.value,port.value)) {
+    message.value = '已添加设备！';
+    DeviceManage.addDevice(ipAddress.value,port.value,nameDevice.value)
+    // You can also send the IP to a server or any other logic here
+  } else {
+
+    message.value = 'IP校验失败！';
+  }
+
+}
 </script>
 <style>
 .fade-enter-active,

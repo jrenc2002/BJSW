@@ -25,26 +25,12 @@ contextBridge.exposeInMainWorld('useAPI', {
 class SocketInstance {
    constructor(host, port) {
       this.socket = net.createConnection({ host, port });
-      this.initListeners();
+
    }
    // 新增的方法，允许外部添加事件监听器
    on(event, callback) {
       this.socket.on(event, callback);
    }
-   initListeners() {
-      this.socket.on('connect', () => {
-         console.log(`Connected to ${this.socket.remoteAddress}:${this.socket.remotePort}`);
-      });
-
-      this.socket.on('end', () => {
-         console.log(`Disconnected from ${this.socket.remoteAddress}:${this.socket.remotePort}`);
-      });
-
-      this.socket.on('error', (err) => {
-         console.error(`Socket Error from ${this.socket.remoteAddress}:${this.socket.remotePort}:`, err);
-      });
-   }
-
    send(message) {
       console.log(`Message from `,message);
       this.socket.write(message);
