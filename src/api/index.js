@@ -20,6 +20,8 @@ const DeviceManage=useDeviceManage();
 export const initDeviceManage = () => {
     // 首先他要从设备管理中获取设备列表，然后对设备列表进行遍历，对每一个设备进行尝试连接，
     // 如果连接成功就更新设备状态-成功，如果连接失败就更新设备状态-失败
+    console.log(DeviceManage.deviceList); // 打印实际值
+    console.log(typeof DeviceManage.deviceList); // 打印类型
     DeviceManage.deviceList.forEach((item, index) => {
 
         const device = window.useAPI.connect(item.ip, item.port);
@@ -87,6 +89,9 @@ export const addDevice = (ip, port,name) => {
         DeviceManage.updateDeviceListData(index, onDataReceived(data));
 
     });
+
+    localStorage.setItem('deviceList', JSON.stringify(DeviceManage.deviceList));
+
 
 }
 // 关闭设备
