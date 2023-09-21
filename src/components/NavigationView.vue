@@ -176,17 +176,21 @@
   </div>
 </template>
 
-<script lang="ts" setup>
+<script lang="js" setup>
 import {useRoute} from 'vue-router'
 import {computed, ref} from 'vue'
-import ShujuImg from '@/assets/image/shuju.png'
-import ShujuImg1 from '@/assets/image/shuju1.png'
-import FenguanImg1 from '@/assets/image/fenguan1.png'
-import FaxiaoImg1 from '@/assets/image/faxiao1.png'
-import FenguanImg from '@/assets/image/fenguan.png'
-import FaxiaoImg from '@/assets/image/faxiao.png'
-import PiciImg from '@/assets/image/pici.png'
-import PiciImg1 from '@/assets/image/pici1.png'
+import AlarmData from '@/assets/image/AlarmData.png'
+import AlarmData1 from '@/assets/image/AlarmData1.png'
+import CalibrateBatchIcon from '@/assets/image/CalibrateBatchIcon.png'
+import CalibrateBatchIcon1 from '@/assets/image/CalibrateBatchIcon1.png'
+import CurveCompareIcon from '@/assets/image/CurveCompareIcon.png'
+import CurveCompareIcon1 from '@/assets/image/CurveCompareIcon1.png'
+import HistoryDataIcon from '@/assets/image/HistoryDataIcon.png'
+import HistoryDataIcon1 from '@/assets/image/HistoryDataIcon1.png'
+import OverDataIcon from '@/assets/image/OverDataIcon.png'
+import OverDataIcon1 from '@/assets/image/OverDataIcon1.png'
+import ProcessView from '@/assets/image/ProcessView.png'
+import ProcessView1 from '@/assets/image/ProcessView1.png'
 import {useAppGlobal} from '@/store/AppGlobal'
 import {useDeviceManage} from '@/store/DeviceManage'
 
@@ -201,31 +205,43 @@ const navigation = computed(() => [
   {
     name: '数据总览',
     href: '/overview',
-    icon: route.path === '/overview' ? ShujuImg1 : ShujuImg,
+    icon: route.path === '/overview' ? OverDataIcon1 : OverDataIcon,
     current: route.path === '/overview'
   },
   {
     name: '分罐流程',
     href: '/processview',
-    icon: route.path === '/processview' ? FenguanImg1 : FenguanImg,
+    icon: route.path === '/processview' ? ProcessView1 : ProcessView,
     current: route.path === '/processview'
   },
   {
-    name: '发酵参数',
-    href: '/fermentationview',
-    icon: route.path === '/fermentationview' ? FaxiaoImg1 : FaxiaoImg,
-    current: route.path === '/fermentationview'
+    name: '曲线对比',
+    href: '/curvecompare',
+    icon: route.path === '/curvecompare' ? CurveCompareIcon1 : CurveCompareIcon,
+    current: route.path === '/curvecompare'
   },
   {
-    name: '批次比较',
-    href: '/batchview',
-    icon: route.path === '/batchview' ? PiciImg1 : PiciImg,
-    current: route.path === '/batchview'
+    name: '历史数据',
+    href: '/historicaldata',
+    icon: route.path === '/historicaldata' ? HistoryDataIcon1 : HistoryDataIcon,
+    current: route.path === '/historicaldata'
+  },
+  {
+    name: '批次校准',
+    href: '/calibratebatch',
+    icon: route.path === '/calibratebatch' ? CalibrateBatchIcon1 : CalibrateBatchIcon,
+    current: route.path === '/calibratebatch'
+  },
+  {
+    name: '报警数据',
+    href: '/alarmdata',
+    icon: route.path === '/alarmdata' ?  AlarmData1 : AlarmData,
+    current: route.path === '/alarmdata'
   },
   {
     name: '测试页面',
     href: '/testview',
-    icon: route.path === '/testview' ? PiciImg1 : PiciImg,
+    icon: route.path === '/testview' ? AlarmData1 : AlarmData,
     current: route.path === '/testview'
   },
 
@@ -245,18 +261,18 @@ const toggle = () => {
   isExpanded.value = !isExpanded.value;
 };
 // 切换绑定的分页
-const changebindPage = (id: number) => {
+const changebindPage = (id) => {
   chancepage.value = id;
   AppGlobal.updatePageChance(id);
 
 }
 // 改变分页名称
-const changePageName = (id: number) => {
+const changePageName = (id) => {
   editID.value = id
 
 }
 // 监听分页名称输入框
-const enterEdit = (id: number) => {
+const enterEdit = (id) => {
   basePages.value[id - 1].name = updateName.value;
   editID.value = -1;
   updateName.value = ''

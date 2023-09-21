@@ -33,28 +33,47 @@ const routes: Array<RouteRecordRaw> = [
                 component: () => import(/* webpackChunkName: "login" */ '../views/ProcessView.vue'),
             },
             {
-                path: '/fermentationview',
-                name: 'FermentationView',
+                path: '/curvecompare',
+                name: 'CurveCompare',
                 meta: {
-                    title: '发酵参数',
+                    title: '曲线对比',
                     permiss: '1',
                 },
-                component: () => import(/* webpackChunkName: "login" */ '../views/FermentationView.vue'),
+                component: () => import(/* webpackChunkName: "login" */ '../views/CurveCompare.vue'),
             },
             {
-                path: '/batchview',
-                name: 'BatchView',
+                path: '/historicaldata',
+                name: 'HistoricalData',
                 meta: {
-                    title: '批次比较',
+                    title: '历史数据',
                     permiss: '1',
                 },
-                component: () => import(/* webpackChunkName: "login" */ '../views/BatchView.vue'),
+                component: () => import(/* webpackChunkName: "login" */ '../views/HistoricalData.vue'),
             },
+            {
+                path: '/calibratebatch',
+                name: 'CalibrateBatch',
+                meta: {
+                    title: '批次校准',
+                    permiss: '1',
+                },
+                component: () => import(/* webpackChunkName: "login" */ '../views/CalibrateBatch.vue'),
+            },
+            {
+                path: '/alarmdata',
+                name: 'AlarmData',
+                meta: {
+                    title: '报警数据',
+                    permiss: '1',
+                },
+                component: () => import(/* webpackChunkName: "login" */ '../views/AlarmData.vue'),
+            },
+
             {
                 path: '/testview',
                 name: 'TestView',
                 meta: {
-                    title: '批次比较',
+                    title: '测试页面',
                     permiss: '1',
                 },
                 component: () => import(/* webpackChunkName: "login" */ '../views/TextView.vue'),

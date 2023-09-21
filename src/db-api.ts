@@ -101,6 +101,7 @@ export function createInitDB(): any {
 
     });
     ipcMain.handle('get-fermentation-batch-data', async (event: IpcMainInvokeEvent, can_number: string) => {
+        try {
         return new Promise((resolve, reject) => {
             const query = 'SELECT * FROM fermentation_batch WHERE can_number = ?';
             db.all(query, [can_number],(err, rows) => {
@@ -111,9 +112,14 @@ export function createInitDB(): any {
                     resolve(rows);
                 }
             });
-        });
+        });}catch (error) {
+            console.error("Unexpected error in get-fermentation-batch-data:", error);
+            throw error;  // 或者返回一个特定的错误消息或对象，这取决于你如何处理这些错误
+        }
+
     });
     ipcMain.handle('get-fermentation-data-by-batch-id', async (event: IpcMainInvokeEvent, batch_id: number) => {
+        try {
         return new Promise((resolve, reject) => {
             const query = 'SELECT * FROM fermentation_data WHERE batch_id = ?';
             db.all(query, [batch_id], (err, rows) => {
@@ -124,10 +130,16 @@ export function createInitDB(): any {
                     resolve(rows);
                 }
             });
-        });
+        });  } catch (error) {
+            console.error("Unexpected error in get-fermentation-data-by-batch-id:", error);
+            throw error;  // 或者返回一个特定的错误消息或对象，这取决于你如何处理这些错误
+        }
+
+
     });
     // 添加新的发酵批次
     ipcMain.handle('add-fermentation-batch', async (event: IpcMainInvokeEvent, batchData: { batch_name: string, can_number: string, start_time: string }) => {
+        try {
         return new Promise((resolve, reject) => {
             const query = `INSERT INTO fermentation_batch(batch_name, can_number, start_time) VALUES (?, ?, ?)`;
             db.run(query, [batchData.batch_name, batchData.can_number, batchData.start_time], function(err: Error) {
@@ -139,10 +151,15 @@ export function createInitDB(): any {
                 }
             });
         });
+        } catch (error) {
+            console.error("Unexpected error in get-fermentation-batch:", error);
+            throw error;  // 或者返回一个特定的错误消息或对象，这取决于你如何处理这些错误
+        }
     });
 
     // 添加新的发酵数据
     ipcMain.handle('add-fermentation-data', async (event: IpcMainInvokeEvent, data: any) => {
+        try {
         return new Promise((resolve, reject) => {
             const query = `
             INSERT INTO fermentation_data(
@@ -180,6 +197,10 @@ export function createInitDB(): any {
                 }
             });
         });
+        } catch (error) {
+            console.error("Unexpected error in get-fermentation-data:", error);
+            throw error;  // 或者返回一个特定的错误消息或对象，这取决于你如何处理这些错误
+        }
     });
 
 

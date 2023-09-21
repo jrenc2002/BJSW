@@ -429,40 +429,67 @@ const disabled = computed(() => {
 
 
 // 选择批次ID
-const selectedBatch = ref(null);
+const selectedBatch = ref(1);
 const selectBatch = (batch) => {
   selectedBatch.value = batch;
-  console.log(selectedBatch.value)
   // 在这里，您可以执行其他所需的操作，例如更新其他 UI 元素、调用 API 等
 };
 
 
-//  查询批次列表数据
+// 查询批次列表数据
 const updateBatchData = () => {
-  window.Electron.ipcRenderer.invoke('get-fermentation-batch-data', DeviceManage.deviceList[AppGlobal.pageChance - 1].deviceNum).then(
-      (res) => {
-        console.log(res);
-        batchdata.value = res
-      }
-  );
+  // 检查DeviceManage、deviceList和AppGlobal是否存在
+  if (!DeviceManage || !DeviceManage.deviceList || typeof AppGlobal.pageChance === 'undefined') {
+    console.error('设备管理器有问题.');
+    return;
+  }
+
+  let deviceNum = DeviceManage.deviceList[AppGlobal.pageChance]?.deviceNum;
+  if (deviceNum) {
+    window.Electron.ipcRenderer.invoke('get-fermentation-batch-data', deviceNum).then(
+        (res) => {
+          if (res) { // 确保res是有效的
+            batchdata.value = res;
+          } else {
+            console.error('请求批次内容数据没请求到.');
+          }
+        }
+    ).catch((error) => {
+      console.error('请求批次内容数据没请求到,报错为:', error);
+    });
+  }
+  else {
+    console.error('未找到该罐号的数据.');
+  }
 }
+
 // 查询批次内容数据
 const updateBatchContentData = () => {
+  if ( !selectedBatch.value) {
+    console.error('未选择批次数据.');
+    return;
+  }
+
   window.Electron.ipcRenderer.invoke('get-fermentation-data-by-batch-id', selectedBatch.value).then(
       (res) => {
-        console.log(res);
-        gridOptions.data = res
-
-        console.log(tableData.value);
+        if (res) { // 确保res是有效的
+          gridOptions.data = res;
+          console.log(tableData.value);
+        } else {
+          console.error('请求批次内容数据没请求到.');
+        }
       }
-  );
+  ).catch((error) => {
+    console.error('请求批次内容数据没请求到,报错为:', error);
+  });
 }
 
+
 // 监控数据变化
-watch(() => AppGlobal.pageChance, (newVal, oldVal) => {
+watch(() => AppGlobal.pageChance, () => {
   updateBatchData()
 });
-watch(() => selectedBatch.value, (newVal, oldVal) => {
+watch(() => selectedBatch.value, () => {
   updateBatchContentData()
 
 });
