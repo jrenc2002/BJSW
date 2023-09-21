@@ -61,7 +61,9 @@
                     :class="[team.current ? 'bg-white text-green-600 rounded-xl shadow' : 'text-gray-700 hover:text-gray-600 hover:bg-white hover:shadow',
             'group flex gap-x-3  rounded-xl p-3 text-sm leading-6 font-semibold']"
                     :href="team.href" @click.prevent="changebindPage(team.id,$event)"
-                    @dblclick.stop="changePageName(team.id,$event)">
+                    @dblclick.stop="changePageName(team.id,$event)"
+                    @contextmenu.prevent="showMenu($event, team.id)"
+                >
                   <!-- 页面ID -->
                   <button
                       :class="[team.current ? 'text-green-600 border-green-600' : 'text-gray-400 border-gray-200  ', 'flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border text-[0.625rem] font-medium bg-white']">
@@ -81,9 +83,15 @@
 
               </span>
                 </div>
+
+                <transition name="faderight">
+                  <DeviceContextMenu v-if="AppGlobal.selectedDeviceIndex== team.id" :index="team.id"/>
+                </transition>
+
               </li>
             </ul>
           </div>
+
         </li>
       </ul>
     </nav>
@@ -114,19 +122,25 @@
                   <label class="block text-xs font-medium text-gray-900 " for="name">端口</label>
                 </div>
                 <div class="flex">
-                  <input id="name" class="block w-2/3 border p-0 text-gray-900 placeholder:text-gray-400 sm:text-sm sm:leading-6 pl-1 mr-1" name="name"
-                         placeholder="192.168.1.2" v-model="ipAddress"
+                  <input id="name"
+                         v-model="ipAddress"
+                         class="block w-2/3 border p-0 text-gray-900 placeholder:text-gray-400 sm:text-sm sm:leading-6 pl-1 mr-1"
+                         name="name" placeholder="192.168.1.2"
                          type="text"/>
-                  <input id="name" class="block w-1/3 border p-0 text-gray-900 placeholder:text-gray-400 sm:text-sm sm:leading-6 pl-1" name="name"
-                         placeholder="2000" v-model="port"
+                  <input id="name"
+                         v-model="port"
+                         class="block w-1/3 border p-0 text-gray-900 placeholder:text-gray-400 sm:text-sm sm:leading-6 pl-1"
+                         name="name" placeholder="2000"
                          type="text"/>
                 </div>
               </div>
               <div
                   class="relative rounded-md rounded-t-none px-3 pb-1.5 pt-2.5 ring-1 ring-inset ring-gray-300 focus-within:z-10 focus-within:ring-2 focus-within:ring-indigo-600">
                 <label class="block text-xs font-medium text-gray-900 mb-1" for="job-title">设备名称</label>
-                <input id="job-title" class="block w-full border p-0 text-gray-900 placeholder:text-gray-400  sm:text-sm sm:leading-6 pl-1 " name="job-title"
-                       placeholder="F1"  v-model="nameDevice"
+                <input id="job-title"
+                       v-model="nameDevice"
+                       class="block w-full border p-0 text-gray-900 placeholder:text-gray-400  sm:text-sm sm:leading-6 pl-1 "
+                       name="job-title" placeholder="F1"
                        type="text"/>
 
               </div>
@@ -142,7 +156,8 @@
                 <div class="ml-1">确定</div>
                 <svg class="ml-1.5" fill="none" height="12" viewBox="0 0 12 12" width="12"
                      xmlns="http://www.w3.org/2000/svg">
-                  <path clip-rule="evenodd" d="M6 10.375C8.41625 10.375 10.375 8.41625 10.375 6C10.375 3.58375 8.41625 1.625 6 1.625C3.58375 1.625 1.625 3.58375 1.625 6C1.625 8.41625 3.58375 10.375 6 10.375ZM6 11.25C8.89949 11.25 11.25 8.89949 11.25 6C11.25 3.10051 8.89949 0.75 6 0.75C3.10051 0.75 0.75 3.10051 0.75 6C0.75 8.89949 3.10051 11.25 6 11.25Z"
+                  <path clip-rule="evenodd"
+                        d="M6 10.375C8.41625 10.375 10.375 8.41625 10.375 6C10.375 3.58375 8.41625 1.625 6 1.625C3.58375 1.625 1.625 3.58375 1.625 6C1.625 8.41625 3.58375 10.375 6 10.375ZM6 11.25C8.89949 11.25 11.25 8.89949 11.25 6C11.25 3.10051 8.89949 0.75 6 0.75C3.10051 0.75 0.75 3.10051 0.75 6C0.75 8.89949 3.10051 11.25 6 11.25Z"
                         fill="white"
                         fill-rule="evenodd"/>
                 </svg>
@@ -193,6 +208,8 @@ import ProcessView from '@/assets/image/ProcessView.png'
 import ProcessView1 from '@/assets/image/ProcessView1.png'
 import {useAppGlobal} from '@/store/AppGlobal'
 import {useDeviceManage} from '@/store/DeviceManage'
+import {addDevice} from '@/api'
+import DeviceContextMenu  from "@/components/DeviceContextMenu.vue";
 
 
 const route = useRoute()
@@ -235,7 +252,7 @@ const navigation = computed(() => [
   {
     name: '报警数据',
     href: '/alarmdata',
-    icon: route.path === '/alarmdata' ?  AlarmData1 : AlarmData,
+    icon: route.path === '/alarmdata' ? AlarmData1 : AlarmData,
     current: route.path === '/alarmdata'
   },
   {
@@ -284,24 +301,34 @@ const ipAddress = ref('');
 const port = ref('');
 const message = ref('');
 const nameDevice = ref('');
-const isValidDevice = (Ip,Port) => {
+const isValidDevice = (Ip, Port) => {
 
   const isSameIpDevica = !DeviceManage.deviceList.some(device => device.ip === Ip && device.port === Port);
 
   const ipPatternIp = /^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
   const ipPatternPort = /^(102[4-9]|10[3-9][0-9]|1[1-9][0-9]{2}|[2-9][0-9]{3}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$/;
-  return ipPatternIp.test(Ip)&&ipPatternPort.test(Port)&&isSameIpDevica;
+  return ipPatternIp.test(Ip) && ipPatternPort.test(Port) && isSameIpDevica;
 };
 
-const newDevice = ()=>{
-  if (isValidDevice(ipAddress.value,port.value)) {
+const newDevice = () => {
+  if (isValidDevice(ipAddress.value, port.value)) {
     message.value = '已添加设备！';
-    DeviceManage.addDevice(ipAddress.value,port.value,nameDevice.value)
+    addDevice(ipAddress.value, port.value, nameDevice.value)
     // You can also send the IP to a server or any other logic here
   } else {
 
     message.value = 'IP校验失败！';
   }
+
+}
+
+
+const showMenu = (event, deviceId) => {
+  if (AppGlobal.selectedDeviceIndex==deviceId){
+    AppGlobal.selectedDeviceIndex=-1
+  }
+  else AppGlobal.selectedDeviceIndex = deviceId;
+
 
 }
 </script>
@@ -322,4 +349,32 @@ const newDevice = ()=>{
   transform: scale(0.5);
   opacity: 0;
 }
+
+/* 初始状态 */
+.faderight-enter-from {
+  transform-origin: center center;
+  transform: scale(0.5);
+  opacity: 0;
+}
+.faderight-enter, .faderight-leave-to /* .faderight-leave-active in <2.1.8 */ {
+  opacity: 0;
+  transform-origin: center center;
+  transform: scale(0.5);
+
+}
+
+/* 过渡状态 */
+.faderight-enter-active, .faderight-leave-active {
+  transition: opacity 0.5s, transform 0.2s;
+
+}
+
+/* 结束状态 */
+.faderight-enter-to /* .faderight-enter-active in <2.1.8 */, .faderight-leave {
+  opacity: 1;
+
+
+}
+
+
 </style>

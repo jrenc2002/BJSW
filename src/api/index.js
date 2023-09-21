@@ -20,8 +20,6 @@ const DeviceManage=useDeviceManage();
 export const initDeviceManage = () => {
     // 首先他要从设备管理中获取设备列表，然后对设备列表进行遍历，对每一个设备进行尝试连接，
     // 如果连接成功就更新设备状态-成功，如果连接失败就更新设备状态-失败
-    console.log(DeviceManage.deviceList); // 打印实际值
-    console.log(typeof DeviceManage.deviceList); // 打印类型
     DeviceManage.deviceList.forEach((item, index) => {
 
         const device = window.useAPI.connect(item.ip, item.port);
@@ -58,81 +56,144 @@ export const initDeviceManage = () => {
     });
 }
 
+
+
 //  新增设备
-export const addDevice = (ip, port,name) => {
-    const index=DeviceManage.addDevice(ip.value,port.value,name.value)
+export const addDevice = (ip, port, name) => {
+    // 验证输入的有效性
+    if (!ip || !port || !name) {
+        console.error("无效的IP、端口或名称:", ip, port, name);
+        return;
+    }
+
+    const index = DeviceManage.addDevice(ip, port, name);
+    if (index === undefined || index < 0) {
+        console.error(`添加设备失败: ${ip}:${port}`);
+        return;
+    }
+
+    const deviceInfo = DeviceManage.deviceList[index];
     const device = window.useAPI.connect(ip, port);
-    // 对每一个设备进行尝试连接，如果连接成功就更新设备状态-成功，如果连接失败就更新设备状态-失败
+
+    // 辅助函数：设置设备状态
+    const setDeviceStatus = (state, socket = null) => {
+        deviceInfo.state = state;
+        deviceInfo.devicesocket = socket;
+    };
+
     device.on('connect', () => {
-        DeviceManage[index].state = true;
-        DeviceManage[index].devicesocket = device;
-        console.log(DeviceManage[index].ip,':',DeviceManage[index].port,'连接成功');
+        setDeviceStatus(true, device);
+        console.log(`${deviceInfo.ip}:${deviceInfo.port} 连接成功`);
     });
 
-    // 假设你的设备API有一个'error'或'fail'事件来处理连接失败的情况
     device.on('error', (err) => {
-        DeviceManage[index].state = false;
-        DeviceManage[index].devicesocket = null;
-
-        console.log(DeviceManage[index].ip,':',DeviceManage[index].port,'连接失败');
+        setDeviceStatus(false);
+        console.log(`${deviceInfo.ip}:${deviceInfo.port} 连接失败，错误信息:`, err);
     });
-    // 连接断开，更新状态
+
     device.on('disconnect', () => {
-        DeviceManage[index].state = false;
-        DeviceManage[index].devicesocket = null;
-
-        console.log(DeviceManage[index].ip,':',DeviceManage[index].port,'连接失败');
+        setDeviceStatus(false);
+        console.log(`${deviceInfo.ip}:${deviceInfo.port} 连接断开`);
     });
+
     device.onReceive((data) => {
-
-        console.log('Data from device ${index}:', data);
+        console.log(`Data from device ${index}:`, data);
         DeviceManage.updateDeviceListData(index, onDataReceived(data));
-
     });
 
     localStorage.setItem('deviceList', JSON.stringify(DeviceManage.deviceList));
-
-
 }
+
+// 删除设备
+export const deleteDevice = (index) => {
+    if (index >= 0 && index < DeviceManage.deviceList.length) {
+        // 关闭与设备的连接
+        const device = DeviceManage.deviceList[index].devicesocket;
+        if (device) {
+            device.close();
+        }
+
+        // 从设备列表中删除设备
+        DeviceManage.deviceList.splice(index, 1);
+        // 重新排序设备id
+        DeviceManage.deviceList.forEach((device, index) => {
+            device.id = index;
+        });
+        // 更新本地存储
+        localStorage.setItem('deviceList', JSON.stringify(DeviceManage.deviceList));
+    } else {
+        console.error(`无效的设备索引: ${index}`);
+    }
+}
+
+
 // 关闭设备
 export const closeDevice = (index) => {
-    DeviceManage[index].state = false;
-    DeviceManage[index].devicesocket.close();
-    DeviceManage[index].devicesocket = null;
+    // 检查 index 是否有效
+    if (typeof index !== 'number' || index < 0 || index >= DeviceManage.deviceList.length) {
+        console.error(`无效的设备索引: ${index}`);
+        return;
+    }
 
+    const device = DeviceManage.deviceList[index];
+
+    // 检查设备状态是否为 true
+    if (!device.state) {
+        console.warn(`设备 ${index} 已经关闭`);
+        return;
+    }
+
+    try {
+        if (device.devicesocket) {
+            device.devicesocket.close();
+            device.devicesocket = null;
+        }
+        device.state = false;
+        console.log(`设备 ${index} 已成功关闭`);
+    } catch (error) {
+        console.error(`关闭设备 ${index} 时出错:`, error);
+    }
 }
+
 // 打开设备
 export const openDevice = (index) => {
-    const device = window.useAPI.connect(DeviceManage[index].ip, DeviceManage[index].port);
-    // 对每一个设备进行尝试连接，如果连接成功就更新设备状态-成功，如果连接失败就更新设备状态-失败
+    // 检查index是否有效
+    if (typeof index !== 'number' || index < 0 || index >= DeviceManage.deviceList.length) {
+        console.error(`无效的设备索引: ${index}`);
+        return;
+    }
+
+    const deviceInfo = DeviceManage.deviceList[index];
+    const { ip, port } = deviceInfo;
+    const device = window.useAPI.connect(ip, port);
+
+    // 辅助函数：设置设备状态
+    const setDeviceStatus = (state, socket = null) => {
+        deviceInfo.state = state;
+        deviceInfo.devicesocket = socket;
+    };
+
     device.on('connect', () => {
-        DeviceManage[index].state = true;
-        DeviceManage[index].devicesocket = device;
-        console.log(DeviceManage[index].ip,':',DeviceManage[index].port,'连接成功');
+        setDeviceStatus(true, device);
+        console.log(`${ip}:${port} 连接成功`);
     });
 
-    // 假设你的设备API有一个'error'或'fail'事件来处理连接失败的情况
     device.on('error', () => {
-        DeviceManage[index].state = false;
-        DeviceManage[index].devicesocket = null;
-
-        console.log(DeviceManage[index].ip,':',DeviceManage[index].port,'连接失败');
+        setDeviceStatus(false);
+        console.log(`${ip}:${port} 连接失败`);
     });
-    // 连接断开，更新状态
+
     device.on('disconnect', () => {
-        DeviceManage[index].state = false;
-        DeviceManage[index].devicesocket = null;
-
-        console.log(DeviceManage[index].ip,':',DeviceManage[index].port,'连接失败');
+        setDeviceStatus(false);
+        console.log(`${ip}:${port} 连接断开`);
     });
+
     device.onReceive((data) => {
-
-        console.log('Data from device ${index}:', data);
+        console.log(`Data from device ${index}:`, data);
         DeviceManage.updateDeviceListData(index, onDataReceived(data));
-
     });
-
 }
+
 
 // 数据发送
 export const sendData = (index) => {
@@ -233,7 +294,7 @@ export const sendData = (index) => {
                 chunkData[key] = data[key];
             });
             // 发送当前分组的数据
-            DeviceManage[index].devicesocket.send(JSON.stringify(chunkData));
+            DeviceManage.deviceList[index].devicesocket.send(JSON.stringify(chunkData));
             chunkIndex++;
         } else {
             clearInterval(intervalId);  // 当所有分组都已发送时，清除间隔
