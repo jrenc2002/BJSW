@@ -52,7 +52,7 @@ import {useDeviceManage} from '@/store/DeviceManage'
 const DeviceManage = useDeviceManage();
 import {useAppGlobal} from '@/store/AppGlobal'
 import {usePopupMangerState} from "@/store/PopupMangerState";
-import {initDeviceManage} from '@/api'
+import {initDeviceManage} from '@/api/index.js'
 const PopupMangerState = usePopupMangerState()
 const AppGlobal = useAppGlobal();
 // 使用 Vue3 的 reactive 函数来创建一个响应式对象，用于控制抽屉的显示状态
@@ -85,9 +85,9 @@ const updateWindowSize = () => {
 // 使用 Vue3 的生命周期钩子函数 onMounted，在组件挂载完成后添加窗口大小变化的监听事件
 onMounted(() => {
 
-  const storedData = localStorage.getItem('deviceList');
-  const deviceList = storedData!=null ? JSON.parse(storedData) : [];
-  DeviceManage.updateDeviceList( deviceList);
+  // const storedData = localStorage.getItem('deviceList');
+  // const deviceList = storedData!=null ? JSON.parse(storedData) : [];
+  // DeviceManage.updateDeviceList( deviceList);
   window.addEventListener('resize', updateWindowSize);
   updateWindowSize();
   window.Electron.ipcRenderer.invoke('init-db').then(
@@ -96,6 +96,7 @@ onMounted(() => {
       }
   );
   initDeviceManage();
+
 
 
 

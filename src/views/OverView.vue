@@ -45,8 +45,9 @@
                   <table class="mb-4 shadow  bg-[#E8F6ED] py-4">
                     <tr v-for="(col, index) in firstCol" :key="index" class=" w-full  ">
                       <td class="w-full  flex justify-center items-center   ">
-                        <div :class="[col!='运行状态'&&col!='运行时间'&&col!='发酵批号' ? 'bg-white  rounded-[8px] shadow hover:bg-[#FAFAFA] cursor-pointer' : '','w-[90%] h-[90%] flex justify-center items-center ']"
-                             @click="popManager(col)">
+                        <div
+                            :class="[col!='运行状态'&&col!='运行时间'&&col!='发酵批号' ? 'bg-white  rounded-[8px] shadow hover:bg-[#FAFAFA] cursor-pointer' : '','w-[90%] h-[90%] flex justify-center items-center ']"
+                            @click="popManager(col)">
                           {{ col }}
 
                         </div>
@@ -81,10 +82,27 @@
                 >
                   <table :style="{ width: (firstRow.length +1 ) * 8.2 + 'rem' }">
                     <tr v-for="(body,index) in tableBodyRows" :key="index">
-                      <td v-for="(col, i) in tableBodyCols" :key="col.props + i"
-                          class="w-[8.2rem] text-center border-l border-b hover:bg-[#FAFAFA] cursor-pointer">
-                        {{ body[col.props] }}
-                      </td>
+
+
+
+                      <template v-for="(col, i) in tableBodyCols" :key="col.props + i">
+                        <td v-if="index==0" class="w-[8.2rem] text-center border-l border-b  hover:bg-[#FAFAFA] cursor-pointer">
+                          <details class="dropdown ">
+                            <summary v-if="body[col.props]==0" class="m-1 btn w-[7rem] ">停止</summary>
+                            <summary v-if="body[col.props]==1"
+                                     class="m-1 btn w-[7rem] text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3]">运行
+                            </summary>
+
+
+
+                          </details>
+                        </td>
+
+                        <td v-if="index!=0"
+                            class="w-[8.2rem] text-center border-l border-b hover:bg-[#FAFAFA] cursor-pointer ">
+                          {{ body[col.props] }}
+                        </td>
+                      </template>
                     </tr>
                   </table>
                 </div>
@@ -115,7 +133,6 @@
   </div>
 
 
-
 </template>
 
 <script lang='ts' setup>
@@ -123,39 +140,19 @@ import {computed, Ref, ref, watch, onUnmounted, onMounted, reactive} from 'vue'
 import PopupManger from "@/components/PopupManger.vue";
 import {usePopupMangerState} from "@/store/PopupMangerState";
 import {PopupType} from "@/store/PopupMangerState";
+import {sendData} from '@/api/index.js'
+import {useDeviceManage} from '@/store/DeviceManage'
 
+const DeviceManage = useDeviceManage();
 const PopupMangerState = usePopupMangerState()
 import {useAppGlobal} from '@/store/AppGlobal'
 
 const AppGlobal = useAppGlobal();
 
-interface TableDataItem {
-  name: string;
-  F1: number;
-  F2: number;
-  F3: number;
-  F4: number;
-  F5: number;
-  F6: number;
-  F7: number;
-  F8: number;
-
-  [key: string]: string | number;
-}
-
-const name_translation = {
-  '运行状态': 'None',
-  '运行时间': 'None',
-  '发酵批号': 'None',
-  '温度': 'Temperature',
-  'PH值': 'PHValue',
-  '溶氧': 'DissolvedOxygen',
-  '转速': 'RPM',
-  '酸液泵': 'AcidPump',
-  '碱液泵': 'LyePump',
-  '补料泵': 'FeedPump',
-  '消泡剂泵': 'DefoamerPump'
-}
+watch(() => DeviceManage.deviceList, () => {
+  console.log(DeviceManage.deviceList)
+  initTableData()
+}, {deep: true});
 
 
 const popManager = (val: any) => {
@@ -164,37 +161,116 @@ const popManager = (val: any) => {
   console.log(PopupMangerState.isShowPop)
   console.log(PopupMangerState.popupContent)
 }
+// 读取表格数据
+const initTableData = () => {
+  if (!DeviceManage || !Array.isArray(DeviceManage.deviceList)) {
+    console.error("Error: DeviceManage.deviceList is not a valid array.");
+    return;
+  }
 
-interface HeaderItem {
-  title: string;
-  props: string;
+  let initheaderData: HeaderItem[] = [
+    {title: '凑数的', props: 'name'}
+  ];
+
+  DeviceManage.deviceList.forEach(device => {
+    if (typeof device.name !== 'string' || typeof device.id !== 'number') {
+      console.error("Error: Invalid device entry found in DeviceManage.deviceList.");
+      return;
+    }
+    if (device.state == false) {
+      return;
+    }
+    initheaderData.push({title: device.name, props: 'F' + (device.id+1)});
+  });
+
+  headerData.length = 0;  // 清空原始数据
+  initheaderData.forEach(item => headerData.push(item));  // 添加新的数据
+
+  const deviceProperties = [
+    {name: '运行状态', prop: 'start_flag'},
+    {name: '运行时间', prop: 'running_time'},
+    {name: '发酵批号', prop: 'batchnum'},
+    {name: '温度', prop: 'timing_temp'},
+    {name: 'PH值', prop: 'timing_PH'},
+    {name: '溶氧', prop: 'timing_DO'},
+    {name: '转速', prop: 'timing_motor_speed'},
+    {name: '酸液泵', prop: 'acid_pump'},
+    {name: '碱液泵', prop: 'lye_pump'},
+    {name: '补料泵', prop: 'feed_pump'},
+    {name: '消泡剂泵', prop: 'defoamer_pump'}
+  ];
+
+  let resultItems: any[] = []; // 声明结果数组
+  deviceProperties.map(deviceProp => {
+    let tableItem = {
+      name: deviceProp.name,
+      prop: deviceProp.prop
+    };
+    initheaderData.forEach((header, index) => {
+      if (index == 0) {
+        return;
+      }
+      index--;
+
+       if (DeviceManage.deviceList[index].nowdata == null) {
+        return ;
+      }
+      console.log(!DeviceManage.deviceList[index] , !DeviceManage.deviceList[index].nowdata,DeviceManage.deviceList[index],index)
+
+      if (!DeviceManage.deviceList[index] || !DeviceManage.deviceList[index].nowdata) {
+        console.error(`Error: Missing data for device at index ${index}.`);
+        return;
+      } else if (deviceProp.prop == "running_time") {
+        const diffMilliseconds = new Date().getTime() - DeviceManage.deviceList[index].start_time.getTime(); // 获取时间差（毫秒）
+        const totalSeconds = Math.floor(diffMilliseconds / 1000); // 转换为秒
+        const hours = Math.floor(totalSeconds / 3600); // 获取小时数
+        const minutes = Math.floor((totalSeconds % 3600) / 60); // 获取剩余的分钟数
+        tableItem[header.props] = `${hours}h${minutes}m`;
+      } else if (deviceProp.prop == "batchnum") {
+        tableItem[header.props] = DeviceManage.deviceList[index].batch_name;
+      } else if(deviceProp.prop == "acid_pump"){
+        tableItem[header.props] = 241;
+      }else if(deviceProp.prop == "lye_pump"){
+        tableItem[header.props] = 241;
+      }else if(deviceProp.prop == "feed_pump"){
+        tableItem[header.props] = 241;
+      }else if(deviceProp.prop == "defoamer_pump"){
+        tableItem[header.props] = 241;
+      }
+      else {
+        try {
+          const value = DeviceManage.deviceList[index].nowdata![deviceProp.prop];
+          if (typeof value === 'number' && !Number.isInteger(value)) {
+            tableItem[header.props] = parseFloat(value.toFixed(2));
+          } else {
+            tableItem[header.props] = value;
+          }
+        } catch (e) {
+          console.error(`Error: The property ${deviceProp.prop} is missing or null for device at index ${index}.`);
+          return;
+        }
+      }
+    });
+    console.log(tableItem, "--2222222222")
+    resultItems.push(tableItem);
+    return tableItem;
+  });
+  console.log(resultItems)
+  tableData.length = 0;  // 清空原始数据
+  resultItems.forEach(item => tableData.push(item));  // 添加新的数据
+
 }
 
 
-const headerData: HeaderItem[] = [
+const headerData: HeaderItem[] = reactive([
   {title: '姓名', props: 'name'},
-  {title: 'F1', props: 'F1'},
-  {title: 'F2', props: 'F2'},
-  {title: 'F3', props: 'F3'},
-  {title: 'F4', props: 'F4'},
-  {title: 'F5', props: 'F5'},
-  {title: 'F6', props: 'F6'},
-  {title: 'F7', props: 'F7'},
-  {title: 'F8', props: 'F8'},
-  {title: 'F1', props: 'F1'},
-  {title: 'F2', props: 'F2'},
-  {title: 'F3', props: 'F3'},
-  {title: 'F4', props: 'F4'},
-  {title: 'F5', props: 'F5'},
-  {title: 'F6', props: 'F6'},
-  {title: 'F7', props: 'F7'},
-  {title: 'F8', props: 'F8'},
+
 
   // 你可以按需增加其他列
-];
+]);
 
 
-const tableData: TableDataItem[] = [
+const tableData: TableDataItem[] = reactive([
   {name: '运行状态', prop: "state", F1: 30, F2: 31, F3: 32, F4: 33, F5: 34, F6: 35, F7: 36, F8: 37},
   {name: '运行时间', prop: "time", F1: 25, F2: 26, F3: 27, F4: 28, F5: 29, F6: 30, F7: 31, F8: 32},
   {name: '发酵批号', prop: "batchnum", F1: 28, F2: 29, F3: 30, F4: 31, F5: 32, F6: 33, F7: 34, F8: 35},
@@ -206,7 +282,7 @@ const tableData: TableDataItem[] = [
   {name: '碱液泵', prop: "lyepump", F1: 28, F2: 29, F3: 30, F4: 31, F5: 32, F6: 33, F7: 34, F8: 35},
   {name: '补料泵', prop: "feedpump", F1: 30, F2: 31, F3: 32, F4: 33, F5: 34, F6: 35, F7: 36, F8: 37},
   {name: '消泡剂泵', prop: "defoamerpump", F1: 25, F2: 26, F3: 27, F4: 28, F5: 29, F6: 30, F7: 31, F8: 32},
-];
+]);
 
 
 const props = {
@@ -266,14 +342,12 @@ const tableBodyCols = computed(() => {
 
 
 const tableScroll = () => {
-
   firstRowLayer.value!.scrollLeft = tableContainer.value!.scrollLeft;
-
   firstColLayer.value!.scrollTop = tableContainer.value!.scrollTop;
 }
 
 
-// 当按下键盘时的处理函数
+// 当按下键盘时的处理函数，ESC关闭弹窗
 const handleKeydown = (event) => {
   if (event.keyCode === 27) { // 27 是 esc 键的 keyCode
     console.log('ESC key was pressed!');
@@ -285,6 +359,11 @@ const handleKeydown = (event) => {
 // 当组件挂载时添加事件监听器
 onMounted(() => {
   window.addEventListener('keydown', handleKeydown);
+//   循环
+//   setInterval(() => {
+//     // sendData(0)
+//   }, 10000)
+  initTableData()
 });
 
 // 当组件卸载时移除事件监听器
@@ -292,6 +371,128 @@ onUnmounted(() => {
   window.removeEventListener('keydown', handleKeydown);
 });
 
+
+/* ______________________静态接口_____________________________ */
+interface HeaderItem {
+  title: string;
+  props: string;
+}
+
+interface SetData {
+  /*PH控制部分变量*/
+  timing_PH: number;   //实时PH值
+  acid_speed: number;  //酸泵实时送料速率
+  lye_speed: number;   //碱泵实时送料速率
+  target_PH: number;   //设定目标PH
+  acid_KP: number;     //PID参数
+  acid_KI: number;     //PID参数
+  acid_KD: number;     //PID参数
+  lye_KP: number;      //PID参数
+  lye_KI: number;      //PID参数
+  lye_KD: number;      //PID参数
+  acid_ml: number;     //酸泵目前送料量
+  lye_ml: number;      //碱泵目前送料量
+  acid_handle_speed_set: number;   //酸泵手动送料速率设置
+  lye_handle_speed_set: number;    //碱泵手动送料速率设置
+  PH_flag: number;     //PH控制开启/停止标志位
+  Ph_auto_handle: number;          //PH控制自动/手动控制标志位
+
+  /*温控部分变量*/
+  timing_temp: number;             //实时温度值
+  heatpower: number;               //加热毯实时功率
+  target_temp: number;             //设定目标温度值
+  Temp_KP: number;                 //温控KP
+  Temp_KI: number;                 //温控KI
+  Temp_KD: number;                 //温控KD
+  water_flag: number;              //冷凝水通断标志位
+  temp_flag: number;               //温控开启/停止标志位
+  cool_water_autoflag: number;     //冷凝水通断控制自动/手动标志位
+
+  /*氧含量控制部分变量*/
+  timing_DO: number;               //实时DO值
+  oxy_ratio: number;               //氧气通度
+  target_DO: number;               //设定目标DO值
+  target_oxy_ratio: number;        //手动设定氧气通度
+  DO_KP: number;                   //氧含量KP
+  DO_KI: number;                   //氧含量KI
+  DO_KD: number;                   //氧含量KD
+  DO_flag: number;                 //氧含量控制开启标志位
+  target_motor_speed: number;      //手动设定电机转速
+  timing_motor_speed: number;      //电机实时转速
+  motor_speed_l_limit: number;     //电机转速下限
+  motor_speed_u_limit: number;     //电机转速上限
+  motor_speed_autoflag: number;    //转速关联氧含量开启/关闭标志位
+  oxy_flag: number;                //通氧关联氧含量开启/关闭标志位
+
+  /*消泡控制部分*/
+  clean_speed: number;             //消泡泵设定送料速率
+  clean_ml: number;                //消泡泵目前送料量
+  clean_single_time: number;       //消泡单次泵入时间
+  clean_flag: number;              //消泡开启/停止标志位
+
+  /*补料控制部分*/
+  feed_speed: number;              //补料泵设定补料速率
+  feed_ml: number;                 //补料泵目前补料量
+  feed_DO_cu_limit: number;        //补料关联氧含量上限值
+  feed_DO_cl_limit: number;        //补料关联氧含量下限值
+  feed_DO_connect_flag: number;    //补料关联氧含量标志位
+  feed_flag: number;               //补料开启/停止标志位
+  feed_motor_connect_flag: number; //补料关联转速标志位
+  feed_DO_motor_connect_flag: number; //补料双关联转速、氧含量标志位
+  feed_motor_flag: number;         //补料泵开启标志位
+  feed_motor_cu_limit: number;     //补料关联转速上限值
+  feed_motor_cl_limit: number;     //补料关联转速下限值
+
+  /*系统控制变量*/
+  start_flag: number;              //发酵开始标志位
+  year: number;                    //年
+  mounth: number;                  //月
+  day: number;                     //日
+  hour: number;                    //时
+  minute: number;                  //分
+  second: number;                  //秒
+  communicate_flag: number;        //通讯开始标志位
+  decive_id: string;                   //罐号ID
+}
+
+interface Device {
+  id: number;
+  name: string;
+  deviceNum: string;
+  ip: string;
+  port?: number; // 这意味着 port 是可选的
+  state: boolean;
+  nowdata: SetData | null;
+  devicesocket: any;
+}
+
+interface TableDataItem {
+  name: string;
+  F1: number;
+  F2: number;
+  F3: number;
+  F4: number;
+  F5: number;
+  F6: number;
+  F7: number;
+  F8: number;
+
+  [key: string]: string | number;
+}
+
+const name_translation = {
+  '运行状态': 'None',
+  '运行时间': 'None',
+  '发酵批号': 'None',
+  '温度': 'Temperature',
+  'PH值': 'PHValue',
+  '溶氧': 'DissolvedOxygen',
+  '转速': 'RPM',
+  '酸液泵': 'AcidPump',
+  '碱液泵': 'LyePump',
+  '补料泵': 'FeedPump',
+  '消泡剂泵': 'DefoamerPump'
+}
 
 </script>
 <style lang="scss" scoped>

@@ -29,6 +29,8 @@ export const initDeviceManage = () => {
             item.state = true;
             item.devicesocket = device;
             console.log(item.ip,':',item.port,'连接成功');
+            // todo debug测试记得
+            item.start_time= new Date();
         });
 
         // 假设你的设备API有一个'error'或'fail'事件来处理连接失败的情况
@@ -47,7 +49,7 @@ export const initDeviceManage = () => {
         });
         device.onReceive((data) => {
 
-            console.log('Data from device ${index}:', data);
+
             DeviceManage.updateDeviceListData(index, onDataReceived(data));
 
 
@@ -238,8 +240,8 @@ export const sendData = (index) => {
         target_oxy_ratio: 0.0,        //手动设定氧气通度
         DO_KP: 0.0,                   //氧含量KP
         DO_KI: 0.0,                   //氧含量KI
-        DO_KD: 0.0,                   //氧含量KD
-        DO_flag: 0,                   //氧含量控制开启标志位
+        DO_KD: 2.1,                   //氧含量KD
+        DO_flag: 1,                   //氧含量控制开启标志位
         target_motor_speed: 0,        //手动设定电机转速
         timing_motor_speed: 0,        //电机实时转速
         motor_speed_l_limit: 0,       //电机转速下限
@@ -267,7 +269,7 @@ export const sendData = (index) => {
         feed_motor_cl_limit: 0,       //补料关联转速下限值
 
         /*系统控制变量*/
-        start_flag: 0,                //发酵开始标志位
+        start_flag: 1,                //发酵开始标志位
         year: currentDate.getFullYear(),   //年
         mounth: currentDate.getMonth() + 1, //月 (注意: getMonth() 返回的月份是从0开始的，所以需要+1)
         day: currentDate.getDate(),        //日
@@ -279,9 +281,9 @@ export const sendData = (index) => {
     };
 
     // 将对象的键拆分成每6个一组的数组
-    const chunks = Object.keys(data).reduce((result, key, index) => {
-        if (index % 6 === 0) result.push([]);
-        result[Math.floor(index / 6)].push(key);
+    const chunks = Object.keys(data).reduce((result, key, chunkindex) => {
+        if (chunkindex % 6 === 0) result.push([]);
+        result[Math.floor(chunkindex / 6)].push(key);
         return result;
     }, []);
 
@@ -325,7 +327,6 @@ function onDataReceived(data) {
 
         // 提取完整的数据包
         const completeData = dataCache.substring(startIndex, endIndex);
-        console.log(completeData)
         // 清除已经处理的数据
         dataCache = dataCache.substring(endIndex);
 

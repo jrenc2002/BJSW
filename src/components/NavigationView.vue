@@ -208,7 +208,7 @@ import ProcessView from '@/assets/image/ProcessView.png'
 import ProcessView1 from '@/assets/image/ProcessView1.png'
 import {useAppGlobal} from '@/store/AppGlobal'
 import {useDeviceManage} from '@/store/DeviceManage'
-import {addDevice} from '@/api'
+import {addDevice} from '@/api/index.js'
 import DeviceContextMenu  from "@/components/DeviceContextMenu.vue";
 
 

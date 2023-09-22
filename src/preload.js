@@ -32,13 +32,12 @@ class SocketInstance {
       this.socket.on(event, callback);
    }
    send(message) {
-      console.log(`Message from `,message);
+      console.log(`Message Send `,message);
       this.socket.write(message);
    }
 
    onReceive(callback) {
       this.socket.on('data', (data) => {
-         // console.log(`Data from ${this.socket.remoteAddress}:${this.socket.remotePort}:`, data.toString());
          callback(data.toString());
       });
    }

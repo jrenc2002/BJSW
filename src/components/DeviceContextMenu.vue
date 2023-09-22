@@ -27,7 +27,7 @@
 </template>
 
 <script lang="ts" setup>
-import {deleteDevice, closeDevice, openDevice} from '@/api'
+import {deleteDevice, closeDevice, openDevice} from '@/api/index.js'
 import {ref, defineProps} from 'vue';
 import {useAppGlobal} from "@/store/AppGlobal";
 
