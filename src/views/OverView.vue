@@ -40,7 +40,7 @@
                 </div>
                 <div
                     ref="firstColLayer"
-                    class="w-full overflow-hidden "
+                    class="w-full overflow-hidden  "
                 >
                   <table class="mb-4 shadow  bg-[#E8F6ED] py-4">
                     <tr v-for="(col, index) in firstCol" :key="index" class=" w-full  ">
@@ -63,7 +63,7 @@
                 <!-- todo DEBUG:其宽度非动态变化，所以在其宽度isshow变化的时候会产生内容展示不全的结果-->
                 <div ref="firstRowLayer" :class="[AppGlobal.isDrawerState? 'w-[calc(94vw-15rem)]':'w-[94vw]']"
                      class="right-div1 bg-[#F1F1F1] mt-3">
-                  <table :style="{ width: (firstRow.length+1 ) * 8.2+ 'rem' }" class="right-table1">
+                  <table :style="{ width: (firstRow.length+1 ) * 8.2+ 'rem' }" class=" flex items-start">
                     <tr>
                       <th v-for="(row, index) in firstRow" :key="index" class="first-row-style w-[8.2rem]  ">{{
                           row
@@ -80,30 +80,32 @@
                     @scroll="tableScroll()"
 
                 >
-                  <table :style="{ width: (firstRow.length +1 ) * 8.2 + 'rem' }">
-                    <tr v-for="(body,index) in tableBodyRows" :key="index">
+                  <table :style="{ width: (firstRow.length +1 ) * 8.2 + 'rem' }" class="flex items-start ">
+                    <div class="flex-col justify-center items-center">
+
+
+                      <tr v-for="(body,index) in tableBodyRows" :key="index" class="flex justify-center items-center">
 
 
 
-                      <template v-for="(col, i) in tableBodyCols" :key="col.props + i">
-                        <td v-if="index==0" class="w-[8.2rem] text-center border-l border-b  hover:bg-[#FAFAFA] cursor-pointer">
-                          <details class="dropdown ">
-                            <summary v-if="body[col.props]==0" class="m-1 btn w-[7rem] ">停止</summary>
-                            <summary v-if="body[col.props]==1"
-                                     class="m-1 btn w-[7rem] text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3]">运行
-                            </summary>
+                        <template v-for="(col, i) in tableBodyCols" :key="col.props + i">
+                          <td v-if="index==0" :class="[i==0?'border-l':'']"
+                              class="w-[8.2rem] flex justify-center items-center text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer">
+                            <details class="dropdown ">
+                              <summary v-if="body[col.props]==0" class="m-1 btn w-[7rem] ">停止</summary>
+                              <summary v-if="body[col.props]==1"
+                                       class="m-1 btn w-[7rem] text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3]">运行
+                              </summary>
+                            </details>
+                          </td>
 
-
-
-                          </details>
-                        </td>
-
-                        <td v-if="index!=0"
-                            class="w-[8.2rem] text-center border-l border-b hover:bg-[#FAFAFA] cursor-pointer ">
-                          {{ body[col.props] }}
-                        </td>
-                      </template>
-                    </tr>
+                          <td v-if="index!=0" :class="[i==0?'border-l':'']"
+                              class="w-[8.2rem] text-center border-l border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
+                            {{ body[col.props] }}
+                          </td>
+                        </template>
+                      </tr>
+                    </div>
                   </table>
                 </div>
               </div>
@@ -156,10 +158,13 @@ watch(() => DeviceManage.deviceList, () => {
 
 
 const popManager = (val: any) => {
-  PopupMangerState.updateIsShowPop(true)
+  if(val!='运行状态'&&val!='运行时间'&&val!='发酵批号'){
+    PopupMangerState.updateIsShowPop(true)
   PopupMangerState.updatePopupContent(name_translation[val])
   console.log(PopupMangerState.isShowPop)
   console.log(PopupMangerState.popupContent)
+      }
+
 }
 // 读取表格数据
 const initTableData = () => {
@@ -177,9 +182,7 @@ const initTableData = () => {
       console.error("Error: Invalid device entry found in DeviceManage.deviceList.");
       return;
     }
-    if (device.state == false) {
-      return;
-    }
+
     initheaderData.push({title: device.name, props: 'F' + (device.id+1)});
   });
 
@@ -213,6 +216,8 @@ const initTableData = () => {
       index--;
 
        if (DeviceManage.deviceList[index].nowdata == null) {
+         tableItem[header.props] = 0;
+
         return ;
       }
       console.log(!DeviceManage.deviceList[index] , !DeviceManage.deviceList[index].nowdata,DeviceManage.deviceList[index],index)
