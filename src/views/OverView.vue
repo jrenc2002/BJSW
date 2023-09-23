@@ -10,16 +10,16 @@
     </transition>
 
     <!--    标题-->
-    <div class="h-[6%] self-stretch justify-start items-center gap-4 inline-flex ">
+    <div class="h-[6%] self-stretch justify-center items-center gap-4 inline-flex ">
       <div class="text-xl leading-10 text-zinc-900 text-2xl font-medium leading-loose left-4 relative">数据总览</div>
     </div>
     <!--    表格栏-->
-    <div class=" rounded-2xl bg-white w-[100%] h-[92%]  bottom-0  shadow items-center justify-center flex  ">
+    <div class=" rounded-2xl bg-white w-[100%] h-[92%]  bottom-0  shadow  flex  ">
 
 
       <div class="rounded-2xl  h-[calc(100%-1.5rem)] w-[calc(100%-1.5rem)]  items-center justify-center flex     ">
         <div class=" w-full h-full ">
-          <div class=" box-border overflow-x-hidden w-full h-full flex">
+          <div class="  overflow-x-hidden w-full h-full flex">
             <template v-if="props.tableData.length > 0">
               <div class="float-left h-[100%] bg-[#E8F6ED] shadow border rounded-2xl z-10">
                 <div class=" mt-3 w-[10rem]">
@@ -42,7 +42,7 @@
                     ref="firstColLayer"
                     class="w-full overflow-hidden  "
                 >
-                  <table class="mb-4 shadow  bg-[#E8F6ED] py-4">
+                  <table class="mb-4 shadow  bg-[#E8F6ED] py-4 ">
                     <tr v-for="(col, index) in firstCol" :key="index" class=" w-full  ">
                       <td class="w-full  flex justify-center items-center   ">
                         <div
@@ -60,27 +60,29 @@
               <div class="right-div ">
                 <!--窗口-->
 
-                <!-- todo DEBUG:其宽度非动态变化，所以在其宽度isshow变化的时候会产生内容展示不全的结果-->
-                <div ref="firstRowLayer" :class="[AppGlobal.isDrawerState? 'w-[calc(94vw-15rem)]':'w-[94vw]']"
-                     class="right-div1 bg-[#F1F1F1] mt-3">
-                  <table :style="{ width: (firstRow.length+1 ) * 8.2+ 'rem' }" class=" flex items-start">
-                    <tr>
-                      <th v-for="(row, index) in firstRow" :key="index" class="first-row-style w-[8.2rem]  ">{{
-                          row
-                        }}
-                      </th>
-                    </tr>
-                  </table>
-                </div>
-                <!-- todo DEBUG:其宽度非动态变化，所以在其宽度isshow变化的时候会产生内容展示不全的结果-->
+
+                <div ref="firstRowLayer" :class="[AppGlobal.isDrawerState? 'w-[calc(82vw-15rem)]':'w-[82vw]']"
+                     class="right-div1 bg-[#F1F1F1] mt-3 ">
+                    <table :style="{ width: `max(${(firstRow.length + 1) * 8.2}rem, 100%)` }" class=" flex items-start self-start ">
+                      <tr>
+                        <th v-for="(row, index) in firstRow" :key="index" class="first-row-style w-[8.2rem]  ">{{
+                            row
+                          }}
+                        </th>
+                      </tr>
+                    </table>
+
+
+                 </div>
+
                 <div
-                    id="targetDiv1"
-                    ref="tableContainer"
-                    class="right-div2"
+
+                    ref="tableContainer" :class="[AppGlobal.isDrawerState? 'w-[calc(82vw-15rem)]':'w-[82vw]']"
+                    class="right-div2 flex items-start self-start"
                     @scroll="tableScroll()"
 
                 >
-                  <table :style="{ width: (firstRow.length +1 ) * 8.2 + 'rem' }" class="flex items-start ">
+                  <table  :style="{ width: `max(${(firstRow.length + 1) * 8.2}rem, 100%)` }" class="flex items-start  ">
                     <div class="flex-col justify-center items-center">
 
 
@@ -552,7 +554,6 @@ td {
 }
 
 .right-div1 {
-  width: calc(100% - 10rem);
   overflow: hidden;
 
   .first-row-style {
@@ -561,7 +562,6 @@ td {
 }
 
 .right-div2 {
-  width: calc(100% - 10rem);
   overflow: auto;
 }
 

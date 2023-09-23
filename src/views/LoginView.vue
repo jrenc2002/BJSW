@@ -173,7 +173,6 @@ import { ref, reactive,onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { CheckCircleIcon, XMarkIcon,XCircleIcon } from '@heroicons/vue/20/solid'
 // import { UserLogin } from "../api/index";
-import type { FormInstance, FormRules } from 'element-plus';
 interface LoginInfo {
   username: string;
   password: string;

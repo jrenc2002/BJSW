@@ -85,9 +85,9 @@ const updateWindowSize = () => {
 // 使用 Vue3 的生命周期钩子函数 onMounted，在组件挂载完成后添加窗口大小变化的监听事件
 onMounted(() => {
   // TODO 设备列表的Storage开关
-  // const storedData = localStorage.getItem('deviceList');
-  // const deviceList = storedData!=null ? JSON.parse(storedData) : [];
-  // DeviceManage.updateDeviceList( deviceList);
+  const storedData = localStorage.getItem('deviceList');
+  const deviceList = storedData!=null ? JSON.parse(storedData) : [];
+  DeviceManage.updateDeviceList( deviceList);
   window.addEventListener('resize', updateWindowSize);
   updateWindowSize();
   window.Electron.ipcRenderer.invoke('init-db').then(
