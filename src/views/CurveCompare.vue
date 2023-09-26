@@ -1,10 +1,38 @@
 <template>
-  <div class=" rounded-2xl bg-white w-[98%] h-[97%] shadow items-center justify-center flex">
+  <div class="h-[calc(100%-1.5rem)] w-[calc(100%-1.5rem)]  ">
+    <div class="w-full h-[6%] flex items-center justify-start text-[2vh] my-2 ml-4">
+      曲线对比
+    </div>
+    <div class="rounded-2xl  w-[100%] h-[93%]  bottom-0    ">
+      <div class="h-[3rem] bg-[#DAF0E4] rounded-t-lg w-[20rem] pt-2 px-2 flex gap-2">
+        <div @click="pageSelect=1" :class="[pageSelect==0?'bg-[#DAF0E4]':'bg-[#A8CDB8]']" class=" w-[10rem] h-full relative rounded-t-lg flex justify-center items-center cursor-pointer hover:bg-[#A8CDB8]">
+          单罐曲线
+        </div>
+        <div @click="pageSelect=0" :class="[pageSelect==1?'bg-[#DAF0E4]':'bg-[#A8CDB8]']"  class=" w-[10rem] h-full relative rounded-t-lg flex justify-center items-center cursor-pointer hover:bg-[#A8CDB8]">
+          单参数曲线
+        </div>
+      </div>
+      <div class="bg-[#DAF0E4] h-[calc(100%-3rem)]">
+        <div class="h-[100%]  bg-white border-8 border-[#A8CDB8] rounded-xl relative flex">
+          <div class="w-[10rem] h-full  border-r-2 border-[#EBEBEB] overflow-auto">
+            <div v-for="item in DeviceSelect" :key="item.name" class="w-full h-24  flex justify-center items-center">
+              <div @click="item.selected=!item.selected" :class="[item.selected?'bg-[#DAF0E4] text-black':'text-gray-500']" class="w-full mx-4 rounded text-center  h-10 flex items-center justify-center cursor-pointer">{{ item.name }}</div>
 
-    <div class="rounded-2xl bg-white w-[100%] h-[100%]  bottom-0  shadow p-4 ">
-      <AnalyCharts id="2" ref="Vibrationchartid" :data="data"
-                   class=" h-[15vh] relative left-0 "
-      ></AnalyCharts>
+            </div>
+          </div>
+          <div class="h-full w-[calc(100%-10rem)] flex justify-center items-center">
+                  <AnalyCharts id="2" ref="Vibrationchartid" :data="data"
+                               class=" w-full relative left-0 "
+                  ></AnalyCharts>
+
+          </div>
+
+
+        </div>
+
+      </div>
+
+
     </div>
   </div>
 
@@ -12,9 +40,11 @@
 
 <script lang="ts" setup>
 import * as echarts from "echarts";
-import {computed, onMounted, onUnmounted, ref} from "vue";
+import {computed, onMounted, onUnmounted, ref, watch} from "vue";
 import AnalyCharts from "@/components/AnalyCharts.vue";
-
+import {useDeviceManage} from '@/store/DeviceManage'
+import {PopupType} from "@/store/PopupMangerState";
+const DeviceManage = useDeviceManage()
 const Vibrationchartid = ref<any>(null);
 /* ——————————————————————————声明echart—————————————————————————— */
 let Vibrationchart;
@@ -53,120 +83,28 @@ for (let i = 1; i < 100; i++) {
 let data=[data1,data2,data3]
 
 
-/* ——————————————————————————echarts配置—————————————————————————— */
-function initChart() {
-
-  // 把配置和数据放这里
-  Vibrationchart.setOption({
-    tooltip: {
-      trigger: 'axis',
-      position: function (pt) {
-        return [pt[0], '10%'];
-      }
-    },
-
-    grid: {
-      x: 0,
-      y: 0,
-      x2: 0,
-      y2: 0,
-      width: "100%",
-      hight: "100%",
-      borderWidth: 1,
-    },
-
-    xAxis: {
-      type: 'time',
-      boundaryGap: false //就是会不会只能在线上
-    },
-    yAxis: {
-      type: 'value',
-      boundaryGap: [0, '100%']
-    },
-    dataZoom: [
-      {
-        type: 'inside',
-        start: 70,
-        end: 100
-      },
-      {
-        start: 70,
-        end: 100
-      }
-    ],
-    series: [
-      {
-        name: 'Fake Data',
-        type: 'line',
-        smooth: false,//是否平衡显示
-        symbol: 'none',//是否显示点
-        // areaStyle: {},//是否显示面积
-        data: data
-      },
-
-    ]
-  });
-
-  // 把配置和数据放这里
-  Temperaturechart.setOption({
-    tooltip: {
-      trigger: 'axis',
-      position: function (pt) {
-        return [pt[0], '10%'];
-      }
-    },
-    grid: {
-      x: 0,
-      y: 0,
-      x2: 0,
-      y2: 0,
-      width: "100%",
-      hight: "100%",
-      borderWidth: 1,
-    },
-
-    xAxis: {
-      type: 'time',
-
-      boundaryGap: false //就是会不会只能在线上
-    },
-    yAxis: {
-      type: 'value',
-      boundaryGap: [0, '100%']
-    },
-    dataZoom: [
-      {
-        type: 'inside',
-        start: 70,
-        end: 100
-      },
-      {
-        start: 70,
-        end: 100
-      }
-    ],
-    series: [
-      {
-        name: 'Fake Data',
-        type: 'line',
-        smooth: false,//是否平衡显示
-        symbol: 'none',//是否显示点
-        // areaStyle: {},//是否显示面积
-        data: data
-      },
-
-    ]
-  });
-  window.onresize = function () {
-    //自适应大小
-    Vibrationchart.resize();
-    Temperaturechart.resize();
-  };
-}
+/* ——————————————————————————页面配置—————————————————————————— */
+const pageSelect= ref<number>(0)
 
 /* ——————————————————————————定时器时间函数配置—————————————————————————— */
 
+/* ——————————————————————————设备选择器—————————————————————————— */
+const DeviceSelect = ref<any>(null);
+function initToDeviceSelect() {
 
+   DeviceSelect.value= DeviceManage.deviceList.map(device => ({
+    name: device.name,
+     selected: false
+  }));
+}
+watch(() => DeviceManage.deviceList, () => {
+  initToDeviceSelect()
+}, {deep: true});
+
+/* ——————————————————————————生命周期—————————————————————————— */
+onMounted(() => {
+  initToDeviceSelect()
+})
 </script>
 <style>
 

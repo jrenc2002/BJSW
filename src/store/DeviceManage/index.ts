@@ -96,6 +96,7 @@ interface Device {
     pump2_speed: number;
     pump3_speed: number;
     pump4_speed: number;
+    alarm:boolean;
 
 
 }
@@ -107,7 +108,7 @@ const state = (): {
         deviceList: [
             {id: 0, name: '设备A',  deviceNum: "BAB-00", ip: '192.168.1.3', port: 2000,
                 state: false, nowdata: null, devicesocket: null,start_time:null,batch_name:null,
-                pump1_speed:0,pump2_speed:0,pump3_speed:0,pump4_speed:0,
+                pump1_speed:0,pump2_speed:0,pump3_speed:0,pump4_speed:0,alarm:false
             },
 
         ]
@@ -137,6 +138,7 @@ export const useDeviceManage = defineStore('DeviceManage', {
                 pump2_speed:0,
                 pump3_speed:0,
                 pump4_speed:0,
+                alarm:false
             };
 
             this.deviceList.push(newDevice);

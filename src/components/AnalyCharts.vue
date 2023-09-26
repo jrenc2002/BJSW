@@ -1,5 +1,5 @@
 <template>
-  <div :id="props.id" ref="rootRef" :style="{ width: '80%', height: '80%' }"></div>
+  <div :id="props.id" ref="rootRef" :style="{ width: '98%', height: '98%' }"></div>
 </template>
 <script lang="ts" name="checkReport" setup>
 import {defineProps, onMounted, ref} from 'vue';

@@ -51,9 +51,10 @@
             </div>
             <div class="right-div ">
               <!--窗口-->
-              <div ref="firstRowLayer" class="right-div1 bg-[#F1F1F1] mt-3">
-                <table :style="{ width: (firstRow.length+1 ) * 8.2+ 'rem' }" class="right-table1">
-                  <tr>
+              <div ref="firstRowLayer" :class="[AppGlobal.isDrawerState? 'w-[calc(82vw-15rem)]':'w-[82vw]']"
+                   class="right-div1 bg-[#F1F1F1] mt-3 ">
+                <table :style="{ width: `max(${(firstRow.length + 1) * 8.2}rem, 100%)` }" class=" flex items-start self-start ">
+                <tr>
                     <th v-for="(row, index) in firstRow" :key="index" class="first-row-style w-[8.2rem]  ">{{
                         row
                       }}
@@ -62,15 +63,17 @@
                 </table>
               </div>
               <div
-                  id="targetDiv1"
-                  ref="tableContainer"
-                  class="right-div2"
+                  ref="tableContainer" :class="[AppGlobal.isDrawerState? 'w-[calc(82vw-15rem)]':'w-[82vw]']"
+                  class="right-div2 flex items-start self-start"
                   @scroll="tableScroll()"
               >
-                <table :style="{ width: (firstRow.length +1 ) * 8.2 + 'rem' }">
-                  <tr v-for="(body,index) in tableBodyRows" :key="index">
+                <table  :style="{ width: `max(${(firstRow.length + 1) * 8.2}rem, 100%)` }" class="flex items-start  ">
+                  <div class="flex-col justify-center items-center">
+
+
+                  <tr v-for="(body,index) in tableBodyRows" class="flex justify-center items-center" :key="index">
                     <template v-for="(col, i) in tableBodyCols" :key="col.props + i">
-                      <td v-if="index==0" class="w-[8.2rem] text-center border-l border-b ">
+                      <td v-if="index==0" class="w-[8.2rem] text-center border-l border-b flex justify-center items-center text-center ">
                         <details class="dropdown ">
                           <summary v-if="body[col.props]==0" class="m-1 btn w-[7rem] ">停止</summary>
                           <summary v-if="body[col.props]==1"
@@ -92,13 +95,14 @@
                       </td>
 
                       <td v-if="index!=0"
-                          class="w-[8.2rem] text-center border-l border-b hover:bg-[#FAFAFA] ">
+                          class="w-[8.2rem] text-center border-l border-b hover:bg-[#FAFAFA] flex justify-center items-center text-center">
                         {{ body[col.props] }}
                       </td>
                     </template>
 
 
                   </tr>
+                  </div>
                 </table>
               </div>
             </div>
@@ -308,7 +312,6 @@ td {
 }
 
 .right-div1 {
-  width: calc(100% - 10rem);
   overflow: hidden;
 
   .first-row-style {
@@ -317,7 +320,6 @@ td {
 }
 
 .right-div2 {
-  width: calc(100% - 10rem);
   overflow: auto;
 }
 

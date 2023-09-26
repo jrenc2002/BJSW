@@ -1,7 +1,7 @@
 <template>
   <div class="h-[94vh] transition-all duration-300 ease-in-out shadow bg-white rounded-2xl" :class="[AppGlobal.isDrawerState? 'w-[calc(94vw-15rem)]':'w-[94vw]']">
 
-<!--    标题-->
+    <!--    标题-->
     <div class="h-[4%] self-stretch justify-start items-center  inline-flex mt-3  w-full ">
       <div class="w-[calc(10rem)] text-xl leading-10 text-zinc-900 text-2xl font-medium leading-loose left-4 relative">温度控制</div>
       <div class="w-[calc(100%-10rem)] relative justify-end flex mr-3 ">
@@ -51,8 +51,9 @@
             </div>
             <div class="right-div ">
               <!--窗口-->
-              <div ref="firstRowLayer" class="right-div1 bg-[#F1F1F1] mt-3">
-                <table :style="{ width: (firstRow.length+1 ) * 8.2+ 'rem' }" class="right-table1">
+              <div ref="firstRowLayer" :class="[AppGlobal.isDrawerState? 'w-[calc(82vw-15rem)]':'w-[82vw]']"
+                   class="right-div1 bg-[#F1F1F1] mt-3 ">
+                <table :style="{ width: (firstRow.length+1 ) * 8.2+ 'rem' }" class=" flex items-start self-start ">
                   <tr>
                     <th v-for="(row, index) in firstRow" :key="index" class="first-row-style w-[8.2rem]  ">{{
                         row
@@ -62,43 +63,48 @@
                 </table>
               </div>
               <div
-                  id="targetDiv1"
-                  ref="tableContainer"
-                  class="right-div2"
+
+                  ref="tableContainer" :class="[AppGlobal.isDrawerState? 'w-[calc(82vw-15rem)]':'w-[82vw]']"
+                  class="right-div2 flex items-start self-start"
                   @scroll="tableScroll()"
+
               >
-                <table :style="{ width: (firstRow.length +1 ) * 8.2 + 'rem' }">
-                  <tr v-for="(body,index) in tableBodyRows" :key="index">
-                    <template v-for="(col, i) in tableBodyCols" :key="col.props + i">
-                      <td v-if="index==0" class="w-[8.2rem] text-center border-l border-b ">
-                        <details class="dropdown ">
-                          <summary v-if="body[col.props]==0" class="m-1 btn w-[7rem] ">停止</summary>
-                          <summary v-if="body[col.props]==1"
-                                   class="m-1 btn w-[7rem] text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3]">自动
-                          </summary>
-                          <summary v-if="body[col.props]==2"
-                                   class="m-1 btn w-[7rem]  text-[#776B00] bg-[#FAF3B7] hover:bg-[#E5E0AA]">顺控
-                          </summary>
+                <table  :style="{ width: `max(${(firstRow.length + 1) * 8.2}rem, 100%)` }" class="flex items-start  ">
+                  <div class="flex-col justify-center items-center">
 
-                          <ul class="p-2 shadow-xl menu dropdown-content z-[1] bg-base-100 rounded-box w-[7rem] broder">
-                            <li class="text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2] rounded" @click="col.props=0"><a>停止</a>
-                            </li>
-                            <li class="text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] mt-2 rounded"
-                                @click="col.props=1"><a>自动</a></li>
-                            <li class="text-[#776B00] bg-[#FAF3B7] hover:bg-[#E5E0AA] mt-2 rounded"
-                                @click="col.props=2"><a>顺控</a></li>
-                          </ul>
-                        </details>
-                      </td>
+                    <tr v-for="(body,index) in tableBodyRows" :key="index" class="flex justify-center items-center">
 
-                      <td v-if="index!=0"
-                          class="w-[8.2rem] text-center border-l border-b hover:bg-[#FAFAFA] ">
-                        {{ body[col.props] }}
-                      </td>
-                    </template>
+                      <template v-for="(col, i) in tableBodyCols" :key="col.props + i">
+                        <td v-if="index==0" class="w-[8.2rem] text-center border-l border-b flex justify-center items-center">
+                          <details class="dropdown ">
+                            <summary v-if="body[col.props]==0" class="m-1 btn w-[7rem] ">停止</summary>
+                            <summary v-if="body[col.props]==1"
+                                     class="m-1 btn w-[7rem] text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3]">自动
+                            </summary>
+                            <summary v-if="body[col.props]==2"
+                                     class="m-1 btn w-[7rem]  text-[#776B00] bg-[#FAF3B7] hover:bg-[#E5E0AA]">顺控
+                            </summary>
+
+                            <ul class="p-2 shadow-xl menu dropdown-content z-[1] bg-base-100 rounded-box w-[7rem] broder">
+                              <li class="text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2] rounded" @click="col.props=0"><a>停止</a>
+                              </li>
+                              <li class="text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] mt-2 rounded"
+                                  @click="col.props=1"><a>自动</a></li>
+                              <li class="text-[#776B00] bg-[#FAF3B7] hover:bg-[#E5E0AA] mt-2 rounded"
+                                  @click="col.props=2"><a>顺控</a></li>
+                            </ul>
+                          </details>
+                        </td>
+
+                        <td v-if="index!=0" :class="[i==0?'border-l':'']"
+                            class="w-[8.2rem] text-center border-l border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
+                          {{ body[col.props] }}
+                        </td>
+                      </template>
 
 
-                  </tr>
+                    </tr>
+                  </div>
                 </table>
               </div>
             </div>
@@ -312,7 +318,6 @@ td {
 }
 
 .right-div1 {
-  width: calc(100% - 10rem);
   overflow: hidden;
 
   .first-row-style {
@@ -321,13 +326,13 @@ td {
 }
 
 .right-div2 {
-  width: calc(100% - 10rem);
   overflow: auto;
 }
 
 .right-table2 {
   overflow: hidden;
 }
+
 
 
 .empty-content {
