@@ -75,13 +75,12 @@
                   <button v-if="team.id !== editID" class="truncate ">{{ team.name }}</button>
                   <!-- 页面编辑模式 -->
                   <span v-else>
-                <input v-model="updateName"
-                       :placeholder="team.name"
-                       class="broder border-gray-200 text-black w-full"
-                       @keyup.enter="enterEdit(team.id,$event)"
-                >
-
-              </span>
+                    <input v-model="updateName"
+                           :placeholder="team.name"
+                           class="broder border-gray-200 text-black w-full"
+                           @keyup.enter="enterEdit(team.id,$event)"
+                    >
+                  </span>
                 </div>
 
                 <transition name="faderight">
@@ -193,7 +192,7 @@
 
 <script lang="js" setup>
 import {useRoute} from 'vue-router'
-import {computed, ref} from 'vue'
+import {computed, onMounted, ref, watch} from 'vue'
 import AlarmData from '@/assets/image/AlarmData.png'
 import AlarmData1 from '@/assets/image/AlarmData1.png'
 import CalibrateBatchIcon from '@/assets/image/CalibrateBatchIcon.png'
@@ -264,9 +263,23 @@ const navigation = computed(() => [
 
 ])
 // 分页名称
-const basePages = ref(DeviceManage.deviceList)
+const basePages = ref()
+const pagesValue=ref([])
+watch(() => DeviceManage.deviceList, () => {
+  basePages.value=DeviceManage.deviceList
+  initPagesValue()
+}, {deep: true});
+onMounted(() => {
+  basePages.value=DeviceManage.deviceList
+  initPagesValue()
+})
+const initPagesValue=()=>{
+  pagesValue.value=basePages.value.map((page) => ({
+   ...page
+  }))
+}
 const pages = computed(() => {
-  return basePages.value.map(page => ({
+  return pagesValue.value.map(page => ({
     ...page,
     current: page.id === chancepage.value
 

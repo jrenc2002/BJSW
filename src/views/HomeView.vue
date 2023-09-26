@@ -88,6 +88,7 @@ onMounted(() => {
   const storedData = localStorage.getItem('deviceList');
   const deviceList = storedData!=null ? JSON.parse(storedData) : [];
   DeviceManage.updateDeviceList( deviceList);
+  console.log('___________________')
   window.addEventListener('resize', updateWindowSize);
   updateWindowSize();
   window.Electron.ipcRenderer.invoke('init-db').then(

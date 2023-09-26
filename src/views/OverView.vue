@@ -258,7 +258,7 @@ const initTableData = () => {
         }
       }
     });
-    console.log(tableItem, "--2222222222")
+
     resultItems.push(tableItem);
     return tableItem;
   });
