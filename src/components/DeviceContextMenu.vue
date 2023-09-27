@@ -1,6 +1,6 @@
 <template>
   <div
-      class=" h-[7.6rem] fixed w-48 py-1 z-30 bg-neutral-100  rounded-lg shadow border border-stone-300 flex-col justify-start items-start gap-0.5 inline-flex"
+      class=" h-[7.6rem] fixed top-[52vh] left-[14vw] w-48 py-1 z-30 bg-neutral-100  rounded-lg shadow border border-stone-300 flex-col justify-start items-start gap-0.5 inline-flex"
       specialType="device-context-menu">
     <div class="self-stretch py-1 flex-col justify-start items-start flex">
       <div class="h-[1.6rem]  self-stretch px-3 py-px justify-start items-center gap-1 inline-flex select-none "

@@ -48,13 +48,12 @@
 import {reactive, onMounted, onUnmounted} from 'vue';
 import NavigationView from '../components/NavigationView.vue';
 import {useDeviceManage} from '@/store/DeviceManage'
-
-const DeviceManage = useDeviceManage();
 import {useAppGlobal} from '@/store/AppGlobal'
 import {usePopupMangerState} from "@/store/PopupMangerState";
 import {initDeviceManage} from '@/api/index.js'
 const PopupMangerState = usePopupMangerState()
 const AppGlobal = useAppGlobal();
+const DeviceManage = useDeviceManage();
 // 使用 Vue3 的 reactive 函数来创建一个响应式对象，用于控制抽屉的显示状态
 const isDrawerVisible = reactive({
   visible: true

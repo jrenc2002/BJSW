@@ -5,20 +5,27 @@
     </div>
     <div class="rounded-2xl  w-[100%] h-[93%]  bottom-0    ">
       <div class="h-[3rem] bg-[#DAF0E4] rounded-t-lg w-[20rem] pt-2 px-2 flex gap-2">
-        <div @click="pageSelect=1" :class="[pageSelect==0?'bg-[#DAF0E4]':'bg-[#A8CDB8]']" class=" w-[10rem] h-full relative rounded-t-lg flex justify-center items-center cursor-pointer hover:bg-[#A8CDB8]">
+        <div @click="pageSelect=1" :class="[pageSelect==0?'bg-[#DAF0E4] hover:bg-[#B8D1C3]':'bg-[#A8CDB8] ']" class=" w-[10rem] h-full relative rounded-t-lg flex justify-center items-center cursor-pointer ">
           单罐曲线
         </div>
-        <div @click="pageSelect=0" :class="[pageSelect==1?'bg-[#DAF0E4]':'bg-[#A8CDB8]']"  class=" w-[10rem] h-full relative rounded-t-lg flex justify-center items-center cursor-pointer hover:bg-[#A8CDB8]">
+        <div @click="pageSelect=0" :class="[pageSelect==1?'bg-[#DAF0E4] hover:bg-[#B8D1C3]':'bg-[#A8CDB8]']"  class=" w-[10rem] h-full relative rounded-t-lg flex justify-center items-center cursor-pointer ">
           单参数曲线
         </div>
       </div>
       <div class="bg-[#DAF0E4] h-[calc(100%-3rem)]">
         <div class="h-[100%]  bg-white border-8 border-[#A8CDB8] rounded-xl relative flex">
           <div class="w-[10rem] h-full  border-r-2 border-[#EBEBEB] overflow-auto">
-            <div v-for="item in DeviceSelect" :key="item.name" class="w-full h-24  flex justify-center items-center">
-              <div @click="item.selected=!item.selected" :class="[item.selected?'bg-[#DAF0E4] text-black':'text-gray-500']" class="w-full mx-4 rounded text-center  h-10 flex items-center justify-center cursor-pointer">{{ item.name }}</div>
+            <template v-if="pageSelect==1">
+              <div v-for="item in DeviceSelect" :key="item.name" class="w-full h-24  flex justify-center items-center">
+                <div @click="item.selected=!item.selected" :class="[item.selected?'bg-[#DAF0E4] text-black':'text-gray-500']" class="w-full mx-4 rounded-xl text-center  h-14 flex items-center justify-center cursor-pointer">{{ item.name }}</div>
+              </div>
+            </template>
+            <template v-else>
+              <div v-for="item in ParameterSelect" :key="item.name" class="w-full h-1/5  flex justify-center items-center">
+                <div @click="item.selected=!item.selected" :class="[item.selected?'bg-[#DAF0E4] text-black':'text-gray-500']" class="w-full mx-4 rounded-xl text-center  h-14 flex items-center justify-center cursor-pointer">{{ item.name }}</div>
+              </div>
 
-            </div>
+            </template>
           </div>
           <div class="h-full w-[calc(100%-10rem)] flex justify-center items-center">
                   <AnalyCharts id="2" ref="Vibrationchartid" :data="data"
@@ -87,6 +94,31 @@ let data=[data1,data2,data3]
 const pageSelect= ref<number>(0)
 
 /* ——————————————————————————定时器时间函数配置—————————————————————————— */
+
+/* ——————————————————————————参数选择器—————————————————————————— */
+const ParameterSelect = ref<any>([
+  {
+    name:'温度',
+    selected:false
+  },
+  {
+    name:'酸碱',
+    selected:false
+  },
+  {
+    name:'溶氧',
+    selected:false
+  },
+  {
+    name:'转速',
+    selected:false
+  },
+  {
+    name:'补料',
+    selected:false
+  },
+
+]);
 
 /* ——————————————————————————设备选择器—————————————————————————— */
 const DeviceSelect = ref<any>(null);

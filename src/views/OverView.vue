@@ -63,35 +63,31 @@
 
                 <div ref="firstRowLayer" :class="[AppGlobal.isDrawerState? 'w-[calc(82vw-15rem)]':'w-[82vw]']"
                      class="right-div1 bg-[#F1F1F1] mt-3 ">
-                    <table :style="{ width: `max(${(firstRow.length + 1) * 8.2}rem, 100%)` }" class=" flex items-start self-start ">
-                      <tr>
-                        <th v-for="(row, index) in firstRow" :key="index" class="first-row-style w-[8.2rem]  ">{{
-                            row
-                          }}
-                        </th>
-                      </tr>
-                    </table>
+                  <table :style="{ width: `max(${(firstRow.length + 1) * 8.2}rem, 100%)` }"
+                         class=" flex items-start self-start ">
+                    <tr>
+                      <th v-for="(row, index) in firstRow" :key="index" class="first-row-style w-[8.2rem]  ">{{
+                          row
+                        }}
+                      </th>
+                    </tr>
+                  </table>
 
 
-                 </div>
+                </div>
 
                 <div
-
                     ref="tableContainer" :class="[AppGlobal.isDrawerState? 'w-[calc(82vw-15rem)]':'w-[82vw]']"
                     class="right-div2 flex items-start self-start"
                     @scroll="tableScroll()"
 
                 >
-                  <table  :style="{ width: `max(${(firstRow.length + 1) * 8.2}rem, 100%)` }" class="flex items-start  ">
+                  <table :style="{ width: `max(${(firstRow.length + 1) * 8.2}rem, 100%)` }" class="flex items-start  ">
                     <div class="flex-col justify-center items-center">
-
-
                       <tr v-for="(body,index) in tableBodyRows" :key="index" class="flex justify-center items-center">
 
-
-
                         <template v-for="(col, i) in tableBodyCols" :key="col.props + i">
-                          <td v-if="index==0" :class="[i==0?'border-l':'']"
+                          <td v-if="index==0"
                               class="w-[8.2rem] flex justify-center items-center text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer">
                             <details class="dropdown ">
                               <summary v-if="body[col.props]==0" class="m-1 btn w-[7rem] ">停止</summary>
@@ -101,8 +97,8 @@
                             </details>
                           </td>
 
-                          <td v-if="index!=0" :class="[i==0?'border-l':'']"
-                              class="w-[8.2rem] text-center border-l border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
+                          <td v-if="index!=0"
+                              class="w-[8.2rem] text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
                             {{ body[col.props] }}
                           </td>
                         </template>
@@ -140,34 +136,27 @@
 </template>
 
 <script lang='ts' setup>
+
+// ______________________导入模块_______________________
 import {computed, Ref, ref, watch, onUnmounted, onMounted, reactive} from 'vue'
 import PopupManger from "@/components/PopupManger.vue";
 import {usePopupMangerState} from "@/store/PopupMangerState";
 import {PopupType} from "@/store/PopupMangerState";
 import {sendData} from '@/api/index.js'
 import {useDeviceManage} from '@/store/DeviceManage'
+import {useAppGlobal} from '@/store/AppGlobal'
 
 const DeviceManage = useDeviceManage();
 const PopupMangerState = usePopupMangerState()
-import {useAppGlobal} from '@/store/AppGlobal'
-
 const AppGlobal = useAppGlobal();
 
+// ______________________表格数据处理_______________________
 watch(() => DeviceManage.deviceList, () => {
   console.log(DeviceManage.deviceList)
   initTableData()
 }, {deep: true});
 
 
-const popManager = (val: any) => {
-  if(val!='运行状态'&&val!='运行时间'&&val!='发酵批号'){
-    PopupMangerState.updateIsShowPop(true)
-  PopupMangerState.updatePopupContent(name_translation[val])
-  console.log(PopupMangerState.isShowPop)
-  console.log(PopupMangerState.popupContent)
-      }
-
-}
 // 读取表格数据
 const initTableData = () => {
   if (!DeviceManage || !Array.isArray(DeviceManage.deviceList)) {
@@ -185,7 +174,7 @@ const initTableData = () => {
       return;
     }
 
-    initheaderData.push({title: device.name, props: 'F' + (device.id+1)});
+    initheaderData.push({title: device.name, props: 'F' + (device.id + 1)});
   });
 
   headerData.length = 0;  // 清空原始数据
@@ -217,12 +206,12 @@ const initTableData = () => {
       }
       index--;
 
-       if (DeviceManage.deviceList[index].nowdata == null) {
-         tableItem[header.props] = 0;
+      if (DeviceManage.deviceList[index].nowdata == null) {
+        tableItem[header.props] = 0;
 
-        return ;
+        return;
       }
-      console.log(!DeviceManage.deviceList[index] , !DeviceManage.deviceList[index].nowdata,DeviceManage.deviceList[index],index)
+      console.log(!DeviceManage.deviceList[index], !DeviceManage.deviceList[index].nowdata, DeviceManage.deviceList[index], index)
 
       if (!DeviceManage.deviceList[index] || !DeviceManage.deviceList[index].nowdata) {
         console.error(`Error: Missing data for device at index ${index}.`);
@@ -235,16 +224,15 @@ const initTableData = () => {
         tableItem[header.props] = `${hours}h${minutes}m`;
       } else if (deviceProp.prop == "batchnum") {
         tableItem[header.props] = DeviceManage.deviceList[index].batch_name;
-      } else if(deviceProp.prop == "acid_pump"){
+      } else if (deviceProp.prop == "acid_pump") {
         tableItem[header.props] = 241;
-      }else if(deviceProp.prop == "lye_pump"){
+      } else if (deviceProp.prop == "lye_pump") {
         tableItem[header.props] = 241;
-      }else if(deviceProp.prop == "feed_pump"){
+      } else if (deviceProp.prop == "feed_pump") {
         tableItem[header.props] = 241;
-      }else if(deviceProp.prop == "defoamer_pump"){
+      } else if (deviceProp.prop == "defoamer_pump") {
         tableItem[header.props] = 241;
-      }
-      else {
+      } else {
         try {
           const value = DeviceManage.deviceList[index].nowdata![deviceProp.prop];
           if (typeof value === 'number' && !Number.isInteger(value)) {
@@ -268,39 +256,6 @@ const initTableData = () => {
 
 }
 
-
-const headerData: HeaderItem[] = reactive([
-  {title: '姓名', props: 'name'},
-
-
-  // 你可以按需增加其他列
-]);
-
-
-const tableData: TableDataItem[] = reactive([
-  {name: '运行状态', prop: "state", F1: 30, F2: 31, F3: 32, F4: 33, F5: 34, F6: 35, F7: 36, F8: 37},
-  {name: '运行时间', prop: "time", F1: 25, F2: 26, F3: 27, F4: 28, F5: 29, F6: 30, F7: 31, F8: 32},
-  {name: '发酵批号', prop: "batchnum", F1: 28, F2: 29, F3: 30, F4: 31, F5: 32, F6: 33, F7: 34, F8: 35},
-  {name: '温度', prop: "temperature", F1: 30, F2: 31, F3: 32, F4: 33, F5: 34, F6: 35, F7: 36, F8: 37},
-  {name: 'PH值', prop: "phvalue", F1: 25, F2: 26, F3: 27, F4: 28, F5: 29, F6: 30, F7: 31, F8: 32},
-  {name: '溶氧', prop: "oxygen", F1: 28, F2: 29, F3: 30, F4: 31, F5: 32, F6: 33, F7: 34, F8: 35},
-  {name: '转速', prop: "rpm", F1: 30, F2: 31, F3: 32, F4: 33, F5: 34, F6: 35, F7: 36, F8: 37},
-  {name: '酸液泵', prop: "acidpump", F1: 25, F2: 26, F3: 27, F4: 28, F5: 29, F6: 30, F7: 31, F8: 32},
-  {name: '碱液泵', prop: "lyepump", F1: 28, F2: 29, F3: 30, F4: 31, F5: 32, F6: 33, F7: 34, F8: 35},
-  {name: '补料泵', prop: "feedpump", F1: 30, F2: 31, F3: 32, F4: 33, F5: 34, F6: 35, F7: 36, F8: 37},
-  {name: '消泡剂泵', prop: "defoamerpump", F1: 25, F2: 26, F3: 27, F4: 28, F5: 29, F6: 30, F7: 31, F8: 32},
-]);
-
-
-const props = {
-  headerData: headerData,
-  tableData: tableData
-};
-
-
-const tableContainer: Ref<HTMLDivElement | null> = ref(null);
-const firstRowLayer: Ref<HTMLDivElement | null> = ref(null);
-const firstColLayer: Ref<HTMLDivElement | null> = ref(null);
 
 
 const firstCol = computed(() => props.tableData.map(p => {
@@ -348,6 +303,41 @@ const tableBodyCols = computed(() => {
 })
 
 
+// ______________________表格数据变量_______________________
+const headerData: HeaderItem[] = reactive([
+  {title: '姓名', props: 'name'},
+
+
+  // 你可以按需增加其他列
+]);
+
+
+const tableData: any = reactive([
+  {name: '运行状态', prop: "state", F1: 30, F2: 31, F3: 32, F4: 33, F5: 34, F6: 35, F7: 36, F8: 37},
+  {name: '运行时间', prop: "time", F1: 25, F2: 26, F3: 27, F4: 28, F5: 29, F6: 30, F7: 31, F8: 32},
+  {name: '发酵批号', prop: "batchnum", F1: 28, F2: 29, F3: 30, F4: 31, F5: 32, F6: 33, F7: 34, F8: 35},
+  {name: '温度', prop: "temperature", F1: 30, F2: 31, F3: 32, F4: 33, F5: 34, F6: 35, F7: 36, F8: 37},
+  {name: 'PH值', prop: "phvalue", F1: 25, F2: 26, F3: 27, F4: 28, F5: 29, F6: 30, F7: 31, F8: 32},
+  {name: '溶氧', prop: "oxygen", F1: 28, F2: 29, F3: 30, F4: 31, F5: 32, F6: 33, F7: 34, F8: 35},
+  {name: '转速', prop: "rpm", F1: 30, F2: 31, F3: 32, F4: 33, F5: 34, F6: 35, F7: 36, F8: 37},
+  {name: '酸液泵', prop: "acidpump", F1: 25, F2: 26, F3: 27, F4: 28, F5: 29, F6: 30, F7: 31, F8: 32},
+  {name: '碱液泵', prop: "lyepump", F1: 28, F2: 29, F3: 30, F4: 31, F5: 32, F6: 33, F7: 34, F8: 35},
+  {name: '补料泵', prop: "feedpump", F1: 30, F2: 31, F3: 32, F4: 33, F5: 34, F6: 35, F7: 36, F8: 37},
+  {name: '消泡剂泵', prop: "defoamerpump", F1: 25, F2: 26, F3: 27, F4: 28, F5: 29, F6: 30, F7: 31, F8: 32},
+]);
+
+
+const props = {
+  headerData: headerData,
+  tableData: tableData
+};
+
+
+// ______________________功能函数_______________________
+const tableContainer: Ref<HTMLDivElement | null> = ref(null);
+const firstRowLayer: Ref<HTMLDivElement | null> = ref(null);
+const firstColLayer: Ref<HTMLDivElement | null> = ref(null);
+
 const tableScroll = () => {
   firstRowLayer.value!.scrollLeft = tableContainer.value!.scrollLeft;
   firstColLayer.value!.scrollTop = tableContainer.value!.scrollTop;
@@ -362,6 +352,16 @@ const handleKeydown = (event) => {
     PopupMangerState.updateIsShowPop(false)
   }
 };
+// 弹窗管理
+const popManager = (val: any) => {
+  if (val != '运行状态' && val != '运行时间' && val != '发酵批号') {
+    PopupMangerState.updateIsShowPop(true)
+    PopupMangerState.updatePopupContent(name_translation[val])
+    console.log(PopupMangerState.isShowPop)
+    console.log(PopupMangerState.popupContent)
+  }
+}
+// ______________________生命周期_______________________
 
 // 当组件挂载时添加事件监听器
 onMounted(() => {
@@ -462,30 +462,6 @@ interface SetData {
   decive_id: string;                   //罐号ID
 }
 
-interface Device {
-  id: number;
-  name: string;
-  deviceNum: string;
-  ip: string;
-  port?: number; // 这意味着 port 是可选的
-  state: boolean;
-  nowdata: SetData | null;
-  devicesocket: any;
-}
-
-interface TableDataItem {
-  name: string;
-  F1: number;
-  F2: number;
-  F3: number;
-  F4: number;
-  F5: number;
-  F6: number;
-  F7: number;
-  F8: number;
-
-  [key: string]: string | number;
-}
 
 const name_translation = {
   '运行状态': 'None',

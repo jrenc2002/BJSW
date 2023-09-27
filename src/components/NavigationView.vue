@@ -7,9 +7,9 @@
 
       <!-- 列表容器 -->
       <ul class="flex flex-1 flex-col gap-y-1" role="list">
-
+        <div class="w-full min-h-[20rem] ">
         <!-- 用户信息部分 -->
-        <li class="h-[4rem] flex items-center mt-2">
+        <li class="h-[4rem] flex items-center mt-1">
           <div class="flex w-[100%] h-[29%]  justify-start items-center inline-flex relative ">
             <div class="flex justify-start items-center absolute left-[2%]">
               <!-- 用户头像 -->
@@ -43,17 +43,17 @@
             {{ item.name }}
           </router-link>
         </li>
-
+        </div>
         <!-- 分隔线 -->
         <li>
           <div class="relative">
-            <div aria-hidden="true" class="top-2 relative inset-0 flex items-center h-3">
+            <div aria-hidden="true" class="top-0 relative inset-0 flex items-center h-3">
               <div class="w-full border-t border-gray-300"/>
             </div>
           </div>
 
           <!-- 页面列表部分 -->
-          <div class="w-full h-[60vh] overflow-auto">
+          <div class="w-full h-[23rem]  overflow-auto">
             <ul class="-mx-0 mt-4 space-y-1" role="list">
               <!-- 遍历页面列表 -->
               <li v-for="team in pages" :key="team.name">
@@ -208,7 +208,7 @@ import ProcessView1 from '@/assets/image/ProcessView1.png'
 import {useAppGlobal} from '@/store/AppGlobal'
 import {useDeviceManage} from '@/store/DeviceManage'
 import {addDevice} from '@/api/index.js'
-import DeviceContextMenu  from "@/components/DeviceContextMenu.vue";
+import DeviceContextMenu from "@/components/DeviceContextMenu.vue";
 
 
 const route = useRoute()
@@ -264,18 +264,18 @@ const navigation = computed(() => [
 ])
 // 分页名称
 const basePages = ref()
-const pagesValue=ref([])
+const pagesValue = ref([])
 watch(() => DeviceManage.deviceList, () => {
-  basePages.value=DeviceManage.deviceList
+  basePages.value = DeviceManage.deviceList
   initPagesValue()
 }, {deep: true});
 onMounted(() => {
-  basePages.value=DeviceManage.deviceList
+  basePages.value = DeviceManage.deviceList
   initPagesValue()
 })
-const initPagesValue=()=>{
-  pagesValue.value=basePages.value.map((page) => ({
-   ...page
+const initPagesValue = () => {
+  pagesValue.value = basePages.value.map((page) => ({
+    ...page
   }))
 }
 const pages = computed(() => {
@@ -337,10 +337,9 @@ const newDevice = () => {
 
 
 const showMenu = (event, deviceId) => {
-  if (AppGlobal.selectedDeviceIndex==deviceId){
-    AppGlobal.selectedDeviceIndex=-1
-  }
-  else AppGlobal.selectedDeviceIndex = deviceId;
+  if (AppGlobal.selectedDeviceIndex == deviceId) {
+    AppGlobal.selectedDeviceIndex = -1
+  } else AppGlobal.selectedDeviceIndex = deviceId;
 
 
 }
@@ -369,7 +368,9 @@ const showMenu = (event, deviceId) => {
   transform: scale(0.5);
   opacity: 0;
 }
-.faderight-enter, .faderight-leave-to /* .faderight-leave-active in <2.1.8 */ {
+
+.faderight-enter, .faderight-leave-to /* .faderight-leave-active in <2.1.8 */
+{
   opacity: 0;
   transform-origin: center center;
   transform: scale(0.5);
