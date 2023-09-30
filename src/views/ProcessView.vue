@@ -7,7 +7,8 @@
           v-show="ProcessPopupMangerState.isShowPop"
           class="rounded-2xl absolute bg-white bg-opacity-50 h-[calc(100%-2rem)] w-[calc(100%-2rem)]  z-30 backdrop-blur-sm items-center justify-center flex"
       >
-        <ProcessPopupManger :popcontent="PopupType[ProcessPopupMangerState.popupContent]" class="w-full h-full "></ProcessPopupManger>
+        <ProcessPopupManger :popcontent="PopupType[ProcessPopupMangerState.popupContent]"
+                            class="w-full h-full "></ProcessPopupManger>
       </div>
     </transition>
 
@@ -22,8 +23,9 @@
         <div class="h-full w-[20%] overflow-hidden p-1 flex-col gap-2.5 relative flex  items-end">
           <!--溶氧栏-->
 
-          <div class="card min-w-[10vw]  bg-base-100 shadow-lg  border border-zinc-100 cursor-pointer top-[2vh] absolute "
-               @click="popProcessManager('溶氧')">
+          <div
+              class="card min-w-[10vw]  bg-base-100 shadow-lg  border border-zinc-100 cursor-pointer top-[2vh] absolute "
+              @click="popProcessManager('溶氧')">
             <div
                 class="w-full h-[2.5rem] mb-2 font-black  bg-[#FAD6DA] flex items-center justify-center rounded-t-2xl ">
 
@@ -81,8 +83,9 @@
             </div>
           </div>
           <!--转速栏-->
-          <div class="card min-w-[10vw] bg-base-100 shadow-lg  border border-zinc-100 cursor-pointer top-[33vh] absolute  "
-               @click="popProcessManager('转速')">
+          <div
+              class="card min-w-[10vw] bg-base-100 shadow-lg  border border-zinc-100 cursor-pointer top-[33vh] absolute  "
+              @click="popProcessManager('转速')">
             <div
                 class="w-full h-[2.5rem]   mb-2 font-black  bg-[#E1EEFF] flex items-center justify-center rounded-t-2xl ">
               <div class="w-full text-center relative">
@@ -107,8 +110,9 @@
             </div>
           </div>
           <!--PH-->
-          <div class="card min-w-[10vw] bg-base-100 shadow-lg  border border-zinc-100  cursor-pointer top-[49vh] absolute "
-               @click="popProcessManager('PH值')">
+          <div
+              class="card min-w-[10vw] bg-base-100 shadow-lg  border border-zinc-100  cursor-pointer top-[49vh] absolute "
+              @click="popProcessManager('PH值')">
             <div
                 class="w-full h-[2.5rem]   mb-2 font-black  bg-[#FCF8DA] flex items-center justify-center rounded-t-2xl ">
               <div class="w-full text-center relative">
@@ -133,8 +137,9 @@
             </div>
           </div>
           <!--温度-->
-          <div class="card min-w-[10vw] bg-base-100 shadow-lg  border border-zinc-100 cursor-pointer top-[65vh] absolute "
-               @click="popProcessManager('温度')">
+          <div
+              class="card min-w-[10vw] bg-base-100 shadow-lg  border border-zinc-100 cursor-pointer top-[65vh] absolute "
+              @click="popProcessManager('温度')">
             <div
                 class="w-full h-[2.5rem]   mb-2 font-black  bg-[#D9F0E4] flex items-center justify-center rounded-t-2xl ">
               <div class="w-full text-center relative">
@@ -175,17 +180,33 @@
           <img class="h-[60vh]" mode="heightFix" src="@/assets/image/JarImage.png">
         </div>
         <!--右侧控制栏-->
-        <div class="h-full w-[20%] overflow-hidden p-1 flex-col gap-2.5 relative flex  items-start">
+        <div class="h-full w-[20%]  p-1 flex-col gap-2.5 relative flex  items-start">
           <!--酸泵-->
+          <div v-if="stateManger.AcidPump" class=" w-[10rem] p-3 flex-col flex justify-start items-center
+           bg-base-100 shadow-lg min-h-[10rem] rounded-xl  border border-[#874C53] top-[4vh] absolute left-[-12rem]  ">
+            <div>
+              <label class="block text font-medium leading-4 text-gray-900 mt-2">补料量</label>
+              <div class="mt-2">
+                <input
+                    class="block w-full pl-2 rounded-md border-[#AEAEAE] border py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"/>
+              </div>
+            </div>
+            <div>
+              <label class="block text font-medium leading-4 text-gray-900 mt-2">补料速度</label>
+              <div class="mt-2">
+                <input
+                    class="block w-full pl-2 rounded-md border-[#AEAEAE] border py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"/>
+              </div>
+            </div>
+
+          </div>
           <div class="card min-w-[10vw] bg-base-100 shadow-lg  border border-zinc-100 top-[6vh] absolute ">
             <div class="w-full h-[3rem] mb-2   bg-[#FAD6DA] flex items-center justify-center rounded-t-2xl ">
-              <!--TODO 把hover关了，要不他关闭后hover还开着。-->
 
               <div class="w-full text-center relative  h-[70%] flex items-center justify-center">
                 <div class=" h-full w-3 flex justify-center items-center rounded mx-1 ">
                   <div class="w-2 h-2 bg-green-600 rounded-full"></div>
                 </div>
-
                 <div :class="[stateManger.AcidPump?'text-white bg-[#E1A1A9]':'bg-white']"
                      class=" h-full w-[4.3rem] shadow flex justify-center items-center rounded mx-1 cursor-pointer "
                      @click="stateManger.AcidPump=!stateManger.AcidPump">
@@ -215,6 +236,24 @@
             </div>
           </div>
           <!--碱泵-->
+          <div v-if="stateManger.LyePump" class=" w-[10rem] p-3 flex-col flex justify-start items-center
+           bg-base-100 shadow-lg min-h-[10rem] rounded-xl  border border-[#A7C2E4] top-[21vh] absolute left-[-12rem]  ">
+            <div>
+              <label class="block text font-medium leading-4 text-gray-900 mt-2">补料量</label>
+              <div class="mt-2">
+                <input
+                    class="block w-full pl-2 rounded-md border-[#AEAEAE] border py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"/>
+              </div>
+            </div>
+            <div>
+              <label class="block text font-medium leading-4 text-gray-900 mt-2">补料速度</label>
+              <div class="mt-2">
+                <input
+                    class="block w-full pl-2 rounded-md border-[#AEAEAE] border py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"/>
+              </div>
+            </div>
+
+          </div>
           <div class="card min-w-[10vw] bg-base-100 shadow-lg  border border-zinc-100 top-[21vh] absolute ">
             <div class="w-full h-[3rem]   mb-2   bg-[#E1EEFF] flex items-center justify-center rounded-t-2xl ">
               <div class="w-full text-center relative  h-[70%] flex items-center justify-center">
@@ -252,6 +291,24 @@
             </div>
           </div>
           <!--消泡泵-->
+          <div v-if="stateManger.DefoamerPump" class=" w-[10rem] p-3 flex-col flex justify-start items-center
+           bg-base-100 shadow-lg min-h-[10rem] rounded-xl  border border-[#E4DDA4] top-[36vh] absolute left-[-12rem]  ">
+            <div>
+              <label class="block text font-medium leading-4 text-gray-900 mt-2">补料量</label>
+              <div class="mt-2">
+                <input
+                    class="block w-full pl-2 rounded-md border-[#AEAEAE] border py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"/>
+              </div>
+            </div>
+            <div>
+              <label class="block text font-medium leading-4 text-gray-900 mt-2">补料速度</label>
+              <div class="mt-2">
+                <input
+                    class="block w-full pl-2 rounded-md border-[#AEAEAE] border py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"/>
+              </div>
+            </div>
+
+          </div>
           <div class="card min-w-[10vw] bg-base-100 shadow-lg  border border-zinc-100 top-[36vh] absolute ">
 
             <div class="w-full h-[3rem]   mb-2   bg-[#FCF8DA] flex items-center justify-center rounded-t-2xl ">

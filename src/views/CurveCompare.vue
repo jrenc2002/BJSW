@@ -32,8 +32,6 @@
                   ></SingleAnalyCharts>
                   <ParamAnalyCharts id="2" ref="Vibrationchartid" :data="data" v-else
                                     class=" w-full relative left-0 ">
-
-
                   </ParamAnalyCharts>
           </div>
 
