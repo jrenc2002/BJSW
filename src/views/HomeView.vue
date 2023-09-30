@@ -26,7 +26,7 @@
     <div
         :class="{ 'w-[calc(100%-15rem)]': isDrawerVisible.visible, 'w-full': !isDrawerVisible.visible, 'ml-[-0.3rem]': !isDrawerVisible.visible }"
         class="right-side h-full relative flex flex-col justify-start items-start pl-[0.3rem] pt-[0.3rem] transition-all duration-300 ease-in-out "
-        @dblclick="toggleDrawer">
+        @contextmenu="toggleDrawer">
       <!-- 右侧白底 -->
       <div :style="{ width: 'calc(100% - 0.3rem)', height: 'calc(100% - 0.3rem)' }"
            class="box-border shadow bg-white bg-opacity-80 rounded-[15px] flex flex-col justify-center items-center gap-6 inline-flex transform-origin: left">
