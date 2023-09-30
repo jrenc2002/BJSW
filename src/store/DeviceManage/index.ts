@@ -100,6 +100,9 @@ interface Device {
 
 
 }
+// TODO:设备管理要重构
+// 1.内容数据表项不全仍然缺乏
+// 2.
 
 const state = (): {
     deviceList: Device[];

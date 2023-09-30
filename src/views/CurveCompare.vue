@@ -24,14 +24,17 @@
               <div v-for="item in ParameterSelect" :key="item.name" class="w-full h-1/5  flex justify-center items-center">
                 <div @click="item.selected=!item.selected" :class="[item.selected?'bg-[#DAF0E4] text-black':'text-gray-500']" class="w-full mx-4 rounded-xl text-center  h-14 flex items-center justify-center cursor-pointer">{{ item.name }}</div>
               </div>
-
             </template>
           </div>
           <div class="h-full w-[calc(100%-10rem)] flex justify-center items-center">
-                  <AnalyCharts id="2" ref="Vibrationchartid" :data="data"
+                  <SingleAnalyCharts id="1" ref="Vibrationchartid" :data="data" v-if="pageSelect==1"
                                class=" w-full relative left-0 "
-                  ></AnalyCharts>
+                  ></SingleAnalyCharts>
+                  <ParamAnalyCharts id="2" ref="Vibrationchartid" :data="data" v-else
+                                    class=" w-full relative left-0 ">
 
+
+                  </ParamAnalyCharts>
           </div>
 
 
@@ -48,9 +51,10 @@
 <script lang="ts" setup>
 import * as echarts from "echarts";
 import {computed, onMounted, onUnmounted, ref, watch} from "vue";
-import AnalyCharts from "@/components/AnalyCharts.vue";
+import SingleAnalyCharts from "@/components/SingleAnalyCharts.vue";
 import {useDeviceManage} from '@/store/DeviceManage'
 import {PopupType} from "@/store/PopupMangerState";
+import ParamAnalyCharts from "@/components/ParamAnalyCharts.vue";
 const DeviceManage = useDeviceManage()
 const Vibrationchartid = ref<any>(null);
 /* ——————————————————————————声明echart—————————————————————————— */

@@ -1,132 +1,118 @@
 <template>
-  <div class="h-[calc(100%-1.5rem)] w-[calc(100%-1.5rem)]  ">
-    <transition name="fade">
-      <div
-          v-show="PopupMangerState.isShowPop"
-          class="rounded-2xl absolute bg-white bg-opacity-50 h-[calc(100%-2rem)] w-[calc(100%-2rem)]  z-30 backdrop-blur-sm items-center justify-center flex"
-      >
-        <PopupManger :popcontent="PopupType[PopupMangerState.popupContent]" class="w-full h-full "></PopupManger>
-      </div>
-    </transition>
+  <div class="h-[94vh] transition-all duration-300 ease-in-out shadow bg-white rounded-2xl" :class="[AppGlobal.isDrawerState? 'w-[calc(94vw-15rem)]':'w-[94vw]']">
 
     <!--    标题-->
-    <div class="h-[6%] self-stretch justify-center items-center gap-4 inline-flex ">
-      <div class="text-xl leading-10 text-zinc-900 text-2xl font-medium leading-loose left-4 relative">数据总览</div>
+    <div class="h-[4%] self-stretch justify-start items-center  inline-flex mt-3  w-full ">
+      <div class="w-[calc(10rem)] text-xl leading-10 text-zinc-900 text-2xl font-medium leading-loose left-4 relative">酸泵控制</div>
+      <div class="w-[calc(100%-10rem)] relative justify-end flex mr-3 ">
+
+        <div class="bg-[#F5F5F5] right-0 relative w-7 h-7 justify-center items-center flex rounded-2xl hover:bg-[#F8F8F8] cursor-pointer" @click="closePop">
+          <svg fill="none" height="16" viewBox="0 0 16 16" width="16" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 4.7L11.3 4L8 7.3L4.7 4L4 4.7L7.3 8L4 11.3L4.7 12L8 8.7L11.3 12L12 11.3L8.7 8L12 4.7Z"
+                  fill="#19161D"/>
+          </svg>
+        </div>
+      </div>
     </div>
     <!--    表格栏-->
-    <div class=" rounded-2xl bg-white w-[100%] h-[92%]  bottom-0  shadow  flex  ">
+    <div class="  w-[100%] h-[92%]  bottom-0   items-center justify-center flex  ">
 
 
       <div class="rounded-2xl  h-[calc(100%-1.5rem)] w-[calc(100%-1.5rem)]  items-center justify-center flex     ">
         <div class=" w-full h-full ">
-          <div class="  overflow-x-hidden w-full h-full flex">
-            <template v-if="props.tableData.length > 0">
-              <div class="float-left h-[100%] bg-[#E8F6ED] shadow border rounded-2xl z-10">
-                <div class=" mt-3 w-[10rem]">
-                  <table class=" py-4 ">
-                    <tr>
-                      <th class="flex items-center justify-center gap-2   ">
-                        <svg fill="none" height="16" viewBox="0 0 16 16" width="16" xmlns="http://www.w3.org/2000/svg">
-                          <path d="M15 4H8V5H15V4Z" fill="#19161D"/>
-                          <path d="M3 5.295L1.705 4L1 4.705L3 6.705L7 2.705L6.295 2L3 5.295Z" fill="#19161D"/>
-                          <path d="M15 11H8V12H15V11Z" fill="#19161D"/>
-                          <path d="M3 12.295L1.705 11L1 11.705L3 13.705L7 9.705L6.295 9L3 12.295Z" fill="#19161D"/>
-                        </svg>
-                        设置界面
+          <div class=" box-border overflow-x-hidden w-full h-full flex">
 
-                      </th>
-                    </tr>
-                  </table>
-                </div>
-                <div
-                    ref="firstColLayer"
-                    class="w-full overflow-hidden  "
-                >
-                  <table class="mb-4 shadow  bg-[#E8F6ED] py-4 ">
-                    <tr v-for="(col, index) in firstCol" :key="index" class=" w-full  ">
-                      <td class="w-full  flex justify-center items-center   ">
-                        <div
-                            :class="[col!='运行状态'&&col!='运行时间'&&col!='发酵批号' ? 'bg-white  rounded-[8px] shadow hover:bg-[#FAFAFA] cursor-pointer' : '','w-[90%] h-[90%] flex justify-center items-center ']"
-                            @click="popManager(col)">
-                          {{ col }}
-
-                        </div>
-
-                      </td>
-                    </tr>
-                  </table>
-                </div>
-              </div>
-              <div class="right-div ">
-                <!--窗口-->
-
-
-                <div ref="firstRowLayer" :class="[AppGlobal.isDrawerState? 'w-[calc(82vw-15rem)]':'w-[82vw]']"
-                     class="right-div1 bg-[#F1F1F1] mt-3 ">
-                  <table :style="{ width: `max(${(firstRow.length + 1) * 8.2}rem, 100%)` }"
-                         class=" flex items-start self-start ">
-                    <tr>
-                      <th v-for="(row, index) in firstRow" :key="index" class="first-row-style w-[8.2rem]  ">{{
-                          row
-                        }}
-                      </th>
-                    </tr>
-                  </table>
-
-
-                </div>
-
-                <div
-                    ref="tableContainer" :class="[AppGlobal.isDrawerState? 'w-[calc(82vw-15rem)]':'w-[82vw]']"
-                    class="right-div2 flex items-start self-start"
-                    @scroll="tableScroll()"
-
-                >
-                  <table :style="{ width: `max(${(firstRow.length + 1) * 8.2}rem, 100%)` }" class="flex items-start  ">
-                    <div class="flex-col justify-center items-center">
-                      <tr v-for="(body,index) in tableBodyRows" :key="index" class="flex justify-center items-center">
-
-                        <template v-for="(col, i) in tableBodyCols" :key="col.props + i">
-                          <td v-if="index==0"
-                              class="w-[8.2rem] flex justify-center items-center text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer">
-                            <details class="dropdown ">
-                              <summary v-if="body[col.props]==0" class="m-1 btn w-[7rem] ">停止</summary>
-                              <summary v-if="body[col.props]==1"
-                                       class="m-1 btn w-[7rem] text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3]">运行
-                              </summary>
-                            </details>
-                          </td>
-
-                          <td v-if="index!=0"
-                              class="w-[8.2rem] text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
-                            {{ body[col.props] }}
-                          </td>
-                        </template>
-                      </tr>
-                    </div>
-                  </table>
-                </div>
-              </div>
-            </template>
-            <template v-else>
-              <div class="empty-content">
-                <table
-                    :style="{ width: (headerData.length - 1) * 100 + 'px', height: '10rem', overflow: 'auto' }"
-                >
-                  <thead class="table-header">
+            <div class="float-left h-[100%] bg-[#E8F6ED] shadow border rounded-2xl z-20">
+              <div class=" mt-3 w-[10rem]">
+                <table class=" py-4 ">
                   <tr>
-                    <th v-for="(item) in props.headerData" :key="item.title">{{ item.title }}</th>
-                  </tr>
-                  </thead>
+                    <th class="flex items-center justify-center gap-2   ">
 
-                  <van-empty class="empty-res" description="空空如也！"/>
+                    </th>
+                  </tr>
                 </table>
               </div>
-            </template>
+              <div
+                  ref="firstColLayer"
+                  class="w-full overflow-hidden "
+              >
+                <table class="mb-4 shadow  bg-[#E8F6ED] py-4">
+                  <tr v-for="(col, index) in firstCol" :key="index" class=" w-full  ">
+                    <td class="w-full  flex justify-center items-center   ">
+                      <div >
+                        {{ col }}
+
+                      </div>
+
+                    </td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+            <div class="right-div ">
+              <!--窗口-->
+              <div ref="firstRowLayer" :class="[AppGlobal.isDrawerState? 'w-[calc(82vw-15rem)]':'w-[82vw]']"
+                   class="right-div1 bg-[#F1F1F1] mt-3 ">
+                <table :style="{ width: `max(${(firstRow.length + 1) * 8.2}rem, 100%)` }" class=" flex items-start self-start ">
+                  <tr>
+                    <th v-for="(row, index) in firstRow" :key="index" class="first-row-style w-[8.2rem]  ">{{
+                        row
+                      }}
+                    </th>
+                  </tr>
+                </table>
+              </div>
+              <div
+                  ref="tableContainer" :class="[AppGlobal.isDrawerState? 'w-[calc(82vw-15rem)]':'w-[82vw]']"
+                  class="right-div2 flex items-start self-start"
+                  @scroll="tableScroll()"
+              >
+                <table  :style="{ width: `max(${(firstRow.length + 1) * 8.2}rem, 100%)` }" class="flex items-start  ">
+                  <div class="flex-col justify-center items-center">
+
+
+                    <tr v-for="(body,index) in tableBodyRows" class="flex justify-center items-center" :key="index">
+                      <template v-for="(col, i) in tableBodyCols" :key="col.props + i">
+                        <td v-if="index==0" class="w-[8.2rem] text-center border-r border-b flex justify-center items-center text-center ">
+                          <details class="dropdown ">
+                            <summary v-if="body[col.props]==0" class="m-1 btn w-[7rem] ">停止</summary>
+                            <summary v-if="body[col.props]==1"
+                                     class="m-1 btn w-[7rem] text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3]">自动
+                            </summary>
+                            <summary v-if="body[col.props]==2"
+                                     class="m-1 btn w-[7rem]  text-[#776B00] bg-[#FAF3B7] hover:bg-[#E5E0AA]">顺控
+                            </summary>
+
+                            <ul class="p-2 shadow-xl menu dropdown-content z-[1] bg-base-100 rounded-box w-[7rem] broder">
+                              <li class="text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2] rounded" @click="col.props=0"><a>停止</a>
+                              </li>
+                              <li class="text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] mt-2 rounded"
+                                  @click="col.props=1"><a>自动</a></li>
+                              <li class="text-[#776B00] bg-[#FAF3B7] hover:bg-[#E5E0AA] mt-2 rounded"
+                                  @click="col.props=2"><a>顺控</a></li>
+                            </ul>
+                          </details>
+                        </td>
+
+                        <td v-if="index!=0"
+                            class="w-[8.2rem] text-center border-r border-b hover:bg-[#FAFAFA] flex justify-center items-center text-center">
+                          {{ body[col.props] }}
+                        </td>
+                      </template>
+
+
+                    </tr>
+                  </div>
+                </table>
+              </div>
+            </div>
+
           </div>
         </div>
 
       </div>
+
+
     </div>
 
 
@@ -181,18 +167,16 @@ const initTableData = () => {
   initheaderData.forEach(item => headerData.push(item));  // 添加新的数据
 
   const deviceProperties = [
-    {name: '运行状态', prop: 'start_flag'},
-    {name: '运行时间', prop: 'running_time'},
-    {name: '发酵批号', prop: 'batchnum'},
-    {name: '温度', prop: 'timing_temp'},
-    {name: 'PH值', prop: 'timing_PH'},
-    {name: '溶氧', prop: 'timing_DO'},
-    {name: '转速', prop: 'timing_motor_speed'},
-    {name: '酸液泵', prop: 'acid_pump'},
-    {name: '碱液泵', prop: 'lye_pump'},
-    {name: '补料泵', prop: 'feed_pump'},
-    {name: '消泡剂泵', prop: 'defoamer_pump'}
-  ];
+    {name: '状态', prop: 'feed_flag'},
+    {name: '功能关联', prop: 'feed_DO_connect_flag'},  // 这里选择了补料关联氧含量标志位，因为它看起来是一个功能关联标志
+    {name: '补料模式', prop: 'feed_motor_flag'},  // 补料模式可能关联到补料泵开启标志位，但并不确定
+    {name: '补料周期', prop: 'feed_speed'},  // 假设周期代表补料速率
+    {name: '周期开度', prop: 'feed_ml'},  // 这里选择了补料泵目前补料量作为周期开度的可能匹配项
+    {name: '补料速度', prop: 'feed_speed'}
+  ]
+
+
+
 
   let resultItems: any[] = []; // 声明结果数组
   deviceProperties.map(deviceProp => {
@@ -216,23 +200,20 @@ const initTableData = () => {
       if (!DeviceManage.deviceList[index] || !DeviceManage.deviceList[index].nowdata) {
         console.error(`Error: Missing data for device at index ${index}.`);
         return;
-      } else if (deviceProp.prop == "running_time") {
-        const diffMilliseconds = new Date().getTime() - DeviceManage.deviceList[index].start_time.getTime(); // 获取时间差（毫秒）
-        const totalSeconds = Math.floor(diffMilliseconds / 1000); // 转换为秒
-        const hours = Math.floor(totalSeconds / 3600); // 获取小时数
-        const minutes = Math.floor((totalSeconds % 3600) / 60); // 获取剩余的分钟数
-        tableItem[header.props] = `${hours}h${minutes}m`;
-      } else if (deviceProp.prop == "batchnum") {
+      }  else if (deviceProp.prop == "alarm_h_limit") {
         tableItem[header.props] = DeviceManage.deviceList[index].batch_name;
-      } else if (deviceProp.prop == "acid_pump") {
+      } else if (deviceProp.prop == "alarm_l_limit") {
         tableItem[header.props] = 241;
-      } else if (deviceProp.prop == "lye_pump") {
+      } else if (deviceProp.prop == "control_dead") {
         tableItem[header.props] = 241;
-      } else if (deviceProp.prop == "feed_pump") {
+      } else if (deviceProp.prop == "control_cycle") {
         tableItem[header.props] = 241;
-      } else if (deviceProp.prop == "defoamer_pump") {
+      } else if (deviceProp.prop == "cycle_open") {
         tableItem[header.props] = 241;
-      } else {
+      } else if (deviceProp.prop == "temp_flag") {
+        tableItem[header.props] = 241;
+      }
+      else {
         try {
           const value = DeviceManage.deviceList[index].nowdata![deviceProp.prop];
           if (typeof value === 'number' && !Number.isInteger(value)) {
@@ -304,6 +285,7 @@ const tableBodyCols = computed(() => {
 
 
 // ______________________表格数据变量_______________________
+
 const headerData: HeaderItem[] = reactive([
   {title: '姓名', props: 'name'},
 
@@ -313,17 +295,17 @@ const headerData: HeaderItem[] = reactive([
 
 
 const tableData: any = reactive([
-  {name: '运行状态', prop: "state", F1: 30, F2: 31, F3: 32, F4: 33, F5: 34, F6: 35, F7: 36, F8: 37},
-  {name: '运行时间', prop: "time", F1: 25, F2: 26, F3: 27, F4: 28, F5: 29, F6: 30, F7: 31, F8: 32},
-  {name: '发酵批号', prop: "batchnum", F1: 28, F2: 29, F3: 30, F4: 31, F5: 32, F6: 33, F7: 34, F8: 35},
-  {name: '温度', prop: "temperature", F1: 30, F2: 31, F3: 32, F4: 33, F5: 34, F6: 35, F7: 36, F8: 37},
-  {name: 'PH值', prop: "phvalue", F1: 25, F2: 26, F3: 27, F4: 28, F5: 29, F6: 30, F7: 31, F8: 32},
-  {name: '溶氧', prop: "oxygen", F1: 28, F2: 29, F3: 30, F4: 31, F5: 32, F6: 33, F7: 34, F8: 35},
-  {name: '转速', prop: "rpm", F1: 30, F2: 31, F3: 32, F4: 33, F5: 34, F6: 35, F7: 36, F8: 37},
-  {name: '酸液泵', prop: "acidpump", F1: 25, F2: 26, F3: 27, F4: 28, F5: 29, F6: 30, F7: 31, F8: 32},
-  {name: '碱液泵', prop: "lyepump", F1: 28, F2: 29, F3: 30, F4: 31, F5: 32, F6: 33, F7: 34, F8: 35},
-  {name: '补料泵', prop: "feedpump", F1: 30, F2: 31, F3: 32, F4: 33, F5: 34, F6: 35, F7: 36, F8: 37},
-  {name: '消泡剂泵', prop: "defoamerpump", F1: 25, F2: 26, F3: 27, F4: 28, F5: 29, F6: 30, F7: 31, F8: 32},
+  {name: '状态', F1: 1, F2: 1, F3: 2, F4: 1, F5: 0, F6: 1, F7: 2, F8: 1},
+  {name: '测量值', F1: 25, F2: 26, F3: 27, F4: 28, F5: 29, F6: 30, F7: 31, F8: 32},
+  {name: '设定值', F1: 28, F2: 29, F3: 30, F4: 31, F5: 32, F6: 33, F7: 34, F8: 35},
+  {name: '控制周期', F1: 30, F2: 31, F3: 32, F4: 33, F5: 34, F6: 35, F7: 36, F8: 37},
+  {name: '周期开度', F1: 30, F2: 31, F3: 32, F4: 33, F5: 34, F6: 35, F7: 36, F8: 37},
+  {name: '比例P', F1: 25, F2: 26, F3: 27, F4: 28, F5: 29, F6: 30, F7: 31, F8: 32},
+  {name: '积分I', F1: 28, F2: 29, F3: 30, F4: 31, F5: 32, F6: 33, F7: 34, F8: 35},
+  {name: '微分D', F1: 30, F2: 31, F3: 32, F4: 33, F5: 34, F6: 35, F7: 36, F8: 37},
+  {name: '控制死区', F1: 28, F2: 29, F3: 30, F4: 31, F5: 32, F6: 33, F7: 34, F8: 35},
+  {name: '报警上限', F1: 25, F2: 26, F3: 27, F4: 28, F5: 29, F6: 30, F7: 31, F8: 32},
+  {name: '报警下限', F1: 25, F2: 26, F3: 27, F4: 28, F5: 29, F6: 30, F7: 31, F8: 32},
 ]);
 
 
@@ -334,6 +316,10 @@ const props = {
 
 
 // ______________________功能函数_______________________
+const closePop = () => {
+  PopupMangerState.updateIsShowPop(false)
+}
+
 const tableContainer: Ref<HTMLDivElement | null> = ref(null);
 const firstRowLayer: Ref<HTMLDivElement | null> = ref(null);
 const firstColLayer: Ref<HTMLDivElement | null> = ref(null);
@@ -552,13 +538,4 @@ td {
 }
 
 
-.fade-enter, .fade-leave-to /* .fade-leave-active in <2.1.8 */
-{
-  opacity: 0;
-}
-
 </style>
-
-
-
-

@@ -10,7 +10,8 @@ const state = () => {
         pageChance: 0,
         // 侧边展开
         isDrawerState: true,
-        selectedDeviceIndex:-1
+        selectedDeviceIndex:-1,
+
 
 
 
