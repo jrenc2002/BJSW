@@ -182,24 +182,25 @@
         <!--右侧控制栏-->
         <div class="h-full w-[20%]  p-1 flex-col gap-2.5 relative flex  items-start">
           <!--酸泵-->
-          <div v-if="stateManger.AcidPump" class=" w-[10rem] p-3 flex-col flex justify-start items-center
+          <transition name="fade">
+            <div v-if="stateManger.AcidPump" class=" w-[10rem] p-3 flex-col flex justify-start items-center
            bg-base-100 shadow-lg min-h-[10rem] rounded-xl  border border-[#874C53] top-[4vh] absolute left-[-12rem]  ">
-            <div>
-              <label class="block text font-medium leading-4 text-gray-900 mt-2">补料量</label>
-              <div class="mt-2">
-                <input
-                    class="block w-full pl-2 rounded-md border-[#AEAEAE] border py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"/>
+              <div>
+                <label class="block text font-medium leading-4 text-gray-900 mt-2">补料量</label>
+                <div class="mt-2">
+                  <input
+                      class="block w-full pl-2 rounded-md border-[#AEAEAE] border py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"/>
+                </div>
+              </div>
+              <div>
+                <label class="block text font-medium leading-4 text-gray-900 mt-2">补料速度</label>
+                <div class="mt-2">
+                  <input
+                      class="block w-full pl-2 rounded-md border-[#AEAEAE] border py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"/>
+                </div>
               </div>
             </div>
-            <div>
-              <label class="block text font-medium leading-4 text-gray-900 mt-2">补料速度</label>
-              <div class="mt-2">
-                <input
-                    class="block w-full pl-2 rounded-md border-[#AEAEAE] border py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"/>
-              </div>
-            </div>
-
-          </div>
+          </transition>
           <div class="card min-w-[10vw] bg-base-100 shadow-lg  border border-zinc-100 top-[6vh] absolute ">
             <div class="w-full h-[3rem] mb-2   bg-[#FAD6DA] flex items-center justify-center rounded-t-2xl ">
 
@@ -227,6 +228,7 @@
                   <span style="--value:53;"></span>
                 </span>
               </div>
+
               <div class="w-full  flex h-[3vh] flex items-center justify-center gap-2 ">
                 <div class=" min-w-[7rem] mr-1 text-left relative">补料量:</div>
                 <span class="countdown relative ">
@@ -236,24 +238,27 @@
             </div>
           </div>
           <!--碱泵-->
+          <transition name="fade">
           <div v-if="stateManger.LyePump" class=" w-[10rem] p-3 flex-col flex justify-start items-center
            bg-base-100 shadow-lg min-h-[10rem] rounded-xl  border border-[#A7C2E4] top-[21vh] absolute left-[-12rem]  ">
-            <div>
-              <label class="block text font-medium leading-4 text-gray-900 mt-2">补料量</label>
-              <div class="mt-2">
-                <input
-                    class="block w-full pl-2 rounded-md border-[#AEAEAE] border py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"/>
+
+              <div>
+                <label class="block text font-medium leading-4 text-gray-900 mt-2">补料量</label>
+                <div class="mt-2">
+                  <input
+                      class="block w-full pl-2 rounded-md border-[#AEAEAE] border py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"/>
+                </div>
               </div>
-            </div>
-            <div>
-              <label class="block text font-medium leading-4 text-gray-900 mt-2">补料速度</label>
-              <div class="mt-2">
-                <input
-                    class="block w-full pl-2 rounded-md border-[#AEAEAE] border py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"/>
+              <div>
+                <label class="block text font-medium leading-4 text-gray-900 mt-2">补料速度</label>
+                <div class="mt-2">
+                  <input
+                      class="block w-full pl-2 rounded-md border-[#AEAEAE] border py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"/>
+                </div>
               </div>
-            </div>
 
           </div>
+          </transition>
           <div class="card min-w-[10vw] bg-base-100 shadow-lg  border border-zinc-100 top-[21vh] absolute ">
             <div class="w-full h-[3rem]   mb-2   bg-[#E1EEFF] flex items-center justify-center rounded-t-2xl ">
               <div class="w-full text-center relative  h-[70%] flex items-center justify-center">
@@ -291,24 +296,27 @@
             </div>
           </div>
           <!--消泡泵-->
-          <div v-if="stateManger.DefoamerPump" class=" w-[10rem] p-3 flex-col flex justify-start items-center
+          <transition name="fade">
+            <div v-if="stateManger.DefoamerPump" class=" w-[10rem] p-3 flex-col flex justify-start items-center
            bg-base-100 shadow-lg min-h-[10rem] rounded-xl  border border-[#E4DDA4] top-[36vh] absolute left-[-12rem]  ">
-            <div>
-              <label class="block text font-medium leading-4 text-gray-900 mt-2">补料量</label>
-              <div class="mt-2">
-                <input
-                    class="block w-full pl-2 rounded-md border-[#AEAEAE] border py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"/>
-              </div>
-            </div>
-            <div>
-              <label class="block text font-medium leading-4 text-gray-900 mt-2">补料速度</label>
-              <div class="mt-2">
-                <input
-                    class="block w-full pl-2 rounded-md border-[#AEAEAE] border py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"/>
-              </div>
-            </div>
 
-          </div>
+                <div>
+                  <label class="block text font-medium leading-4 text-gray-900 mt-2">补料量</label>
+                  <div class="mt-2">
+                    <input
+                        class="block w-full pl-2 rounded-md border-[#AEAEAE] border py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"/>
+                  </div>
+                </div>
+                <div>
+                  <label class="block text font-medium leading-4 text-gray-900 mt-2">补料速度</label>
+                  <div class="mt-2">
+                    <input
+                        class="block w-full pl-2 rounded-md border-[#AEAEAE] border py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"/>
+                  </div>
+                </div>
+
+            </div>
+          </transition>
           <div class="card min-w-[10vw] bg-base-100 shadow-lg  border border-zinc-100 top-[36vh] absolute ">
 
             <div class="w-full h-[3rem]   mb-2   bg-[#FCF8DA] flex items-center justify-center rounded-t-2xl ">
@@ -459,3 +467,16 @@ onUnmounted(() => {
 });
 </script>
 
+<style lang="scss" scoped>
+
+.fade-enter-from{
+  transform-origin: right center;
+  transform: scale(0.5);
+  opacity: 0;
+}
+.fade-leave-to {
+  transform-origin: right center;
+  transform: scale(0.5);
+  opacity: 0;
+}
+</style>

@@ -103,6 +103,7 @@ interface Device {
 // TODO:设备管理要重构
 // 1.内容数据表项不全仍然缺乏
 // 2.各个部分的状态灯
+// 3.报警数据
 
 const state = (): {
     deviceList: Device[];

@@ -53,6 +53,9 @@ import SingleAnalyCharts from "@/components/SingleAnalyCharts.vue";
 import {useDeviceManage} from '@/store/DeviceManage'
 import {PopupType} from "@/store/PopupMangerState";
 import ParamAnalyCharts from "@/components/ParamAnalyCharts.vue";
+// TODO:完善曲线功能
+// TODO:单罐曲线:左边选择各个罐，组件数据传入子组件，子组件上面选择各项参数
+// TODO:单参数曲线:左边选择各个参数，组件数据传入子组件，子组件上面选择各项罐
 const DeviceManage = useDeviceManage()
 const Vibrationchartid = ref<any>(null);
 /* ——————————————————————————声明echart—————————————————————————— */

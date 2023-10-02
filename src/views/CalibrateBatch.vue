@@ -1,7 +1,7 @@
 <template>
   <div class="h-[calc(100%-1.5rem)] w-[calc(100%-1.5rem)]  ">
     <div class="h-[6%] self-stretch justify-center items-center gap-4 inline-flex ">
-      <div class="text-xl leading-10 text-zinc-900 text-2xl font-medium leading-loose left-4 relative">传感器校准</div>
+      <div class="text-xl leading-10 text-zinc-900 text-2xl font-medium leading-loose left-4 relative">批次校准</div>
     </div>
     <!--    内容-->
     <div class=" rounded-2xl bg-white w-[100%] h-[92%]  bottom-0  shadow  flex items-center justify-center  ">

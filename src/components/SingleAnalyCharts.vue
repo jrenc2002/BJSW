@@ -2,7 +2,7 @@
   <div :id="props.id" ref="rootRef" :style="{ width: '98%', height: '98%' }"></div>
 </template>
 <script lang="ts" name="checkReport" setup>
-import {defineProps, onMounted, ref} from 'vue';
+import {defineProps, onMounted, ref,onUnmounted} from 'vue';
 // Echarts 为init（dom元素后的类型）
 // EChartsOption 为 option 的类型
 import {ECharts, EChartsOption, init} from 'echarts';
@@ -13,10 +13,18 @@ const props = defineProps<{
 }>();
 
 const rootRef = ref();
+let charEch: ECharts;
 
 const line = () => {
   const charEle = document.getElementById(props.id) as HTMLElement;
-  const charEch: ECharts = init(charEle);
+
+  // Check if the DOM element exists
+  if (!charEle) return;
+  charEch = init(charEle);
+  // Set an empty option to show a basic frame
+  charEch.showLoading();
+
+
   const option: EChartsOption = {
     tooltip: {
       trigger: 'axis',
@@ -102,6 +110,8 @@ const line = () => {
   };
 
   charEch.setOption(option);
+  charEch.hideLoading();
+
   // 监听窗口变化 - 只刷新最后一个图表
   window.onresize = () => {
     charEch.resize();
@@ -112,6 +122,11 @@ const line = () => {
     charEch.resize();
   });
 };
+const handleResize = () => {
+  if (charEch) {
+    charEch.resize();
+  }
+};
 
 /* ——————————————————————————生命周期配置—————————————————————————— */
 onMounted(() => {
@@ -119,8 +134,11 @@ onMounted(() => {
   setTimeout(() => {
     line();
   }, 1500);
+  window.addEventListener('resize', handleResize);
 });
-
+onUnmounted(() => {
+  window.removeEventListener('resize', handleResize);
+});
 
 </script>
 <style lang="scss" scoped></style>
