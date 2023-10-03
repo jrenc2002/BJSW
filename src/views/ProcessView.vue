@@ -416,7 +416,7 @@
 <script setup>
 import {useProcessPopupMangerState} from "@/store/ProcessPopupMangerState";
 import {PopupType} from "@/store/PopupMangerState";
-import {onMounted, onUnmounted, reactive} from "vue";
+import {onMounted, onUnmounted, reactive, watch} from "vue";
 import ProcessPopupManger from "@/components/ProcessPopupManger.vue";
 
 const ProcessPopupMangerState = useProcessPopupMangerState()
@@ -430,6 +430,10 @@ const popProcessManager = (val) => {
   console.log(ProcessPopupMangerState.isShowPop)
   console.log(ProcessPopupMangerState.popupContent)
 }
+watch(() => ProcessPopupMangerState.isShowPop, (newValue, oldValue) => {
+  console.log("----------------sdfasfs")
+  if (newValue==false&&oldValue==true){    stateManger.FeedPump = false}
+});
 // 当按下键盘时的处理函数，ESC关闭弹窗
 const handleKeydownEsc = (event) => {
   if (event.keyCode === 27) { // 27 是 esc 键的 keyCode

@@ -27,10 +27,10 @@
             </template>
           </div>
           <div class="h-full w-[calc(100%-10rem)] flex justify-center items-center">
-                  <SingleAnalyCharts id="1" ref="Vibrationchartid" :data="data" v-if="pageSelect==1"
+                  <SingleAnalyCharts id="1" ref="Vibrationchartid" :data="data" v-show="pageSelect==1"
                                class=" w-full relative left-0 "
                   ></SingleAnalyCharts>
-                  <ParamAnalyCharts id="2" ref="Vibrationchartid" :data="data" v-else
+                  <ParamAnalyCharts id="2" ref="Vibrationchartid" :data="data" v-show="pageSelect==2"
                                     class=" w-full relative left-0 ">
                   </ParamAnalyCharts>
           </div>

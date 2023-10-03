@@ -65,8 +65,7 @@
                     @contextmenu.prevent="showMenu($event, team.id)"
                 >
                   <!-- 页面ID -->
-                  <button
-                      :class="[team.current ? 'text-green-600 border-green-600' : 'text-gray-400 border-gray-200  ', 'flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border text-[0.625rem] font-medium bg-white']">
+                  <button :class="[team.current ? 'text-green-600 border-green-600' : 'text-gray-400 border-gray-200  ', 'flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border text-[0.625rem] font-medium bg-white']">
                     {{
                       team.id
                     }}
@@ -84,7 +83,7 @@
                 </div>
 
                 <transition name="faderight">
-                  <DeviceContextMenu v-if="AppGlobal.selectedDeviceIndex== team.id" :index="team.id"/>
+                  <DeviceContextMenu v-if="AppGlobal.selectedDeviceIndex== team.id" :index="team.id" />
                 </transition>
 
               </li>

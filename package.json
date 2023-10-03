@@ -35,6 +35,7 @@
     "postcss-cli": "^10.1.0",
     "rebuild": "^0.1.2",
     "sqlite3": "^5.1.6",
+    "vant": "^4.7.0",
     "vue": "^3.2.13",
     "vue-class-component": "^8.0.0-0",
     "vue-infinite-scroll": "^2.0.2",

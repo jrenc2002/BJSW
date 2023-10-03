@@ -50,7 +50,7 @@ import NavigationView from '../components/NavigationView.vue';
 import {useDeviceManage} from '@/store/DeviceManage'
 import {useAppGlobal} from '@/store/AppGlobal'
 import {usePopupMangerState} from "@/store/PopupMangerState";
-import {initDeviceManage} from '@/api/index.js'
+import {initDeviceManage, sendData} from '@/api/index.js'
 const PopupMangerState = usePopupMangerState()
 const AppGlobal = useAppGlobal();
 const DeviceManage = useDeviceManage();
@@ -84,9 +84,9 @@ const updateWindowSize = () => {
 // 使用 Vue3 的生命周期钩子函数 onMounted，在组件挂载完成后添加窗口大小变化的监听事件
 onMounted(() => {
   // TODO 设备列表的Storage开关
-  const storedData = localStorage.getItem('deviceList');
-  const deviceList = storedData!=null ? JSON.parse(storedData) : [];
-  DeviceManage.updateDeviceList( deviceList);
+  // const storedData = localStorage.getItem('deviceList');
+  // const deviceList = storedData!=null ? JSON.parse(storedData) : [];
+  // DeviceManage.updateDeviceList( deviceList);
   console.log('___________________')
   window.addEventListener('resize', updateWindowSize);
   updateWindowSize();
@@ -96,7 +96,10 @@ onMounted(() => {
       }
   );
   initDeviceManage();
-
+//   循环
+//   setInterval(() => {
+//     sendData(0)
+//   }, 5000)
 
 
 

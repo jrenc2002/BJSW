@@ -6,10 +6,11 @@ const debug = false;
 const route = useRoute()
 const state = () => {
     return {
-        // 分页选择项
+        // 选择项-就是已经点击选择上的选项
         pageChance: 0,
         // 侧边展开
         isDrawerState: true,
+        // 触摸项-就是鼠标触摸到的选项
         selectedDeviceIndex:-1,
 
 

@@ -17,13 +17,12 @@
     <!--    表格栏-->
     <div class="  w-[100%] h-[92%]  bottom-0   items-center justify-center flex  ">
 
-
       <div class="rounded-2xl  h-[calc(100%-1.5rem)] w-[calc(100%-1.5rem)]  items-center justify-center flex     ">
         <div class=" w-full h-full ">
           <div class=" box-border overflow-x-hidden w-full h-full flex">
-<!--left-->
-            <div class="float-left h-[100%] bg-[#E8F6ED] shadow border rounded-2xl z-20">
-              <div class=" mt-3 w-[10rem]">
+          <!--left-->
+            <div class="float-left  bg-[#E8F6ED] shadow border rounded-tl-2xl z-20">
+              <div class="  w-[10rem]">
                 <table class=" py-4 ">
                   <tr>
                     <th class="flex items-center justify-center gap-2   ">
@@ -36,7 +35,7 @@
                   ref="firstColLayer"
                   class="w-full overflow-hidden "
               >
-                <table class="mb-4 shadow  bg-[#E8F6ED] py-4">
+                <table class="mb-4 shadow  bg-[#E8F6ED] py-4 rounded-bl-2xl">
                   <tr v-for="(col, index) in firstCol" :key="index" class=" w-full  ">
                     <td class="w-full  flex justify-center items-center   ">
                       <div >
@@ -49,12 +48,12 @@
                 </table>
               </div>
             </div>
-<!--        right-->
+            <!--right-->
             <div class="right-div ">
               <!--窗口-->
               <div ref="firstRowLayer"
-                   class="right-div1 bg-[#F1F1F1] mt-3 ">
-                <table :style="{ width: `max(${(firstRow.length + 1) * 8.2}rem, 100%)` }" class=" flex items-start self-start ">
+                   class="right-div1 bg-[#F1F1F1] rounded-tr-2xl">
+                <table  class=" flex items-start self-start w-[8.2rem]  rounded-br-2xl">
 
                   <tr>
                     <th v-for="(row, index) in firstRow" :key="index" class="first-row-style w-[8.2rem]  ">{{
@@ -66,12 +65,12 @@
               </div>
               <div
 
-                  ref="tableContainer" :class="[AppGlobal.isDrawerState? 'w-[calc(82vw-15rem)]':'w-[82vw]']"
+                  ref="tableContainer"
                   class="right-div2 flex items-start self-start"
                   @scroll="tableScroll()"
 
               >
-                <table  :style="{ width: `max(${(firstRow.length + 1) * 8.2}rem, 100%)` }" class="flex items-start  ">
+                <table   class="flex items-start w-[8.2rem]  ">
                   <div class="flex-col justify-center items-center">
                     <tr v-for="(body,index) in tableBodyRows" :key="index" class="flex justify-center items-center">
                       <template v-for="(col, i) in tableBodyCols" :key="col.props + i">
@@ -137,10 +136,11 @@ const AppGlobal = useAppGlobal();
 
 // ______________________表格数据处理_______________________
 watch(() => DeviceManage.deviceList, () => {
-  console.log(DeviceManage.deviceList)
   initTableData()
 }, {deep: true});
-
+watch(() => AppGlobal.pageChance, () => {
+  initTableData()
+}, {deep: true});
 
 // 读取表格数据
 const initTableData = () => {
@@ -154,7 +154,8 @@ const initTableData = () => {
   ];
 
   DeviceManage.deviceList.forEach(device => {
-    if (AppGlobal.selectedDeviceIndex!=device.id){
+    if (AppGlobal.pageChance!=device.id){
+
       return;
     }
     if (typeof device.name !== 'string' || typeof device.id !== 'number') {
@@ -199,14 +200,14 @@ const initTableData = () => {
       }
       index--;
 
-      if (DeviceManage.deviceList[index].nowdata == null) {
+      if (DeviceManage.deviceList[index].nowData == null) {
         tableItem[header.props] = 0;
 
         return;
       }
-      console.log(!DeviceManage.deviceList[index], !DeviceManage.deviceList[index].nowdata, DeviceManage.deviceList[index], index)
 
-      if (!DeviceManage.deviceList[index] || !DeviceManage.deviceList[index].nowdata) {
+
+      if (!DeviceManage.deviceList[index] || !DeviceManage.deviceList[index].nowData) {
         console.error(`Error: Missing data for device at index ${index}.`);
         return;
       }  else if (deviceProp.prop == "alarm_h_limit") {
@@ -224,7 +225,7 @@ const initTableData = () => {
       }
       else {
         try {
-          const value = DeviceManage.deviceList[index].nowdata![deviceProp.prop];
+          const value = DeviceManage.deviceList[index].nowData![deviceProp.prop];
           if (typeof value === 'number' && !Number.isInteger(value)) {
             tableItem[header.props] = parseFloat(value.toFixed(2));
           } else {
@@ -240,7 +241,7 @@ const initTableData = () => {
     resultItems.push(tableItem);
     return tableItem;
   });
-  console.log(resultItems)
+
   tableData.length = 0;  // 清空原始数据
   resultItems.forEach(item => tableData.push(item));  // 添加新的数据
 
@@ -339,28 +340,11 @@ const tableScroll = () => {
 }
 
 
-// 当按下键盘时的处理函数，ESC关闭弹窗
-const handleKeydown = (event) => {
-  if (event.keyCode === 27) { // 27 是 esc 键的 keyCode
-    console.log('ESC key was pressed!');
-    // 在此处执行你想要的操作
-    PopupMangerState.updateIsShowPop(false)
-  }
-};
-// 弹窗管理
-const popManager = (val: any) => {
-  if (val != '运行状态' && val != '运行时间' && val != '发酵批号') {
-    PopupMangerState.updateIsShowPop(true)
-    PopupMangerState.updatePopupContent(name_translation[val])
-    console.log(PopupMangerState.isShowPop)
-    console.log(PopupMangerState.popupContent)
-  }
-}
 // ______________________生命周期_______________________
 
 // 当组件挂载时添加事件监听器
 onMounted(() => {
-  window.addEventListener('keydown', handleKeydown);
+
 //   循环
 //   setInterval(() => {
 //     // sendData(0)
@@ -368,10 +352,7 @@ onMounted(() => {
   initTableData()
 });
 
-// 当组件卸载时移除事件监听器
-onUnmounted(() => {
-  window.removeEventListener('keydown', handleKeydown);
-});
+
 
 
 /* ______________________静态接口_____________________________ */
@@ -521,7 +502,7 @@ td {
 
 .right-div {
   float: left;
-  width: calc(100vw - 100px);
+
   margin-left: -1px;
 }
 

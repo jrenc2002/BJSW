@@ -152,7 +152,7 @@ const AppGlobal = useAppGlobal();
 
 // ______________________表格数据处理_______________________
 watch(() => DeviceManage.deviceList, () => {
-  console.log(DeviceManage.deviceList)
+
   initTableData()
 }, {deep: true});
 
@@ -206,14 +206,13 @@ const initTableData = () => {
       }
       index--;
 
-      if (DeviceManage.deviceList[index].nowdata == null) {
+      if (DeviceManage.deviceList[index].nowData == null) {
         tableItem[header.props] = 0;
 
         return;
       }
-      console.log(!DeviceManage.deviceList[index], !DeviceManage.deviceList[index].nowdata, DeviceManage.deviceList[index], index)
 
-      if (!DeviceManage.deviceList[index] || !DeviceManage.deviceList[index].nowdata) {
+      if (!DeviceManage.deviceList[index] || !DeviceManage.deviceList[index].nowData) {
         console.error(`Error: Missing data for device at index ${index}.`);
         return;
       } else if (deviceProp.prop == "running_time") {
@@ -234,7 +233,7 @@ const initTableData = () => {
         tableItem[header.props] = 241;
       } else {
         try {
-          const value = DeviceManage.deviceList[index].nowdata![deviceProp.prop];
+          const value = DeviceManage.deviceList[index].nowData![deviceProp.prop];
           if (typeof value === 'number' && !Number.isInteger(value)) {
             tableItem[header.props] = parseFloat(value.toFixed(2));
           } else {
@@ -250,7 +249,7 @@ const initTableData = () => {
     resultItems.push(tableItem);
     return tableItem;
   });
-  console.log(resultItems)
+
   tableData.length = 0;  // 清空原始数据
   resultItems.forEach(item => tableData.push(item));  // 添加新的数据
 
@@ -366,10 +365,7 @@ const popManager = (val: any) => {
 // 当组件挂载时添加事件监听器
 onMounted(() => {
   window.addEventListener('keydown', handleKeydown);
-//   循环
-//   setInterval(() => {
-//     // sendData(0)
-//   }, 10000)
+
   initTableData()
 });
 
