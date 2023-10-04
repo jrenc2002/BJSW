@@ -1,4 +1,5 @@
 import {defineStore} from "pinia";
+import {sendData} from "@/api";
 
 // 给开发人员使用的debug
 const debug = false;
@@ -133,30 +134,35 @@ interface deviceSet {
     acidPumpSpeed: number;
 
     /** 碱泵单步速度 */
-    basePumpSpeed: number;
+    lyePumpSpeed: number;
 
     /** 补料泵单步速度 */
     feedPumpSpeed: number;
 
     /** 消泡泵单步速度 */
     defoamerPumpSpeed: number;
+    tempState: number,
+    phState: number,
+    doState: number,
 }
+
 interface Device {
     id: number;
     name: string;
     deviceNum: string;
     ip: string;
     port?: number; // 这意味着 port 是可选的
-    state: boolean;
-    nowData: SetData|null;
+    state: number;
+    nowData: SetData | null;
     deviceSocket: any;
     start_time: any;
     batch_name: any;
-    alarm:boolean;
-    deviceSet:deviceSet|null
+    alarm: boolean;
+    deviceSet: deviceSet | null
 
 
 }
+
 // TODO:设备管理要重构
 // 1.内容数据表项不全仍然缺乏
 // 2.各个部分的状态灯
@@ -167,9 +173,13 @@ const state = (): {
 } => {
     return {
         deviceList: [
-            {id: 0, name: '设备A',  deviceNum: "BAB-00", ip: '192.168.1.3', port: 2000,
-                state: false, nowData: null, deviceSocket: null,start_time:null,batch_name:null,
-                alarm:false, deviceSet:{
+            {
+                id: 0, name: '设备A', deviceNum: "BAB-00", ip: '192.168.1.3', port: 2000,
+                state: 0, nowData: null, deviceSocket: null, start_time: null, batch_name: null,
+                alarm: false, deviceSet: {
+                    tempState: 0,
+                    phState: 0,
+                    doState: 0,
                     tempMaxWarn: 0,
                     tempMinWarn: 0,
                     phMaxWarn: 0,
@@ -177,7 +187,7 @@ const state = (): {
                     doMaxWarn: 0,
                     doMinWarn: 0,
                     acidPumpSpeed: 0,
-                    basePumpSpeed: 0,
+                    lyePumpSpeed: 0,
                     feedPumpSpeed: 0,
                     defoamerPumpSpeed: 0,
                 }
@@ -193,7 +203,7 @@ const state = (): {
 export const useDeviceManage = defineStore('DeviceManage', {
     state,
     actions: {
-        addDevice(ip: string, port: number,nameDevice:string){
+        addDevice(ip: string, port: number, nameDevice: string) {
             const newId = this.deviceList.length;
             const newDevice: Device = {
                 id: newId,
@@ -201,42 +211,83 @@ export const useDeviceManage = defineStore('DeviceManage', {
                 deviceNum: `BAB-${newId}`,
                 ip: ip,
                 port: port,
-                state: false,
+                state: 0,
                 nowData: null,
                 deviceSocket: null,
-                start_time:null,
-                batch_name:null,
-                alarm:false,
-                deviceSet:null
+                start_time: null,
+                batch_name: null,
+                alarm: false,
+                deviceSet: null
             };
 
             this.deviceList.push(newDevice);
             return newId;
         },
-        updateDeviceListData(index:number, newDeviceData: (SetData|number)) {
+        updateDeviceListData(index: number, newDeviceData: (SetData | number)) {
 
             if (typeof newDeviceData === 'number') {
-                if (newDeviceData===-1)console.log("Error")
+                if (newDeviceData === -1) console.log("Error")
                 return;
             }
             // 将数据的时间归为现在时间
             const currentDate = new Date();
 
-                if (newDeviceData) {  // 确保 nowData 不为 null
-                    newDeviceData.year = currentDate.getFullYear();     //年
-                    newDeviceData.mounth = currentDate.getMonth() + 1;  //月 (注意: getMonth() 返回的月份是从0开始的，所以需要+1)
-                    newDeviceData.day = currentDate.getDate();          //日
-                    newDeviceData.hour = currentDate.getHours();        //时
-                    newDeviceData.minute = currentDate.getMinutes();    //分
-                    newDeviceData.second = currentDate.getSeconds();    //秒
+            if (newDeviceData) {  // 确保 nowData 不为 null
+
+                newDeviceData.year = currentDate.getFullYear();     //年
+                newDeviceData.mounth = currentDate.getMonth() + 1;  //月 (注意: getMonth() 返回的月份是从0开始的，所以需要+1)
+                newDeviceData.day = currentDate.getDate();          //日
+                newDeviceData.hour = currentDate.getHours();        //时
+                newDeviceData.minute = currentDate.getMinutes();    //分
+                newDeviceData.second = currentDate.getSeconds();    //秒
+                /*——————————————————————————————对状态的处理———————————————————————————————————*/
+                // 未连接-未连接不会进行数据处理，在这里进行数据处理的只有已连接和报警两个选项
+                // 已连接-已连接的设备如果没有修改通讯标志进行修改
+                if (newDeviceData.communicate_flag === 0) {
+                    const data = {
+                        communicate_flag: 1,
+
+                    }
+                    console.log("发送数据", data);
+                    this.deviceList[index].deviceSocket.send(JSON.stringify(data));
                 }
+                // 运行中-刚开始运行，状态还没变过来
+                if (this.deviceList[index].state == 1 && newDeviceData.communicate_flag === 1 && newDeviceData.start_flag === 1) {
+                    this.deviceList[index].state = 2
+                }
+                // 报警
+                if (this.deviceList && this.deviceList[index] && this.deviceList[index].deviceSet != null) {
+                    // 使用类型断言
+                    const currentDeviceSet = this.deviceList[index].deviceSet as deviceSet;
+                    if (!(newDeviceData.timing_temp >= currentDeviceSet.tempMinWarn &&
+                        newDeviceData.timing_temp <= currentDeviceSet.tempMaxWarn)) {
+                        // ...您的代码
+                        this.deviceList[index].state = 3;
+                        currentDeviceSet.tempState = 1;
+                    }
+                    if (!(newDeviceData.timing_PH >= currentDeviceSet.phMinWarn &&
+                        newDeviceData.timing_PH <= currentDeviceSet.phMaxWarn)) {
+                        // ...您的代码
+                        this.deviceList[index].state = 3;
+                        currentDeviceSet.phState = 1;
+                    }
+                    if (!(newDeviceData.timing_DO >= currentDeviceSet.doMinWarn &&
+                        newDeviceData.timing_DO <= currentDeviceSet.doMaxWarn)) {
+                        // ...您的代码
+                        this.deviceList[index].state = 3;
+                        currentDeviceSet.doState = 1;
+                    }
+                }
+
+
+            }
 
             this.deviceList[index].nowData = newDeviceData;
 
 
         },
         updateDeviceList(newDeviceList: Device[]) {
-            this.deviceList= newDeviceList;
+            this.deviceList = newDeviceList;
         }
 
 

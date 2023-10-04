@@ -60,7 +60,6 @@
               <div class="right-div ">
                 <!--窗口-->
 
-
                 <div ref="firstRowLayer" :class="[AppGlobal.isDrawerState? 'w-[calc(82vw-15rem)]':'w-[82vw]']"
                      class="right-div1 bg-[#F1F1F1] mt-3 ">
                   <table :style="{ width: `max(${(firstRow.length + 1) * 8.2}rem, 100%)` }"
@@ -80,7 +79,6 @@
                     ref="tableContainer" :class="[AppGlobal.isDrawerState? 'w-[calc(82vw-15rem)]':'w-[82vw]']"
                     class="right-div2 flex items-start self-start"
                     @scroll="tableScroll()"
-
                 >
                   <table :style="{ width: `max(${(firstRow.length + 1) * 8.2}rem, 100%)` }" class="flex items-start  ">
                     <div class="flex-col justify-center items-center">
@@ -90,9 +88,15 @@
                           <td v-if="index==0"
                               class="w-[8.2rem] flex justify-center items-center text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer">
                             <details class="dropdown ">
-                              <summary v-if="body[col.props]==0" class="m-1 btn w-[7rem] ">停止</summary>
-                              <summary v-if="body[col.props]==1"
-                                       class="m-1 btn w-[7rem] text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3]">运行
+                              <summary v-if="body[col.props]===0" class="m-1 btn w-[7rem] ">未连接</summary>
+                              <summary v-if="body[col.props]===1"
+                                       class="m-1 btn w-[7rem] text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3]">已连接
+                              </summary>
+                              <summary v-if="body[col.props]===2"
+                                       class="m-1 btn w-[7rem] text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3]">运行中
+                              </summary>
+                              <summary v-if="body[col.props]===3"
+                                       class="m-1 btn w-[7rem] text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3]">报警
                               </summary>
                             </details>
                           </td>
@@ -173,7 +177,6 @@ const initTableData = () => {
       console.error("Error: Invalid device entry found in DeviceManage.deviceList.");
       return;
     }
-
     initheaderData.push({title: device.name, props: 'F' + (device.id + 1)});
   });
 
@@ -201,37 +204,52 @@ const initTableData = () => {
       prop: deviceProp.prop
     };
     initheaderData.forEach((header, index) => {
+      // 跳过第一行，第一行可以忽略
       if (index == 0) {
         return;
       }
       index--;
-
+      // 在设备未连接的时候做数据处理
       if (DeviceManage.deviceList[index].nowData == null) {
         tableItem[header.props] = 0;
 
         return;
       }
-
+      // 如果连接上来，开始进行数据处理
       if (!DeviceManage.deviceList[index] || !DeviceManage.deviceList[index].nowData) {
         console.error(`Error: Missing data for device at index ${index}.`);
         return;
-      } else if (deviceProp.prop == "running_time") {
+      }
+      // 运行时间的处理
+      else if (deviceProp.prop == "running_time") {
         const diffMilliseconds = new Date().getTime() - DeviceManage.deviceList[index].start_time.getTime(); // 获取时间差（毫秒）
         const totalSeconds = Math.floor(diffMilliseconds / 1000); // 转换为秒
         const hours = Math.floor(totalSeconds / 3600); // 获取小时数
         const minutes = Math.floor((totalSeconds % 3600) / 60); // 获取剩余的分钟数
         tableItem[header.props] = `${hours}h${minutes}m`;
-      } else if (deviceProp.prop == "batchnum") {
+      }
+      // 批次名
+      else if (deviceProp.prop == "batchnum") {
         tableItem[header.props] = DeviceManage.deviceList[index].batch_name;
-      } else if (deviceProp.prop == "acid_pump") {
+      }
+      // 酸泵
+      else if (deviceProp.prop == "acid_pump") {
         tableItem[header.props] = 241;
-      } else if (deviceProp.prop == "lye_pump") {
+      }
+      // 碱泵
+      else if (deviceProp.prop == "lye_pump") {
         tableItem[header.props] = 241;
-      } else if (deviceProp.prop == "feed_pump") {
+      }
+      // 食物泵
+      else if (deviceProp.prop == "feed_pump") {
         tableItem[header.props] = 241;
-      } else if (deviceProp.prop == "defoamer_pump") {
+      }
+      // 消泡泵
+      else if (deviceProp.prop == "defoamer_pump") {
         tableItem[header.props] = 241;
-      } else {
+      }
+      // 转速读取-溶氧读取-PH值读取-温度读取
+      else {
         try {
           const value = DeviceManage.deviceList[index].nowData![deviceProp.prop];
           if (typeof value === 'number' && !Number.isInteger(value)) {
@@ -312,17 +330,7 @@ const headerData: HeaderItem[] = reactive([
 
 
 const tableData: any = reactive([
-  {name: '运行状态', prop: "state", F1: 30, F2: 31, F3: 32, F4: 33, F5: 34, F6: 35, F7: 36, F8: 37},
-  {name: '运行时间', prop: "time", F1: 25, F2: 26, F3: 27, F4: 28, F5: 29, F6: 30, F7: 31, F8: 32},
-  {name: '发酵批号', prop: "batchnum", F1: 28, F2: 29, F3: 30, F4: 31, F5: 32, F6: 33, F7: 34, F8: 35},
-  {name: '温度', prop: "temperature", F1: 30, F2: 31, F3: 32, F4: 33, F5: 34, F6: 35, F7: 36, F8: 37},
-  {name: 'PH值', prop: "phvalue", F1: 25, F2: 26, F3: 27, F4: 28, F5: 29, F6: 30, F7: 31, F8: 32},
-  {name: '溶氧', prop: "oxygen", F1: 28, F2: 29, F3: 30, F4: 31, F5: 32, F6: 33, F7: 34, F8: 35},
-  {name: '转速', prop: "rpm", F1: 30, F2: 31, F3: 32, F4: 33, F5: 34, F6: 35, F7: 36, F8: 37},
-  {name: '酸液泵', prop: "acidpump", F1: 25, F2: 26, F3: 27, F4: 28, F5: 29, F6: 30, F7: 31, F8: 32},
-  {name: '碱液泵', prop: "lyepump", F1: 28, F2: 29, F3: 30, F4: 31, F5: 32, F6: 33, F7: 34, F8: 35},
-  {name: '补料泵', prop: "feedpump", F1: 30, F2: 31, F3: 32, F4: 33, F5: 34, F6: 35, F7: 36, F8: 37},
-  {name: '消泡剂泵', prop: "defoamerpump", F1: 25, F2: 26, F3: 27, F4: 28, F5: 29, F6: 30, F7: 31, F8: 32},
+
 ]);
 
 

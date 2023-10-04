@@ -27,7 +27,7 @@ export const initDeviceManage = () => {
 
         // 对每一个设备进行尝试连接，如果连接成功就更新设备状态-成功，如果连接失败就更新设备状态-失败
         device.on('connect', () => {
-            item.state = true;
+            item.state = 1;
             item.deviceSocket = device;
             console.log(item.ip, ':', item.port, '连接成功');
             // todo debug测试记得
@@ -36,14 +36,14 @@ export const initDeviceManage = () => {
 
         // 假设你的设备API有一个'error'或'fail'事件来处理连接失败的情况
         device.on('error', (err) => {
-            item.state = false;
+            item.state = 0;
             item.deviceSocket = null;
 
             console.log(item.ip, ':', item.port, '连接失败');
         });
         // 连接断开，更新状态
         device.on('disconnect', () => {
-            item.state = false;
+            item.state = 0;
             item.deviceSocket = null;
 
             console.log(item.ip, ':', item.port, '连接失败');
@@ -82,22 +82,21 @@ export const addDevice = (ip, port, name) => {
     };
 
     device.on('connect', () => {
-        setDeviceStatus(true, device);
+        setDeviceStatus(1, device);
         console.log(`${deviceInfo.ip}:${deviceInfo.port} 连接成功`);
     });
 
     device.on('error', (err) => {
-        setDeviceStatus(false);
+        setDeviceStatus(0);
         console.log(`${deviceInfo.ip}:${deviceInfo.port} 连接失败，错误信息:`, err);
     });
 
     device.on('disconnect', () => {
-        setDeviceStatus(false);
+        setDeviceStatus(0);
         console.log(`${deviceInfo.ip}:${deviceInfo.port} 连接断开`);
     });
 
     device.onReceive((data) => {
-        console.log(`Data from device ${index}:`, data);
         DeviceManage.updateDeviceListData(index, onDataReceived(data));
     });
 
@@ -148,7 +147,7 @@ export const closeDevice = (index) => {
             device.deviceSocket.close();
             device.deviceSocket = null;
         }
-        device.state = false;
+        device.state = 0;
         console.log(`设备 ${index} 已成功关闭`);
     } catch (error) {
         console.error(`关闭设备 ${index} 时出错:`, error);
@@ -174,22 +173,21 @@ export const openDevice = (index) => {
     };
 
     device.on('connect', () => {
-        setDeviceStatus(true, device);
+        setDeviceStatus(1, device);
         console.log(`${ip}:${port} 连接成功`);
     });
 
     device.on('error', () => {
-        setDeviceStatus(false);
+        setDeviceStatus(0);
         console.log(`${ip}:${port} 连接失败`);
     });
 
     device.on('disconnect', () => {
-        setDeviceStatus(false);
+        setDeviceStatus(0);
         console.log(`${ip}:${port} 连接断开`);
     });
 
     device.onReceive((data) => {
-        console.log(`Data from device ${index}:`, data);
         DeviceManage.updateDeviceListData(index, onDataReceived(data));
     });
 }

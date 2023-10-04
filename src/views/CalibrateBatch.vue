@@ -178,9 +178,12 @@
                   class="w-[63px] h-full  relative flex items-center justify-center text-black text-base font-normal font-['Inter'] leading-none">
                 酸泵
               </div>
-              <button :class="[!CalibrationPumpSet.acidPumpKind?'bg-[#DAF0E4] hover:bg-[#C3DBCE]':'bg-[#FAF3B7]']"
-                      class="w-[74px] h-full  relative flex items-center justify-center  rounded-[5px] shadow backdrop-blur-sm"
-                      @click="CalibrationPumpSet.acidPumpKind=!CalibrationPumpSet.acidPumpKind">
+              <!--是否开始-->
+              <button
+                  v-if="DeviceManage.deviceList[AppGlobal.pageChance].nowData==null||(DeviceManage.deviceList[AppGlobal.pageChance].nowData!=null&&DeviceManage.deviceList[AppGlobal.pageChance].nowData.acid_pump_calibration_flag==0)"
+                  :class="[!CalibrationPumpSet.acidPumpKind?'bg-[#DAF0E4] hover:bg-[#C3DBCE]':'bg-[#FAF3B7]']"
+                  class="w-[74px] h-full  relative flex items-center justify-center  rounded-[5px] shadow backdrop-blur-sm"
+                  @click="CalibrationPumpSet.acidPumpKind=!CalibrationPumpSet.acidPumpKind;CalibrationPumpSet.acidTime=null;CalibrationPumpSet.acidVolume=null;">
                 <div v-if="!CalibrationPumpSet.acidPumpKind"
                      class="w-[51px] h-4  relative text-center text-green-700 text-[13px] font-normal font-['Inter'] leading-none">
                   定体积
@@ -191,32 +194,81 @@
                 </div>
 
               </button>
-              <!--定体积-->
-              <input v-if="!CalibrationPumpSet.acidPumpKind"  class="w-[6rem] h-full  relative bg-white bg-opacity-80 rounded-[5px] border border-zinc-400 pl-2"
-                     v-model="CalibrationPumpSet.acidVolume" placeholder="体积"/>
+              <button
+                  v-if="DeviceManage.deviceList[AppGlobal.pageChance].nowData!=null&&DeviceManage.deviceList[AppGlobal.pageChance].nowData.acid_pump_calibration_flag==1"
+                  :class="[!CalibrationPumpSet.acidPumpKind?'bg-[#DAF0E4] hover:bg-[#C3DBCE]':'bg-[#FAF3B7]']"
+                  class="w-[74px] h-full  relative flex items-center justify-center  rounded-[5px] shadow backdrop-blur-sm"
+              >
+                <div v-if="!CalibrationPumpSet.acidPumpKind"
+                     class="w-[51px] h-4  relative text-center text-green-700 text-[13px] font-normal font-['Inter'] leading-none">
+                  定体积
+                </div>
+                <div v-if="CalibrationPumpSet.acidPumpKind"
+                     class="w-[51px] h-4  relative text-center text-[#8A8343] text-[13px] font-normal font-['Inter'] leading-none">
+                  定时间
+                </div>
 
-              <!--定时间-->
-              <input  v-if="(CalibrationPumpSet.acidPumpKind&&DeviceManage.deviceList[AppGlobal.pageChance].nowData==null)||(!CalibrationPumpSet.acidPumpKind&&DeviceManage.deviceList[AppGlobal.pageChance].nowData!==null&&DeviceManage.deviceList[AppGlobal.pageChance].nowData.acid_pump_calibration_flag ==0)"  class="input input-bordered w-[6rem] h-full  relative bg-white bg-opacity-80 rounded-[5px] border border-zinc-400 pl-2"
-                      v-model="CalibrationPumpSet.acidVolume" placeholder="体积" disabled/>
-              <input  v-if="(CalibrationPumpSet.acidPumpKind&&DeviceManage.deviceList[AppGlobal.pageChance].nowData!==null&&DeviceManage.deviceList[AppGlobal.pageChance].nowData.acid_pump_calibration_flag ==1)"  class="  w-[6rem] h-full  relative bg-white bg-opacity-80 rounded-[5px] border border-zinc-400 pl-2"
-                        placeholder="体积"/>
-              <div v-if="DeviceManage.deviceList[AppGlobal.pageChance].nowData==null||(DeviceManage.deviceList[AppGlobal.pageChance].nowData!==null&&DeviceManage.deviceList[AppGlobal.pageChance].nowData.acid_pump_calibration_flag ==0)" @click="AcidPumpCalibrate('Begin')" class="w-[3rem] h-full  relative bg-[#83BA9B] rounded-[18px] hover:bg-[#668F78] cursor-pointer">
+              </button>
+              <!--体积输入框-定体积-->
+              <input v-if="!CalibrationPumpSet.acidPumpKind"
+                     v-model="CalibrationPumpSet.acidVolume"
+                     class="w-[6rem] h-full  relative bg-white bg-opacity-80 rounded-[5px] border border-zinc-400 pl-2"
+                     placeholder="体积/ml"/>
+
+              <!--体积输入框-定时间-->
+              <input v-if="(CalibrationPumpSet.acidPumpKind&&DeviceManage.deviceList[AppGlobal.pageChance].nowData==null)||(CalibrationPumpSet.acidPumpKind&&DeviceManage.deviceList[AppGlobal.pageChance].nowData!==null
+              &&CalibrationPumpSet.isAcidFinish==false)"
+                     v-model="CalibrationPumpSet.acidVolume"
+                     class="input input-bordered w-[6rem] h-full  relative bg-white bg-opacity-80 rounded-[5px] border border-zinc-400 pl-2"
+                     disabled placeholder="体积/ml"/>
+              <input
+                  v-if="(CalibrationPumpSet.acidPumpKind&&DeviceManage.deviceList[AppGlobal.pageChance].nowData!==null&&CalibrationPumpSet.isAcidFinish==true)"
+                  v-model="CalibrationPumpSet.acidVolume"
+                  class="  w-[6rem] h-full  relative bg-white bg-opacity-80 rounded-[5px] border border-zinc-400 pl-2"
+                  placeholder="体积/ml"/>
+
+              <!--对号-->
+              <div v-if="DeviceManage.deviceList[AppGlobal.pageChance].nowData==null||(DeviceManage.deviceList[AppGlobal.pageChance].nowData!==null&&DeviceManage.deviceList[AppGlobal.pageChance].nowData.acid_pump_calibration_flag ==0)
+              &&CalibrationPumpSet.isAcidFinish==false"
+                   class="w-[3rem] h-full  relative bg-[#83BA9B] rounded-[18px] hover:bg-[#668F78] cursor-pointer"
+                   @click="AcidPumpCalibrate('Begin')">
                 <svg fill="none" height="30" viewBox="0 0 50 30" width="50" xmlns="http://www.w3.org/2000/svg">
                   <path d="M23 21L17 14.4203L17.9427 13.3865L23 18.9318L32.0573 9L33 10.0338L23 21Z" fill="white"/>
                 </svg>
               </div>
-              <div v-if="DeviceManage.deviceList[AppGlobal.pageChance].nowData!==null&&DeviceManage.deviceList[AppGlobal.pageChance].nowData.acid_pump_calibration_flag ==1"
-                   @click="AcidPumpCalibrate('Finish')" class="w-[3rem] h-full  relative bg-[#83BA9B] rounded-[18px] hover:bg-[#668F78] cursor-pointer">
+              <div
+                  v-if="(CalibrationPumpSet.acidPumpKind&&DeviceManage.deviceList[AppGlobal.pageChance].nowData!==null&&DeviceManage.deviceList[AppGlobal.pageChance].nowData.acid_pump_calibration_flag ==1)"
+                  class="w-[3rem] h-full  relative bg-[#83BA9B] rounded-[18px] hover:bg-[#668F78] cursor-pointer"
+                  @click="AcidPumpCalibrate('Next')">
                 <svg fill="none" height="30" viewBox="0 0 50 30" width="50" xmlns="http://www.w3.org/2000/svg">
                   <path d="M23 21L17 14.4203L17.9427 13.3865L23 18.9318L32.0573 9L33 10.0338L23 21Z" fill="white"/>
                 </svg>
               </div>
-              <input v-if="CalibrationPumpSet.acidPumpKind" class="w-[6rem] h-full  relative bg-white bg-opacity-80 rounded-[5px] border border-zinc-400 pl-2"
-                     placeholder="时间"/>
-              <input v-if="!CalibrationPumpSet.acidPumpKind" class="input input-bordered  w-[6rem] h-full  relative bg-white bg-opacity-80 rounded-[5px] border border-zinc-400 pl-2"
-                     disabled  placeholder="时间"/>
-              <div class="w-[6rem] h-full  flex items-center relative bg-white bg-opacity-80 rounded-[5px] border border-zinc-400 pl-2"
-                     >{{DeviceManage.deviceList[AppGlobal.pageChance]!=null&& DeviceManage.deviceList[AppGlobal.pageChance].deviceSet.acidPumpSpeed==0?'标定结果':DeviceManage.deviceList[AppGlobal.pageChance].deviceSet.acidPumpSpeed }}</div>
+              <!--完成命令-在定体积完成时Flag=1，定时间为Flag=0-->
+              <div v-if="(!CalibrationPumpSet.acidPumpKind&&DeviceManage.deviceList[AppGlobal.pageChance].nowData!==null&&DeviceManage.deviceList[AppGlobal.pageChance].nowData.acid_pump_calibration_flag ==1)
+              ||(CalibrationPumpSet.acidPumpKind&&DeviceManage.deviceList[AppGlobal.pageChance].nowData!==null&&DeviceManage.deviceList[AppGlobal.pageChance].nowData.acid_pump_calibration_flag ==0&&CalibrationPumpSet.isAcidFinish==true)"
+                   class="w-[3rem] h-full  relative bg-[#83BA9B] rounded-[18px] hover:bg-[#668F78] cursor-pointer"
+                   @click="AcidPumpCalibrate('Finish')">
+                <svg fill="none" height="30" viewBox="0 0 50 30" width="50" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M23 21L17 14.4203L17.9427 13.3865L23 18.9318L32.0573 9L33 10.0338L23 21Z" fill="white"/>
+                </svg>
+              </div>
+
+              <!--时间输入框-->
+              <input v-if="CalibrationPumpSet.acidPumpKind"
+                     v-model="CalibrationPumpSet.acidTime"
+                     class="w-[6rem] h-full  relative bg-white bg-opacity-80 rounded-[5px] border border-zinc-400 pl-2"
+                     placeholder="时间/s"/>
+              <input v-if="!CalibrationPumpSet.acidPumpKind"
+                     v-model="CalibrationPumpSet.acidTime"
+                     class="input input-bordered  w-[6rem] h-full  relative bg-white bg-opacity-80 rounded-[5px] border border-zinc-400 pl-2"
+                     disabled placeholder="时间/s"/>
+              <div
+                  class="w-[6rem] h-full  flex items-center relative bg-white bg-opacity-80 rounded-[5px] border border-zinc-400 pl-2"
+              >{{
+                  DeviceManage.deviceList[AppGlobal.pageChance] != null && DeviceManage.deviceList[AppGlobal.pageChance].deviceSet.acidPumpSpeed == 0 ? '标定结果' : DeviceManage.deviceList[AppGlobal.pageChance].deviceSet.acidPumpSpeed
+                }}
+              </div>
             </div>
           </div>
           <div class="w-full h-[4rem] relative  flex items-center justify-center ">
@@ -225,10 +277,12 @@
                   class="w-[63px] h-full  relative flex items-center justify-center text-black text-base font-normal font-['Inter'] leading-none">
                 碱泵
               </div>
-
-              <button :class="[!CalibrationPumpSet.lyePumpKind?'bg-[#DAF0E4] hover:bg-[#C3DBCE]':'bg-[#FAF3B7]']"
-                      class="w-[74px] h-full  relative flex items-center justify-center  rounded-[5px] shadow backdrop-blur-sm"
-                      @click="CalibrationPumpSet.lyePumpKind=!CalibrationPumpSet.lyePumpKind">
+              <!--是否开始-->
+              <button
+                  v-if="DeviceManage.deviceList[AppGlobal.pageChance].nowData==null||(DeviceManage.deviceList[AppGlobal.pageChance].nowData!=null&&DeviceManage.deviceList[AppGlobal.pageChance].nowData.lye_pump_calibration_flag==0)"
+                  :class="[!CalibrationPumpSet.lyePumpKind?'bg-[#DAF0E4] hover:bg-[#C3DBCE]':'bg-[#FAF3B7]']"
+                  class="w-[74px] h-full  relative flex items-center justify-center  rounded-[5px] shadow backdrop-blur-sm"
+                  @click="CalibrationPumpSet.lyePumpKind=!CalibrationPumpSet.lyePumpKind;CalibrationPumpSet.lyeTime=null;CalibrationPumpSet.lyeVolume=null;">
                 <div v-if="!CalibrationPumpSet.lyePumpKind"
                      class="w-[51px] h-4  relative text-center text-green-700 text-[13px] font-normal font-['Inter'] leading-none">
                   定体积
@@ -239,18 +293,81 @@
                 </div>
 
               </button>
-              <input class="w-[6rem] h-full  relative bg-white bg-opacity-80 rounded-[5px] border border-zinc-400 pl-2"
-                     placeholder="体积"/>
+              <button
+                  v-if="DeviceManage.deviceList[AppGlobal.pageChance].nowData!=null&&DeviceManage.deviceList[AppGlobal.pageChance].nowData.lye_pump_calibration_flag==1"
+                  :class="[!CalibrationPumpSet.lyePumpKind?'bg-[#DAF0E4] hover:bg-[#C3DBCE]':'bg-[#FAF3B7]']"
+                  class="w-[74px] h-full  relative flex items-center justify-center  rounded-[5px] shadow backdrop-blur-sm"
+              >
+                <div v-if="!CalibrationPumpSet.lyePumpKind"
+                     class="w-[51px] h-4  relative text-center text-green-700 text-[13px] font-normal font-['Inter'] leading-none">
+                  定体积
+                </div>
+                <div v-if="CalibrationPumpSet.lyePumpKind"
+                     class="w-[51px] h-4  relative text-center text-[#8A8343] text-[13px] font-normal font-['Inter'] leading-none">
+                  定时间
+                </div>
 
-              <div @click.stop="AcidPumpCalibrate('Begin')" class="w-[3rem] h-full  relative bg-[#83BA9B] rounded-[18px] hover:bg-[#668F78] cursor-pointer">
+              </button>
+              <!--体积输入框-定体积-->
+              <input v-if="!CalibrationPumpSet.lyePumpKind"
+                     v-model="CalibrationPumpSet.lyeVolume"
+                     class="w-[6rem] h-full  relative bg-white bg-opacity-80 rounded-[5px] border border-zinc-400 pl-2"
+                     placeholder="体积/ml"/>
+
+              <!--体积输入框-定时间-->
+              <input v-if="(CalibrationPumpSet.lyePumpKind&&DeviceManage.deviceList[AppGlobal.pageChance].nowData==null)||(CalibrationPumpSet.lyePumpKind&&DeviceManage.deviceList[AppGlobal.pageChance].nowData!==null
+              &&CalibrationPumpSet.isLyeFinish==false)"
+                     v-model="CalibrationPumpSet.lyeVolume"
+                     class="input input-bordered w-[6rem] h-full  relative bg-white bg-opacity-80 rounded-[5px] border border-zinc-400 pl-2"
+                     disabled placeholder="体积/ml"/>
+              <input
+                  v-if="(CalibrationPumpSet.lyePumpKind&&DeviceManage.deviceList[AppGlobal.pageChance].nowData!==null&&CalibrationPumpSet.isLyeFinish==true)"
+                  v-model="CalibrationPumpSet.lyeVolume"
+                  class="  w-[6rem] h-full  relative bg-white bg-opacity-80 rounded-[5px] border border-zinc-400 pl-2"
+                  placeholder="体积/ml"/>
+
+              <!--对号-->
+              <div v-if="DeviceManage.deviceList[AppGlobal.pageChance].nowData==null||(DeviceManage.deviceList[AppGlobal.pageChance].nowData!==null&&DeviceManage.deviceList[AppGlobal.pageChance].nowData.lye_pump_calibration_flag ==0)
+              &&CalibrationPumpSet.isLyeFinish==false"
+                   class="w-[3rem] h-full  relative bg-[#83BA9B] rounded-[18px] hover:bg-[#668F78] cursor-pointer"
+                   @click="LyePumpCalibrate('Begin')">
                 <svg fill="none" height="30" viewBox="0 0 50 30" width="50" xmlns="http://www.w3.org/2000/svg">
                   <path d="M23 21L17 14.4203L17.9427 13.3865L23 18.9318L32.0573 9L33 10.0338L23 21Z" fill="white"/>
                 </svg>
               </div>
-              <input class="w-[6rem] h-full  relative bg-white bg-opacity-80 rounded-[5px] border border-zinc-400 pl-2"
-                     placeholder="时间"/>
-              <input class="w-[6rem] h-full  relative bg-white bg-opacity-80 rounded-[5px] border border-zinc-400 pl-2"
-                     placeholder="标定结果"/>
+              <div
+                  v-if="(CalibrationPumpSet.lyePumpKind&&DeviceManage.deviceList[AppGlobal.pageChance].nowData!==null&&DeviceManage.deviceList[AppGlobal.pageChance].nowData.lye_pump_calibration_flag ==1)"
+                  class="w-[3rem] h-full  relative bg-[#83BA9B] rounded-[18px] hover:bg-[#668F78] cursor-pointer"
+                  @click="LyePumpCalibrate('Next')">
+                <svg fill="none" height="30" viewBox="0 0 50 30" width="50" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M23 21L17 14.4203L17.9427 13.3865L23 18.9318L32.0573 9L33 10.0338L23 21Z" fill="white"/>
+                </svg>
+              </div>
+              <!--完成命令-在定体积完成时Flag=1，定时间为Flag=0-->
+              <div v-if="(!CalibrationPumpSet.lyePumpKind&&DeviceManage.deviceList[AppGlobal.pageChance].nowData!==null&&DeviceManage.deviceList[AppGlobal.pageChance].nowData.lye_pump_calibration_flag ==1)
+              ||(CalibrationPumpSet.lyePumpKind&&DeviceManage.deviceList[AppGlobal.pageChance].nowData!==null&&DeviceManage.deviceList[AppGlobal.pageChance].nowData.lye_pump_calibration_flag ==0&&CalibrationPumpSet.isLyeFinish==true)"
+                   class="w-[3rem] h-full  relative bg-[#83BA9B] rounded-[18px] hover:bg-[#668F78] cursor-pointer"
+                   @click="LyePumpCalibrate('Finish')">
+                <svg fill="none" height="30" viewBox="0 0 50 30" width="50" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M23 21L17 14.4203L17.9427 13.3865L23 18.9318L32.0573 9L33 10.0338L23 21Z" fill="white"/>
+                </svg>
+              </div>
+
+              <!--时间输入框-->
+              <input v-if="CalibrationPumpSet.lyePumpKind"
+                     v-model="CalibrationPumpSet.lyeTime"
+                     class="w-[6rem] h-full  relative bg-white bg-opacity-80 rounded-[5px] border border-zinc-400 pl-2"
+                     placeholder="时间/s"/>
+              <input v-if="!CalibrationPumpSet.lyePumpKind"
+                     v-model="CalibrationPumpSet.lyeTime"
+                     class="input input-bordered  w-[6rem] h-full  relative bg-white bg-opacity-80 rounded-[5px] border border-zinc-400 pl-2"
+                     disabled placeholder="时间/s"/>
+              <div
+                  class="w-[6rem] h-full  flex items-center relative bg-white bg-opacity-80 rounded-[5px] border border-zinc-400 pl-2"
+              >{{
+                  DeviceManage.deviceList[AppGlobal.pageChance] != null && DeviceManage.deviceList[AppGlobal.pageChance].deviceSet.lyePumpSpeed == 0 ? '标定结果' : DeviceManage.deviceList[AppGlobal.pageChance].deviceSet.lyePumpSpeed
+                }}
+              </div>
             </div>
           </div>
           <div class="w-full h-[4rem] relative  flex items-center justify-center ">
@@ -259,9 +376,12 @@
                   class="w-[63px] h-full  relative flex items-center justify-center text-black text-base font-normal font-['Inter'] leading-none">
                 补料泵
               </div>
-              <button :class="[!CalibrationPumpSet.feedPumpKind?'bg-[#DAF0E4] hover:bg-[#C3DBCE]':'bg-[#FAF3B7]']"
-                      class="w-[74px] h-full  relative flex items-center justify-center  rounded-[5px] shadow backdrop-blur-sm"
-                      @click="CalibrationPumpSet.feedPumpKind=!CalibrationPumpSet.feedPumpKind">
+              <!--是否开始-->
+              <button
+                  v-if="DeviceManage.deviceList[AppGlobal.pageChance].nowData==null||(DeviceManage.deviceList[AppGlobal.pageChance].nowData!=null&&DeviceManage.deviceList[AppGlobal.pageChance].nowData.feed_pump_calibration_flag==0)"
+                  :class="[!CalibrationPumpSet.feedPumpKind?'bg-[#DAF0E4] hover:bg-[#C3DBCE]':'bg-[#FAF3B7]']"
+                  class="w-[74px] h-full  relative flex items-center justify-center  rounded-[5px] shadow backdrop-blur-sm"
+                  @click="CalibrationPumpSet.feedPumpKind=!CalibrationPumpSet.feedPumpKind;CalibrationPumpSet.feedTime=null;CalibrationPumpSet.feedVolume=null;">
                 <div v-if="!CalibrationPumpSet.feedPumpKind"
                      class="w-[51px] h-4  relative text-center text-green-700 text-[13px] font-normal font-['Inter'] leading-none">
                   定体积
@@ -272,18 +392,81 @@
                 </div>
 
               </button>
-              <input class="w-[6rem] h-full  relative bg-white bg-opacity-80 rounded-[5px] border border-zinc-400 pl-2"
-                     placeholder="体积"/>
+              <button
+                  v-if="DeviceManage.deviceList[AppGlobal.pageChance].nowData!=null&&DeviceManage.deviceList[AppGlobal.pageChance].nowData.feed_pump_calibration_flag==1"
+                  :class="[!CalibrationPumpSet.feedPumpKind?'bg-[#DAF0E4] hover:bg-[#C3DBCE]':'bg-[#FAF3B7]']"
+                  class="w-[74px] h-full  relative flex items-center justify-center  rounded-[5px] shadow backdrop-blur-sm"
+              >
+                <div v-if="!CalibrationPumpSet.feedPumpKind"
+                     class="w-[51px] h-4  relative text-center text-green-700 text-[13px] font-normal font-['Inter'] leading-none">
+                  定体积
+                </div>
+                <div v-if="CalibrationPumpSet.feedPumpKind"
+                     class="w-[51px] h-4  relative text-center text-[#8A8343] text-[13px] font-normal font-['Inter'] leading-none">
+                  定时间
+                </div>
 
-              <div class="w-[3rem] h-full  relative bg-[#83BA9B] rounded-[18px] hover:bg-[#668F78] cursor-pointer">
+              </button>
+              <!--体积输入框-定体积-->
+              <input v-if="!CalibrationPumpSet.feedPumpKind"
+                     v-model="CalibrationPumpSet.feedVolume"
+                     class="w-[6rem] h-full  relative bg-white bg-opacity-80 rounded-[5px] border border-zinc-400 pl-2"
+                     placeholder="体积/ml"/>
+
+              <!--体积输入框-定时间-->
+              <input v-if="(CalibrationPumpSet.feedPumpKind&&DeviceManage.deviceList[AppGlobal.pageChance].nowData==null)||(CalibrationPumpSet.feedPumpKind&&DeviceManage.deviceList[AppGlobal.pageChance].nowData!==null
+              &&CalibrationPumpSet.isFeedFinish==false)"
+                     v-model="CalibrationPumpSet.feedVolume"
+                     class="input input-bordered w-[6rem] h-full  relative bg-white bg-opacity-80 rounded-[5px] border border-zinc-400 pl-2"
+                     disabled placeholder="体积/ml"/>
+              <input
+                  v-if="(CalibrationPumpSet.feedPumpKind&&DeviceManage.deviceList[AppGlobal.pageChance].nowData!==null&&CalibrationPumpSet.isFeedFinish==true)"
+                  v-model="CalibrationPumpSet.feedVolume"
+                  class="  w-[6rem] h-full  relative bg-white bg-opacity-80 rounded-[5px] border border-zinc-400 pl-2"
+                  placeholder="体积/ml"/>
+
+              <!--对号-->
+              <div v-if="DeviceManage.deviceList[AppGlobal.pageChance].nowData==null||(DeviceManage.deviceList[AppGlobal.pageChance].nowData!==null&&DeviceManage.deviceList[AppGlobal.pageChance].nowData.feed_pump_calibration_flag ==0)
+              &&CalibrationPumpSet.isFeedFinish==false"
+                   class="w-[3rem] h-full  relative bg-[#83BA9B] rounded-[18px] hover:bg-[#668F78] cursor-pointer"
+                   @click="FeedPumpCalibrate('Begin')">
                 <svg fill="none" height="30" viewBox="0 0 50 30" width="50" xmlns="http://www.w3.org/2000/svg">
                   <path d="M23 21L17 14.4203L17.9427 13.3865L23 18.9318L32.0573 9L33 10.0338L23 21Z" fill="white"/>
                 </svg>
               </div>
-              <input class="w-[6rem] h-full  relative bg-white bg-opacity-80 rounded-[5px] border border-zinc-400 pl-2"
-                     placeholder="时间"/>
-              <input class="w-[6rem] h-full  relative bg-white bg-opacity-80 rounded-[5px] border border-zinc-400 pl-2"
-                     placeholder="标定结果"/>
+              <div
+                  v-if="(CalibrationPumpSet.feedPumpKind&&DeviceManage.deviceList[AppGlobal.pageChance].nowData!==null&&DeviceManage.deviceList[AppGlobal.pageChance].nowData.feed_pump_calibration_flag ==1)"
+                  class="w-[3rem] h-full  relative bg-[#83BA9B] rounded-[18px] hover:bg-[#668F78] cursor-pointer"
+                  @click="FeedPumpCalibrate('Next')">
+                <svg fill="none" height="30" viewBox="0 0 50 30" width="50" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M23 21L17 14.4203L17.9427 13.3865L23 18.9318L32.0573 9L33 10.0338L23 21Z" fill="white"/>
+                </svg>
+              </div>
+              <!--完成命令-在定体积完成时Flag=1，定时间为Flag=0-->
+              <div v-if="(!CalibrationPumpSet.feedPumpKind&&DeviceManage.deviceList[AppGlobal.pageChance].nowData!==null&&DeviceManage.deviceList[AppGlobal.pageChance].nowData.feed_pump_calibration_flag ==1)
+              ||(CalibrationPumpSet.feedPumpKind&&DeviceManage.deviceList[AppGlobal.pageChance].nowData!==null&&DeviceManage.deviceList[AppGlobal.pageChance].nowData.feed_pump_calibration_flag ==0&&CalibrationPumpSet.isFeedFinish==true)"
+                   class="w-[3rem] h-full  relative bg-[#83BA9B] rounded-[18px] hover:bg-[#668F78] cursor-pointer"
+                   @click="FeedPumpCalibrate('Finish')">
+                <svg fill="none" height="30" viewBox="0 0 50 30" width="50" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M23 21L17 14.4203L17.9427 13.3865L23 18.9318L32.0573 9L33 10.0338L23 21Z" fill="white"/>
+                </svg>
+              </div>
+
+              <!--时间输入框-->
+              <input v-if="CalibrationPumpSet.feedPumpKind"
+                     v-model="CalibrationPumpSet.feedTime"
+                     class="w-[6rem] h-full  relative bg-white bg-opacity-80 rounded-[5px] border border-zinc-400 pl-2"
+                     placeholder="时间/s"/>
+              <input v-if="!CalibrationPumpSet.feedPumpKind"
+                     v-model="CalibrationPumpSet.feedTime"
+                     class="input input-bordered  w-[6rem] h-full  relative bg-white bg-opacity-80 rounded-[5px] border border-zinc-400 pl-2"
+                     disabled placeholder="时间/s"/>
+              <div
+                  class="w-[6rem] h-full  flex items-center relative bg-white bg-opacity-80 rounded-[5px] border border-zinc-400 pl-2"
+              >{{
+                  DeviceManage.deviceList[AppGlobal.pageChance] != null && DeviceManage.deviceList[AppGlobal.pageChance].deviceSet.feedPumpSpeed == 0 ? '标定结果' : DeviceManage.deviceList[AppGlobal.pageChance].deviceSet.feedPumpSpeed
+                }}
+              </div>
             </div>
           </div>
           <div class="w-full h-[4rem] relative  flex items-center justify-center ">
@@ -292,9 +475,12 @@
                   class="w-[63px] h-full  relative flex items-center justify-center text-black text-base font-normal font-['Inter'] leading-none">
                 消泡泵
               </div>
-              <button :class="[!CalibrationPumpSet.defoamerPumpKind?'bg-[#DAF0E4] hover:bg-[#C3DBCE]':'bg-[#FAF3B7]']"
-                      class="w-[74px] h-full  relative flex items-center justify-center  rounded-[5px] shadow backdrop-blur-sm"
-                      @click="CalibrationPumpSet.defoamerPumpKind=!CalibrationPumpSet.defoamerPumpKind">
+              <!--是否开始-->
+              <button
+                  v-if="DeviceManage.deviceList[AppGlobal.pageChance].nowData==null||(DeviceManage.deviceList[AppGlobal.pageChance].nowData!=null&&DeviceManage.deviceList[AppGlobal.pageChance].nowData.defoam_pump_calibration_flag==0)"
+                  :class="[!CalibrationPumpSet.defoamerPumpKind?'bg-[#DAF0E4] hover:bg-[#C3DBCE]':'bg-[#FAF3B7]']"
+                  class="w-[74px] h-full  relative flex items-center justify-center  rounded-[5px] shadow backdrop-blur-sm"
+                  @click="CalibrationPumpSet.defoamerPumpKind=!CalibrationPumpSet.defoamerPumpKind;CalibrationPumpSet.defoamerTime=null;CalibrationPumpSet.defoamerVolume=null;">
                 <div v-if="!CalibrationPumpSet.defoamerPumpKind"
                      class="w-[51px] h-4  relative text-center text-green-700 text-[13px] font-normal font-['Inter'] leading-none">
                   定体积
@@ -305,18 +491,81 @@
                 </div>
 
               </button>
-              <input class="w-[6rem] h-full  relative bg-white bg-opacity-80 rounded-[5px] border border-zinc-400 pl-2"
-                     placeholder="体积"/>
+              <button
+                  v-if="DeviceManage.deviceList[AppGlobal.pageChance].nowData!=null&&DeviceManage.deviceList[AppGlobal.pageChance].nowData.defoam_pump_calibration_flag==1"
+                  :class="[!CalibrationPumpSet.defoamerPumpKind?'bg-[#DAF0E4] hover:bg-[#C3DBCE]':'bg-[#FAF3B7]']"
+                  class="w-[74px] h-full  relative flex items-center justify-center  rounded-[5px] shadow backdrop-blur-sm"
+              >
+                <div v-if="!CalibrationPumpSet.defoamerPumpKind"
+                     class="w-[51px] h-4  relative text-center text-green-700 text-[13px] font-normal font-['Inter'] leading-none">
+                  定体积
+                </div>
+                <div v-if="CalibrationPumpSet.defoamerPumpKind"
+                     class="w-[51px] h-4  relative text-center text-[#8A8343] text-[13px] font-normal font-['Inter'] leading-none">
+                  定时间
+                </div>
 
-              <div class="w-[3rem] h-full  relative bg-[#83BA9B] rounded-[18px]  hover:bg-[#668F78] cursor-pointer">
+              </button>
+              <!--体积输入框-定体积-->
+              <input v-if="!CalibrationPumpSet.defoamerPumpKind"
+                     v-model="CalibrationPumpSet.defoamerVolume"
+                     class="w-[6rem] h-full  relative bg-white bg-opacity-80 rounded-[5px] border border-zinc-400 pl-2"
+                     placeholder="体积/ml"/>
+
+              <!--体积输入框-定时间-->
+              <input v-if="(CalibrationPumpSet.defoamerPumpKind&&DeviceManage.deviceList[AppGlobal.pageChance].nowData==null)||(CalibrationPumpSet.defoamerPumpKind&&DeviceManage.deviceList[AppGlobal.pageChance].nowData!==null
+              &&CalibrationPumpSet.isDefoamerFinish==false)"
+                     v-model="CalibrationPumpSet.defoamerVolume"
+                     class="input input-bordered w-[6rem] h-full  relative bg-white bg-opacity-80 rounded-[5px] border border-zinc-400 pl-2"
+                     disabled placeholder="体积/ml"/>
+              <input
+                  v-if="(CalibrationPumpSet.defoamerPumpKind&&DeviceManage.deviceList[AppGlobal.pageChance].nowData!==null&&CalibrationPumpSet.isDefoamerFinish==true)"
+                  v-model="CalibrationPumpSet.defoamerVolume"
+                  class="  w-[6rem] h-full  relative bg-white bg-opacity-80 rounded-[5px] border border-zinc-400 pl-2"
+                  placeholder="体积/ml"/>
+
+              <!--对号-->
+              <div v-if="DeviceManage.deviceList[AppGlobal.pageChance].nowData==null||(DeviceManage.deviceList[AppGlobal.pageChance].nowData!==null&&DeviceManage.deviceList[AppGlobal.pageChance].nowData.defoam_pump_calibration_flag ==0)
+              &&CalibrationPumpSet.isDefoamerFinish==false"
+                   class="w-[3rem] h-full  relative bg-[#83BA9B] rounded-[18px] hover:bg-[#668F78] cursor-pointer"
+                   @click="DefoamPumpCalibrate('Begin')">
                 <svg fill="none" height="30" viewBox="0 0 50 30" width="50" xmlns="http://www.w3.org/2000/svg">
                   <path d="M23 21L17 14.4203L17.9427 13.3865L23 18.9318L32.0573 9L33 10.0338L23 21Z" fill="white"/>
                 </svg>
               </div>
-              <input class="w-[6rem] h-full  relative bg-white bg-opacity-80 rounded-[5px] border border-zinc-400 pl-2"
-                     placeholder="时间"/>
-              <input class="w-[6rem] h-full  relative bg-white bg-opacity-80 rounded-[5px] border border-zinc-400 pl-2"
-                     placeholder="标定结果"/>
+              <div
+                  v-if="(CalibrationPumpSet.defoamerPumpKind&&DeviceManage.deviceList[AppGlobal.pageChance].nowData!==null&&DeviceManage.deviceList[AppGlobal.pageChance].nowData.defoam_pump_calibration_flag ==1)"
+                  class="w-[3rem] h-full  relative bg-[#83BA9B] rounded-[18px] hover:bg-[#668F78] cursor-pointer"
+                  @click="DefoamPumpCalibrate('Next')">
+                <svg fill="none" height="30" viewBox="0 0 50 30" width="50" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M23 21L17 14.4203L17.9427 13.3865L23 18.9318L32.0573 9L33 10.0338L23 21Z" fill="white"/>
+                </svg>
+              </div>
+              <!--完成命令-在定体积完成时Flag=1，定时间为Flag=0-->
+              <div v-if="(!CalibrationPumpSet.defoamerPumpKind&&DeviceManage.deviceList[AppGlobal.pageChance].nowData!==null&&DeviceManage.deviceList[AppGlobal.pageChance].nowData.defoam_pump_calibration_flag ==1)
+              ||(CalibrationPumpSet.defoamerPumpKind&&DeviceManage.deviceList[AppGlobal.pageChance].nowData!==null&&DeviceManage.deviceList[AppGlobal.pageChance].nowData.defoam_pump_calibration_flag ==0&&CalibrationPumpSet.isDefoamerFinish==true)"
+                   class="w-[3rem] h-full  relative bg-[#83BA9B] rounded-[18px] hover:bg-[#668F78] cursor-pointer"
+                   @click="DefoamPumpCalibrate('Finish')">
+                <svg fill="none" height="30" viewBox="0 0 50 30" width="50" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M23 21L17 14.4203L17.9427 13.3865L23 18.9318L32.0573 9L33 10.0338L23 21Z" fill="white"/>
+                </svg>
+              </div>
+
+              <!--时间输入框-->
+              <input v-if="CalibrationPumpSet.defoamerPumpKind"
+                     v-model="CalibrationPumpSet.defoamerTime"
+                     class="w-[6rem] h-full  relative bg-white bg-opacity-80 rounded-[5px] border border-zinc-400 pl-2"
+                     placeholder="时间/s"/>
+              <input v-if="!CalibrationPumpSet.defoamerPumpKind"
+                     v-model="CalibrationPumpSet.defoamerTime"
+                     class="input input-bordered  w-[6rem] h-full  relative bg-white bg-opacity-80 rounded-[5px] border border-zinc-400 pl-2"
+                     disabled placeholder="时间/s"/>
+              <div
+                  class="w-[6rem] h-full  flex items-center relative bg-white bg-opacity-80 rounded-[5px] border border-zinc-400 pl-2"
+              >{{
+                  DeviceManage.deviceList[AppGlobal.pageChance] != null && DeviceManage.deviceList[AppGlobal.pageChance].deviceSet.defoamerPumpSpeed == 0 ? '标定结果' : DeviceManage.deviceList[AppGlobal.pageChance].deviceSet.defoamerPumpSpeed
+                }}
+              </div>
             </div>
           </div>
         </div>
@@ -342,24 +591,29 @@ const DeviceManage = useDeviceManage();
 
 watch(() => DeviceManage.deviceList[AppGlobal.pageChance].nowData, () => {
   console.log(DeviceManage.deviceList[AppGlobal.pageChance].nowData)
-  console.log(!DeviceManage?.deviceList?.[AppGlobal?.pageChance]?.nowData, DeviceManage.deviceList[AppGlobal.pageChance].nowData != null, '4-', DeviceManage.deviceList[AppGlobal.pageChance].nowData.PH_calibration_status == 4, '3-', DeviceManage.deviceList[AppGlobal.pageChance].nowData.PH_calibration_status == 3, '2-', DeviceManage.deviceList[AppGlobal.pageChance].nowData.PH_calibration_status == 2, '1-', DeviceManage.deviceList[AppGlobal.pageChance].nowData.PH_calibration_status == 1, '0-', DeviceManage.deviceList[AppGlobal.pageChance].nowData.PH_calibration_status == 0)
+  // console.log(!DeviceManage?.deviceList?.[AppGlobal?.pageChance]?.nowData, DeviceManage.deviceList[AppGlobal.pageChance].nowData != null, '4-', DeviceManage.deviceList[AppGlobal.pageChance].nowData.PH_calibration_status == 4, '3-', DeviceManage.deviceList[AppGlobal.pageChance].nowData.PH_calibration_status == 3, '2-', DeviceManage.deviceList[AppGlobal.pageChance].nowData.PH_calibration_status == 2, '1-', DeviceManage.deviceList[AppGlobal.pageChance].nowData.PH_calibration_status == 1, '0-', DeviceManage.deviceList[AppGlobal.pageChance].nowData.PH_calibration_status == 0)
   console.log(DeviceManage.deviceList[AppGlobal.pageChance].nowData.DO_zero_calibration_flag)
 }, {deep: true});
 
 
 const CalibrationPumpSet = reactive({
   acidPumpKind: false,
-  acidVolume:null,
-  acidTime:null,
+  acidVolume: null,
+  acidTime: null,
   lyePumpKind: false,
-  lyeVolume:null,
-  lyeTime:null,
+  lyeVolume: null,
+  lyeTime: null,
   feedPumpKind: false,
-  feedVolume:null,
-  feedTime:null,
+  feedVolume: null,
+  feedTime: null,
   defoamerPumpKind: false,
-  defoamerVolume:null,
-  defoamerTime:null
+  defoamerVolume: null,
+  defoamerTime: null,
+  isAcidFinish: false,//查看是否为第三阶段
+  isLyeFinish: false,
+  isFeedFinish: false,
+  isDefoamerFinish: false,
+
 })
 
 const message = ref({
@@ -567,14 +821,14 @@ const PHCalibrate = ((data) => {
 
 const AcidPumpCalibrate = ((data) => {
   // 定体积
-  if (data === 'Begin'&&CalibrationPumpSet.acidPumpKind===false) {
+  if (data === 'Begin' && CalibrationPumpSet.acidPumpKind === false) {
     if (
         DeviceManage &&
         DeviceManage.deviceList &&
         AppGlobal &&
         AppGlobal.pageChance != null &&
         DeviceManage.deviceList[AppGlobal.pageChance] &&
-        DeviceManage.deviceList[AppGlobal.pageChance].nowData&&
+        DeviceManage.deviceList[AppGlobal.pageChance].nowData &&
         DeviceManage.deviceList[AppGlobal.pageChance].deviceSet
     ) {
 
@@ -582,15 +836,14 @@ const AcidPumpCalibrate = ((data) => {
       SendToHandle();
       //重置信息
       message.value.proceed = '酸泵校准';  // 使用 message.value 来访问或修改 ref 的值
-      message.value.content = '开始进行酸泵校准,确定前请输入体积';  // 使用 message.value 来访问或修改 ref 的值
+      message.value.content = '开始进行酸泵校准';  // 使用 message.value 来访问或修改 ref 的值
 
     } else {
       //重置信息
       message.value.proceed = '酸泵校准';  // 使用 message.value 来访问或修改 ref 的值
       message.value.content = '数据检收异常，可能是设备未连接';  // 使用 message.value 来访问或修改 ref 的值
     }
-  }
-  else if (data === 'Finish'&&CalibrationPumpSet.acidPumpKind===false) {
+  } else if (data === 'Finish' && CalibrationPumpSet.acidPumpKind === false) {
     if (
         DeviceManage &&
         DeviceManage.deviceList &&
@@ -603,57 +856,90 @@ const AcidPumpCalibrate = ((data) => {
 
       DeviceManage.deviceList[AppGlobal.pageChance].nowData.acid_pump_calibration_flag = 0;
       SendToHandle();
-      let Speedvalue = DeviceManage.deviceList[AppGlobal.pageChance].nowData.acid_pump_step_count / CalibrationPumpSet.acidVolume;
-      DeviceManage.deviceList[AppGlobal.pageChance].deviceSet.acidPumpSpeed = parseFloat(Speedvalue.toFixed(2));
-      message.value.content = '碱液校准完成';  // 使用 message.value 来访问或修改 ref 的值
+      let SpeedValue = CalibrationPumpSet.acidVolume / DeviceManage.deviceList[AppGlobal.pageChance].nowData.acid_pump_step_count;
+      DeviceManage.deviceList[AppGlobal.pageChance].deviceSet.acidPumpSpeed = parseFloat(SpeedValue.toFixed(2));
+      console.log('酸泵速度', DeviceManage.deviceList[AppGlobal.pageChance].deviceSet.acidPumpSpeed)
+      message.value.content = '酸泵校准完成，泵速已保存';  // 使用 message.value 来访问或修改 ref 的值
+      if (DeviceManage.deviceList[AppGlobal.pageChance].deviceSet.acidPumpSpeed == 0) {
+        message.value.content = '酸泵校准完成，泵速约等于0';  // 使用 message.value 来访问或修改 ref 的值
+      }
 
     } else {
       message.value.content = '数据检收异常，可能是设备未连接';  // 使用 message.value 来访问或修改 ref 的值
     }
   }
   // 定时间
-  else if (data === 'Begin'&&CalibrationPumpSet.acidPumpKind===true) {
+  else if (data === 'Begin' && CalibrationPumpSet.acidPumpKind === true) {
     if (
         DeviceManage &&
         DeviceManage.deviceList &&
         AppGlobal &&
         AppGlobal.pageChance != null &&
         DeviceManage.deviceList[AppGlobal.pageChance] &&
-        DeviceManage.deviceList[AppGlobal.pageChance].nowData&&
+        DeviceManage.deviceList[AppGlobal.pageChance].nowData &&
         DeviceManage.deviceList[AppGlobal.pageChance].deviceSet
     ) {
-      if (CalibrationPumpSet.acidTime===null){
+      if (CalibrationPumpSet.acidTime === null) {
         message.value.proceed = '酸泵校准';  // 使用 message.value 来访问或修改 ref 的值
         message.value.content = '请输入时间!';  // 使用 message.value 来访问或修改 ref 的值
-      }
-      else{
-        DeviceManage.deviceList[AppGlobal.pageChance].nowData.PH_calibration_progress = 0;
+      } else {
+        DeviceManage.deviceList[AppGlobal.pageChance].nowData.acid_pump_calibration_flag = 1;
         SendToHandle();
 
         message.value.proceed = '酸泵校准';  // 使用 message.value 来访问或修改 ref 的值
         message.value.content = '开始进行酸泵校准';  // 使用 message.value 来访问或修改 ref 的值
-        countDown(CalibrationPumpSet.acidTime);
+
+        stopCountDown = countDown(CalibrationPumpSet.acidTime);
       }
 
     } else {
       message.value.content = '数据检收异常，可能是设备未连接';  // 使用 message.value 来访问或修改 ref 的值
     }
-  }
-  else if (data === 'Finish'&&CalibrationPumpSet.acidPumpKind===true) {
+  } else if (data === 'Next' && CalibrationPumpSet.acidPumpKind === true) {
     if (
         DeviceManage &&
         DeviceManage.deviceList &&
         AppGlobal &&
         AppGlobal.pageChance != null &&
         DeviceManage.deviceList[AppGlobal.pageChance] &&
-        DeviceManage.deviceList[AppGlobal.pageChance].nowData&&
+        DeviceManage.deviceList[AppGlobal.pageChance].nowData &&
         DeviceManage.deviceList[AppGlobal.pageChance].deviceSet
     ) {
 
-      DeviceManage.deviceList[AppGlobal.pageChance].nowData.PH_calibration_progress = 0;
+      DeviceManage.deviceList[AppGlobal.pageChance].nowData.acid_pump_calibration_flag = 0;
       SendToHandle();
-      message.value.proceed = '无';  // 使用 message.value 来访问或修改 ref 的值
-      message.value.content = '尚未进行校准';  // 使用 message.value 来访问或修改 ref 的值
+      CalibrationPumpSet.isAcidFinish = true
+      message.value.content = '请输入体积';  // 使用 message.value 来访问或修改 ref 的值
+      // 在需要的时候停止倒计时
+      if (stopCountDown) {
+        stopCountDown();  // 停止倒计时
+      }
+    } else {
+      message.value.content = '数据检收异常，可能是设备未连接';  // 使用 message.value 来访问或修改 ref 的值
+    }
+  } else if (data === 'Finish' && CalibrationPumpSet.acidPumpKind === true) {
+    if (
+        DeviceManage &&
+        DeviceManage.deviceList &&
+        AppGlobal &&
+        AppGlobal.pageChance != null &&
+        DeviceManage.deviceList[AppGlobal.pageChance] &&
+        DeviceManage.deviceList[AppGlobal.pageChance].nowData &&
+        DeviceManage.deviceList[AppGlobal.pageChance].deviceSet
+    ) {
+
+      let SpeedValue = CalibrationPumpSet.acidVolume / DeviceManage.deviceList[AppGlobal.pageChance].nowData.acid_pump_step_count;
+      console.log(SpeedValue, 'SpeedValue', CalibrationPumpSet.acidVolume, DeviceManage.deviceList[AppGlobal.pageChance].nowData.acid_pump_step_count)
+      DeviceManage.deviceList[AppGlobal.pageChance].deviceSet.acidPumpSpeed = parseFloat(SpeedValue.toFixed(2));
+      if (DeviceManage.deviceList[AppGlobal.pageChance].deviceSet.acidPumpSpeed == 0) {
+        message.value.content = '酸泵校准完成，泵速约等于0';  // 使用 message.value 来访问或修改 ref 的值
+      }
+      else {
+        message.value.content = '酸泵校准完成，泵速已保存';  // 使用 message.value 来访问或修改 ref 的值
+      }
+
+      CalibrationPumpSet.isAcidFinish = false
+
 
     } else {
       message.value.content = '数据检收异常，可能是设备未连接';  // 使用 message.value 来访问或修改 ref 的值
@@ -661,24 +947,427 @@ const AcidPumpCalibrate = ((data) => {
   }
 })
 
+const LyePumpCalibrate = ((data) => {
+  // 定体积
+  if (data === 'Begin' && CalibrationPumpSet.lyePumpKind === false) {
+    if (
+        DeviceManage &&
+        DeviceManage.deviceList &&
+        AppGlobal &&
+        AppGlobal.pageChance != null &&
+        DeviceManage.deviceList[AppGlobal.pageChance] &&
+        DeviceManage.deviceList[AppGlobal.pageChance].nowData &&
+        DeviceManage.deviceList[AppGlobal.pageChance].deviceSet
+    ) {
 
-// ————————————————————————————————错误控制————————————————————————————————
-const currentNowDataZero = computed(() => {
-  return DeviceManage?.deviceList?.[AppGlobal?.pageChance]?.nowData;
-});
+      DeviceManage.deviceList[AppGlobal.pageChance].nowData.lye_pump_calibration_flag = 1;
+      SendToHandle();
+      //重置信息
+      message.value.proceed = '碱泵校准';  // 使用 message.value 来访问或修改 ref 的值
+      message.value.content = '开始进行碱泵校准';  // 使用 message.value 来访问或修改 ref 的值
+
+    } else {
+      //重置信息
+      message.value.proceed = '碱泵校准';  // 使用 message.value 来访问或修改 ref 的值
+      message.value.content = '数据检收异常，可能是设备未连接';  // 使用 message.value 来访问或修改 ref 的值
+    }
+  } else if (data === 'Finish' && CalibrationPumpSet.lyePumpKind === false) {
+    if (
+        DeviceManage &&
+        DeviceManage.deviceList &&
+        AppGlobal &&
+        AppGlobal.pageChance != null &&
+        DeviceManage.deviceList[AppGlobal.pageChance] &&
+        DeviceManage.deviceList[AppGlobal.pageChance].nowData &&
+        DeviceManage.deviceList[AppGlobal.pageChance].deviceSet
+    ) {
+
+      DeviceManage.deviceList[AppGlobal.pageChance].nowData.lye_pump_calibration_flag = 0;
+      SendToHandle();
+      let SpeedValue = CalibrationPumpSet.lyeVolume / DeviceManage.deviceList[AppGlobal.pageChance].nowData.lye_pump_step_count;
+      DeviceManage.deviceList[AppGlobal.pageChance].deviceSet.lyePumpSpeed = parseFloat(SpeedValue.toFixed(2));
+      console.log('碱泵速度', DeviceManage.deviceList[AppGlobal.pageChance].deviceSet.lyePumpSpeed)
+      message.value.content = '碱泵校准完成，泵速已保存';  // 使用 message.value 来访问或修改 ref 的值
+      if (DeviceManage.deviceList[AppGlobal.pageChance].deviceSet.lyePumpSpeed == 0) {
+        message.value.content = '碱泵校准完成，泵速约等于0';  // 使用 message.value 来访问或修改 ref 的值
+      }
+
+    } else {
+      message.value.content = '数据检收异常，可能是设备未连接';  // 使用 message.value 来访问或修改 ref 的值
+    }
+  }
+  // 定时间
+  else if (data === 'Begin' && CalibrationPumpSet.lyePumpKind === true) {
+    if (
+        DeviceManage &&
+        DeviceManage.deviceList &&
+        AppGlobal &&
+        AppGlobal.pageChance != null &&
+        DeviceManage.deviceList[AppGlobal.pageChance] &&
+        DeviceManage.deviceList[AppGlobal.pageChance].nowData &&
+        DeviceManage.deviceList[AppGlobal.pageChance].deviceSet
+    ) {
+      if (CalibrationPumpSet.lyeTime === null) {
+        message.value.proceed = '碱泵校准';  // 使用 message.value 来访问或修改 ref 的值
+        message.value.content = '请输入时间!';  // 使用 message.value 来访问或修改 ref 的值
+      } else {
+        DeviceManage.deviceList[AppGlobal.pageChance].nowData.lye_pump_calibration_flag = 1;
+        SendToHandle();
+
+        message.value.proceed = '碱泵校准';  // 使用 message.value 来访问或修改 ref 的值
+        message.value.content = '开始进行碱泵校准';  // 使用 message.value 来访问或修改 ref 的值
+
+        stopCountDown = countDown(CalibrationPumpSet.lyeTime);
+      }
+
+    } else {
+      message.value.content = '数据检收异常，可能是设备未连接';  // 使用 message.value 来访问或修改 ref 的值
+    }
+  } else if (data === 'Next' && CalibrationPumpSet.lyePumpKind === true) {
+    if (
+        DeviceManage &&
+        DeviceManage.deviceList &&
+        AppGlobal &&
+        AppGlobal.pageChance != null &&
+        DeviceManage.deviceList[AppGlobal.pageChance] &&
+        DeviceManage.deviceList[AppGlobal.pageChance].nowData &&
+        DeviceManage.deviceList[AppGlobal.pageChance].deviceSet
+    ) {
+
+      DeviceManage.deviceList[AppGlobal.pageChance].nowData.lye_pump_calibration_flag = 0;
+      SendToHandle();
+      CalibrationPumpSet.isLyeFinish = true
+      message.value.content = '请输入体积';  // 使用 message.value 来访问或修改 ref 的值
+      // 在需要的时候停止倒计时
+      if (stopCountDown) {
+        stopCountDown();  // 停止倒计时
+      }
+    } else {
+      message.value.content = '数据检收异常，可能是设备未连接';  // 使用 message.value 来访问或修改 ref 的值
+    }
+  } else if (data === 'Finish' && CalibrationPumpSet.lyePumpKind === true) {
+    if (
+        DeviceManage &&
+        DeviceManage.deviceList &&
+        AppGlobal &&
+        AppGlobal.pageChance != null &&
+        DeviceManage.deviceList[AppGlobal.pageChance] &&
+        DeviceManage.deviceList[AppGlobal.pageChance].nowData &&
+        DeviceManage.deviceList[AppGlobal.pageChance].deviceSet
+    ) {
+
+      let SpeedValue = CalibrationPumpSet.lyeVolume / DeviceManage.deviceList[AppGlobal.pageChance].nowData.lye_pump_step_count;
+      DeviceManage.deviceList[AppGlobal.pageChance].deviceSet.lyePumpSpeed = parseFloat(SpeedValue.toFixed(2));
+
+
+      if (DeviceManage.deviceList[AppGlobal.pageChance].deviceSet.lyePumpSpeed == 0) {
+        message.value.content = '碱泵校准完成，泵速约等于0';  // 使用 message.value 来访问或修改 ref 的值
+      }
+      else {
+        message.value.content = '碱泵校准完成，泵速已保存';  // 使用 message.value 来访问或修改 ref 的值
+      }
+      CalibrationPumpSet.isLyeFinish = false
+
+      // 在需要的时候停止倒计时
+      if (stopCountDown) {
+        stopCountDown();  // 停止倒计时
+      }
+    } else {
+      message.value.content = '数据检收异常，可能是设备未连接';  // 使用 message.value 来访问或修改 ref 的值
+    }
+  }
+})
+const FeedPumpCalibrate = ((data) => {
+  // 定体积
+  if (data === 'Begin' && CalibrationPumpSet.feedPumpKind === false) {
+    if (
+        DeviceManage &&
+        DeviceManage.deviceList &&
+        AppGlobal &&
+        AppGlobal.pageChance != null &&
+        DeviceManage.deviceList[AppGlobal.pageChance] &&
+        DeviceManage.deviceList[AppGlobal.pageChance].nowData &&
+        DeviceManage.deviceList[AppGlobal.pageChance].deviceSet
+    ) {
+
+      DeviceManage.deviceList[AppGlobal.pageChance].nowData.feed_pump_calibration_flag = 1;
+      SendToHandle();
+      //重置信息
+      message.value.proceed = '补料泵校准';  // 使用 message.value 来访问或修改 ref 的值
+      message.value.content = '开始进行补料泵校准';  // 使用 message.value 来访问或修改 ref 的值
+
+    } else {
+      //重置信息
+      message.value.proceed = '补料泵校准';  // 使用 message.value 来访问或修改 ref 的值
+      message.value.content = '数据检收异常，可能是设备未连接';  // 使用 message.value 来访问或修改 ref 的值
+    }
+  } else if (data === 'Finish' && CalibrationPumpSet.feedPumpKind === false) {
+    if (
+        DeviceManage &&
+        DeviceManage.deviceList &&
+        AppGlobal &&
+        AppGlobal.pageChance != null &&
+        DeviceManage.deviceList[AppGlobal.pageChance] &&
+        DeviceManage.deviceList[AppGlobal.pageChance].nowData &&
+        DeviceManage.deviceList[AppGlobal.pageChance].deviceSet
+    ) {
+
+      DeviceManage.deviceList[AppGlobal.pageChance].nowData.feed_pump_calibration_flag = 0;
+      SendToHandle();
+      let SpeedValue = CalibrationPumpSet.feedVolume / DeviceManage.deviceList[AppGlobal.pageChance].nowData.feed_pump_step_count;
+      DeviceManage.deviceList[AppGlobal.pageChance].deviceSet.feedPumpSpeed = parseFloat(SpeedValue.toFixed(2));
+      console.log('补料泵速度', DeviceManage.deviceList[AppGlobal.pageChance].deviceSet.feedPumpSpeed)
+      message.value.content = '补料泵校准完成，泵速已保存';  // 使用 message.value 来访问或修改 ref 的值
+      if (DeviceManage.deviceList[AppGlobal.pageChance].deviceSet.feedPumpSpeed == 0) {
+        message.value.content = '补料泵校准完成，泵速约等于0';  // 使用 message.value 来访问或修改 ref 的值
+      }
+
+    } else {
+      message.value.content = '数据检收异常，可能是设备未连接';  // 使用 message.value 来访问或修改 ref 的值
+    }
+  }
+  // 定时间
+  else if (data === 'Begin' && CalibrationPumpSet.feedPumpKind === true) {
+    if (
+        DeviceManage &&
+        DeviceManage.deviceList &&
+        AppGlobal &&
+        AppGlobal.pageChance != null &&
+        DeviceManage.deviceList[AppGlobal.pageChance] &&
+        DeviceManage.deviceList[AppGlobal.pageChance].nowData &&
+        DeviceManage.deviceList[AppGlobal.pageChance].deviceSet
+    ) {
+      if (CalibrationPumpSet.feedTime === null) {
+        message.value.proceed = '补料泵校准';  // 使用 message.value 来访问或修改 ref 的值
+        message.value.content = '请输入时间!';  // 使用 message.value 来访问或修改 ref 的值
+      } else {
+        DeviceManage.deviceList[AppGlobal.pageChance].nowData.feed_pump_calibration_flag = 1;
+        SendToHandle();
+
+        message.value.proceed = '补料泵校准';  // 使用 message.value 来访问或修改 ref 的值
+        message.value.content = '开始进行补料泵校准';  // 使用 message.value 来访问或修改 ref 的值
+
+        stopCountDown = countDown(CalibrationPumpSet.feedTime);
+      }
+
+    } else {
+      message.value.content = '数据检收异常，可能是设备未连接';  // 使用 message.value 来访问或修改 ref 的值
+    }
+  } else if (data === 'Next' && CalibrationPumpSet.feedPumpKind === true) {
+    if (
+        DeviceManage &&
+        DeviceManage.deviceList &&
+        AppGlobal &&
+        AppGlobal.pageChance != null &&
+        DeviceManage.deviceList[AppGlobal.pageChance] &&
+        DeviceManage.deviceList[AppGlobal.pageChance].nowData &&
+        DeviceManage.deviceList[AppGlobal.pageChance].deviceSet
+    ) {
+
+      DeviceManage.deviceList[AppGlobal.pageChance].nowData.feed_pump_calibration_flag = 0;
+      SendToHandle();
+      CalibrationPumpSet.isFeedFinish = true
+      message.value.content = '请输入体积';  // 使用 message.value 来访问或修改 ref 的值
+      // 在需要的时候停止倒计时
+      if (stopCountDown) {
+        stopCountDown();  // 停止倒计时
+      }
+    } else {
+      message.value.content = '数据检收异常，可能是设备未连接';  // 使用 message.value 来访问或修改 ref 的值
+    }
+  } else if (data === 'Finish' && CalibrationPumpSet.feedPumpKind === true) {
+    if (
+        DeviceManage &&
+        DeviceManage.deviceList &&
+        AppGlobal &&
+        AppGlobal.pageChance != null &&
+        DeviceManage.deviceList[AppGlobal.pageChance] &&
+        DeviceManage.deviceList[AppGlobal.pageChance].nowData &&
+        DeviceManage.deviceList[AppGlobal.pageChance].deviceSet
+    ) {
+
+      let SpeedValue = CalibrationPumpSet.feedVolume / DeviceManage.deviceList[AppGlobal.pageChance].nowData.feed_pump_step_count;
+      DeviceManage.deviceList[AppGlobal.pageChance].deviceSet.feedPumpSpeed = parseFloat(SpeedValue.toFixed(2));
+
+      if (DeviceManage.deviceList[AppGlobal.pageChance].deviceSet.feedPumpSpeed == 0) {
+        message.value.content = '补料泵校准完成，泵速约等于0';  // 使用 message.value 来访问或修改 ref 的值
+      }
+      else {
+        message.value.content = '补料泵校准完成，泵速已保存';  // 使用 message.value 来访问或修改 ref 的值
+      }
+      CalibrationPumpSet.isFeedFinish = false
+
+      // 在需要的时候停止倒计时
+      if (stopCountDown) {
+        stopCountDown();  // 停止倒计时
+      }
+    } else {
+      message.value.content = '数据检收异常，可能是设备未连接';  // 使用 message.value 来访问或修改 ref 的值
+    }
+  }
+})
+const DefoamPumpCalibrate = ((data) => {
+  // 定体积
+  if (data === 'Begin' && CalibrationPumpSet.defoamerPumpKind === false) {
+    if (
+        DeviceManage &&
+        DeviceManage.deviceList &&
+        AppGlobal &&
+        AppGlobal.pageChance != null &&
+        DeviceManage.deviceList[AppGlobal.pageChance] &&
+        DeviceManage.deviceList[AppGlobal.pageChance].nowData &&
+        DeviceManage.deviceList[AppGlobal.pageChance].deviceSet
+    ) {
+
+      DeviceManage.deviceList[AppGlobal.pageChance].nowData.defoam_pump_calibration_flag = 1;
+      SendToHandle();
+      //重置信息
+      message.value.proceed = '消泡泵校准';  // 使用 message.value 来访问或修改 ref 的值
+      message.value.content = '开始进行消泡泵校准';  // 使用 message.value 来访问或修改 ref 的值
+
+    } else {
+      //重置信息
+      message.value.proceed = '消泡泵校准';  // 使用 message.value 来访问或修改 ref 的值
+      message.value.content = '数据检收异常，可能是设备未连接';  // 使用 message.value 来访问或修改 ref 的值
+    }
+  } else if (data === 'Finish' && CalibrationPumpSet.defoamerPumpKind === false) {
+    if (
+        DeviceManage &&
+        DeviceManage.deviceList &&
+        AppGlobal &&
+        AppGlobal.pageChance != null &&
+        DeviceManage.deviceList[AppGlobal.pageChance] &&
+        DeviceManage.deviceList[AppGlobal.pageChance].nowData &&
+        DeviceManage.deviceList[AppGlobal.pageChance].deviceSet
+    ) {
+
+      DeviceManage.deviceList[AppGlobal.pageChance].nowData.defoam_pump_calibration_flag = 0;
+      SendToHandle();
+      let SpeedValue = CalibrationPumpSet.defoamerVolume / DeviceManage.deviceList[AppGlobal.pageChance].nowData.defoam_pump_step_count;
+      DeviceManage.deviceList[AppGlobal.pageChance].deviceSet.defoamerPumpSpeed = parseFloat(SpeedValue.toFixed(2));
+      console.log('消泡泵速度', DeviceManage.deviceList[AppGlobal.pageChance].deviceSet.defoamerPumpSpeed)
+      message.value.content = '消泡泵校准完成，泵速已保存';  // 使用 message.value 来访问或修改 ref 的值
+      if (DeviceManage.deviceList[AppGlobal.pageChance].deviceSet.defoamerPumpSpeed == 0) {
+        message.value.content = '消泡泵校准完成，泵速约等于0';  // 使用 message.value 来访问或修改 ref 的值
+      }
+
+    } else {
+      message.value.content = '数据检收异常，可能是设备未连接';  // 使用 message.value 来访问或修改 ref 的值
+    }
+  }
+  // 定时间
+  else if (data === 'Begin' && CalibrationPumpSet.defoamerPumpKind === true) {
+    if (
+        DeviceManage &&
+        DeviceManage.deviceList &&
+        AppGlobal &&
+        AppGlobal.pageChance != null &&
+        DeviceManage.deviceList[AppGlobal.pageChance] &&
+        DeviceManage.deviceList[AppGlobal.pageChance].nowData &&
+        DeviceManage.deviceList[AppGlobal.pageChance].deviceSet
+    ) {
+      if (CalibrationPumpSet.defoamerTime === null) {
+        message.value.proceed = '消泡泵校准';  // 使用 message.value 来访问或修改 ref 的值
+        message.value.content = '请输入时间!';  // 使用 message.value 来访问或修改 ref 的值
+      } else {
+        DeviceManage.deviceList[AppGlobal.pageChance].nowData.defoam_pump_calibration_flag = 1;
+        SendToHandle();
+
+        message.value.proceed = '消泡泵校准';  // 使用 message.value 来访问或修改 ref 的值
+        message.value.content = '开始进行消泡泵校准';  // 使用 message.value 来访问或修改 ref 的值
+
+        stopCountDown = countDown(CalibrationPumpSet.defoamerTime);
+      }
+
+    } else {
+      message.value.content = '数据检收异常，可能是设备未连接';  // 使用 message.value 来访问或修改 ref 的值
+    }
+  } else if (data === 'Next' && CalibrationPumpSet.defoamerPumpKind === true) {
+    if (
+        DeviceManage &&
+        DeviceManage.deviceList &&
+        AppGlobal &&
+        AppGlobal.pageChance != null &&
+        DeviceManage.deviceList[AppGlobal.pageChance] &&
+        DeviceManage.deviceList[AppGlobal.pageChance].nowData &&
+        DeviceManage.deviceList[AppGlobal.pageChance].deviceSet
+    ) {
+
+      DeviceManage.deviceList[AppGlobal.pageChance].nowData.defoam_pump_calibration_flag = 0;
+      SendToHandle();
+      CalibrationPumpSet.isDefoamerFinish = true
+      message.value.content = '请输入体积';  // 使用 message.value 来访问或修改 ref 的值
+      // 在需要的时候停止倒计时
+      if (stopCountDown) {
+        stopCountDown();  // 停止倒计时
+      }
+    } else {
+      message.value.content = '数据检收异常，可能是设备未连接';  // 使用 message.value 来访问或修改 ref 的值
+    }
+  } else if (data === 'Finish' && CalibrationPumpSet.defoamerPumpKind === true) {
+    if (
+        DeviceManage &&
+        DeviceManage.deviceList &&
+        AppGlobal &&
+        AppGlobal.pageChance != null &&
+        DeviceManage.deviceList[AppGlobal.pageChance] &&
+        DeviceManage.deviceList[AppGlobal.pageChance].nowData &&
+        DeviceManage.deviceList[AppGlobal.pageChance].deviceSet
+    ) {
+
+      let SpeedValue = CalibrationPumpSet.defoamerVolume / DeviceManage.deviceList[AppGlobal.pageChance].nowData.defoam_pump_step_count;
+      DeviceManage.deviceList[AppGlobal.pageChance].deviceSet.defoamerPumpSpeed = parseFloat(SpeedValue.toFixed(2));
+
+      if (DeviceManage.deviceList[AppGlobal.pageChance].deviceSet.defoamerPumpSpeed == 0) {
+        message.value.content = '消泡泵校准完成，泵速约等于0';  // 使用 message.value 来访问或修改 ref 的值
+      }
+      else {
+        message.value.content = '消泡泵校准完成，泵速已保存';  // 使用 message.value 来访问或修改 ref 的值
+      }
+      CalibrationPumpSet.isDefoamerFinish = false
+
+      // 在需要的时候停止倒计时
+      if (stopCountDown) {
+        stopCountDown();  // 停止倒计时
+      }
+    } else {
+      message.value.content = '数据检收异常，可能是设备未连接';  // 使用 message.value 来访问或修改 ref 的值
+    }
+  }
+})
 
 
 // ————————————————————————————————工具————————————————————————————————
 // 倒计时
-const countDown = ((time) => {
+let stopCountDown;
+const countDown = (time) => {
   let timer = setInterval(() => {
     time--;
-    message.value.content += '\n'+time;  // 使用 message.value 来访问或修改 ref 的值
+    message.value.content = `正在进行时间校准    还剩${time}秒`;  // 注意: 使用反引号来做字符串插值
     if (time <= 0) {
       clearInterval(timer);
       timer = null;
+      console.log('酸泵标志位-___________',DeviceManage.deviceList[AppGlobal.pageChance].nowData.acid_pump_calibration_flag)
+      if (message.value.proceed === '酸泵校准') {
+        AcidPumpCalibrate('Next');
+      }
+      if (message.value.proceed === '碱泵校准') {
+        LyePumpCalibrate('Next');
+      }
+      if (message.value.proceed === '消泡泵校准') {
+        DefoamPumpCalibrate('Next');
+      }
+      if (message.value.proceed === '补料泵校准') {
+        FeedPumpCalibrate('Next');
+      }
     }
-  }, 1000)
-})
+  }, 1000);
+
+  // 返回一个关闭函数
+  return () => {
+    clearInterval(timer);
+    timer = null;
+  };
+}
 
 </script>
