@@ -100,11 +100,29 @@
                               </summary>
                             </details>
                           </td>
+                          <td v-else-if="index==2"
+                              class="w-[8.2rem] text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center"
+                              @dblclick="inputVisible[i].status = !inputVisible[i].status">
+                            <input
+                                v-if="inputVisible[i].status"
+                                v-model="DeviceManage.deviceList[i].batch_name"
+                                class="w-[8.2rem]  h-full text-center break-all whitespace-normal "
+                                placeholder="输入发酵批号"
+                                type="text"
+                                @keyup.enter="inputVisible[i].status = false"
+                            />
 
-                          <td v-if="index!=0"
-                              class="w-[8.2rem] text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
+                            <span v-else
+                                  class="w-[8.2rem] leading-5 text-center whitespace-normal break-all flex justify-center items-center">
+                    {{ body[col.props] }}</span>
+                          </td>
+
+                          <td v-else
+                              class="w-[8.2rem] leading-4 text-center border-b border-r hover:bg-[#FAFAFA] cursor-pointer whitespace-normal break-all flex justify-center items-center">
+
                             {{ body[col.props] }}
                           </td>
+
                         </template>
                       </tr>
                     </div>
@@ -159,7 +177,11 @@ watch(() => DeviceManage.deviceList, () => {
 
   initTableData()
 }, {deep: true});
-
+const inputVisible = ref<InputVisible[]>([]); // 用于追踪哪一行显示输入框
+interface InputVisible {
+  id: number;
+  status: boolean;
+}
 
 // 读取表格数据
 const initTableData = () => {
@@ -173,11 +195,13 @@ const initTableData = () => {
   ];
 
   DeviceManage.deviceList.forEach(device => {
+
     if (typeof device.name !== 'string' || typeof device.id !== 'number') {
       console.error("Error: Invalid device entry found in DeviceManage.deviceList.");
       return;
     }
     initheaderData.push({title: device.name, props: 'F' + (device.id + 1)});
+    inputVisible.value.push({id: device.id, status: false});
   });
 
   headerData.length = 0;  // 清空原始数据
@@ -233,20 +257,53 @@ const initTableData = () => {
         tableItem[header.props] = DeviceManage.deviceList[index].batch_name;
       }
       // 酸泵
-      else if (deviceProp.prop == "acid_pump") {
-        tableItem[header.props] = 241;
+      else if (
+          deviceProp.prop == "acid_pump"
+      ) {
+        if (DeviceManage.deviceList[index]?.deviceSet?.acidPumpSpeed !== null) {
+          const acidPumpSpeed = DeviceManage.deviceList[index]?.deviceSet?.acidPumpSpeed ?? 0;
+          const acid_pump_sum_step_count = DeviceManage.deviceList[index]?.nowData?.acid_pump_sum_step_count ?? 0;
+          tableItem[header.props] = acidPumpSpeed * acid_pump_sum_step_count;
+
+        } else {
+          tableItem[header.props] = 0;
+        }
       }
       // 碱泵
       else if (deviceProp.prop == "lye_pump") {
-        tableItem[header.props] = 241;
+        if (DeviceManage.deviceList[index]?.deviceSet?.lyePumpSpeed !== null) {
+          const lyePumpSpeed = DeviceManage.deviceList[index]?.deviceSet?.lyePumpSpeed ?? 0;
+          const lye_pump_sum_step_count = DeviceManage.deviceList[index]?.nowData?.lye_pump_sum_step_count ?? 0;
+          tableItem[header.props] = lyePumpSpeed * lye_pump_sum_step_count;
+
+        } else {
+          tableItem[header.props] = 0;
+        }
+
       }
       // 食物泵
       else if (deviceProp.prop == "feed_pump") {
-        tableItem[header.props] = 241;
+        if (DeviceManage.deviceList[index]?.deviceSet?.feedPumpSpeed !== null) {
+          const feedPumpSpeed = DeviceManage.deviceList[index]?.deviceSet?.feedPumpSpeed ?? 0;
+          const feed_pump_sum_step_count = DeviceManage.deviceList[index]?.nowData?.feed_pump_sum_step_count ?? 0;
+          tableItem[header.props] = feedPumpSpeed * feed_pump_sum_step_count;
+
+        } else {
+          tableItem[header.props] = 0;
+        }
+
       }
       // 消泡泵
       else if (deviceProp.prop == "defoamer_pump") {
-        tableItem[header.props] = 241;
+        if (DeviceManage.deviceList[index]?.deviceSet?.acidPumpSpeed !== null) {
+          const feedPumpSpeed = DeviceManage.deviceList[index]?.deviceSet?.feedPumpSpeed ?? 0;
+          const defoam_pump_sum_step_count = DeviceManage.deviceList[index]?.nowData?.defoam_pump_sum_step_count ?? 0;
+          tableItem[header.props] = feedPumpSpeed * defoam_pump_sum_step_count;
+
+        } else {
+          tableItem[header.props] = 0;
+        }
+
       }
       // 转速读取-溶氧读取-PH值读取-温度读取
       else {
@@ -274,7 +331,6 @@ const initTableData = () => {
 }
 
 
-
 const firstCol = computed(() => props.tableData.map(p => {
   const pArr = Object.keys(p);
   return p[pArr[0]]
@@ -290,7 +346,6 @@ const firstRow = computed(() => {
   })
   return rows;
 })
-
 
 const tableBodyRows = computed(() => {
   let arr: { [key: string]: any }[] = [];
@@ -330,7 +385,17 @@ const headerData: HeaderItem[] = reactive([
 
 
 const tableData: any = reactive([
-
+  // {name: '状态', F1: 1, F2: 1, F3: 2, F4: 1, F5: 0, F6: 1, F7: 2, F8: 1},
+  // {name: '测量值', F1: 25, F2: 26, F3: 27, F4: 28, F5: 29, F6: 30, F7: 31, F8: 32},
+  // {name: '设定值', F1: 28, F2: 29, F3: 30, F4: 31, F5: 32, F6: 33, F7: 34, F8: 35},
+  // {name: '控制周期', F1: 30, F2: 31, F3: 32, F4: 33, F5: 34, F6: 35, F7: 36, F8: 37},
+  // {name: '周期开度', F1: 30, F2: 31, F3: 32, F4: 33, F5: 34, F6: 35, F7: 36, F8: 37},
+  // {name: '比例P', F1: 25, F2: 26, F3: 27, F4: 28, F5: 29, F6: 30, F7: 31, F8: 32},
+  // {name: '积分I', F1: 28, F2: 29, F3: 30, F4: 31, F5: 32, F6: 33, F7: 34, F8: 35},
+  // {name: '微分D', F1: 30, F2: 31, F3: 32, F4: 33, F5: 34, F6: 35, F7: 36, F8: 37},
+  // {name: '控制死区', F1: 28, F2: 29, F3: 30, F4: 31, F5: 32, F6: 33, F7: 34, F8: 35},
+  // {name: '报警上限', F1: 25, F2: 26, F3: 27, F4: 28, F5: 29, F6: 30, F7: 31, F8: 32},
+  // {name: '报警下限', F1: 25, F2: 26, F3: 27, F4: 28, F5: 29, F6: 30, F7: 31, F8: 32},
 ]);
 
 

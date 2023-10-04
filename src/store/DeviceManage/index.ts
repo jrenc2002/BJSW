@@ -81,6 +81,10 @@ interface SetData {
     accumulated_defoam_value: number;            // 累计消泡值
     defoam_pump_step_count: number;              // 消泡泵发送步数
     defoam_pump_calibration_flag: number;        // 消泡泵标定开始标志位
+    acid_pump_sum_step_count: number;            // 酸泵总步数
+    lye_pump_sum_step_count: number;             // 碱泵总步数
+    defoam_pump_sum_step_count: number;          // 消泡泵总步数
+    feed_pump_sum_step_count: number;
 
     // 补料控制部分
     feed_speed: number;                  // 补料泵设定补料速率
@@ -259,23 +263,30 @@ export const useDeviceManage = defineStore('DeviceManage', {
                 if (this.deviceList && this.deviceList[index] && this.deviceList[index].deviceSet != null) {
                     // 使用类型断言
                     const currentDeviceSet = this.deviceList[index].deviceSet as deviceSet;
+                    let isAlarmFlag = false;
                     if (!(newDeviceData.timing_temp >= currentDeviceSet.tempMinWarn &&
                         newDeviceData.timing_temp <= currentDeviceSet.tempMaxWarn)) {
-                        // ...您的代码
                         this.deviceList[index].state = 3;
                         currentDeviceSet.tempState = 1;
+                        isAlarmFlag = true;
                     }
                     if (!(newDeviceData.timing_PH >= currentDeviceSet.phMinWarn &&
                         newDeviceData.timing_PH <= currentDeviceSet.phMaxWarn)) {
-                        // ...您的代码
                         this.deviceList[index].state = 3;
                         currentDeviceSet.phState = 1;
+                        isAlarmFlag = true;
                     }
                     if (!(newDeviceData.timing_DO >= currentDeviceSet.doMinWarn &&
                         newDeviceData.timing_DO <= currentDeviceSet.doMaxWarn)) {
-                        // ...您的代码
                         this.deviceList[index].state = 3;
                         currentDeviceSet.doState = 1;
+                        isAlarmFlag = true;
+                    }
+                    if (!isAlarmFlag) {
+                        this.deviceList[index].state = 2;
+                        currentDeviceSet.tempState = 0;
+                        currentDeviceSet.phState = 0;
+                        currentDeviceSet.doState = 0;
                     }
                 }
 
