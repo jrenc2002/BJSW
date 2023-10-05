@@ -1,12 +1,17 @@
 <template>
-  <div class="h-[94vh] transition-all duration-300 ease-in-out shadow bg-white rounded-2xl" :class="[AppGlobal.isDrawerState? 'w-[calc(94vw-15rem)]':'w-[94vw]']">
+  <div :class="[AppGlobal.isDrawerState? 'w-[calc(94vw-15rem)]':'w-[94vw]']"
+       class="h-[94vh] transition-all duration-300 ease-in-out shadow bg-white rounded-2xl">
 
     <!--    标题-->
     <div class="h-[4%] self-stretch justify-start items-center  inline-flex mt-3  w-full ">
-      <div class="w-[calc(10rem)] text-xl leading-10 text-zinc-900 text-2xl font-medium leading-loose left-4 relative">PH值控制</div>
+      <div class="w-[calc(10rem)] text-xl leading-10 text-zinc-900 text-2xl font-medium leading-loose left-4 relative">
+        PH值控制
+      </div>
       <div class="w-[calc(100%-10rem)] relative justify-end flex mr-3 ">
 
-        <div class="bg-[#F5F5F5] right-0 relative w-7 h-7 justify-center items-center flex rounded-2xl hover:bg-[#F8F8F8] cursor-pointer" @click="closePop">
+        <div
+            class="bg-[#F5F5F5] right-0 relative w-7 h-7 justify-center items-center flex rounded-2xl hover:bg-[#F8F8F8] cursor-pointer"
+            @click="closePop">
           <svg fill="none" height="16" viewBox="0 0 16 16" width="16" xmlns="http://www.w3.org/2000/svg">
             <path d="M12 4.7L11.3 4L8 7.3L4.7 4L4 4.7L7.3 8L4 11.3L4.7 12L8 8.7L11.3 12L12 11.3L8.7 8L12 4.7Z"
                   fill="#19161D"/>
@@ -39,7 +44,7 @@
                 <table class="mb-4 shadow  bg-[#E8F6ED] py-4">
                   <tr v-for="(col, index) in firstCol" :key="index" class=" w-full  ">
                     <td class="w-full  flex justify-center items-center   ">
-                      <div >
+                      <div>
                         {{ col }}
 
                       </div>
@@ -53,7 +58,8 @@
               <!--窗口-->
               <div ref="firstRowLayer" :class="[AppGlobal.isDrawerState? 'w-[calc(82vw-15rem)]':'w-[82vw]']"
                    class="right-div1 bg-[#F1F1F1] mt-3 ">
-                <table :style="{ width: `max(${(firstRow.length + 1) * 8.2}rem, 100%)` }" class=" flex items-start self-start ">
+                <table :style="{ width: `max(${(firstRow.length + 1) * 8.2}rem, 100%)` }"
+                       class=" flex items-start self-start ">
                   <tr>
                     <th v-for="(row, index) in firstRow" :key="index" class="first-row-style w-[8.2rem]  ">{{
                         row
@@ -69,13 +75,15 @@
                   @scroll="tableScroll()"
 
               >
-                <table  :style="{ width: `max(${(firstRow.length + 1) * 8.2}rem, 100%)` }" class="flex items-start  ">
+                <table :style="{ width: `max(${(firstRow.length + 1) * 8.2}rem, 100%)` }" class="flex items-start  ">
                   <div class="flex-col justify-center items-center">
 
                     <tr v-for="(body,index) in tableBodyRows" :key="index" class="flex justify-center items-center">
 
                       <template v-for="(col, i) in tableBodyCols" :key="col.props + i">
-                        <td v-if="index==0" class="w-[8.2rem] text-center border-r border-b flex justify-center items-center">
+
+                        <td v-if="index==0"
+                            class="w-[8.2rem] text-center border-r border-b flex justify-center items-center">
                           <details class="dropdown ">
                             <summary v-if="body[col.props]==0" class="m-1 btn w-[7rem] ">停止</summary>
                             <summary v-if="body[col.props]==1"
@@ -84,7 +92,8 @@
 
 
                             <ul class="p-2 shadow-xl menu dropdown-content z-[1] bg-base-100 rounded-box w-[7rem] broder">
-                              <li class="text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2] rounded" @click="controSend('PH_flag',i,0)"><a>停止</a>
+                              <li class="text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2] rounded"
+                                  @click="controSend('PH_flag',i,0)"><a>停止</a>
                               </li>
                               <li class="text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] mt-2 rounded"
                                   @click="controSend('PH_flag',i,1)"><a>开启</a></li>
@@ -329,20 +338,21 @@ interface InputVisible {
   lye_KD: boolean;
   alarm_h_limit: boolean;
   alarm_l_limit: boolean;
-  targetValue:number| null;
-  PH_upper_limitValue:number| null;
-  PH_lower_limitValue:number| null;
-  acid_KPValue:number| null;
-  acid_KIValue:number| null;
-  acid_KDValue:number| null;
-  lye_KPValue:number| null;
-  lye_KIValue:number| null;
-  lye_KDValue:number| null;
-  alarm_h_limitValue:number| null;
-  alarm_l_limitValue:number| null;
+  targetValue: number | null;
+  PH_upper_limitValue: number | null;
+  PH_lower_limitValue: number | null;
+  acid_KPValue: number | null;
+  acid_KIValue: number | null;
+  acid_KDValue: number | null;
+  lye_KPValue: number | null;
+  lye_KIValue: number | null;
+  lye_KDValue: number | null;
+  alarm_h_limitValue: number | null;
+  alarm_l_limitValue: number | null;
 
 
 }
+
 // 读取表格数据
 const initTableData = () => {
   if (!DeviceManage || !Array.isArray(DeviceManage.deviceList)) {
@@ -374,17 +384,17 @@ const initTableData = () => {
       lye_KD: false,
       alarm_h_limit: false,
       alarm_l_limit: false,
-      targetValue:null,
-      PH_upper_limitValue:null,
-      PH_lower_limitValue:null,
-      acid_KPValue:null,
-      acid_KIValue:null,
-      acid_KDValue:null,
-      lye_KPValue:null,
-      lye_KIValue:null,
-      lye_KDValue:null,
-      alarm_h_limitValue:null,
-      alarm_l_limitValue:null,
+      targetValue: null,
+      PH_upper_limitValue: null,
+      PH_lower_limitValue: null,
+      acid_KPValue: null,
+      acid_KIValue: null,
+      acid_KDValue: null,
+      lye_KPValue: null,
+      lye_KIValue: null,
+      lye_KDValue: null,
+      alarm_h_limitValue: null,
+      alarm_l_limitValue: null,
     });
   });
 
@@ -429,7 +439,7 @@ const initTableData = () => {
       if (!DeviceManage.deviceList[index] || !DeviceManage.deviceList[index].nowData) {
         console.error(`Error: Missing data for device at index ${index}.`);
         return;
-      }  else if (deviceProp.prop == "alarm_h_limit") {
+      } else if (deviceProp.prop == "alarm_h_limit") {
         tableItem[header.props] = DeviceManage.deviceList[index].batch_name;
       } else if (deviceProp.prop == "alarm_l_limit") {
         tableItem[header.props] = 241;
@@ -441,8 +451,7 @@ const initTableData = () => {
         tableItem[header.props] = 241;
       } else if (deviceProp.prop == "temp_flag") {
         tableItem[header.props] = 241;
-      }
-      else {
+      } else {
         try {
           const value = DeviceManage.deviceList[index].nowData![deviceProp.prop];
           if (typeof value === 'number' && !Number.isInteger(value)) {
@@ -465,7 +474,6 @@ const initTableData = () => {
   resultItems.forEach(item => tableData.push(item));  // 添加新的数据
 
 }
-
 
 
 const firstCol = computed(() => props.tableData.map(p => {
@@ -601,83 +609,6 @@ onUnmounted(() => {
 interface HeaderItem {
   title: string;
   props: string;
-}
-
-interface SetData {
-  /*PH控制部分变量*/
-  timing_PH: number;   //实时PH值
-  acid_speed: number;  //酸泵实时送料速率
-  lye_speed: number;   //碱泵实时送料速率
-  target_PH: number;   //设定目标PH
-  acid_KP: number;     //PID参数
-  acid_KI: number;     //PID参数
-  acid_KD: number;     //PID参数
-  lye_KP: number;      //PID参数
-  lye_KI: number;      //PID参数
-  lye_KD: number;      //PID参数
-  acid_ml: number;     //酸泵目前送料量
-  lye_ml: number;      //碱泵目前送料量
-  acid_handle_speed_set: number;   //酸泵手动送料速率设置
-  lye_handle_speed_set: number;    //碱泵手动送料速率设置
-  PH_flag: number;     //PH控制开启/停止标志位
-  Ph_auto_handle: number;          //PH控制自动/手动控制标志位
-
-  /*温控部分变量*/
-  timing_temp: number;             //实时温度值
-  heatpower: number;               //加热毯实时功率
-  target_temp: number;             //设定目标温度值
-  Temp_KP: number;                 //温控KP
-  Temp_KI: number;                 //温控KI
-  Temp_KD: number;                 //温控KD
-  water_flag: number;              //冷凝水通断标志位
-  temp_flag: number;               //温控开启/停止标志位
-  cool_water_autoflag: number;     //冷凝水通断控制自动/手动标志位
-
-  /*氧含量控制部分变量*/
-  timing_DO: number;               //实时DO值
-  oxy_ratio: number;               //氧气通度
-  target_DO: number;               //设定目标DO值
-  target_oxy_ratio: number;        //手动设定氧气通度
-  DO_KP: number;                   //氧含量KP
-  DO_KI: number;                   //氧含量KI
-  DO_KD: number;                   //氧含量KD
-  DO_flag: number;                 //氧含量控制开启标志位
-  target_motor_speed: number;      //手动设定电机转速
-  timing_motor_speed: number;      //电机实时转速
-  motor_speed_l_limit: number;     //电机转速下限
-  motor_speed_u_limit: number;     //电机转速上限
-  motor_speed_autoflag: number;    //转速关联氧含量开启/关闭标志位
-  oxy_flag: number;                //通氧关联氧含量开启/关闭标志位
-
-  /*消泡控制部分*/
-  clean_speed: number;             //消泡泵设定送料速率
-  clean_ml: number;                //消泡泵目前送料量
-  clean_single_time: number;       //消泡单次泵入时间
-  clean_flag: number;              //消泡开启/停止标志位
-
-  /*补料控制部分*/
-  feed_speed: number;              //补料泵设定补料速率
-  feed_ml: number;                 //补料泵目前补料量
-  feed_DO_cu_limit: number;        //补料关联氧含量上限值
-  feed_DO_cl_limit: number;        //补料关联氧含量下限值
-  feed_DO_connect_flag: number;    //补料关联氧含量标志位
-  feed_flag: number;               //补料开启/停止标志位
-  feed_motor_connect_flag: number; //补料关联转速标志位
-  feed_DO_motor_connect_flag: number; //补料双关联转速、氧含量标志位
-  feed_motor_flag: number;         //补料泵开启标志位
-  feed_motor_cu_limit: number;     //补料关联转速上限值
-  feed_motor_cl_limit: number;     //补料关联转速下限值
-
-  /*系统控制变量*/
-  start_flag: number;              //发酵开始标志位
-  year: number;                    //年
-  mounth: number;                  //月
-  day: number;                     //日
-  hour: number;                    //时
-  minute: number;                  //分
-  second: number;                  //秒
-  communicate_flag: number;        //通讯开始标志位
-  decive_id: string;                   //罐号ID
 }
 
 

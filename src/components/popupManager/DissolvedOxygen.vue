@@ -165,21 +165,14 @@ const initTableData = () => {
   initheaderData.forEach(item => headerData.push(item));  // 添加新的数据
 
   const deviceProperties = [
-    {name: '转速控制', prop: 'motor_speed_autoflag'},
     {name: '测量值', prop: 'timing_DO'},
     {name: '设定值', prop: 'target_DO'},
-    {name: 'DO上限', prop: 'TODO_YOUR_DEFINITION_HERE'}, // 我没有在`SetData`接口中找到明确的与DO上限相对应的字段，所以我使用了占位符。您需要替换为正确的字段。
-    {name: 'DO下限', prop: 'TODO_YOUR_DEFINITION_HERE'}, // 同上
+    {name: 'DO误差上限', prop: 'TODO_YOUR_DEFINITION_HERE'},
+    {name: 'DO误差下限', prop: 'TODO_YOUR_DEFINITION_HERE'},
     {name: '转速上限', prop: 'motor_speed_u_limit'},
     {name: '转速下限', prop: 'motor_speed_l_limit'},
-    {name: '控制死区', prop: 'TODO_YOUR_DEFINITION_HERE'}, // 同上
-    {name: '报警上限', prop: 'TODO_YOUR_DEFINITION_HERE'}, // 同上
-    {name: '报警下限', prop: 'TODO_YOUR_DEFINITION_HERE'}, // 同上
-    {name: '氧气控制', prop: 'oxy_flag'},
-    {name: '控制周期', prop: 'TODO_YOUR_DEFINITION_HERE'}, // 同上
-    {name: '控制比例', prop: 'DO_KP'}, // 假设"控制比例"对应于"氧含量KP"
-    {name: '加氧上限', prop: 'TODO_YOUR_DEFINITION_HERE'}, // 同上
-    {name: '加氧下限', prop: 'TODO_YOUR_DEFINITION_HERE'}  // 同上
+    {name: '报警DO上限', prop: 'TODO_YOUR_DEFINITION_HERE'},
+    {name: '报警DO下限', prop: 'TODO_YOUR_DEFINITION_HERE'},
   ]
 
 
@@ -299,7 +292,6 @@ const headerData: HeaderItem[] = reactive([
 
 
 const tableData: any = reactive([
-  {name: '状态', F1: 1, F2: 1, F3: 2, F4: 1, F5: 0, F6: 1, F7: 2, F8: 1},
   {name: '测量值', F1: 25, F2: 26, F3: 27, F4: 28, F5: 29, F6: 30, F7: 31, F8: 32},
   {name: '设定值', F1: 28, F2: 29, F3: 30, F4: 31, F5: 32, F6: 33, F7: 34, F8: 35},
   {name: '控制周期', F1: 30, F2: 31, F3: 32, F4: 33, F5: 34, F6: 35, F7: 36, F8: 37},
@@ -368,82 +360,7 @@ interface HeaderItem {
   props: string;
 }
 
-interface SetData {
-  /*PH控制部分变量*/
-  timing_PH: number;   //实时PH值
-  acid_speed: number;  //酸泵实时送料速率
-  lye_speed: number;   //碱泵实时送料速率
-  target_PH: number;   //设定目标PH
-  acid_KP: number;     //PID参数
-  acid_KI: number;     //PID参数
-  acid_KD: number;     //PID参数
-  lye_KP: number;      //PID参数
-  lye_KI: number;      //PID参数
-  lye_KD: number;      //PID参数
-  acid_ml: number;     //酸泵目前送料量
-  lye_ml: number;      //碱泵目前送料量
-  acid_handle_speed_set: number;   //酸泵手动送料速率设置
-  lye_handle_speed_set: number;    //碱泵手动送料速率设置
-  PH_flag: number;     //PH控制开启/停止标志位
-  Ph_auto_handle: number;          //PH控制自动/手动控制标志位
 
-  /*温控部分变量*/
-  timing_temp: number;             //实时温度值
-  heatpower: number;               //加热毯实时功率
-  target_temp: number;             //设定目标温度值
-  Temp_KP: number;                 //温控KP
-  Temp_KI: number;                 //温控KI
-  Temp_KD: number;                 //温控KD
-  water_flag: number;              //冷凝水通断标志位
-  temp_flag: number;               //温控开启/停止标志位
-  cool_water_autoflag: number;     //冷凝水通断控制自动/手动标志位
-
-  /*氧含量控制部分变量*/
-  timing_DO: number;               //实时DO值
-  oxy_ratio: number;               //氧气通度
-  target_DO: number;               //设定目标DO值
-  target_oxy_ratio: number;        //手动设定氧气通度
-  DO_KP: number;                   //氧含量KP
-  DO_KI: number;                   //氧含量KI
-  DO_KD: number;                   //氧含量KD
-  DO_flag: number;                 //氧含量控制开启标志位
-  target_motor_speed: number;      //手动设定电机转速
-  timing_motor_speed: number;      //电机实时转速
-  motor_speed_l_limit: number;     //电机转速下限
-  motor_speed_u_limit: number;     //电机转速上限
-  motor_speed_autoflag: number;    //转速关联氧含量开启/关闭标志位
-  oxy_flag: number;                //通氧关联氧含量开启/关闭标志位
-
-  /*消泡控制部分*/
-  clean_speed: number;             //消泡泵设定送料速率
-  clean_ml: number;                //消泡泵目前送料量
-  clean_single_time: number;       //消泡单次泵入时间
-  clean_flag: number;              //消泡开启/停止标志位
-
-  /*补料控制部分*/
-  feed_speed: number;              //补料泵设定补料速率
-  feed_ml: number;                 //补料泵目前补料量
-  feed_DO_cu_limit: number;        //补料关联氧含量上限值
-  feed_DO_cl_limit: number;        //补料关联氧含量下限值
-  feed_DO_connect_flag: number;    //补料关联氧含量标志位
-  feed_flag: number;               //补料开启/停止标志位
-  feed_motor_connect_flag: number; //补料关联转速标志位
-  feed_DO_motor_connect_flag: number; //补料双关联转速、氧含量标志位
-  feed_motor_flag: number;         //补料泵开启标志位
-  feed_motor_cu_limit: number;     //补料关联转速上限值
-  feed_motor_cl_limit: number;     //补料关联转速下限值
-
-  /*系统控制变量*/
-  start_flag: number;              //发酵开始标志位
-  year: number;                    //年
-  mounth: number;                  //月
-  day: number;                     //日
-  hour: number;                    //时
-  minute: number;                  //分
-  second: number;                  //秒
-  communicate_flag: number;        //通讯开始标志位
-  decive_id: string;                   //罐号ID
-}
 
 
 const name_translation = {
