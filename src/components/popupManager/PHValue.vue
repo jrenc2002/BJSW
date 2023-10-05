@@ -5,7 +5,7 @@
     <!--    标题-->
     <div class="h-[4%] self-stretch justify-start items-center  inline-flex mt-3  w-full ">
       <div class="w-[calc(10rem)] text-xl leading-10 text-zinc-900 text-2xl font-medium leading-loose left-4 relative">
-        PH值控制
+        PH控制
       </div>
       <div class="w-[calc(100%-10rem)] relative justify-end flex mr-3 ">
 
@@ -60,6 +60,7 @@
                    class="right-div1 bg-[#F1F1F1] mt-3 ">
                 <table :style="{ width: `max(${(firstRow.length + 1) * 8.2}rem, 100%)` }"
                        class=" flex items-start self-start ">
+
                   <tr>
                     <th v-for="(row, index) in firstRow" :key="index" class="first-row-style w-[8.2rem]  ">{{
                         row
@@ -77,11 +78,8 @@
               >
                 <table :style="{ width: `max(${(firstRow.length + 1) * 8.2}rem, 100%)` }" class="flex items-start  ">
                   <div class="flex-col justify-center items-center">
-
                     <tr v-for="(body,index) in tableBodyRows" :key="index" class="flex justify-center items-center">
-
                       <template v-for="(col, i) in tableBodyCols" :key="col.props + i">
-
                         <td v-if="index==0"
                             class="w-[8.2rem] text-center border-r border-b flex justify-center items-center">
                           <details class="dropdown ">
@@ -101,176 +99,16 @@
                             </ul>
                           </details>
                         </td>
-                        <td v-else-if="index==2"
+                        <td v-else-if="index>=2&&index<=12"
                             class="w-[8.2rem] text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center"
-                            @dblclick="inputVisible[i].target = !inputVisible[i].target">
+                            @dblclick="inputVisible[i][index-2].control = !inputVisible[i][index-2].control">
                           <input
-                              v-if="inputVisible[i].target&&DeviceManage.deviceList[i]?.deviceSet!==null"
-                              v-model="inputVisible[i].targetValue"
+                              v-if="inputVisible[i][index-2].control&&DeviceManage.deviceList[i]?.deviceSet!==null"
+                              v-model="inputVisible[i][index-2].cache"
+                              :placeholder="placeholder[index-2]"
                               class="w-[8.2rem]  h-full text-center break-all whitespace-normal "
-                              placeholder="输入设定值"
                               type="text"
-                              @keyup.enter="inputVisible[i].target = false;DeviceManage.deviceList[i].nowData.target_PH = inputVisible[i].targetValue;"
-                          />
-
-                          <span v-else
-                                class="w-[8.2rem] leading-5 text-center whitespace-normal break-all flex justify-center items-center">
-                    {{ body[col.props] }}</span>
-                        </td>
-                        <td v-else-if="index==3"
-                            class="w-[8.2rem] text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center"
-                            @dblclick="inputVisible[i].PH_upper_limit = !inputVisible[i].PH_upper_limit">
-                          <input
-                              v-if="inputVisible[i].PH_upper_limit&&DeviceManage.deviceList[i]?.deviceSet!==null"
-                              v-model="inputVisible[i].PH_upper_limitValue"
-                              class="w-[8.2rem]  h-full text-center break-all whitespace-normal "
-                              placeholder="输入误差上限"
-                              type="text"
-                              @keyup.enter="inputVisible[i].PH_upper_limit = false;DeviceManage.deviceList[i].nowData.PH_upper_limit = inputVisible[i].PH_upper_limitValue;"
-                          />
-
-                          <span v-else
-                                class="w-[8.2rem] leading-5 text-center whitespace-normal break-all flex justify-center items-center">
-                    {{ body[col.props] }}</span>
-                        </td>
-                        <td v-else-if="index==4"
-                            class="w-[8.2rem] text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center"
-                            @dblclick="inputVisible[i].PH_lower_limit = !inputVisible[i].PH_lower_limit">
-                          <input
-                              v-if="inputVisible[i].PH_lower_limit&&DeviceManage.deviceList[i]?.deviceSet!==null"
-                              v-model="inputVisible[i].PH_lower_limitValue"
-                              class="w-[8.2rem]  h-full text-center break-all whitespace-normal "
-                              placeholder="输入误差下限"
-                              type="text"
-                              @keyup.enter="inputVisible[i].PH_lower_limit = false;DeviceManage.deviceList[i].nowData.PH_lower_limit = inputVisible[i].PH_lower_limitValue;"
-                          />
-
-                          <span v-else
-                                class="w-[8.2rem] leading-5 text-center whitespace-normal break-all flex justify-center items-center">
-                    {{ body[col.props] }}</span>
-                        </td>
-                        <td v-else-if="index==5"
-                            class="w-[8.2rem] text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center"
-                            @dblclick="inputVisible[i].acid_KP = !inputVisible[i].acid_KP">
-                          <input
-                              v-if="inputVisible[i].acid_KP&&DeviceManage.deviceList[i]?.deviceSet!==null"
-                              v-model="inputVisible[i].acid_KPValue"
-                              class="w-[8.2rem]  h-full text-center break-all whitespace-normal "
-                              placeholder="输入酸泵比例P"
-                              type="text"
-                              @keyup.enter="inputVisible[i].acid_KP = false;DeviceManage.deviceList[i].nowData.acid_KP = inputVisible[i].acid_KPValue;"
-                          />
-
-                          <span v-else
-                                class="w-[8.2rem] leading-5 text-center whitespace-normal break-all flex justify-center items-center">
-                    {{ body[col.props] }}</span>
-                        </td>
-                        <td v-else-if="index==6"
-                            class="w-[8.2rem] text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center"
-                            @dblclick="inputVisible[i].acid_KI = !inputVisible[i].acid_KI">
-                          <input
-                              v-if="inputVisible[i].acid_KI&&DeviceManage.deviceList[i]?.deviceSet!==null"
-                              v-model="inputVisible[i].acid_KIValue"
-                              class="w-[8.2rem]  h-full text-center break-all whitespace-normal "
-                              placeholder="输入酸泵积分D"
-                              type="text"
-                              @keyup.enter="inputVisible[i].acid_KI = false;DeviceManage.deviceList[i].nowData.acid_KI = inputVisible[i].acid_KIValue;"
-                          />
-
-                          <span v-else
-                                class="w-[8.2rem] leading-5 text-center whitespace-normal break-all flex justify-center items-center">
-                    {{ body[col.props] }}</span>
-                        </td>
-                        <td v-else-if="index==7"
-                            class="w-[8.2rem] text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center"
-                            @dblclick="inputVisible[i].acid_KD = !inputVisible[i].acid_KD">
-                          <input
-                              v-if="inputVisible[i].acid_KD&&DeviceManage.deviceList[i]?.deviceSet!==null"
-                              v-model="inputVisible[i].acid_KDValue"
-                              class="w-[8.2rem]  h-full text-center break-all whitespace-normal "
-                              placeholder="输入酸泵微分D"
-                              type="text"
-                              @keyup.enter="inputVisible[i].acid_KD = false;DeviceManage.deviceList[i].nowData.acid_KD = inputVisible[i].acid_KDValue;"
-                          />
-
-                          <span v-else
-                                class="w-[8.2rem] leading-5 text-center whitespace-normal break-all flex justify-center items-center">
-                    {{ body[col.props] }}</span>
-                        </td>
-                        <td v-else-if="index==8"
-                            class="w-[8.2rem] text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center"
-                            @dblclick="inputVisible[i].lye_KP = !inputVisible[i].lye_KP">
-                          <input
-                              v-if="inputVisible[i].lye_KP&&DeviceManage.deviceList[i]?.deviceSet!==null"
-                              v-model="inputVisible[i].lye_KPValue"
-                              class="w-[8.2rem]  h-full text-center break-all whitespace-normal "
-                              placeholder="输入碱泵比例P"
-                              type="text"
-                              @keyup.enter="inputVisible[i].lye_KP = false;DeviceManage.deviceList[i].nowData.lye_KP = inputVisible[i].lye_KPValue;"
-                          />
-
-                          <span v-else
-                                class="w-[8.2rem] leading-5 text-center whitespace-normal break-all flex justify-center items-center">
-                    {{ body[col.props] }}</span>
-                        </td>
-                        <td v-else-if="index==9"
-                            class="w-[8.2rem] text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center"
-                            @dblclick="inputVisible[i].lye_KI = !inputVisible[i].lye_KI">
-                          <input
-                              v-if="inputVisible[i].lye_KI&&DeviceManage.deviceList[i]?.deviceSet!==null"
-                              v-model="inputVisible[i].lye_KIValue"
-                              class="w-[8.2rem]  h-full text-center break-all whitespace-normal "
-                              placeholder="输入碱泵积分I"
-                              type="text"
-                              @keyup.enter="inputVisible[i].lye_KI = false;DeviceManage.deviceList[i].nowData.lye_KI = inputVisible[i].lye_KIValue;"
-                          />
-
-                          <span v-else
-                                class="w-[8.2rem] leading-5 text-center whitespace-normal break-all flex justify-center items-center">
-                    {{ body[col.props] }}</span>
-                        </td>
-                        <td v-else-if="index==10"
-                            class="w-[8.2rem] text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center"
-                            @dblclick="inputVisible[i].lye_KD = !inputVisible[i].lye_KD">
-                          <input
-                              v-if="inputVisible[i].lye_KD&&DeviceManage.deviceList[i]?.deviceSet!==null"
-                              v-model="inputVisible[i].lye_KDValue"
-                              class="w-[8.2rem]  h-full text-center break-all whitespace-normal "
-                              placeholder="输入碱泵微分D"
-                              type="text"
-                              @keyup.enter="inputVisible[i].lye_KD = false;DeviceManage.deviceList[i].nowData.lye_KD = inputVisible[i].lye_KDValue;"
-                          />
-
-                          <span v-else
-                                class="w-[8.2rem] leading-5 text-center whitespace-normal break-all flex justify-center items-center">
-                    {{ body[col.props] }}</span>
-                        </td>
-                        <td v-else-if="index==11"
-                            class="w-[8.2rem] text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center"
-                            @dblclick="inputVisible[i].alarm_h_limit = !inputVisible[i].alarm_h_limit">
-                          <input
-                              v-if="inputVisible[i].alarm_h_limit&&DeviceManage.deviceList[i]?.deviceSet!==null"
-                              v-model="inputVisible[i].alarm_h_limitValue"
-                              class="w-[8.2rem]  h-full text-center break-all whitespace-normal "
-                              placeholder="输入报警上限"
-                              type="text"
-                              @keyup.enter="inputVisible[i].alarm_h_limit = false;DeviceManage.deviceList[i].deviceSet.phMaxWarn = inputVisible[i].alarm_h_limitValue;"
-                          />
-
-                          <span v-else
-                                class="w-[8.2rem] leading-5 text-center whitespace-normal break-all flex justify-center items-center">
-                    {{ body[col.props] }}</span>
-                        </td>
-                        <td v-else-if="index==12"
-                            class="w-[8.2rem] text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center"
-                            @dblclick="inputVisible[i].alarm_l_limit = !inputVisible[i].alarm_l_limit">
-                          <input
-                              v-if="inputVisible[i].alarm_l_limit&&DeviceManage.deviceList[i]?.deviceSet!==null"
-                              v-model="inputVisible[i].alarm_l_limitValue"
-                              class="w-[8.2rem]  h-full text-center break-all whitespace-normal "
-                              placeholder="输入报警下限"
-                              type="text"
-                              @keyup.enter="inputVisible[i].alarm_l_limit = false;DeviceManage.deviceList[i].deviceSet.phMinWarn = inputVisible[i].alarm_l_limitValue;"
+                              @keyup.enter="keyupEnterInput(i,index-2)"
                           />
 
                           <span v-else
@@ -321,40 +159,22 @@ const AppGlobal = useAppGlobal();
 
 // ______________________表格数据处理_______________________
 watch(() => DeviceManage.deviceList, () => {
-
   initTableData()
 }, {deep: true});
-const inputVisible = ref<InputVisible[]>([]); // 用于追踪哪一行显示输入框
+
 interface InputVisible {
   id: number;
-  target: boolean;
-  PH_upper_limit: boolean;
-  PH_lower_limit: boolean;
-  acid_KP: boolean;
-  acid_KI: boolean;
-  acid_KD: boolean;
-  lye_KP: boolean;
-  lye_KI: boolean;
-  lye_KD: boolean;
-  alarm_h_limit: boolean;
-  alarm_l_limit: boolean;
-  targetValue: number | null;
-  PH_upper_limitValue: number | null;
-  PH_lower_limitValue: number | null;
-  acid_KPValue: number | null;
-  acid_KIValue: number | null;
-  acid_KDValue: number | null;
-  lye_KPValue: number | null;
-  lye_KIValue: number | null;
-  lye_KDValue: number | null;
-  alarm_h_limitValue: number | null;
-  alarm_l_limitValue: number | null;
-
-
+  control: boolean;
+  cache: number | null;
 }
+
+type DeviceInput = InputVisible[];
+
+const inputVisible = ref<DeviceInput[]>([]); // 用于追踪哪一行显示输入框
 
 // 读取表格数据
 const initTableData = () => {
+
   if (!DeviceManage || !Array.isArray(DeviceManage.deviceList)) {
     console.error("Error: DeviceManage.deviceList is not a valid array.");
     return;
@@ -371,31 +191,8 @@ const initTableData = () => {
     }
 
     initheaderData.push({title: device.name, props: 'F' + (device.id + 1)});
-    inputVisible.value.push({
-      id: device.id,
-      target: false,
-      PH_upper_limit: false,
-      PH_lower_limit: false,
-      acid_KP: false,
-      acid_KI: false,
-      acid_KD: false,
-      lye_KP: false,
-      lye_KI: false,
-      lye_KD: false,
-      alarm_h_limit: false,
-      alarm_l_limit: false,
-      targetValue: null,
-      PH_upper_limitValue: null,
-      PH_lower_limitValue: null,
-      acid_KPValue: null,
-      acid_KIValue: null,
-      acid_KDValue: null,
-      lye_KPValue: null,
-      lye_KIValue: null,
-      lye_KDValue: null,
-      alarm_h_limitValue: null,
-      alarm_l_limitValue: null,
-    });
+ 
+    inputVisible.value.push([])
   });
 
   headerData.length = 0;  // 清空原始数据
@@ -419,39 +216,48 @@ const initTableData = () => {
 
 
   let resultItems: any[] = []; // 声明结果数组
-  deviceProperties.map(deviceProp => {
+  deviceProperties.map((deviceProp, deviceIndex) => {
     let tableItem = {
       name: deviceProp.name,
       prop: deviceProp.prop
     };
     initheaderData.forEach((header, index) => {
-      if (index == 0) {
+      if (index === 0) {
         return;
       }
+      if (deviceIndex >= 2 && deviceIndex <= 12) {
+        inputVisible.value[index - 1].push({id: deviceIndex, control: false, cache: null});
+
+
+      }
+
+
       index--;
 
-      if (DeviceManage.deviceList[index].nowData == null) {
+      if (DeviceManage.deviceList[index].nowData == null && deviceProp.prop != "alarm_h_limit" && deviceProp.prop != "alarm_l_limit") {
         tableItem[header.props] = 0;
 
         return;
       }
 
-      if (!DeviceManage.deviceList[index] || !DeviceManage.deviceList[index].nowData) {
-        console.error(`Error: Missing data for device at index ${index}.`);
-        return;
-      } else if (deviceProp.prop == "alarm_h_limit") {
-        tableItem[header.props] = DeviceManage.deviceList[index].batch_name;
-      } else if (deviceProp.prop == "alarm_l_limit") {
-        tableItem[header.props] = 241;
-      } else if (deviceProp.prop == "control_dead") {
-        tableItem[header.props] = 241;
-      } else if (deviceProp.prop == "control_cycle") {
-        tableItem[header.props] = 241;
-      } else if (deviceProp.prop == "cycle_open") {
-        tableItem[header.props] = 241;
-      } else if (deviceProp.prop == "temp_flag") {
-        tableItem[header.props] = 241;
-      } else {
+      // 报警上限
+      if (deviceProp.prop == "alarm_h_limit") {
+        if (DeviceManage.deviceList[index]?.deviceSet?.phMaxWarn !== null) {
+          const phMaxWarn = DeviceManage.deviceList[index]?.deviceSet?.phMaxWarn ?? 0;
+          tableItem[header.props] = phMaxWarn;
+        } else {
+          tableItem[header.props] = 0;
+        }
+      }
+      // 报警下限
+      else if (deviceProp.prop == "alarm_l_limit") {
+        if (DeviceManage.deviceList[index]?.deviceSet?.phMinWarn !== null) {
+          const phMinWarn = DeviceManage.deviceList[index]?.deviceSet?.phMinWarn ?? 0;
+          tableItem[header.props] = phMinWarn;
+        } else {
+          tableItem[header.props] = 0;
+        }
+      }  else {
         try {
           const value = DeviceManage.deviceList[index].nowData![deviceProp.prop];
           if (typeof value === 'number' && !Number.isInteger(value)) {
@@ -474,7 +280,86 @@ const initTableData = () => {
   resultItems.forEach(item => tableData.push(item));  // 添加新的数据
 
 }
+const keyupEnterInput = (deviceID: number, setIndex: number) => {
 
+  inputVisible.value[deviceID][setIndex].control = false;
+
+  if (setIndex == 0 && inputVisible.value[deviceID][setIndex].cache != null) {
+    if (DeviceManage.deviceList[deviceID] && DeviceManage.deviceList[deviceID]!.nowData) {
+      DeviceManage.deviceList[deviceID]!.nowData!.target_PH = inputVisible.value[deviceID][setIndex].cache || 0;
+    }
+  }
+  if (setIndex == 1 && inputVisible.value[deviceID][setIndex].cache != null) {
+    if (DeviceManage.deviceList[deviceID] && DeviceManage.deviceList[deviceID]!.nowData) {
+      DeviceManage.deviceList[deviceID]!.nowData!.PH_upper_limit = inputVisible.value[deviceID][setIndex].cache || 0;
+    }
+  }
+  if (setIndex == 2 && inputVisible.value[deviceID][setIndex].cache != null) {
+    if (DeviceManage.deviceList[deviceID] && DeviceManage.deviceList[deviceID]!.nowData) {
+      DeviceManage.deviceList[deviceID]!.nowData!.PH_lower_limit = inputVisible.value[deviceID][setIndex].cache || 0;
+    }
+  }
+  if (setIndex == 3 && inputVisible.value[deviceID][setIndex].cache != null) {
+    if (DeviceManage.deviceList[deviceID] && DeviceManage.deviceList[deviceID]!.nowData) {
+      DeviceManage.deviceList[deviceID]!.nowData!.acid_KP = inputVisible.value[deviceID][setIndex].cache || 0;
+    }
+  }
+  if (setIndex == 4 && inputVisible.value[deviceID][setIndex].cache != null) {
+    if (DeviceManage.deviceList[deviceID] && DeviceManage.deviceList[deviceID]!.nowData) {
+      DeviceManage.deviceList[deviceID]!.nowData!.acid_KI = inputVisible.value[deviceID][setIndex].cache || 0;
+    }
+  }
+  if (setIndex == 5 && inputVisible.value[deviceID][setIndex].cache != null) {
+    if (DeviceManage.deviceList[deviceID] && DeviceManage.deviceList[deviceID]!.nowData) {
+      DeviceManage.deviceList[deviceID]!.nowData!.acid_KD = inputVisible.value[deviceID][setIndex].cache || 0;
+    }
+  }
+  if (setIndex == 6 && inputVisible.value[deviceID][setIndex].cache != null) {
+    if (DeviceManage.deviceList[deviceID] && DeviceManage.deviceList[deviceID]!.nowData) {
+      DeviceManage.deviceList[deviceID]!.nowData!.lye_KP = inputVisible.value[deviceID][setIndex].cache || 0;
+    }
+  }
+  if (setIndex == 7 && inputVisible.value[deviceID][setIndex].cache != null) {
+    if (DeviceManage.deviceList[deviceID] && DeviceManage.deviceList[deviceID]!.nowData) {
+      DeviceManage.deviceList[deviceID]!.nowData!.lye_KI = inputVisible.value[deviceID][setIndex].cache || 0;
+    }
+  }
+  if (setIndex == 8 && inputVisible.value[deviceID][setIndex].cache != null) {
+    if (DeviceManage.deviceList[deviceID] && DeviceManage.deviceList[deviceID]!.nowData) {
+      DeviceManage.deviceList[deviceID]!.nowData!.lye_KD = inputVisible.value[deviceID][setIndex].cache || 0;
+    }
+  }
+
+  if (setIndex == 9 && inputVisible.value[deviceID][setIndex].cache != null) {
+    if (DeviceManage.deviceList[deviceID] && DeviceManage.deviceList[deviceID]!.deviceSet) {
+      DeviceManage.deviceList[deviceID]!.deviceSet!. phMaxWarn= inputVisible.value[deviceID][setIndex].cache || 0;
+    }
+  }
+  if (setIndex == 10 && inputVisible.value[deviceID][setIndex].cache != null) {
+    if (DeviceManage.deviceList[deviceID] && DeviceManage.deviceList[deviceID]!.deviceSet) {
+      DeviceManage.deviceList[deviceID]!.deviceSet!.phMinWarn = inputVisible.value[deviceID][setIndex].cache || 0;
+    }
+  }
+
+
+
+}
+
+const placeholder = ref([
+  "请输设定值",
+  "请输误差上限",
+  "请输误差下限",
+  "请输酸泵P",
+  "请输酸泵I",
+  "请输酸泵D",
+  "请输碱泵P",
+  "请输碱泵I",
+  "请输碱泵D",
+  "请输报警上限",
+  "请输报警下限",
+
+
+])
 
 const firstCol = computed(() => props.tableData.map(p => {
   const pArr = Object.keys(p);
@@ -491,18 +376,7 @@ const firstRow = computed(() => {
   })
   return rows;
 })
-const controSend = ((name, index, content) => {
-  // 温度状态控制
-  if (name == 'PH_flag') {
-    const data = {
-      temp_flag: content,
 
-    }
-    sendData(index, data);
-  }
-
-
-})
 
 const tableBodyRows = computed(() => {
   let arr: { [key: string]: any }[] = [];
@@ -543,7 +417,6 @@ const headerData: HeaderItem[] = reactive([
 
 
 const tableData: any = reactive([
-  {name: '状态', F1: 1, F2: 1, F3: 2, F4: 1, F5: 0, F6: 1, F7: 2, F8: 1},
   {name: '测量值', F1: 25, F2: 26, F3: 27, F4: 28, F5: 29, F6: 30, F7: 31, F8: 32},
   {name: '设定值', F1: 28, F2: 29, F3: 30, F4: 31, F5: 32, F6: 33, F7: 34, F8: 35},
   {name: '控制周期', F1: 30, F2: 31, F3: 32, F4: 33, F5: 34, F6: 35, F7: 36, F8: 37},
@@ -586,6 +459,7 @@ const handleKeydown = (event) => {
     PopupMangerState.updateIsShowPop(false)
   }
 };
+// 弹窗管理
 
 // ______________________生命周期_______________________
 
@@ -620,8 +494,8 @@ const name_translation = {
   'PH值': 'PHValue',
   '溶氧': 'DissolvedOxygen',
   '转速': 'RPM',
-  '酸液泵': 'AcidPump',
-  '碱液泵': 'LyePump',
+  '酸泵': 'AcidPump',
+  '碱泵': 'LyePump',
   '补料泵': 'FeedPump',
   '消泡剂泵': 'DefoamerPump'
 }

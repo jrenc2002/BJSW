@@ -10,9 +10,6 @@
     <div v-show="props.popcontent === PopupType.DissolvedOxygen" ref="popupCreateTaskCard">
       <DissolvedOxygen></DissolvedOxygen>
     </div>
-    <div v-show="props.popcontent === PopupType.RPM" ref="popupCreateTaskCard">
-      <RPM></RPM>
-    </div>
     <div v-show="props.popcontent === PopupType.AcidPump" ref="popupCreateTaskCard">
       <AcidPump></AcidPump>
     </div>
@@ -35,11 +32,10 @@
  * 通过弹窗共享状态，来获取怎么弹法
  */
 import {PopupType} from "@/store/PopupMangerState";
-import {defineProps, onMounted} from "vue";
+import {defineProps} from "vue";
 import TemperatureControl from "@/components/popupManager/TemperatureControl.vue";
 import PHValue from "@/components/popupManager/PHValue.vue";
 import DissolvedOxygen from "@/components/popupManager/DissolvedOxygen.vue";
-import RPM from "@/components/popupManager/RPM.vue"
 import AcidPump from "@/components/popupManager/AcidPump.vue"
 import LyePump from "@/components/popupManager/LyePump.vue"
 import DefoamerPump from "@/components/popupManager/DefoamerPump.vue"
@@ -52,10 +48,9 @@ const props = defineProps({
   }
 })
 
-onMounted(() => {
-  console.log(props.popcontent)
-  console.log(props.popcontent !== PopupType.None)
-})
+// onMounted(() => {
+//
+// })
 
 
 </script>

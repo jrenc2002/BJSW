@@ -228,7 +228,7 @@ export const useDeviceManage = defineStore('DeviceManage', {
             return newId;
         },
         updateDeviceListData(index: number, newDeviceData: (SetData | number)) {
-
+            console.log('newDeviceData',newDeviceData)
             if (typeof newDeviceData === 'number') {
                 if (newDeviceData === -1) console.log("Error")
                 return;
@@ -292,7 +292,7 @@ export const useDeviceManage = defineStore('DeviceManage', {
 
 
             }
-
+            console.log(this.deviceList[index].state)
             this.deviceList[index].nowData = newDeviceData;
 
 

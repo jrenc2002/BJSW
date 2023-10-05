@@ -14,7 +14,7 @@ export enum PopupType {
     DissolvedOxygen = 3,
     // 转速值
     RPM = 4,
-    // 酸液泵
+    // 酸泵
     AcidPump = 5,
     FeedPump = 6,
 

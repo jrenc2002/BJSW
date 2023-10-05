@@ -35,48 +35,48 @@
 
             </div>
             <div class="mx-6 my-3  mt-0 flex-col  ">
-              <div class="w-full  flex h-[3vh] flex items-center justify-center  gap-2 ">
+              <div class="w-full  flex h-[3vh] flex items-center justify-start  gap-2 ">
                 <div class=" min-w-[7rem] mr-1 text-left relative ">设定值:</div>
-                <span class="countdown relative ">
-                  <span style="--value:53;"></span>
+                <span class="min-w-[2rem] flex text-center items-center justify-center relative">
+                  {{ DataManger.DoData.SetData }}
                 </span>
               </div>
-              <div class="w-full  flex h-[3vh] flex items-center justify-center gap-2 ">
+              <div class="w-full  flex h-[3vh] flex items-center justify-start gap-2 ">
                 <div class=" min-w-[7rem] mr-1 text-left relative">测量值:</div>
-                <span class="countdown relative ">
-                  <span style="--value:53;"></span>
+                <span class="min-w-[2rem] flex text-center items-center justify-center relative">
+                  {{ DataManger.DoData.MeasureData }}
                 </span>
               </div>
-              <div class="w-full  flex h-[3vh] flex items-center justify-center gap-2 ">
+              <div class="w-full  flex h-[3vh] flex items-center justify-start gap-2 ">
                 <div class=" min-w-[7rem] mr-1 text-left relative">转速上限:</div>
-                <span class="countdown relative">
-                  <span style="--value:53;"></span>
+                <span class="min-w-[2rem] flex text-center items-center justify-center relative">
+                   {{ DataManger.DoData.RPMUpperLimit }}
                 </span>
               </div>
-              <div class="w-full  flex h-[3vh] flex items-center justify-center gap-2 ">
+              <div class="w-full  flex h-[3vh] flex items-center justify-start gap-2 ">
                 <div class=" min-w-[7rem] mr-1 text-left relative">转速下限:</div>
-                <span class="countdown relative">
-                  <span style="--value:53;"></span>
+                <span class="min-w-[2rem] flex text-center items-center justify-center relative">
+                    {{ DataManger.DoData.RPMLowerLimit }}
                 </span>
 
               </div>
-              <div class="w-full  flex h-[3vh] flex items-center justify-center gap-2 ">
+              <div class="w-full  flex h-[3vh] flex items-center justify-start gap-2 ">
                 <div class=" min-w-[7rem] mr-1 text-left relative">溶氧上限:</div>
-                <span class="countdown relative">
-                    <span style="--value:53;"></span>
+                <span class="min-w-[2rem] flex text-center items-center justify-center relative">
+                {{ DataManger.DoData.DOUpperLimit }}
                 </span>
               </div>
-              <div class="w-full  flex h-[3vh] flex items-center justify-center gap-2 ">
+              <div class="w-full  flex h-[3vh] flex items-center justify-start gap-2 ">
                 <div class=" min-w-[7rem] mr-1 text-left relative">溶氧下限:</div>
-                <span class="countdown relative">
-                  <span style="--value:53;"></span>
+                <span class="min-w-[2rem] flex text-center items-center justify-center relative">
+                {{ DataManger.DoData.DOLowerLimit }}
                 </span>
 
               </div>
-              <div class="w-full  flex h-[3vh] flex items-center justify-center gap-2 ">
+              <div class="w-full  flex h-[3vh] flex items-center justify-start gap-2 ">
                 <div class=" min-w-[7rem] mr-1 text-left relative">转速关联状态:</div>
-                <span class="countdown relative">
-                    <span style="--value:53;"></span>
+                <span class="min-w-[2rem] flex text-center items-center justify-center relative">
+                             {{ DataManger.DoData.RPMStatus }}
                 </span>
 
               </div>
@@ -96,14 +96,14 @@
             <div class="mx-6 my-3  mt-0 flex-col  ">
               <div class="w-full  flex h-[3vh] flex items-center justify-center gap-2 ">
                 <div class=" min-w-[7rem] mr-1 text-left relative ">设定值:</div>
-                <span class="countdown relative ">
-                  <span style="--value:53;"></span>
+                <span class="min-w-[2rem] flex text-center items-center justify-center relative">
+                  {{ DataManger.RPMData.SetData }}
                 </span>
               </div>
               <div class="w-full  flex h-[3vh] flex items-center justify-center gap-2 ">
                 <div class=" min-w-[7rem] mr-1 text-left relative">测量值:</div>
-                <span class="countdown relative ">
-                  <span style="--value:53;"></span>
+                <span class="min-w-[2rem] flex text-center items-center justify-center relative">
+                  {{ DataManger.RPMData.MeasureData }}
                 </span>
               </div>
 
@@ -123,14 +123,14 @@
             <div class="mx-6 my-3  mt-0 flex-col  ">
               <div class="w-full  flex h-[3vh] flex items-center justify-center gap-2 ">
                 <div class=" min-w-[7rem] mr-1 text-left relative ">设定值:</div>
-                <span class="countdown relative ">
-                  <span style="--value:53;"></span>
+                <span class="min-w-[2rem] flex text-center items-center justify-center relative">
+                  {{ DataManger.PHData.SetData }}
                 </span>
               </div>
               <div class="w-full  flex h-[3vh] flex items-center justify-center gap-2 ">
                 <div class=" min-w-[7rem] mr-1 text-left relative">测量值:</div>
-                <span class="countdown relative ">
-                  <span style="--value:53;"></span>
+                <span class="min-w-[2rem] flex text-center items-center justify-center relative">
+                   {{ DataManger.PHData.MeasureData }}
                 </span>
               </div>
 
@@ -150,26 +150,26 @@
             <div class="mx-6 my-3  mt-0 flex-col  ">
               <div class="w-full  flex h-[3vh] flex items-center justify-center gap-2 ">
                 <div class=" min-w-[7rem] mr-1 text-left relative ">设定值:</div>
-                <span class="countdown relative ">
-                  <span style="--value:53;"></span>
+                <span class="min-w-[2rem] flex text-center items-center justify-center relative">
+                 {{ DataManger.TemperatureData.SetData }}
                 </span>
               </div>
               <div class="w-full  flex h-[3vh] flex items-center justify-center gap-2  ">
                 <div class=" min-w-[7rem] mr-1 text-left relative">测量值:</div>
-                <span class="countdown relative ">
-                  <span style="--value:53;"></span>
+                <span class="min-w-[2rem] flex text-center items-center justify-center relative">
+                  {{ DataManger.TemperatureData.MeasureData }}
                 </span>
               </div>
               <div class="w-full  flex h-[3vh] flex items-center justify-center gap-2 ">
                 <div class=" min-w-[7rem] mr-1 text-left relative">加热功率:</div>
-                <span class="countdown relative ">
-                  <span style="--value:53;"></span>
+                <span class="min-w-[2rem] flex text-center items-center justify-center relative">
+                  {{ DataManger.TemperatureData.HeatingPower }}
                 </span>
               </div>
               <div class="w-full  flex h-[3vh] flex items-center justify-center gap-2 ">
                 <div class=" min-w-[7rem] mr-1 text-left relative">冷凝水状态:</div>
-                <span class="countdown relative ">
-                  <span style="--value:53;"></span>
+                <span class="min-w-[2rem] flex text-center items-center justify-center relative">
+                  {{ DataManger.TemperatureData.CondensateStatus }}
                 </span>
               </div>
             </div>
@@ -224,22 +224,22 @@
             <div class="mx-6 my-3  mt-0 flex-col  ">
               <div class="w-full  flex h-[3vh] flex items-center justify-center gap-2 ">
                 <div class=" min-w-[7rem] mr-1 text-left relative ">实时速率:</div>
-                <span class="countdown relative ">
-                  <span style="--value:53;"></span>
+                <span class="min-w-[2rem] flex text-center items-center justify-center relative">
+                  {{ DataManger.acidPumpData.RealTimeRate }}
                 </span>
               </div>
 
               <div class="w-full  flex h-[3vh] flex items-center justify-center gap-2 ">
                 <div class=" min-w-[7rem] mr-1 text-left relative">补料量:</div>
-                <span class="countdown relative ">
-                  <span style="--value:53;"></span>
+                <span class="min-w-[2rem] flex text-center items-center justify-center relative">
+                  {{ DataManger.acidPumpData.FeedAmount }}
                 </span>
               </div>
             </div>
           </div>
           <!--碱泵-->
           <transition name="fade">
-          <div v-if="stateManger.LyePump" class=" w-[10rem] p-3 flex-col flex justify-start items-center
+            <div v-if="stateManger.LyePump" class=" w-[10rem] p-3 flex-col flex justify-start items-center
            bg-base-100 shadow-lg min-h-[10rem] rounded-xl  border border-[#A7C2E4] top-[21vh] absolute left-[-12rem]  ">
 
               <div>
@@ -257,7 +257,7 @@
                 </div>
               </div>
 
-          </div>
+            </div>
           </transition>
           <div class="card min-w-[10vw] bg-base-100 shadow-lg  border border-zinc-100 top-[21vh] absolute ">
             <div class="w-full h-[3rem]   mb-2   bg-[#E1EEFF] flex items-center justify-center rounded-t-2xl ">
@@ -282,14 +282,14 @@
             <div class="mx-6 my-3  mt-0 flex-col  ">
               <div class="w-full  flex h-[3vh] flex items-center justify-center gap-2 ">
                 <div class=" min-w-[7rem] mr-1 text-left relative ">设定值:</div>
-                <span class="countdown relative ">
-                  <span style="--value:53;"></span>
+                <span class="min-w-[2rem] flex text-center items-center justify-center relative">
+                  {{ DataManger.lyePumpData.SetData }}
                 </span>
               </div>
               <div class="w-full  flex h-[3vh] flex items-center justify-center gap-2 ">
                 <div class=" min-w-[7rem] mr-1 text-left relative">测量值:</div>
-                <span class="countdown relative ">
-                  <span style="--value:53;"></span>
+                <span class="min-w-[2rem] flex text-center items-center justify-center relative">
+                  {{ DataManger.lyePumpData.MeasureData }}
                 </span>
               </div>
 
@@ -300,20 +300,20 @@
             <div v-if="stateManger.DefoamerPump" class=" w-[10rem] p-3 flex-col flex justify-start items-center
            bg-base-100 shadow-lg min-h-[10rem] rounded-xl  border border-[#E4DDA4] top-[36vh] absolute left-[-12rem]  ">
 
-                <div>
-                  <label class="block text font-medium leading-4 text-gray-900 mt-2">补料量</label>
-                  <div class="mt-2">
-                    <input
-                        class="block w-full pl-2 rounded-md border-[#AEAEAE] border py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"/>
-                  </div>
+              <div>
+                <label class="block text font-medium leading-4 text-gray-900 mt-2">补料量</label>
+                <div class="mt-2">
+                  <input
+                      class="block w-full pl-2 rounded-md border-[#AEAEAE] border py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"/>
                 </div>
-                <div>
-                  <label class="block text font-medium leading-4 text-gray-900 mt-2">补料速度</label>
-                  <div class="mt-2">
-                    <input
-                        class="block w-full pl-2 rounded-md border-[#AEAEAE] border py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"/>
-                  </div>
+              </div>
+              <div>
+                <label class="block text font-medium leading-4 text-gray-900 mt-2">补料速度</label>
+                <div class="mt-2">
+                  <input
+                      class="block w-full pl-2 rounded-md border-[#AEAEAE] border py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"/>
                 </div>
+              </div>
 
             </div>
           </transition>
@@ -343,17 +343,16 @@
             <div class="mx-6 my-3  mt-0 flex-col  ">
               <div class="w-full  flex h-[3vh] flex items-center justify-center gap-2 ">
                 <div class=" min-w-[7rem] mr-1 text-left relative ">设定值:</div>
-                <span class="countdown relative ">
-                  <span style="--value:53;"></span>
+                <span class="min-w-[2rem] flex text-center items-center justify-center relative">
+                  {{ DataManger.defoamerPumpData.SetData }}
                 </span>
               </div>
               <div class="w-full  flex h-[3vh] flex items-center justify-center gap-2 ">
                 <div class=" min-w-[7rem] mr-1 text-left relative">测量值:</div>
-                <span class="countdown relative ">
-                  <span style="--value:53;"></span>
+                <span class="min-w-[2rem] flex text-center items-center justify-center relative">
+                  {{ DataManger.defoamerPumpData.MeasureData }}
                 </span>
               </div>
-
             </div>
           </div>
           <!--补料泵-->
@@ -380,20 +379,20 @@
             <div class="mx-6 my-3  mt-0 flex-col  ">
               <div class="w-full  flex h-[3vh] flex items-center justify-center gap-2 ">
                 <div class=" min-w-[7rem] mr-1 text-left relative ">设定值:</div>
-                <span class="countdown relative ">
-                  <span style="--value:53;"></span>
+                <span class="min-w-[2rem] flex text-center items-center justify-center relative">
+                  {{ DataManger.feedPumpData.SetData }}
                 </span>
               </div>
               <div class="w-full  flex h-[3vh] flex items-center justify-center gap-2 ">
                 <div class=" min-w-[7rem] mr-1 text-left relative">测量值:</div>
-                <span class="countdown relative ">
-                  <span style="--value:53;"></span>
+                <span class="min-w-[2rem] flex text-center items-center justify-center relative">
+                  {{ DataManger.feedPumpData.MeasureData }}
                 </span>
               </div>
 
             </div>
           </div>
-          <button
+          <button @click="controSend('start_flag',AppGlobal.pageChance,1)"
               class="w-[10rem] h-[4rem] text-lg top-[4rem] relative bg-[#4EA67D] rounded-xl text-white hover:bg-[#327E5B] absolute top-[67vh]">
             开始发酵
           </button>
@@ -416,8 +415,54 @@
 <script setup>
 import {useProcessPopupMangerState} from "@/store/ProcessPopupMangerState";
 import {PopupType} from "@/store/PopupMangerState";
-import {onMounted, onUnmounted, reactive, watch} from "vue";
+import {onMounted, onUnmounted, reactive, ref, watch} from "vue";
 import ProcessPopupManger from "@/components/ProcessPopupManger.vue";
+import {sendData} from "@/api";
+import {useAppGlobal} from "@/store/AppGlobal";
+const AppGlobal = useAppGlobal()
+
+const DataManger = reactive({
+  DoData: {
+    SetData: 0,
+    MeasureData: 0,
+    RPMUpperLimit: 0,
+    RPMLowerLimit: 120,
+    DOUpperLimit: 0,
+    DOLowerLimit: 0,
+    RPMStatus: '关联',
+  },
+  RPMData: {
+    SetData: 0,
+    MeasureData: 0,
+  },
+  PHData: {
+    SetData: 0,
+    MeasureData: 0,
+  },
+  TemperatureData: {
+    SetData: 0,
+    MeasureData: 0,
+    HeatingPower: 0,
+    CondensateStatus: '关联',
+  },
+  acidPumpData: {
+    RealTimeRate: 0,
+    FeedAmount: 0,
+  },
+  lyePumpData: {
+    SetData: 0,
+    MeasureData: 0,
+  },
+  defoamerPumpData: {
+    SetData: 0,
+    MeasureData: 0,
+  },
+  feedPumpData: {
+    SetData: 0,
+    MeasureData: 0,
+  },
+
+})
 
 const ProcessPopupMangerState = useProcessPopupMangerState()
 // 弹窗管理
@@ -432,7 +477,9 @@ const popProcessManager = (val) => {
 }
 watch(() => ProcessPopupMangerState.isShowPop, (newValue, oldValue) => {
   console.log("----------------sdfasfs")
-  if (newValue==false&&oldValue==true){    stateManger.FeedPump = false}
+  if (newValue == false && oldValue == true) {
+    stateManger.FeedPump = false
+  }
 });
 // 当按下键盘时的处理函数，ESC关闭弹窗
 const handleKeydownEsc = (event) => {
@@ -461,7 +508,21 @@ const stateManger = reactive({
   AddFeed: false
 })
 
+const controSend = ((name, index, content) => {
+    // 温度状态控制
+    if (name === 'start_flag') {
+        const data = {
+            start_flag:content
 
+        }
+        sendData(index, data);
+        
+    }
+
+    
+
+
+})
 onMounted(() => {
   window.addEventListener('keydown', handleKeydownEsc);
 
@@ -473,11 +534,12 @@ onUnmounted(() => {
 
 <style lang="scss" scoped>
 
-.fade-enter-from{
+.fade-enter-from {
   transform-origin: right center;
   transform: scale(0.5);
   opacity: 0;
 }
+
 .fade-leave-to {
   transform-origin: right center;
   transform: scale(0.5);

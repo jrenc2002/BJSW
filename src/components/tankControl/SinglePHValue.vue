@@ -372,8 +372,8 @@ const name_translation = {
   'PH值': 'PHValue',
   '溶氧': 'DissolvedOxygen',
   '转速': 'RPM',
-  '酸液泵': 'AcidPump',
-  '碱液泵': 'LyePump',
+  '酸泵': 'AcidPump',
+  '碱泵': 'LyePump',
   '补料泵': 'FeedPump',
   '消泡剂泵': 'DefoamerPump'
 }

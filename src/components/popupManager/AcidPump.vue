@@ -68,7 +68,7 @@
                   @scroll="tableScroll()"
               >
                 <table  :style="{ width: `max(${(firstRow.length + 1) * 8.2}rem, 100%)` }" class="flex items-start  ">
-                  <div class="flex-col justify-center items-center">
+                  <div class="flex-col justify-center items-center ">
 
 
                     <tr v-for="(body,index) in tableBodyRows" class="flex justify-center items-center" :key="index">
@@ -77,19 +77,16 @@
                           <details class="dropdown ">
                             <summary v-if="body[col.props]==0" class="m-1 btn w-[7rem] ">停止</summary>
                             <summary v-if="body[col.props]==1"
-                                     class="m-1 btn w-[7rem] text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3]">自动
+                                     class="m-1 btn w-[7rem] text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3]">开启
                             </summary>
-                            <summary v-if="body[col.props]==2"
-                                     class="m-1 btn w-[7rem]  text-[#776B00] bg-[#FAF3B7] hover:bg-[#E5E0AA]">顺控
-                            </summary>
+
 
                             <ul class="p-2 shadow-xl menu dropdown-content z-[1] bg-base-100 rounded-box w-[7rem] broder">
                               <li class="text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2] rounded" @click="col.props=0"><a>停止</a>
                               </li>
                               <li class="text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] mt-2 rounded"
-                                  @click="col.props=1"><a>自动</a></li>
-                              <li class="text-[#776B00] bg-[#FAF3B7] hover:bg-[#E5E0AA] mt-2 rounded"
-                                  @click="col.props=2"><a>顺控</a></li>
+                                  @click="col.props=1"><a>开启</a></li>
+
                             </ul>
                           </details>
                         </td>
@@ -168,12 +165,9 @@ const initTableData = () => {
   initheaderData.forEach(item => headerData.push(item));  // 添加新的数据
 
   const deviceProperties = [
-    {name: '状态', prop: 'feed_flag'},
-    {name: '功能关联', prop: 'feed_DO_connect_flag'},  // 这里选择了补料关联氧含量标志位，因为它看起来是一个功能关联标志
-    {name: '补料模式', prop: 'feed_motor_flag'},  // 补料模式可能关联到补料泵开启标志位，但并不确定
-    {name: '补料周期', prop: 'feed_speed'},  // 假设周期代表补料速率
-    {name: '周期开度', prop: 'feed_ml'},  // 这里选择了补料泵目前补料量作为周期开度的可能匹配项
-    {name: '补料速度', prop: 'feed_speed'}
+    {name: '状态', prop: 'acid_flag'},
+    {name: '累计补料量', prop: 'acid_sum'},  // 这里选择了补料关联氧含量标志位，因为它看起来是一个功能关联标志
+
   ]
 
 
@@ -200,18 +194,15 @@ const initTableData = () => {
       if (!DeviceManage.deviceList[index] || !DeviceManage.deviceList[index].nowData) {
         console.error(`Error: Missing data for device at index ${index}.`);
         return;
-      }  else if (deviceProp.prop == "alarm_h_limit") {
-        tableItem[header.props] = DeviceManage.deviceList[index].batch_name;
-      } else if (deviceProp.prop == "alarm_l_limit") {
-        tableItem[header.props] = 241;
-      } else if (deviceProp.prop == "control_dead") {
-        tableItem[header.props] = 241;
-      } else if (deviceProp.prop == "control_cycle") {
-        tableItem[header.props] = 241;
-      } else if (deviceProp.prop == "cycle_open") {
-        tableItem[header.props] = 241;
-      } else if (deviceProp.prop == "temp_flag") {
-        tableItem[header.props] = 241;
+      }  else if (deviceProp.prop == "acid_sum") {
+        if (DeviceManage.deviceList[index]?.deviceSet?.acidPumpSpeed !== null) {
+          const acidPumpSpeed = DeviceManage.deviceList[index]?.deviceSet?.acidPumpSpeed ?? 0;
+          const acid_pump_sum_step_count = DeviceManage.deviceList[index]?.nowData?.acid_pump_sum_step_count ?? 0;
+          tableItem[header.props] = acidPumpSpeed * acid_pump_sum_step_count;
+
+        } else {
+          tableItem[header.props] = 0;
+        }
       }
       else {
         try {
@@ -375,8 +366,8 @@ const name_translation = {
   'PH值': 'PHValue',
   '溶氧': 'DissolvedOxygen',
   '转速': 'RPM',
-  '酸液泵': 'AcidPump',
-  '碱液泵': 'LyePump',
+  '酸泵': 'AcidPump',
+  '碱泵': 'LyePump',
   '补料泵': 'FeedPump',
   '消泡剂泵': 'DefoamerPump'
 }

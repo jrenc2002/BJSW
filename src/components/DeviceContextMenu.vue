@@ -30,7 +30,6 @@
 import {deleteDevice, closeDevice, openDevice} from '@/api/index.js'
 import {ref, defineProps} from 'vue';
 import {useAppGlobal} from "@/store/AppGlobal";
-
 import {useDeviceManage} from '@/store/DeviceManage'
 
 const DeviceManage = useDeviceManage()

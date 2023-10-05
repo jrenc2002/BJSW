@@ -12,11 +12,9 @@ export enum PopupType {
     PHValue = 2,
     // 溶氧值
     DissolvedOxygen = 3,
-    // 转速值
-    RPM = 4,
-    // 酸液泵
+    // 酸泵
     AcidPump = 5,
-    // 碱液泵
+    // 碱泵
     LyePump = 6,
     // 补料泵
     FeedPump = 7,

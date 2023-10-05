@@ -1,12 +1,17 @@
 <template>
-  <div class="h-[94vh] transition-all duration-300 ease-in-out shadow bg-white rounded-2xl" :class="[AppGlobal.isDrawerState? 'w-[calc(94vw-15rem)]':'w-[94vw]']">
+  <div :class="[AppGlobal.isDrawerState? 'w-[calc(94vw-15rem)]':'w-[94vw]']"
+       class="h-[94vh] transition-all duration-300 ease-in-out shadow bg-white rounded-2xl">
 
     <!--    标题-->
     <div class="h-[4%] self-stretch justify-start items-center  inline-flex mt-3  w-full ">
-      <div class="w-[calc(10rem)] text-xl leading-10 text-zinc-900 text-2xl font-medium leading-loose left-4 relative">溶氧控制</div>
+      <div class="w-[calc(10rem)] text-xl leading-10 text-zinc-900 text-2xl font-medium leading-loose left-4 relative">
+        溶氧控制
+      </div>
       <div class="w-[calc(100%-10rem)] relative justify-end flex mr-3 ">
 
-        <div class="bg-[#F5F5F5] right-0 relative w-7 h-7 justify-center items-center flex rounded-2xl hover:bg-[#F8F8F8] cursor-pointer" @click="closePop">
+        <div
+            class="bg-[#F5F5F5] right-0 relative w-7 h-7 justify-center items-center flex rounded-2xl hover:bg-[#F8F8F8] cursor-pointer"
+            @click="closePop">
           <svg fill="none" height="16" viewBox="0 0 16 16" width="16" xmlns="http://www.w3.org/2000/svg">
             <path d="M12 4.7L11.3 4L8 7.3L4.7 4L4 4.7L7.3 8L4 11.3L4.7 12L8 8.7L11.3 12L12 11.3L8.7 8L12 4.7Z"
                   fill="#19161D"/>
@@ -39,7 +44,7 @@
                 <table class="mb-4 shadow  bg-[#E8F6ED] py-4">
                   <tr v-for="(col, index) in firstCol" :key="index" class=" w-full  ">
                     <td class="w-full  flex justify-center items-center   ">
-                      <div >
+                      <div>
                         {{ col }}
 
                       </div>
@@ -53,9 +58,10 @@
               <!--窗口-->
               <div ref="firstRowLayer" :class="[AppGlobal.isDrawerState? 'w-[calc(82vw-15rem)]':'w-[82vw]']"
                    class="right-div1 bg-[#F1F1F1] mt-3 ">
-                <table :style="{ width: `max(${(firstRow.length + 1) * 8.2}rem, 100%)` }" class=" flex items-start self-start ">
+                <table :style="{ width: `max(${(firstRow.length + 1) * 8.2}rem, 100%)` }"
+                       class=" flex items-start self-start ">
 
-                <tr>
+                  <tr>
                     <th v-for="(row, index) in firstRow" :key="index" class="first-row-style w-[8.2rem]  ">{{
                         row
                       }}
@@ -70,36 +76,53 @@
                   @scroll="tableScroll()"
 
               >
-                <table  :style="{ width: `max(${(firstRow.length + 1) * 8.2}rem, 100%)` }" class="flex items-start  ">
+                <table :style="{ width: `max(${(firstRow.length + 1) * 8.2}rem, 100%)` }" class="flex items-start  ">
                   <div class="flex-col justify-center items-center">
-                  <tr v-for="(body,index) in tableBodyRows" :key="index" class="flex justify-center items-center">
-                    <template v-for="(col, i) in tableBodyCols" :key="col.props + i">
-                      <td v-if="index==0||index==10" class="w-[8.2rem] text-center border-r border-b flex justify-center items-center ">
-                        <details class="dropdown ">
-                          <summary v-if="body[col.props]==0" class="m-1 btn w-[7rem] ">停止</summary>
-                          <summary v-if="body[col.props]==1"
-                                   class="m-1 btn w-[7rem] text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3]">关联
-                          </summary>
+                    <tr v-for="(body,index) in tableBodyRows" :key="index" class="flex justify-center items-center">
+                      <template v-for="(col, i) in tableBodyCols" :key="col.props + i">
+                        <td v-if="index==0"
+                            class="w-[8.2rem] text-center border-r border-b flex justify-center items-center ">
+                          <details class="dropdown ">
+                            <summary v-if="body[col.props]==0" class="m-1 btn w-[7rem] ">停止</summary>
+                            <summary v-if="body[col.props]==1"
+                                     class="m-1 btn w-[7rem] text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3]">关联
+                            </summary>
 
 
-                          <ul class="p-2 shadow-xl menu dropdown-content z-[1] bg-base-100 rounded-box w-[7rem] broder">
-                            <li class="text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2] rounded" @click="col.props=0"><a>停止</a>
-                            </li>
-                            <li class="text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] mt-2 rounded"
-                                @click="col.props=1"><a>关联</a></li>
+                            <ul class="p-2 shadow-xl menu dropdown-content z-[1] bg-base-100 rounded-box w-[7rem] broder">
+                              <li class="text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2] rounded" @click="col.props=0">
+                                <a>停止</a>
+                              </li>
+                              <li class="text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] mt-2 rounded"
+                                  @click="col.props=1"><a>关联</a></li>
 
-                          </ul>
-                        </details>
-                      </td>
+                            </ul>
+                          </details>
+                        </td>
+                        <td v-else-if="index>=1&&index<=7"
+                            class="w-[8.2rem] text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center"
+                            @dblclick="inputVisible[i][index-1].control = !inputVisible[i][index-1].control">
+                          <input
+                              v-if="inputVisible[i][index-1].control&&DeviceManage.deviceList[i]?.deviceSet!==null"
+                              v-model="inputVisible[i][index-1].cache"
+                              :placeholder="placeholder[index-1]"
+                              class="w-[8.2rem]  h-full text-center break-all whitespace-normal "
+                              type="text"
+                              @keyup.enter="keyupEnterInput(i,index-1)"
+                          />
 
-                      <td v-else
-                          class="w-[8.2rem] text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
-                        {{ body[col.props] }}
-                      </td>
-                    </template>
+                          <span v-else
+                                class="w-[8.2rem] leading-5 text-center whitespace-normal break-all flex justify-center items-center">
+                    {{ body[col.props] }}</span>
+                        </td>
+                        <td v-else
+                            class="w-[8.2rem] text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
+                          {{ body[col.props] }}
+                        </td>
+                      </template>
 
 
-                  </tr>
+                    </tr>
                   </div>
                 </table>
               </div>
@@ -136,13 +159,22 @@ const AppGlobal = useAppGlobal();
 
 // ______________________表格数据处理_______________________
 watch(() => DeviceManage.deviceList, () => {
-
   initTableData()
 }, {deep: true});
 
+interface InputVisible {
+  id: number;
+  control: boolean;
+  cache: number | null;
+}
+
+type DeviceInput = InputVisible[];
+
+const inputVisible = ref<DeviceInput[]>([]); // 用于追踪哪一行显示输入框
 
 // 读取表格数据
 const initTableData = () => {
+
   if (!DeviceManage || !Array.isArray(DeviceManage.deviceList)) {
     console.error("Error: DeviceManage.deviceList is not a valid array.");
     return;
@@ -159,6 +191,8 @@ const initTableData = () => {
     }
 
     initheaderData.push({title: device.name, props: 'F' + (device.id + 1)});
+    inputVisible.value.push([])
+
   });
 
   headerData.length = 0;  // 清空原始数据
@@ -167,50 +201,58 @@ const initTableData = () => {
   const deviceProperties = [
     {name: '测量值', prop: 'timing_DO'},
     {name: '设定值', prop: 'target_DO'},
-    {name: 'DO误差上限', prop: 'TODO_YOUR_DEFINITION_HERE'},
-    {name: 'DO误差下限', prop: 'TODO_YOUR_DEFINITION_HERE'},
+    {name: 'DO误差上限', prop: 'DO_upper_limit'},
+    {name: 'DO误差下限', prop: 'DO_lower_limit'},
     {name: '转速上限', prop: 'motor_speed_u_limit'},
     {name: '转速下限', prop: 'motor_speed_l_limit'},
-    {name: '报警DO上限', prop: 'TODO_YOUR_DEFINITION_HERE'},
-    {name: '报警DO下限', prop: 'TODO_YOUR_DEFINITION_HERE'},
+    {name: 'DO报警上限', prop: 'alarm_h_limit'},
+    {name: 'DO报警下限', prop: 'alarm_l_limit'},
   ]
 
 
   let resultItems: any[] = []; // 声明结果数组
-  deviceProperties.map(deviceProp => {
+  deviceProperties.map((deviceProp, deviceIndex) => {
     let tableItem = {
       name: deviceProp.name,
       prop: deviceProp.prop
     };
     initheaderData.forEach((header, index) => {
-      if (index == 0) {
+      if (index === 0) {
         return;
       }
+      if (deviceIndex >= 1 && deviceIndex <= 7) {
+        inputVisible.value[index - 1].push({id: deviceIndex, control: false, cache: null});
+
+
+      }
+
+
       index--;
 
-      if (DeviceManage.deviceList[index].nowData == null) {
+      if (DeviceManage.deviceList[index].nowData == null && deviceProp.prop != "alarm_h_limit" && deviceProp.prop != "alarm_l_limit") {
         tableItem[header.props] = 0;
 
         return;
       }
 
-      if (!DeviceManage.deviceList[index] || !DeviceManage.deviceList[index].nowData) {
-        console.error(`Error: Missing data for device at index ${index}.`);
-        return;
-      }  else if (deviceProp.prop == "alarm_h_limit") {
-        tableItem[header.props] = DeviceManage.deviceList[index].batch_name;
-      } else if (deviceProp.prop == "alarm_l_limit") {
-        tableItem[header.props] = 241;
-      } else if (deviceProp.prop == "control_dead") {
-        tableItem[header.props] = 241;
-      } else if (deviceProp.prop == "control_cycle") {
-        tableItem[header.props] = 241;
-      } else if (deviceProp.prop == "cycle_open") {
-        tableItem[header.props] = 241;
-      } else if (deviceProp.prop == "temp_flag") {
-        tableItem[header.props] = 241;
+      // 报警上限
+      if (deviceProp.prop == "alarm_h_limit") {
+        if (DeviceManage.deviceList[index]?.deviceSet?.doMaxWarn !== null) {
+          const doMaxWarn = DeviceManage.deviceList[index]?.deviceSet?.doMaxWarn ?? 0;
+          tableItem[header.props] = doMaxWarn;
+        } else {
+          tableItem[header.props] = 0;
+        }
       }
-      else {
+      // 报警下限
+      else if (deviceProp.prop == "alarm_l_limit") {
+        if (DeviceManage.deviceList[index]?.deviceSet?.doMinWarn !== null) {
+          const doMinWarn = DeviceManage.deviceList[index]?.deviceSet?.doMinWarn ?? 0;
+          tableItem[header.props] = doMinWarn;
+        } else {
+          tableItem[header.props] = 0;
+        }
+      }  else {
         try {
           const value = DeviceManage.deviceList[index].nowData![deviceProp.prop];
           if (typeof value === 'number' && !Number.isInteger(value)) {
@@ -233,8 +275,58 @@ const initTableData = () => {
   resultItems.forEach(item => tableData.push(item));  // 添加新的数据
 
 }
+const keyupEnterInput = (deviceID: number, setIndex: number) => {
 
+  inputVisible.value[deviceID][setIndex].control = false;
 
+  if (setIndex == 0 && inputVisible.value[deviceID][setIndex].cache != null) {
+    if (DeviceManage.deviceList[deviceID] && DeviceManage.deviceList[deviceID]!.nowData) {
+      DeviceManage.deviceList[deviceID]!.nowData!.target_DO = inputVisible.value[deviceID][setIndex].cache || 0;
+    }
+  }
+  if (setIndex == 1 && inputVisible.value[deviceID][setIndex].cache != null) {
+    if (DeviceManage.deviceList[deviceID] && DeviceManage.deviceList[deviceID]!.nowData) {
+      DeviceManage.deviceList[deviceID]!.nowData!.DO_upper_limit = inputVisible.value[deviceID][setIndex].cache || 0;
+    }
+  }
+  if (setIndex == 2 && inputVisible.value[deviceID][setIndex].cache != null) {
+    if (DeviceManage.deviceList[deviceID] && DeviceManage.deviceList[deviceID]!.nowData) {
+      DeviceManage.deviceList[deviceID]!.nowData!.DO_lower_limit = inputVisible.value[deviceID][setIndex].cache || 0;
+    }
+  }
+  if (setIndex == 3 && inputVisible.value[deviceID][setIndex].cache != null) {
+    if (DeviceManage.deviceList[deviceID] && DeviceManage.deviceList[deviceID]!.nowData) {
+      DeviceManage.deviceList[deviceID]!.nowData!.motor_speed_u_limit = inputVisible.value[deviceID][setIndex].cache || 0;
+    }
+  }
+  if (setIndex == 4 && inputVisible.value[deviceID][setIndex].cache != null) {
+    if (DeviceManage.deviceList[deviceID] && DeviceManage.deviceList[deviceID]!.nowData) {
+      DeviceManage.deviceList[deviceID]!.nowData!.motor_speed_l_limit = inputVisible.value[deviceID][setIndex].cache || 0;
+    }
+  }
+  if (setIndex == 5 && inputVisible.value[deviceID][setIndex].cache != null) {
+    if (DeviceManage.deviceList[deviceID] && DeviceManage.deviceList[deviceID]!.deviceSet) {
+      DeviceManage.deviceList[deviceID]!.deviceSet!. doMaxWarn= inputVisible.value[deviceID][setIndex].cache || 0;
+    }
+  }
+  if (setIndex == 6 && inputVisible.value[deviceID][setIndex].cache != null) {
+    if (DeviceManage.deviceList[deviceID] && DeviceManage.deviceList[deviceID]!.deviceSet) {
+      DeviceManage.deviceList[deviceID]!.deviceSet!.doMinWarn = inputVisible.value[deviceID][setIndex].cache || 0;
+    }
+  }
+
+}
+
+const placeholder = ref([
+  "请输设定值",
+  "请输误差上限",
+  "请输误差下限",
+  "请输转速上限",
+  "请输转速下限",
+  "请输报警下限",
+  "请输报警上限",
+
+])
 
 const firstCol = computed(() => props.tableData.map(p => {
   const pArr = Object.keys(p);
@@ -361,8 +453,6 @@ interface HeaderItem {
 }
 
 
-
-
 const name_translation = {
   '运行状态': 'None',
   '运行时间': 'None',
@@ -371,8 +461,8 @@ const name_translation = {
   'PH值': 'PHValue',
   '溶氧': 'DissolvedOxygen',
   '转速': 'RPM',
-  '酸液泵': 'AcidPump',
-  '碱液泵': 'LyePump',
+  '酸泵': 'AcidPump',
+  '碱泵': 'LyePump',
   '补料泵': 'FeedPump',
   '消泡剂泵': 'DefoamerPump'
 }
@@ -421,7 +511,6 @@ td {
 //  border-top: 1px solid #999;
 //  box-sizing: border-box;
 //}
-
 
 
 .right-div {

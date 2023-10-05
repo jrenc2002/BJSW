@@ -60,6 +60,7 @@
                    class="right-div1 bg-[#F1F1F1] mt-3 ">
                 <table :style="{ width: `max(${(firstRow.length + 1) * 8.2}rem, 100%)` }"
                        class=" flex items-start self-start ">
+
                   <tr>
                     <th v-for="(row, index) in firstRow" :key="index" class="first-row-style w-[8.2rem]  ">{{
                         row
@@ -77,9 +78,7 @@
               >
                 <table :style="{ width: `max(${(firstRow.length + 1) * 8.2}rem, 100%)` }" class="flex items-start  ">
                   <div class="flex-col justify-center items-center">
-
                     <tr v-for="(body,index) in tableBodyRows" :key="index" class="flex justify-center items-center">
-
                       <template v-for="(col, i) in tableBodyCols" :key="col.props + i">
                         <td v-if="index==0"
                             class="w-[8.2rem] text-center border-r border-b flex justify-center items-center">
@@ -99,96 +98,16 @@
                             </ul>
                           </details>
                         </td>
-                        <td v-else-if="index==2"
+                        <td v-else-if="index>=2&&index<=7"
                             class="w-[8.2rem] text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center"
-                            @dblclick="inputVisible[i].target = !inputVisible[i].target">
+                            @dblclick="inputVisible[i][index-2].control = !inputVisible[i][index-2].control">
                           <input
-                              v-if="inputVisible[i].target&&DeviceManage.deviceList[i]?.nowData!==null"
-                              v-model="DeviceManage.deviceList[i].nowData.target_temp"
+                              v-if="inputVisible[i][index-2].control&&DeviceManage.deviceList[i]?.deviceSet!==null"
+                              v-model="inputVisible[i][index-2].cache"
+                              :placeholder="placeholder[index-2]"
                               class="w-[8.2rem]  h-full text-center break-all whitespace-normal "
-                              placeholder="输入设定值"
                               type="text"
-                              @keyup.enter="inputVisible[i].target = false"
-                          />
-
-                          <span v-else
-                                class="w-[8.2rem] leading-5 text-center whitespace-normal break-all flex justify-center items-center">
-                    {{ body[col.props] }}</span>
-                        </td>
-                        <td v-else-if="index==3"
-                            class="w-[8.2rem] text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center"
-                            @dblclick="inputVisible[i].p_scale_boolean = !inputVisible[i].p_scale_boolean">
-                          <input
-                              v-if="inputVisible[i].p_scale_boolean&&DeviceManage.deviceList[i]?.deviceSet!==null"
-                              v-model="inputVisible[i].p_scale"
-                              class="w-[8.2rem]  h-full text-center break-all whitespace-normal "
-                              placeholder="输入比例P"
-                              type="text"
-                              @keyup.enter="inputVisible[i].p_scale_boolean = false;DeviceManage.deviceList[i].nowData.Temp_KP = inputVisible[i].p_scale;"
-                          />
-
-                          <span v-else
-                                class="w-[8.2rem] leading-5 text-center whitespace-normal break-all flex justify-center items-center">
-                    {{ body[col.props] }}</span>
-                        </td>
-                        <td v-else-if="index==4"
-                            class="w-[8.2rem] text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center"
-                            @dblclick="inputVisible[i].i_integral_boolean = !inputVisible[i].i_integral_boolean">
-                          <input
-                              v-if="inputVisible[i].i_integral_boolean&&DeviceManage.deviceList[i]?.deviceSet!==null"
-                              v-model="inputVisible[i].i_integral"
-                              class="w-[8.2rem]  h-full text-center break-all whitespace-normal "
-                              placeholder="输入积分I"
-                              type="text"
-                              @keyup.enter="inputVisible[i].i_integral_boolean = false;DeviceManage.deviceList[i].nowData.Temp_KI = inputVisible[i].i_integral;"
-                          />
-
-                          <span v-else
-                                class="w-[8.2rem] leading-5 text-center whitespace-normal break-all flex justify-center items-center">
-                    {{ body[col.props] }}</span>
-                        </td>
-                        <td v-else-if="index==5"
-                            class="w-[8.2rem] text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center"
-                            @dblclick="inputVisible[i].d_differential_boolean = !inputVisible[i].d_differential_boolean">
-                          <input
-                              v-if="inputVisible[i].d_differential_boolean&&DeviceManage.deviceList[i]?.deviceSet!==null"
-                              v-model="inputVisible[i].d_differential"
-                              class="w-[8.2rem]  h-full text-center break-all whitespace-normal "
-                              placeholder="输入微分D"
-                              type="text"
-                              @keyup.enter="inputVisible[i].d_differential_boolean = false;DeviceManage.deviceList[i].nowData.Temp_KD = inputVisible[i].d_differential;"
-                          />
-
-                          <span v-else
-                                class="w-[8.2rem] leading-5 text-center whitespace-normal break-all flex justify-center items-center">
-                    {{ body[col.props] }}</span>
-                        </td>
-                        <td v-else-if="index==6"
-                            class="w-[8.2rem] text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center"
-                            @dblclick="inputVisible[i].alarm_h_limit = !inputVisible[i].alarm_h_limit">
-                          <input
-                              v-if="inputVisible[i].alarm_h_limit&&DeviceManage.deviceList[i]?.deviceSet!==null"
-                              v-model="inputVisible[i].alarm_h_limitValue"
-                              class="w-[8.2rem]  h-full text-center break-all whitespace-normal "
-                              placeholder="输入报警上限"
-                              type="text"
-                              @keyup.enter="inputVisible[i].alarm_h_limit = false;DeviceManage.deviceList[i].deviceSet.tempMaxWarn = inputVisible[i].alarm_h_limitValue;"
-                          />
-
-                          <span v-else
-                                class="w-[8.2rem] leading-5 text-center whitespace-normal break-all flex justify-center items-center">
-                    {{ body[col.props] }}</span>
-                        </td>
-                        <td v-else-if="index==7"
-                            class="w-[8.2rem] text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center"
-                            @dblclick="inputVisible[i].alarm_l_limit = !inputVisible[i].alarm_l_limit">
-                          <input
-                              v-if="inputVisible[i].alarm_l_limit&&DeviceManage.deviceList[i]?.deviceSet!==null"
-                              v-model="inputVisible[i].alarm_l_limitValue"
-                              class="w-[8.2rem]  h-full text-center break-all whitespace-normal "
-                              placeholder="输入报警下限"
-                              type="text"
-                              @keyup.enter="inputVisible[i].alarm_l_limit = false;DeviceManage.deviceList[i].deviceSet.tempMinWarn = inputVisible[i].alarm_l_limitValue;"
+                              @keyup.enter="keyupEnterInput(i,index-2)"
                           />
 
                           <span v-else
@@ -241,25 +160,20 @@ const AppGlobal = useAppGlobal();
 watch(() => DeviceManage.deviceList, () => {
   initTableData()
 }, {deep: true});
-const inputVisible = ref<InputVisible[]>([]); // 用于追踪哪一行显示输入框
+
 interface InputVisible {
   id: number;
-  target: boolean;
-  alarm_h_limit: boolean;
-  alarm_l_limit: boolean;
-  p_scale_boolean: boolean;
-  i_integral_boolean: boolean;
-  d_differential_boolean: boolean;
-  targetValue: number| null;
-  alarm_h_limitValue: number| null;
-  alarm_l_limitValue: number| null;
-  p_scale: number| null;
-  i_integral: number| null;
-  d_differential: number| null;
+  control: boolean;
+  cache: number | null;
 }
+
+type DeviceInput = InputVisible[];
+
+const inputVisible = ref<DeviceInput[]>([]); // 用于追踪哪一行显示输入框
 
 // 读取表格数据
 const initTableData = () => {
+
   if (!DeviceManage || !Array.isArray(DeviceManage.deviceList)) {
     console.error("Error: DeviceManage.deviceList is not a valid array.");
     return;
@@ -276,10 +190,8 @@ const initTableData = () => {
     }
 
     initheaderData.push({title: device.name, props: 'F' + (device.id + 1)});
-    inputVisible.value.push({
-      id: device.id, target: false, alarm_h_limit: false, alarm_l_limit: false, p_scale_boolean: false,i_integral_boolean: false, d_differential_boolean: false
-      , targetValue: null, alarm_h_limitValue: null, alarm_l_limitValue: null, p_scale: null, i_integral: null, d_differential: null
-    });
+ 
+    inputVisible.value.push([])
   });
 
   headerData.length = 0;  // 清空原始数据
@@ -298,19 +210,24 @@ const initTableData = () => {
 
 
   let resultItems: any[] = []; // 声明结果数组
-  deviceProperties.map(deviceProp => {
+  deviceProperties.map((deviceProp, deviceIndex) => {
     let tableItem = {
       name: deviceProp.name,
       prop: deviceProp.prop
     };
     initheaderData.forEach((header, index) => {
-      // 跳过第一行，第一行可以忽略
-      if (index == 0) {
+      if (index === 0) {
         return;
       }
+      if (deviceIndex >= 2 && deviceIndex <= 7) {
+        inputVisible.value[index - 1].push({id: deviceIndex, control: false, cache: null});
+
+
+      }
+
+
       index--;
 
-      // 在设备未连接的时候做数据处理
       if (DeviceManage.deviceList[index].nowData == null && deviceProp.prop != "alarm_h_limit" && deviceProp.prop != "alarm_l_limit") {
         tableItem[header.props] = 0;
 
@@ -321,7 +238,6 @@ const initTableData = () => {
       if (deviceProp.prop == "alarm_h_limit") {
         if (DeviceManage.deviceList[index]?.deviceSet?.tempMaxWarn !== null) {
           const tempMaxWarn = DeviceManage.deviceList[index]?.deviceSet?.tempMaxWarn ?? 0;
-          console.log(tempMaxWarn)
           tableItem[header.props] = tempMaxWarn;
         } else {
           tableItem[header.props] = 0;
@@ -335,10 +251,7 @@ const initTableData = () => {
         } else {
           tableItem[header.props] = 0;
         }
-      }
-
-      // 积分I-比例P-微分D-测量值-设定值
-      else {
+      }  else {
         try {
           const value = DeviceManage.deviceList[index].nowData![deviceProp.prop];
           if (typeof value === 'number' && !Number.isInteger(value)) {
@@ -361,19 +274,58 @@ const initTableData = () => {
   resultItems.forEach(item => tableData.push(item));  // 添加新的数据
 
 }
+const keyupEnterInput = (deviceID: number, setIndex: number) => {
 
-const controSend = ((name, index, content) => {
-  // 温度状态控制
-  if (name == 'temp_flag') {
-    const data = {
-      temp_flag: content,
+  inputVisible.value[deviceID][setIndex].control = false;
 
+  if (setIndex == 0 && inputVisible.value[deviceID][setIndex].cache != null) {
+    if (DeviceManage.deviceList[deviceID] && DeviceManage.deviceList[deviceID]!.nowData) {
+      DeviceManage.deviceList[deviceID]!.nowData!.target_temp = inputVisible.value[deviceID][setIndex].cache || 0;
     }
-    sendData(index, data);
+  }
+  if (setIndex == 1 && inputVisible.value[deviceID][setIndex].cache != null) {
+    if (DeviceManage.deviceList[deviceID] && DeviceManage.deviceList[deviceID]!.nowData) {
+      DeviceManage.deviceList[deviceID]!.nowData!.Temp_KP = inputVisible.value[deviceID][setIndex].cache || 0;
+    }
+  }
+  if (setIndex == 2 && inputVisible.value[deviceID][setIndex].cache != null) {
+    if (DeviceManage.deviceList[deviceID] && DeviceManage.deviceList[deviceID]!.nowData) {
+      DeviceManage.deviceList[deviceID]!.nowData!.Temp_KI = inputVisible.value[deviceID][setIndex].cache || 0;
+    }
+  }
+  if (setIndex == 3 && inputVisible.value[deviceID][setIndex].cache != null) {
+    if (DeviceManage.deviceList[deviceID] && DeviceManage.deviceList[deviceID]!.nowData) {
+      DeviceManage.deviceList[deviceID]!.nowData!.Temp_KD = inputVisible.value[deviceID][setIndex].cache || 0;
+    }
+  }
+  if (setIndex == 4 && inputVisible.value[deviceID][setIndex].cache != null) {
+    if (DeviceManage.deviceList[deviceID] && DeviceManage.deviceList[deviceID]!.deviceSet) {
+      DeviceManage.deviceList[deviceID]!.deviceSet!. tempMaxWarn= inputVisible.value[deviceID][setIndex].cache || 0;
+    }
+  }
+  if (setIndex == 5 && inputVisible.value[deviceID][setIndex].cache != null) {
+    if (DeviceManage.deviceList[deviceID] && DeviceManage.deviceList[deviceID]!.deviceSet) {
+      DeviceManage.deviceList[deviceID]!.deviceSet!.tempMinWarn = inputVisible.value[deviceID][setIndex].cache || 0;
+    }
+  }
+  if (setIndex>=0&&setIndex<=5){
+    controSend('all',deviceID,0)
   }
 
 
-})
+
+}
+
+const placeholder = ref([
+  "请输入设定值",
+  "请输入温度P",
+  "请输入温度I",
+  "请输入温度D",
+  "请输报警上限",
+  "请输报警下限",
+
+
+])
 
 const firstCol = computed(() => props.tableData.map(p => {
   const pArr = Object.keys(p);
@@ -431,7 +383,6 @@ const headerData: HeaderItem[] = reactive([
 
 
 const tableData: any = reactive([
-  {name: '状态', F1: 1, F2: 1, F3: 2, F4: 1, F5: 0, F6: 1, F7: 2, F8: 1},
   {name: '测量值', F1: 25, F2: 26, F3: 27, F4: 28, F5: 29, F6: 30, F7: 31, F8: 32},
   {name: '设定值', F1: 28, F2: 29, F3: 30, F4: 31, F5: 32, F6: 33, F7: 34, F8: 35},
   {name: '控制周期', F1: 30, F2: 31, F3: 32, F4: 33, F5: 34, F6: 35, F7: 36, F8: 37},
@@ -464,7 +415,28 @@ const tableScroll = () => {
   firstRowLayer.value!.scrollLeft = tableContainer.value!.scrollLeft;
   firstColLayer.value!.scrollTop = tableContainer.value!.scrollTop;
 }
+const controSend = ((name, index, content) => {
+  // 温度状态控制
+  if (name == 'temp_flag') {
+    const data = {
+      temp_flag: content,
 
+    }
+    sendData(index, data);
+  }
+  if (name == 'all') {
+    const data = {
+        target_temp: Number(DeviceManage.deviceList[index]!.nowData!.target_temp),
+        Temp_KP: Number(DeviceManage.deviceList[index]!.nowData!.Temp_KP),
+        Temp_KI: Number(DeviceManage.deviceList[index]!.nowData!.Temp_KI),
+        Temp_KD: Number(DeviceManage.deviceList[index]!.nowData!.Temp_KD),
+
+    }
+    sendData(index, data);
+  }
+
+
+})
 
 // 当按下键盘时的处理函数，ESC关闭弹窗
 const handleKeydown = (event) => {
@@ -501,8 +473,6 @@ interface HeaderItem {
 }
 
 
-
-
 const name_translation = {
   '运行状态': 'None',
   '运行时间': 'None',
@@ -511,8 +481,8 @@ const name_translation = {
   'PH值': 'PHValue',
   '溶氧': 'DissolvedOxygen',
   '转速': 'RPM',
-  '酸液泵': 'AcidPump',
-  '碱液泵': 'LyePump',
+  '酸泵': 'AcidPump',
+  '碱泵': 'LyePump',
   '补料泵': 'FeedPump',
   '消泡剂泵': 'DefoamerPump'
 }

@@ -3,7 +3,7 @@
 
     <!--    标题-->
     <div class="h-[4%] self-stretch justify-start items-center  inline-flex mt-3  w-full ">
-      <div class="w-[calc(10rem)] text-xl leading-10 text-zinc-900 text-2xl font-medium leading-loose left-4 relative">酸泵控制</div>
+      <div class="w-[calc(10rem)] text-xl leading-10 text-zinc-900 text-2xl font-medium leading-loose left-4 relative">消泡剂泵控制</div>
       <div class="w-[calc(100%-10rem)] relative justify-end flex mr-3 ">
 
         <div class="bg-[#F5F5F5] right-0 relative w-7 h-7 justify-center items-center flex rounded-2xl hover:bg-[#F8F8F8] cursor-pointer" @click="closePop">
@@ -167,12 +167,8 @@ const initTableData = () => {
   initheaderData.forEach(item => headerData.push(item));  // 添加新的数据
 
   const deviceProperties = [
-    {name: '状态', prop: 'feed_flag'},
-    {name: '功能关联', prop: 'feed_DO_connect_flag'},  // 这里选择了补料关联氧含量标志位，因为它看起来是一个功能关联标志
-    {name: '补料模式', prop: 'feed_motor_flag'},  // 补料模式可能关联到补料泵开启标志位，但并不确定
-    {name: '补料周期', prop: 'feed_speed'},  // 假设周期代表补料速率
-    {name: '周期开度', prop: 'feed_ml'},  // 这里选择了补料泵目前补料量作为周期开度的可能匹配项
-    {name: '补料速度', prop: 'feed_speed'}
+    {name: '状态', prop: 'defoamer_flag'},
+    {name: '累计补料量', prop: 'defoamer_sum'},  // 这里选择了补料关联氧含量标志位，因为它看起来是一个功能关联标志
   ]
 
 
@@ -199,18 +195,15 @@ const initTableData = () => {
       if (!DeviceManage.deviceList[index] || !DeviceManage.deviceList[index].nowData) {
         console.error(`Error: Missing data for device at index ${index}.`);
         return;
-      }  else if (deviceProp.prop == "alarm_h_limit") {
-        tableItem[header.props] = DeviceManage.deviceList[index].batch_name;
-      } else if (deviceProp.prop == "alarm_l_limit") {
-        tableItem[header.props] = 241;
-      } else if (deviceProp.prop == "control_dead") {
-        tableItem[header.props] = 241;
-      } else if (deviceProp.prop == "control_cycle") {
-        tableItem[header.props] = 241;
-      } else if (deviceProp.prop == "cycle_open") {
-        tableItem[header.props] = 241;
-      } else if (deviceProp.prop == "temp_flag") {
-        tableItem[header.props] = 241;
+      }  else if (deviceProp.prop == "defoamer_sum") {
+        if (DeviceManage.deviceList[index]?.deviceSet?.acidPumpSpeed !== null) {
+          const feedPumpSpeed = DeviceManage.deviceList[index]?.deviceSet?.feedPumpSpeed ?? 0;
+          const defoam_pump_sum_step_count = DeviceManage.deviceList[index]?.nowData?.defoam_pump_sum_step_count ?? 0;
+          tableItem[header.props] = feedPumpSpeed * defoam_pump_sum_step_count;
+
+        } else {
+          tableItem[header.props] = 0;
+        }
       }
       else {
         try {
@@ -373,8 +366,8 @@ const name_translation = {
   'PH值': 'PHValue',
   '溶氧': 'DissolvedOxygen',
   '转速': 'RPM',
-  '酸液泵': 'AcidPump',
-  '碱液泵': 'LyePump',
+  '酸泵': 'AcidPump',
+  '碱泵': 'LyePump',
   '补料泵': 'FeedPump',
   '消泡剂泵': 'DefoamerPump'
 }

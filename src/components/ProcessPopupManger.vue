@@ -25,7 +25,7 @@
  * 通过弹窗共享状态，来获取怎么弹法
  */
 import {PopupType} from "@/store/PopupMangerState";
-import {defineProps, onMounted} from "vue";
+import {defineProps} from "vue";
 import ProcessTemperatureControl from "@/components/tankControl/SingleTemperature.vue";
 import ProcessPHValue from "@/components/tankControl/SinglePHValue.vue";
 import ProcessDissolvedOxygen from "@/components/tankControl/SingleDissolvedOxygen.vue";
@@ -39,10 +39,9 @@ const props = defineProps({
   }
 })
 
-onMounted(() => {
-  console.log(props.popcontent)
-  console.log(props.popcontent !== PopupType.None)
-})
+// onMounted(() => {
+//
+// })
 
 
 </script>

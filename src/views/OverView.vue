@@ -46,7 +46,7 @@
                     <tr v-for="(col, index) in firstCol" :key="index" class=" w-full  ">
                       <td class="w-full  flex justify-center items-center   ">
                         <div
-                            :class="[col!='运行状态'&&col!='运行时间'&&col!='发酵批号' ? 'bg-white  rounded-[8px] shadow hover:bg-[#FAFAFA] cursor-pointer' : '','w-[90%] h-[90%] flex justify-center items-center ']"
+                            :class="[col!='运行状态'&&col!='运行时间'&&col!='发酵批号'&&col!='转速' ? 'bg-white  rounded-[8px] shadow hover:bg-[#FAFAFA] cursor-pointer' : '','w-[90%] h-[90%] flex justify-center items-center ']"
                             @click="popManager(col)">
                           {{ col }}
 
@@ -86,17 +86,17 @@
 
                         <template v-for="(col, i) in tableBodyCols" :key="col.props + i">
                           <td v-if="index==0"
-                              class="w-[8.2rem] flex justify-center items-center text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer">
+                              class="w-[8.2rem] flex justify-center items-center text-center  border-b border-r   cursor-pointer">
                             <details class="dropdown ">
-                              <summary v-if="body[col.props]===0" class="m-1 btn w-[7rem] ">未连接</summary>
+                              <summary v-if="body[col.props]===0" class="m-1 btn w-[7rem] hover:bg-[#FAFAFA]">未连接</summary>
                               <summary v-if="body[col.props]===1"
-                                       class="m-1 btn w-[7rem] text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3]">已连接
+                                       class="m-1 btn w-[7rem] text-[#0E699C] bg-[#7DBCF6] hover:bg-[#7DBCF6]">已连接
                               </summary>
                               <summary v-if="body[col.props]===2"
-                                       class="m-1 btn w-[7rem] text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3]">运行中
+                                       class="m-1 btn w-[7rem] text-[#256637] bg-[#BAE7C7] hover:bg-[#BAE7C7]">运行中
                               </summary>
                               <summary v-if="body[col.props]===3"
-                                       class="m-1 btn w-[7rem] text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3]">报警
+                                       class="m-1 btn w-[7rem] text-[#E21212] bg-[#FAB7B7] hover:bg-[#FAB7B7]">报警
                               </summary>
                             </details>
                           </td>
@@ -211,12 +211,12 @@ const initTableData = () => {
     {name: '运行状态', prop: 'start_flag'},
     {name: '运行时间', prop: 'running_time'},
     {name: '发酵批号', prop: 'batchnum'},
+    {name: '转速', prop: 'timing_motor_speed'},
     {name: '温度', prop: 'timing_temp'},
     {name: 'PH值', prop: 'timing_PH'},
     {name: '溶氧', prop: 'timing_DO'},
-    {name: '转速', prop: 'timing_motor_speed'},
-    {name: '酸液泵', prop: 'acid_pump'},
-    {name: '碱液泵', prop: 'lye_pump'},
+    {name: '酸泵', prop: 'acid_pump'},
+    {name: '碱泵', prop: 'lye_pump'},
     {name: '补料泵', prop: 'feed_pump'},
     {name: '消泡剂泵', prop: 'defoamer_pump'}
   ];
@@ -254,7 +254,11 @@ const initTableData = () => {
       }
       // 批次名
       else if (deviceProp.prop == "batchnum") {
-        tableItem[header.props] = DeviceManage.deviceList[index].batch_name;
+          tableItem[header.props] = DeviceManage.deviceList[index].batch_name;
+      }
+      // 批次名
+      else if (deviceProp.prop == "start_flag") {
+        tableItem[header.props] = DeviceManage.deviceList[index].state;
       }
       // 酸泵
       else if (
@@ -426,7 +430,7 @@ const handleKeydown = (event) => {
 };
 // 弹窗管理
 const popManager = (val: any) => {
-  if (val != '运行状态' && val != '运行时间' && val != '发酵批号') {
+  if (val != '运行状态' && val != '运行时间' && val != '发酵批号'&& val != '转速') {
     PopupMangerState.updateIsShowPop(true)
     PopupMangerState.updatePopupContent(name_translation[val])
     console.log(PopupMangerState.isShowPop)
@@ -465,8 +469,8 @@ const name_translation = {
   'PH值': 'PHValue',
   '溶氧': 'DissolvedOxygen',
   '转速': 'RPM',
-  '酸液泵': 'AcidPump',
-  '碱液泵': 'LyePump',
+  '酸泵': 'AcidPump',
+  '碱泵': 'LyePump',
   '补料泵': 'FeedPump',
   '消泡剂泵': 'DefoamerPump'
 }
