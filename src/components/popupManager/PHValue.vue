@@ -91,10 +91,10 @@
 
                             <ul class="p-2 shadow-xl menu dropdown-content z-[1] bg-base-100 rounded-box w-[7rem] broder">
                               <li class="text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2] rounded"
-                                  @click="controSend('PH_flag',i,0)"><a>停止</a>
+                                  @click="controlSend('PH_flag',i,0)"><a>停止</a>
                               </li>
                               <li class="text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] mt-2 rounded"
-                                  @click="controSend('PH_flag',i,1)"><a>开启</a></li>
+                                  @click="controlSend('PH_flag',i,1)"><a>开启</a></li>
 
                             </ul>
                           </details>
@@ -340,7 +340,9 @@ const keyupEnterInput = (deviceID: number, setIndex: number) => {
       DeviceManage.deviceList[deviceID]!.deviceSet!.phMinWarn = inputVisible.value[deviceID][setIndex].cache || 0;
     }
   }
-
+    if (setIndex>=0&&setIndex<=8){
+        controlSend('all',deviceID,0)
+    }
 
 
 }
@@ -454,7 +456,7 @@ const tableScroll = () => {
 // 当按下键盘时的处理函数，ESC关闭弹窗
 const handleKeydown = (event) => {
   if (event.keyCode === 27) { // 27 是 esc 键的 keyCode
-    console.log('ESC key was pressed!');
+    
     // 在此处执行你想要的操作
     PopupMangerState.updateIsShowPop(false)
   }
@@ -477,6 +479,37 @@ onMounted(() => {
 onUnmounted(() => {
   window.removeEventListener('keydown', handleKeydown);
 });
+
+/* ______________________静态接口_____________________________ */
+
+const controlSend = ((name, index, content) => {
+    // 温度状态控制
+    if (name == 'PH_flag') {
+        const data = {
+            PH_flag: content,
+
+        }
+        sendData(index, data);
+    }
+    if (name == 'all') {
+        const data = {
+            target_PH: Number(DeviceManage.deviceList[index]!.nowData!.target_PH),
+            PH_upper_limit: Number(DeviceManage.deviceList[index]!.nowData!.PH_upper_limit),
+            PH_lower_limit: Number(DeviceManage.deviceList[index]!.nowData!.PH_lower_limit),
+            acid_KP: Number(DeviceManage.deviceList[index]!.nowData!.acid_KP),
+            acid_KI: Number(DeviceManage.deviceList[index]!.nowData!.acid_KI),
+            acid_KD: Number(DeviceManage.deviceList[index]!.nowData!.acid_KD),
+            lye_KP: Number(DeviceManage.deviceList[index]!.nowData!.lye_KP),
+            lye_KI: Number(DeviceManage.deviceList[index]!.nowData!.lye_KI),
+            lye_KD: Number(DeviceManage.deviceList[index]!.nowData!.lye_KD),
+            
+
+        }
+        sendData(index, data);
+    }
+
+
+})
 
 
 /* ______________________静态接口_____________________________ */

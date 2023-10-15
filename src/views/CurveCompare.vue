@@ -59,9 +59,7 @@ import ParamAnalyCharts from "@/components/ParamAnalyCharts.vue";
 const DeviceManage = useDeviceManage()
 const Vibrationchartid = ref<any>(null);
 /* ——————————————————————————声明echart—————————————————————————— */
-let Vibrationchart;
-let Temperaturechart;
-var option;
+
 
 
 onUnmounted(() => {

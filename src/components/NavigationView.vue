@@ -262,7 +262,7 @@ const navigation = computed(() => [
 
 ])
 // 分页名称
-const basePages = ref()
+const basePages = ref([]);
 const pagesValue = ref([])
 watch(() => DeviceManage.deviceList, () => {
   basePages.value = DeviceManage.deviceList

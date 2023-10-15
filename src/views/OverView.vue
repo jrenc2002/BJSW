@@ -46,7 +46,7 @@
                     <tr v-for="(col, index) in firstCol" :key="index" class=" w-full  ">
                       <td class="w-full  flex justify-center items-center   ">
                         <div
-                            :class="[col!='运行状态'&&col!='运行时间'&&col!='发酵批号'&&col!='转速' ? 'bg-white  rounded-[8px] shadow hover:bg-[#FAFAFA] cursor-pointer' : '','w-[90%] h-[90%] flex justify-center items-center ']"
+                            :class="[col!='运行状态'&&col!='运行时间'&&col!='发酵批号' ? 'bg-white  rounded-[8px] shadow hover:bg-[#FAFAFA] cursor-pointer' : '','w-[90%] h-[90%] flex justify-center items-center ']"
                             @click="popManager(col)">
                           {{ col }}
 
@@ -423,15 +423,15 @@ const tableScroll = () => {
 // 当按下键盘时的处理函数，ESC关闭弹窗
 const handleKeydown = (event) => {
   if (event.keyCode === 27) { // 27 是 esc 键的 keyCode
-    console.log('ESC key was pressed!');
+    
     // 在此处执行你想要的操作
     PopupMangerState.updateIsShowPop(false)
   }
 };
 // 弹窗管理
 const popManager = (val: any) => {
-  if (val != '运行状态' && val != '运行时间' && val != '发酵批号'&& val != '转速') {
-    PopupMangerState.updateIsShowPop(true)
+    if (val != '运行状态' && val != '运行时间' && val != '发酵批号') {
+        PopupMangerState.updateIsShowPop(true)
     PopupMangerState.updatePopupContent(name_translation[val])
     console.log(PopupMangerState.isShowPop)
     console.log(PopupMangerState.popupContent)

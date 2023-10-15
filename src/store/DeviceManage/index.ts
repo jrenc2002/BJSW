@@ -44,7 +44,6 @@ interface SetData {
     Temp_KD: number;                     // 温控KD
     water_flag: number;                  // 冷凝水通断标志位
     temp_flag: number;                   // 温控开启/停止标志位
-    cool_water_autoflag: number;         // 冷凝水通断控制自动/手动标志位
 
     // 氧含量控制部分变量
     timing_DO: number;                   // 实时DO值
@@ -84,7 +83,20 @@ interface SetData {
     acid_pump_sum_step_count: number;            // 酸泵总步数
     lye_pump_sum_step_count: number;             // 碱泵总步数
     defoam_pump_sum_step_count: number;          // 消泡泵总步数
-    feed_pump_sum_step_count: number;
+    feed_pump_sum_step_count: number;           // 补料泵总步数
+    // ——————————————实时速来——————————————
+    feed_pump_now_speed: number;                // 补料泵当前速度-泵速==0为关闭
+    acid_pump_now_speed: number;                // 酸泵当前速度-泵速==0为关闭
+    lye_pump_now_speed: number;                 // 碱泵当前速度-泵速==0为关闭
+    feed_pump_now_ml: number;                   // 补料泵当前补料量
+    lye_pump_now_ml: number;                    // 碱泵当前补料量
+    acid_pump_now_ml: number;                   // 酸泵当前补料量
+    lye_pump_now_set_speed: number;             // 碱泵当前设定速度-我设定的
+    acid_pump_now_set_speed: number;            // 酸泵当前设定速度-我设定的
+    feed_pump_now_set_speed: number;            // 补料泵当前设定速度-我设定的
+    defoam_pump_now_speed: number;              // 消泡泵当前速度-泵速==0为关闭
+    defoam_pump_now_set_speed:number;           // 消泡泵设定速度
+
 
     // 补料控制部分
     feed_speed: number;                  // 补料泵设定补料速率
@@ -142,6 +154,8 @@ interface deviceSet {
 
     /** 补料泵单步速度 */
     feedPumpSpeed: number;
+    rpmMaxWarn: number;
+    rpmMinWarn: number;
 
     /** 消泡泵单步速度 */
     defoamerPumpSpeed: number;
@@ -163,7 +177,7 @@ interface Device {
     batch_name: any;
     alarm: boolean;
     deviceSet: deviceSet | null
-
+    batch_cycle:number;
 
 }
 
@@ -178,7 +192,7 @@ const state = (): {
     return {
         deviceList: [
             {
-                id: 0, name: '设备A', deviceNum: "BAB-00", ip: '192.168.1.3', port: 2000,
+                id: 0, name: '设备A', deviceNum: "BAB-00", ip: '192.168.1.3', port: 2000,batch_cycle:0,
                 state: 0, nowData: null, deviceSocket: null, start_time: null, batch_name: null,
                 alarm: false, deviceSet: {
                     tempState: 0,
@@ -190,6 +204,8 @@ const state = (): {
                     phMinWarn: 0,
                     doMaxWarn: 0,
                     doMinWarn: 0,
+                    rpmMaxWarn: 0,
+                    rpmMinWarn: 0,
                     acidPumpSpeed: 0,
                     lyePumpSpeed: 0,
                     feedPumpSpeed: 0,
@@ -213,6 +229,7 @@ export const useDeviceManage = defineStore('DeviceManage', {
                 id: newId,
                 name: nameDevice,
                 deviceNum: `BAB-${newId}`,
+                batch_cycle:0,
                 ip: ip,
                 port: port,
                 state: 0,
@@ -228,7 +245,7 @@ export const useDeviceManage = defineStore('DeviceManage', {
             return newId;
         },
         updateDeviceListData(index: number, newDeviceData: (SetData | number)) {
-            console.log('newDeviceData',newDeviceData)
+            console.log('newDeviceData', newDeviceData)
             if (typeof newDeviceData === 'number') {
                 if (newDeviceData === -1) console.log("Error")
                 return;

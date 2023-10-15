@@ -1,534 +1,605 @@
 <template>
 
 
-  <div class="h-[calc(100%-1.5rem)] w-[calc(100%-1.5rem)]  ">
-    <transition name="fade">
-      <div
-          v-show="ProcessPopupMangerState.isShowPop"
-          class="rounded-2xl absolute bg-white bg-opacity-50 h-[calc(100%-2rem)] w-[calc(100%-2rem)]  z-30 backdrop-blur-sm items-center justify-center flex"
-      >
-        <ProcessPopupManger :popcontent="PopupType[ProcessPopupMangerState.popupContent]"
-                            class="w-full h-full "></ProcessPopupManger>
-      </div>
-    </transition>
-
-    <!--    标题-->
-    <div class="h-[6%] self-stretch justify-center items-center gap-4 inline-flex ">
-      <div class="text-xl leading-10 text-zinc-900 text-2xl font-medium leading-loose left-4 relative">分罐流程</div>
-    </div>
-    <!--    内容-->
-    <div class=" rounded-2xl bg-white w-[100%] h-[92%]  bottom-0  shadow  flex  ">
-      <div class="rounded-2xl  h-[calc(100%-1.5rem)] w-[calc(100%-1.5rem)]  items-center justify-center flex     ">
-        <!--左侧控制栏-->
-        <div class="h-full w-[20%] overflow-hidden p-1 flex-col gap-2.5 relative flex  items-end">
-          <!--溶氧栏-->
-
-          <div
-              class="card min-w-[10vw]  bg-base-100 shadow-lg  border border-zinc-100 cursor-pointer top-[2vh] absolute "
-              @click="popProcessManager('溶氧')">
+    <div class="h-[calc(100%-1.5rem)] w-[calc(100%-1.5rem)]  ">
+        <transition name="fade">
             <div
-                class="w-full h-[2.5rem] mb-2 font-black  bg-[#FAD6DA] flex items-center justify-center rounded-t-2xl ">
-
-              <div class="w-full text-center relative">
-                溶氧
-              </div>
-
+                    v-show="ProcessPopupMangerState.isShowPop"
+                    class="rounded-2xl absolute bg-white bg-opacity-50 h-[calc(100%-2rem)] w-[calc(100%-2rem)]  z-30 backdrop-blur-sm items-center justify-center flex"
+            >
+                <ProcessPopupManger :popcontent="PopupType[ProcessPopupMangerState.popupContent]"
+                                    class="w-full h-full "></ProcessPopupManger>
             </div>
-            <div class="mx-6 my-3  mt-0 flex-col  ">
-              <div class="w-full  flex h-[3vh] flex items-center justify-start  gap-2 ">
-                <div class=" min-w-[7rem] mr-1 text-left relative ">设定值:</div>
-                <span class="min-w-[2rem] flex text-center items-center justify-center relative">
+        </transition>
+
+        <!--    标题-->
+        <div class="h-[6%] self-stretch justify-center items-center gap-4 inline-flex ">
+            <div class="text-xl leading-10 text-zinc-900 text-2xl font-medium leading-loose left-4 relative">分罐流程
+            </div>
+        </div>
+        <!--    内容-->
+        <div class=" rounded-2xl bg-white w-[100%] h-[92%]  bottom-0  shadow  flex  ">
+            <div class="rounded-2xl  h-[calc(100%-1.5rem)] w-[calc(100%-1.5rem)]  items-center justify-center flex     ">
+                <!--左侧控制栏-->
+                <div class="h-full w-[20%] overflow-hidden p-1 flex-col gap-2.5 relative flex  items-end">
+                    <!--溶氧栏-->
+
+                    <div
+                            class="card min-w-[10vw]  bg-base-100 shadow-lg  border border-zinc-100 cursor-pointer top-[6vh] absolute "
+                            @click="popProcessManager('溶氧')">
+                        <div
+                                class="w-full h-[2.5rem] mb-2 font-black  bg-[#FAD6DA] flex items-center justify-center rounded-t-2xl ">
+
+                            <div class="w-full text-center relative">
+                                溶氧
+                            </div>
+
+                        </div>
+                        <div class="mx-6 my-3  mt-0 flex-col  ">
+                            <div class="w-full  flex h-[3vh] flex items-center justify-start  gap-2 ">
+                                <div class=" min-w-[7rem] mr-1 text-left relative ">设定值:</div>
+                                <span class="min-w-[2rem] flex text-center items-center justify-center relative">
                   {{ DataManger.DoData.SetData }}
                 </span>
-              </div>
-              <div class="w-full  flex h-[3vh] flex items-center justify-start gap-2 ">
-                <div class=" min-w-[7rem] mr-1 text-left relative">测量值:</div>
-                <span class="min-w-[2rem] flex text-center items-center justify-center relative">
+                            </div>
+                            <div class="w-full  flex h-[3vh] flex items-center justify-start gap-2 ">
+                                <div class=" min-w-[7rem] mr-1 text-left relative">测量值:</div>
+                                <span class="min-w-[2rem] flex text-center items-center justify-center relative">
                   {{ DataManger.DoData.MeasureData }}
                 </span>
-              </div>
-              <div class="w-full  flex h-[3vh] flex items-center justify-start gap-2 ">
-                <div class=" min-w-[7rem] mr-1 text-left relative">转速上限:</div>
-                <span class="min-w-[2rem] flex text-center items-center justify-center relative">
-                   {{ DataManger.DoData.RPMUpperLimit }}
-                </span>
-              </div>
-              <div class="w-full  flex h-[3vh] flex items-center justify-start gap-2 ">
-                <div class=" min-w-[7rem] mr-1 text-left relative">转速下限:</div>
-                <span class="min-w-[2rem] flex text-center items-center justify-center relative">
-                    {{ DataManger.DoData.RPMLowerLimit }}
-                </span>
+                            </div>
 
-              </div>
-              <div class="w-full  flex h-[3vh] flex items-center justify-start gap-2 ">
-                <div class=" min-w-[7rem] mr-1 text-left relative">溶氧上限:</div>
-                <span class="min-w-[2rem] flex text-center items-center justify-center relative">
+                            <div class="w-full  flex h-[3vh] flex items-center justify-start gap-2 ">
+                                <div class=" min-w-[7rem] mr-1 text-left relative">溶氧上限:</div>
+                                <span class="min-w-[2rem] flex text-center items-center justify-center relative">
                 {{ DataManger.DoData.DOUpperLimit }}
                 </span>
-              </div>
-              <div class="w-full  flex h-[3vh] flex items-center justify-start gap-2 ">
-                <div class=" min-w-[7rem] mr-1 text-left relative">溶氧下限:</div>
-                <span class="min-w-[2rem] flex text-center items-center justify-center relative">
+                            </div>
+                            <div class="w-full  flex h-[3vh] flex items-center justify-start gap-2 ">
+                                <div class=" min-w-[7rem] mr-1 text-left relative">溶氧下限:</div>
+                                <span class="min-w-[2rem] flex text-center items-center justify-center relative">
                 {{ DataManger.DoData.DOLowerLimit }}
                 </span>
 
-              </div>
-              <div class="w-full  flex h-[3vh] flex items-center justify-start gap-2 ">
-                <div class=" min-w-[7rem] mr-1 text-left relative">转速关联状态:</div>
-                <span class="min-w-[2rem] flex text-center items-center justify-center relative">
-                             {{ DataManger.DoData.RPMStatus }}
+                            </div>
+                            <div class="w-full  flex h-[3vh] flex items-center justify-start gap-2 ">
+                                <div class=" min-w-[7rem] mr-1 text-left relative">关联转速:</div>
+                                <span class="min-w-[2rem] flex text-center items-center justify-center relative">
+                开启
                 </span>
 
-              </div>
-            </div>
-          </div>
-          <!--转速栏-->
-          <div
-              class="card min-w-[10vw] bg-base-100 shadow-lg  border border-zinc-100 cursor-pointer top-[33vh] absolute  "
-              @click="popProcessManager('转速')">
-            <div
-                class="w-full h-[2.5rem]   mb-2 font-black  bg-[#E1EEFF] flex items-center justify-center rounded-t-2xl ">
-              <div class="w-full text-center relative">
-                转速
-              </div>
+                            </div>
 
-            </div>
-            <div class="mx-6 my-3  mt-0 flex-col  ">
-              <div class="w-full  flex h-[3vh] flex items-center justify-center gap-2 ">
-                <div class=" min-w-[7rem] mr-1 text-left relative ">设定值:</div>
-                <span class="min-w-[2rem] flex text-center items-center justify-center relative">
-                  {{ DataManger.RPMData.SetData }}
+                        </div>
+                    </div>
+                    <!--转速栏-->
+                    <div class="card min-w-[10vw] bg-base-100 shadow-lg  border cursor-pointer border-zinc-100  top-[29vh] absolute  "
+                         @click="popProcessManager('转速')">
+                        <div
+                                class="w-full h-[2.5rem]   mb-2 font-black  bg-[#E1EEFF] flex items-center justify-center rounded-t-2xl ">
+                            <div class="w-full text-center relative">
+                                转速
+                            </div>
+
+                        </div>
+                        <div class="mx-6 my-3  mt-0 flex-col  ">
+                            <div class="w-full  flex h-[3vh] flex items-center justify-center gap-2 ">
+                                <div class=" min-w-[7rem] mr-1 text-left relative">设定转速:</div>
+                                <span class="min-w-[2rem] flex text-center items-center justify-center relative">
+                                  {{ DataManger.RPMData.NowSpeed }}
+                                </span>
+                            </div>
+                            <div class="w-full  flex h-[3vh] flex items-center justify-center gap-2 ">
+                                <div class=" min-w-[7rem] mr-1 text-left relative">实时转速:</div>
+                                <span class="min-w-[2rem] flex text-center items-center justify-center relative">
+                  {{ DataManger.RPMData.NowSpeed }}
                 </span>
-              </div>
-              <div class="w-full  flex h-[3vh] flex items-center justify-center gap-2 ">
-                <div class=" min-w-[7rem] mr-1 text-left relative">测量值:</div>
-                <span class="min-w-[2rem] flex text-center items-center justify-center relative">
-                  {{ DataManger.RPMData.MeasureData }}
+                            </div>
+                            <div class="w-full  flex h-[3vh] flex items-center justify-center gap-2 ">
+                                <div class=" min-w-[7rem] mr-1 text-left relative ">转速上限:</div>
+                                <span class="min-w-[2rem] flex text-center items-center justify-center relative">
+                  {{ DataManger.RPMData.RPMUpperLimit }}
                 </span>
-              </div>
+                            </div>
+                            <div class="w-full  flex h-[3vh] flex items-center justify-center gap-2 ">
+                                <div class=" min-w-[7rem] mr-1 text-left relative">转速下限:</div>
+                                <span class="min-w-[2rem] flex text-center items-center justify-center relative">
+                  {{ DataManger.RPMData.RPMLowerLimit }}
+                </span>
+                            </div>
 
-            </div>
-          </div>
-          <!--PH-->
-          <div
-              class="card min-w-[10vw] bg-base-100 shadow-lg  border border-zinc-100  cursor-pointer top-[49vh] absolute "
-              @click="popProcessManager('PH值')">
-            <div
-                class="w-full h-[2.5rem]   mb-2 font-black  bg-[#FCF8DA] flex items-center justify-center rounded-t-2xl ">
-              <div class="w-full text-center relative">
-                PH值
-              </div>
+                        </div>
+                    </div>
+                    <!--PH-->
+                    <div
+                            class="card min-w-[10vw] bg-base-100 shadow-lg  border border-zinc-100  cursor-pointer top-[49vh] absolute "
+                            @click="popProcessManager('PH值')">
+                        <div
+                                class="w-full h-[2.5rem]   mb-2 font-black  bg-[#FCF8DA] flex items-center justify-center rounded-t-2xl ">
+                            <div class="w-full text-center relative">
+                                PH值
+                            </div>
 
-            </div>
-            <div class="mx-6 my-3  mt-0 flex-col  ">
-              <div class="w-full  flex h-[3vh] flex items-center justify-center gap-2 ">
-                <div class=" min-w-[7rem] mr-1 text-left relative ">设定值:</div>
-                <span class="min-w-[2rem] flex text-center items-center justify-center relative">
+                        </div>
+                        <div class="mx-6 my-3  mt-0 flex-col  ">
+                            <div class="w-full  flex h-[3vh] flex items-center justify-center gap-2 ">
+                                <div class=" min-w-[7rem] mr-1 text-left relative ">设定值:</div>
+                                <span class="min-w-[2rem] flex text-center items-center justify-center relative">
                   {{ DataManger.PHData.SetData }}
                 </span>
-              </div>
-              <div class="w-full  flex h-[3vh] flex items-center justify-center gap-2 ">
-                <div class=" min-w-[7rem] mr-1 text-left relative">测量值:</div>
-                <span class="min-w-[2rem] flex text-center items-center justify-center relative">
+                            </div>
+                            <div class="w-full  flex h-[3vh] flex items-center justify-center gap-2 ">
+                                <div class=" min-w-[7rem] mr-1 text-left relative">测量值:</div>
+                                <span class="min-w-[2rem] flex text-center items-center justify-center relative">
                    {{ DataManger.PHData.MeasureData }}
                 </span>
-              </div>
+                            </div>
 
-            </div>
-          </div>
-          <!--温度-->
-          <div
-              class="card min-w-[10vw] bg-base-100 shadow-lg  border border-zinc-100 cursor-pointer top-[65vh] absolute "
-              @click="popProcessManager('温度')">
-            <div
-                class="w-full h-[2.5rem]   mb-2 font-black  bg-[#D9F0E4] flex items-center justify-center rounded-t-2xl ">
-              <div class="w-full text-center relative">
-                温度
-              </div>
+                        </div>
+                    </div>
+                    <!--温度-->
+                    <div
+                            class="card min-w-[10vw] bg-base-100 shadow-lg  border border-zinc-100 cursor-pointer top-[65vh] absolute "
+                            @click="popProcessManager('温度')">
+                        <div
+                                class="w-full h-[2.5rem]   mb-2 font-black  bg-[#D9F0E4] flex items-center justify-center rounded-t-2xl ">
+                            <div class="w-full text-center relative">
+                                温度
+                            </div>
 
-            </div>
-            <div class="mx-6 my-3  mt-0 flex-col  ">
-              <div class="w-full  flex h-[3vh] flex items-center justify-center gap-2 ">
-                <div class=" min-w-[7rem] mr-1 text-left relative ">设定值:</div>
-                <span class="min-w-[2rem] flex text-center items-center justify-center relative">
+                        </div>
+                        <div class="mx-6 my-3  mt-0 flex-col  ">
+                            <div class="w-full  flex h-[3vh] flex items-center justify-center gap-2 ">
+                                <div class=" min-w-[7rem] mr-1 text-left relative ">设定值:</div>
+                                <span class="min-w-[2rem] flex text-center items-center justify-center relative">
                  {{ DataManger.TemperatureData.SetData }}
                 </span>
-              </div>
-              <div class="w-full  flex h-[3vh] flex items-center justify-center gap-2  ">
-                <div class=" min-w-[7rem] mr-1 text-left relative">测量值:</div>
-                <span class="min-w-[2rem] flex text-center items-center justify-center relative">
+                            </div>
+                            <div class="w-full  flex h-[3vh] flex items-center justify-center gap-2  ">
+                                <div class=" min-w-[7rem] mr-1 text-left relative">测量值:</div>
+                                <span class="min-w-[2rem] flex text-center items-center justify-center relative">
                   {{ DataManger.TemperatureData.MeasureData }}
                 </span>
-              </div>
-              <div class="w-full  flex h-[3vh] flex items-center justify-center gap-2 ">
-                <div class=" min-w-[7rem] mr-1 text-left relative">加热功率:</div>
-                <span class="min-w-[2rem] flex text-center items-center justify-center relative">
+                            </div>
+                            <div class="w-full  flex h-[3vh] flex items-center justify-center gap-2 ">
+                                <div class=" min-w-[7rem] mr-1 text-left relative">加热功率:</div>
+                                <span class="min-w-[2rem] flex text-center items-center justify-center relative">
                   {{ DataManger.TemperatureData.HeatingPower }}
                 </span>
-              </div>
-              <div class="w-full  flex h-[3vh] flex items-center justify-center gap-2 ">
-                <div class=" min-w-[7rem] mr-1 text-left relative">冷凝水状态:</div>
-                <span class="min-w-[2rem] flex text-center items-center justify-center relative">
-                  {{ DataManger.TemperatureData.CondensateStatus }}
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!--中间图片-->
-        <div class="h-full flex items-center justify-center">
-          <img class="h-[60vh]" mode="heightFix" src="@/assets/image/JarImage.png">
-        </div>
-        <!--右侧控制栏-->
-        <div class="h-full w-[20%]  p-1 flex-col gap-2.5 relative flex  items-start">
-          <!--酸泵-->
-          <transition name="fade">
-            <div v-if="stateManger.AcidPump" class=" w-[10rem] p-3 flex-col flex justify-start items-center
-           bg-base-100 shadow-lg min-h-[10rem] rounded-xl  border border-[#874C53] top-[4vh] absolute left-[-12rem]  ">
-              <div>
-                <label class="block text font-medium leading-4 text-gray-900 mt-2">补料量</label>
-                <div class="mt-2">
-                  <input
-                      class="block w-full pl-2 rounded-md border-[#AEAEAE] border py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"/>
-                </div>
-              </div>
-              <div>
-                <label class="block text font-medium leading-4 text-gray-900 mt-2">补料速度</label>
-                <div class="mt-2">
-                  <input
-                      class="block w-full pl-2 rounded-md border-[#AEAEAE] border py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"/>
-                </div>
-              </div>
-            </div>
-          </transition>
-          <div class="card min-w-[10vw] bg-base-100 shadow-lg  border border-zinc-100 top-[6vh] absolute ">
-            <div class="w-full h-[3rem] mb-2   bg-[#FAD6DA] flex items-center justify-center rounded-t-2xl ">
+                            </div>
 
-              <div class="w-full text-center relative  h-[70%] flex items-center justify-center">
-                <div class=" h-full w-3 flex justify-center items-center rounded mx-1 ">
-                  <div class="w-2 h-2 bg-green-600 rounded-full"></div>
+                        </div>
+                    </div>
                 </div>
-                <div :class="[stateManger.AcidPump?'text-white bg-[#E1A1A9]':'bg-white']"
-                     class=" h-full w-[4.3rem] shadow flex justify-center items-center rounded mx-1 cursor-pointer "
-                     @click="stateManger.AcidPump=!stateManger.AcidPump">
-                  酸泵
+                <!--中间图片-->
+                <div class="h-full flex items-center justify-center">
+                    <img class="h-[60vh]" mode="heightFix" src="@/assets/image/JarImage.png">
                 </div>
-                <div :class="[stateManger.AddAcid?'text-white bg-[#E1A1A9]':'bg-white']"
-                     class=" h-full w-[4.3rem] shadow flex justify-center items-center rounded mx-1 cursor-pointer "
-                     @click="stateManger.AddAcid=!stateManger.AddAcid">
-                  加酸
-                </div>
-              </div>
+                <!--右侧控制栏-->
+                <div class="h-full w-[20%]  p-1 flex-col gap-2.5 relative flex  items-start">
+                    <!--酸泵-->
+                    <transition name="fade">
+                        <div v-if="stateManger.AcidPump" class=" w-[10rem] p-3 flex-col flex justify-start items-center
+           bg-base-100 shadow-lg min-h-[6rem] rounded-xl  border border-[#874C53] top-[4vh] absolute left-[-12rem]  ">
+                            <div>
+                                <label class="block text font-medium leading-4 text-gray-900 mt-2">补料速度</label>
+                                <div class="mt-2">
+                                    <input v-model="stateManger.AcidPumpSpeed"
+                                           class="block w-full pl-2 rounded-md border-[#AEAEAE] border py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"/>
+                                </div>
+                            </div>
+                        </div>
+                    </transition>
+                    <div class="card min-w-[10vw] bg-base-100 shadow-lg  border border-zinc-100 top-[6vh] absolute ">
+                        <div class="w-full h-[3rem] mb-2   bg-[#FAD6DA] flex items-center justify-center rounded-t-2xl ">
 
-            </div>
-            <div class="mx-6 my-3  mt-0 flex-col  ">
-              <div class="w-full  flex h-[3vh] flex items-center justify-center gap-2 ">
-                <div class=" min-w-[7rem] mr-1 text-left relative ">实时速率:</div>
-                <span class="min-w-[2rem] flex text-center items-center justify-center relative">
+                            <div class="w-full text-center relative  h-[70%] flex items-center justify-center">
+                                <div class=" h-full w-3 flex justify-center items-center rounded mx-1 ">
+                                    <div class="w-2 h-2 bg-green-600 rounded-full"></div>
+                                </div>
+                                <div :class="[stateManger.AcidPump?'text-white bg-[#E1A1A9]':'bg-white']"
+                                     class=" h-full w-[4.3rem] shadow flex justify-center items-center rounded mx-1 cursor-pointer "
+                                     @click="stateManger.AcidPump=!stateManger.AcidPump">
+                                    酸泵
+                                </div>
+                                <div :class="[stateManger.AddAcid?'text-white bg-[#E1A1A9]':'bg-white']"
+                                     class=" h-full w-[4.3rem] shadow flex justify-center items-center rounded mx-1 cursor-pointer "
+                                     @click="handleHandControl('acid')">
+                                    加酸
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="mx-6 my-3  mt-0 flex-col  ">
+                            <div class="w-full  flex h-[3vh] flex items-center justify-center gap-2 ">
+                                <div class=" min-w-[7rem] mr-1 text-left relative ">实时速率:</div>
+                                <span class="min-w-[2rem] flex text-center items-center justify-center relative">
                   {{ DataManger.acidPumpData.RealTimeRate }}
                 </span>
-              </div>
+                            </div>
 
-              <div class="w-full  flex h-[3vh] flex items-center justify-center gap-2 ">
-                <div class=" min-w-[7rem] mr-1 text-left relative">补料量:</div>
-                <span class="min-w-[2rem] flex text-center items-center justify-center relative">
+                            <div class="w-full  flex h-[3vh] flex items-center justify-center gap-2 ">
+                                <div class=" min-w-[7rem] mr-1 text-left relative">补料量:</div>
+                                <span class="min-w-[2rem] flex text-center items-center justify-center relative">
                   {{ DataManger.acidPumpData.FeedAmount }}
                 </span>
-              </div>
-            </div>
-          </div>
-          <!--碱泵-->
-          <transition name="fade">
-            <div v-if="stateManger.LyePump" class=" w-[10rem] p-3 flex-col flex justify-start items-center
-           bg-base-100 shadow-lg min-h-[10rem] rounded-xl  border border-[#A7C2E4] top-[21vh] absolute left-[-12rem]  ">
+                            </div>
+                        </div>
+                    </div>
+                    <!--碱泵-->
+                    <transition name="fade">
+                        <div v-if="stateManger.LyePump" class=" w-[10rem] p-3 flex-col flex justify-start items-center
+           bg-base-100 shadow-lg min-h-[6rem] rounded-xl  border border-[#A7C2E4] top-[21vh] absolute left-[-12rem]  ">
 
-              <div>
-                <label class="block text font-medium leading-4 text-gray-900 mt-2">补料量</label>
-                <div class="mt-2">
-                  <input
-                      class="block w-full pl-2 rounded-md border-[#AEAEAE] border py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"/>
-                </div>
-              </div>
-              <div>
-                <label class="block text font-medium leading-4 text-gray-900 mt-2">补料速度</label>
-                <div class="mt-2">
-                  <input
-                      class="block w-full pl-2 rounded-md border-[#AEAEAE] border py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"/>
-                </div>
-              </div>
+                            <div>
+                                <label class="block text font-medium leading-4 text-gray-900 mt-2">补料速度</label>
+                                <div class="mt-2">
+                                    <input v-model="stateManger.LyePumpSpeed"
+                                           class="block w-full pl-2 rounded-md border-[#AEAEAE] border py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"/>
+                                </div>
+                            </div>
 
-            </div>
-          </transition>
-          <div class="card min-w-[10vw] bg-base-100 shadow-lg  border border-zinc-100 top-[21vh] absolute ">
-            <div class="w-full h-[3rem]   mb-2   bg-[#E1EEFF] flex items-center justify-center rounded-t-2xl ">
-              <div class="w-full text-center relative  h-[70%] flex items-center justify-center">
-                <div class=" h-full w-3 flex justify-center items-center rounded mx-1 ">
-                  <div class="w-2 h-2 bg-green-600 rounded-full"></div>
-                </div>
+                        </div>
+                    </transition>
+                    <div class="card min-w-[10vw] bg-base-100 shadow-lg  border border-zinc-100 top-[21vh] absolute ">
+                        <div class="w-full h-[3rem]   mb-2   bg-[#E1EEFF] flex items-center justify-center rounded-t-2xl ">
+                            <div class="w-full text-center relative  h-[70%] flex items-center justify-center">
+                                <div class=" h-full w-3 flex justify-center items-center rounded mx-1 ">
+                                    <div class="w-2 h-2 bg-green-600 rounded-full"></div>
+                                </div>
 
-                <div :class="[stateManger.LyePump?'text-white bg-[#A8C2E4]':'bg-white']"
-                     class=" h-full w-[4.3rem] shadow flex justify-center items-center rounded mx-1 cursor-pointer "
-                     @click="stateManger.LyePump=!stateManger.LyePump">
-                  碱泵
-                </div>
-                <div :class="[stateManger.AddLye?'text-white bg-[#A8C2E4]':'bg-white']"
-                     class=" h-full w-[4.3rem] shadow flex justify-center items-center rounded mx-2 cursor-pointer "
-                     @click="stateManger.AddLye=!stateManger.AddLye">
-                  加碱
-                </div>
-              </div>
+                                <div :class="[stateManger.LyePump?'text-white bg-[#A8C2E4]':'bg-white']"
+                                     class=" h-full w-[4.3rem] shadow flex justify-center items-center rounded mx-1 cursor-pointer "
+                                     @click="stateManger.LyePump=!stateManger.LyePump">
+                                    碱泵
+                                </div>
+                                <div :class="[stateManger.AddLye?'text-white bg-[#A8C2E4]':'bg-white']"
+                                     class=" h-full w-[4.3rem] shadow flex justify-center items-center rounded mx-2 cursor-pointer "
+                                     @click="handleHandControl('lye')">
+                                    加碱
+                                </div>
+                            </div>
 
-            </div>
-            <div class="mx-6 my-3  mt-0 flex-col  ">
-              <div class="w-full  flex h-[3vh] flex items-center justify-center gap-2 ">
-                <div class=" min-w-[7rem] mr-1 text-left relative ">设定值:</div>
-                <span class="min-w-[2rem] flex text-center items-center justify-center relative">
+                        </div>
+                        <div class="mx-6 my-3  mt-0 flex-col  ">
+                            <div class="w-full  flex h-[3vh] flex items-center justify-center gap-2 ">
+                                <div class=" min-w-[7rem] mr-1 text-left relative ">实时速率:</div>
+                                <span class="min-w-[2rem] flex text-center items-center justify-center relative">
                   {{ DataManger.lyePumpData.SetData }}
                 </span>
-              </div>
-              <div class="w-full  flex h-[3vh] flex items-center justify-center gap-2 ">
-                <div class=" min-w-[7rem] mr-1 text-left relative">测量值:</div>
-                <span class="min-w-[2rem] flex text-center items-center justify-center relative">
+                            </div>
+                            <div class="w-full  flex h-[3vh] flex items-center justify-center gap-2 ">
+                                <div class=" min-w-[7rem] mr-1 text-left relative">补料量:</div>
+                                <span class="min-w-[2rem] flex text-center items-center justify-center relative">
                   {{ DataManger.lyePumpData.MeasureData }}
                 </span>
-              </div>
+                            </div>
 
-            </div>
-          </div>
-          <!--消泡泵-->
-          <transition name="fade">
-            <div v-if="stateManger.DefoamerPump" class=" w-[10rem] p-3 flex-col flex justify-start items-center
-           bg-base-100 shadow-lg min-h-[10rem] rounded-xl  border border-[#E4DDA4] top-[36vh] absolute left-[-12rem]  ">
+                        </div>
+                    </div>
+        
+                    <div class="card min-w-[10vw] bg-base-100 shadow-lg  border border-zinc-100 top-[36vh] absolute ">
 
-              <div>
-                <label class="block text font-medium leading-4 text-gray-900 mt-2">补料量</label>
-                <div class="mt-2">
-                  <input
-                      class="block w-full pl-2 rounded-md border-[#AEAEAE] border py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"/>
-                </div>
-              </div>
-              <div>
-                <label class="block text font-medium leading-4 text-gray-900 mt-2">补料速度</label>
-                <div class="mt-2">
-                  <input
-                      class="block w-full pl-2 rounded-md border-[#AEAEAE] border py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"/>
-                </div>
-              </div>
+                        <div class="w-full h-[3rem]   mb-2   bg-[#FCF8DA] flex items-center justify-center rounded-t-2xl ">
+                            <div class="w-full text-center relative  h-[70%] flex items-center justify-center">
+                                <div class=" h-full w-3 flex justify-center items-center rounded mx-1 ">
+                                    <div class="w-2 h-2 bg-green-600 rounded-full"></div>
+                                </div>
 
-            </div>
-          </transition>
-          <div class="card min-w-[10vw] bg-base-100 shadow-lg  border border-zinc-100 top-[36vh] absolute ">
+                                <div :class="[stateManger.DefoamerPump?'text-white bg-[#E4DDA4]':'bg-white']"
+                                     class=" h-full w-[4.3rem] shadow flex justify-center items-center rounded mx-1 cursor-pointer "
+                                     @click="popProcessManager('消泡泵')">
+                                    消泡泵
+                                </div>
+                                <div :class="[stateManger.Defoamer?'text-white bg-[#E4DDA4]':'bg-white']"
+                                     class=" h-full w-[4.3rem] shadow flex justify-center items-center rounded mx-2 cursor-pointer "
+                                     @click="handleHandControl('defoamer')">
+                                    消泡
+                                </div>
+                            </div>
 
-            <div class="w-full h-[3rem]   mb-2   bg-[#FCF8DA] flex items-center justify-center rounded-t-2xl ">
-              <div class="w-full text-center relative  h-[70%] flex items-center justify-center">
-                <div class=" h-full w-3 flex justify-center items-center rounded mx-1 ">
-                  <div class="w-2 h-2 bg-green-600 rounded-full"></div>
-                </div>
-
-                <div :class="[stateManger.DefoamerPump?'text-white bg-[#E4DDA4]':'bg-white']"
-                     class=" h-full w-[4.3rem] shadow flex justify-center items-center rounded mx-1 cursor-pointer "
-                     @click="stateManger.DefoamerPump=!stateManger.DefoamerPump">
-                  消泡泵
-                </div>
-                <div :class="[stateManger.Defoamer?'text-white bg-[#E4DDA4]':'bg-white']"
-                     class=" h-full w-[4.3rem] shadow flex justify-center items-center rounded mx-2 cursor-pointer "
-                     @click="stateManger.Defoamer=!stateManger.Defoamer">
-                  消泡
-                </div>
-              </div>
-
-            </div>
+                        </div>
 
 
-            <div class="mx-6 my-3  mt-0 flex-col  ">
-              <div class="w-full  flex h-[3vh] flex items-center justify-center gap-2 ">
-                <div class=" min-w-[7rem] mr-1 text-left relative ">设定值:</div>
-                <span class="min-w-[2rem] flex text-center items-center justify-center relative">
+                        <div class="mx-6 my-3  mt-0 flex-col  ">
+                            <div class="w-full  flex h-[3vh] flex items-center justify-center gap-2 ">
+                                <div class=" min-w-[7rem] mr-1 text-left relative ">设定速率:</div>
+                                <span class="min-w-[2rem] flex text-center items-center justify-center relative">
                   {{ DataManger.defoamerPumpData.SetData }}
                 </span>
-              </div>
-              <div class="w-full  flex h-[3vh] flex items-center justify-center gap-2 ">
-                <div class=" min-w-[7rem] mr-1 text-left relative">测量值:</div>
-                <span class="min-w-[2rem] flex text-center items-center justify-center relative">
+                            </div>
+                            <div class="w-full  flex h-[3vh] flex items-center justify-center gap-2 ">
+                                <div class=" min-w-[7rem] mr-1 text-left relative">补料量:</div>
+                                <span class="min-w-[2rem] flex text-center items-center justify-center relative">
                   {{ DataManger.defoamerPumpData.MeasureData }}
                 </span>
-              </div>
-            </div>
-          </div>
-          <!--补料泵-->
-          <div class="card min-w-[10vw] bg-base-100 shadow-lg  border border-zinc-100 top-[51vh] absolute ">
-            <div class="w-full h-[3rem]   mb-2   bg-[#D9F0E4] flex items-center justify-center rounded-t-2xl ">
-              <div class="w-full text-center relative  h-[70%] flex items-center justify-center">
-                <div class=" h-full w-3 flex justify-center items-center rounded mx-1 ">
-                  <div class="w-2 h-2 bg-green-600 rounded-full"></div>
-                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--补料泵-->
+                    <div class="card min-w-[10vw] bg-base-100 shadow-lg  border border-zinc-100 top-[51vh] absolute ">
+                        <div class="w-full h-[3rem]   mb-2   bg-[#D9F0E4] flex items-center justify-center rounded-t-2xl ">
+                            <div class="w-full text-center relative  h-[70%] flex items-center justify-center">
+                                <div class=" h-full w-3 flex justify-center items-center rounded mx-1 ">
+                                    <div class="w-2 h-2 bg-green-600 rounded-full"></div>
+                                </div>
 
-                <div :class="[stateManger.FeedPump?'text-white bg-[#9AD1B5]':'bg-white']"
-                     class=" h-full w-[4.3rem] shadow flex justify-center items-center rounded mx-1 cursor-pointer "
-                     @click="popProcessManager('补料泵')">
-                  补料泵
-                </div>
-                <div :class="[stateManger.AddFeed?'text-white bg-[#9AD1B5]':'bg-white']"
-                     class=" h-full w-[4.3rem] shadow flex justify-center items-center rounded mx-2 cursor-pointer "
-                     @click="stateManger.AddFeed=!stateManger.AddFeed">
-                  补料
-                </div>
-              </div>
+                                <div :class="[stateManger.FeedPump?'text-white bg-[#9AD1B5]':'bg-white']"
+                                     class=" h-full w-[4.3rem] shadow flex justify-center items-center rounded mx-1 cursor-pointer "
+                                     @click="popProcessManager('补料泵')">
+                                    补料泵
+                                </div>
+                                <div :class="[stateManger.AddFeed?'text-white bg-[#9AD1B5]':'bg-white']"
+                                     class=" h-full w-[4.3rem] shadow flex justify-center items-center rounded mx-2 cursor-pointer "
+                                     @click="stateManger.AddFeed=!stateManger.AddFeed">
+                                    补料
+                                </div>
+                            </div>
 
-            </div>
-            <div class="mx-6 my-3  mt-0 flex-col  ">
-              <div class="w-full  flex h-[3vh] flex items-center justify-center gap-2 ">
-                <div class=" min-w-[7rem] mr-1 text-left relative ">设定值:</div>
-                <span class="min-w-[2rem] flex text-center items-center justify-center relative">
+                        </div>
+                        <div class="mx-6 my-3  mt-0 flex-col  ">
+                            <div class="w-full  flex h-[3vh] flex items-center justify-center gap-2 ">
+                                <div class=" min-w-[7rem] mr-1 text-left relative ">实时速率:</div>
+                                <span class="min-w-[2rem] flex text-center items-center justify-center relative">
                   {{ DataManger.feedPumpData.SetData }}
                 </span>
-              </div>
-              <div class="w-full  flex h-[3vh] flex items-center justify-center gap-2 ">
-                <div class=" min-w-[7rem] mr-1 text-left relative">测量值:</div>
-                <span class="min-w-[2rem] flex text-center items-center justify-center relative">
+                            </div>
+                            <div class="w-full  flex h-[3vh] flex items-center justify-center gap-2 ">
+                                <div class=" min-w-[7rem] mr-1 text-left relative">补料量:</div>
+                                <span class="min-w-[2rem] flex text-center items-center justify-center relative">
                   {{ DataManger.feedPumpData.MeasureData }}
                 </span>
-              </div>
+                            </div>
 
+                        </div>
+                    </div>
+                    <button class="w-[10rem] h-[4rem] text-lg relative bg-[#4EA67D] rounded-xl text-white hover:bg-[#327E5B]  top-[67vh]"
+                            @click="popProcessManager('开始发酵')">
+                        开始发酵
+                    </button>
+                    <div class="w-[21rem] h-[4rem]  right-[11rem] relative  rounded-xl text-black flex    top-[68vh]">
+                        <button :class="isAll?'bg-white hover:bg-neutral-50':'bg-[#4EA67D] hover:bg-[#327E5B] text-white'"
+                                class=" swap w-[10rem] h-[4rem] mr-4 text-lg  relative  border-2 border-[#327E5B] rounded-xl text-black  flex items-center justify-center "
+                                @click.stop="controlSend('begin_running',AppGlobal.pageChance,1)">
+                            <label class="swap swap-rotate w-full h-full">
+                                <input v-model="isAll" type="checkbox"/>
+                                <div class="swap-on">开始运行中</div>
+                                <div class="swap-off">一键开始</div>
+                            </label>
+                        </button>
+                        <button class="w-[10rem] h-[4rem]  text-lg  relative bg-[#E0E0E0] rounded-xl text-black hover:bg-[#CBCBCB]  "
+                                @click="controlSend('end_running',AppGlobal.pageChance,1)">
+                            结束发酵
+                        </button>
+
+
+                    </div>
+
+
+                </div>
             </div>
-          </div>
-          <button @click="controSend('start_flag',AppGlobal.pageChance,1)"
-              class="w-[10rem] h-[4rem] text-lg top-[4rem] relative bg-[#4EA67D] rounded-xl text-white hover:bg-[#327E5B] absolute top-[67vh]">
-            开始发酵
-          </button>
-          <button
-              class="w-[10rem] h-[4rem] text-lg top-[5rem] relative bg-[#E0E0E0] rounded-xl text-black hover:bg-[#CBCBCB] absolute top-[68vh]">
-            结束发酵
-          </button>
 
         </div>
-      </div>
+
 
     </div>
-
-
-  </div>
 
 
 </template>
 
 <script setup>
 import {useProcessPopupMangerState} from "@/store/ProcessPopupMangerState";
-import {PopupType} from "@/store/PopupMangerState";
+import {PopupType} from "@/store/ProcessPopupMangerState";
 import {onMounted, onUnmounted, reactive, ref, watch} from "vue";
 import ProcessPopupManger from "@/components/ProcessPopupManger.vue";
 import {sendData} from "@/api";
 import {useAppGlobal} from "@/store/AppGlobal";
-const AppGlobal = useAppGlobal()
+import {useDeviceManage} from "@/store/DeviceManage";
 
+const AppGlobal = useAppGlobal()
+const DeviceManage = useDeviceManage();
 const DataManger = reactive({
-  DoData: {
-    SetData: 0,
-    MeasureData: 0,
-    RPMUpperLimit: 0,
-    RPMLowerLimit: 120,
-    DOUpperLimit: 0,
-    DOLowerLimit: 0,
-    RPMStatus: '关联',
-  },
-  RPMData: {
-    SetData: 0,
-    MeasureData: 0,
-  },
-  PHData: {
-    SetData: 0,
-    MeasureData: 0,
-  },
-  TemperatureData: {
-    SetData: 0,
-    MeasureData: 0,
-    HeatingPower: 0,
-    CondensateStatus: '关联',
-  },
-  acidPumpData: {
-    RealTimeRate: 0,
-    FeedAmount: 0,
-  },
-  lyePumpData: {
-    SetData: 0,
-    MeasureData: 0,
-  },
-  defoamerPumpData: {
-    SetData: 0,
-    MeasureData: 0,
-  },
-  feedPumpData: {
-    SetData: 0,
-    MeasureData: 0,
-  },
+    DoData: {
+        SetData: 0,
+        MeasureData: 0,
+        DOUpperLimit: 0,
+        DOLowerLimit: 0
+    },
+    RPMData: {
+        NowSpeed: 0,
+        RPMUpperLimit: 0,
+        RPMLowerLimit: 120,
+    },
+    PHData: {
+        SetData: 0,
+        MeasureData: 0,
+    },
+    TemperatureData: {
+        SetData: 0,
+        MeasureData: 0,
+        HeatingPower: 0,
+        CondensateStatus: '关闭',
+    },
+    acidPumpData: {
+        RealTimeRate: 0,
+        FeedAmount: 0,
+    },
+    lyePumpData: {
+        SetData: 0,
+        MeasureData: 0,
+    },
+    defoamerPumpData: {
+        SetData: 0,
+        MeasureData: 0,
+    },
+    feedPumpData: {
+        SetData: 0,
+        MeasureData: 0,
+    },
 
 })
+const isAll = ref(false);
+watch(() => isAll.value, () => {
+    console.log(isAll.value)
+}, {deep: true});
+watch(() => DeviceManage.deviceList[AppGlobal.pageChance].nowData, () => {
+    initDataManger()
+}, {deep: true});
 
+
+const initDataManger = () => {
+    if (!DeviceManage.deviceList || !Array.isArray(DeviceManage.deviceList)) {
+        console.error("DeviceManage.deviceList未定义或不是数组。");
+        return;
+    }
+
+    // 检查索引是否有效
+    if (typeof AppGlobal.pageChance !== 'number' || AppGlobal.pageChance < 0 || AppGlobal.pageChance >= DeviceManage.deviceList.length) {
+        console.error("AppGlobal.pageChance is an invalid index.");
+        return;
+    }
+    const currentDeviceData = DeviceManage.deviceList[AppGlobal.pageChance].nowData;
+    if (!currentDeviceData) {
+        console.error("当前设备没有定义nowData。");
+        return;
+    }
+    DataManger.DoData.SetData = DeviceManage.deviceList[AppGlobal.pageChance].nowData.target_DO
+    DataManger.DoData.MeasureData = DeviceManage.deviceList[AppGlobal.pageChance].nowData.timing_DO
+    DataManger.DoData.DOUpperLimit = DeviceManage.deviceList[AppGlobal.pageChance].nowData.DO_upper_limit
+    DataManger.DoData.DOLowerLimit = DeviceManage.deviceList[AppGlobal.pageChance].nowData.DO_lower_limit
+    DataManger.RPMData.RPMUpperLimit = DeviceManage.deviceList[AppGlobal.pageChance].nowData.motor_speed_u_limit
+    DataManger.RPMData.RPMLowerLimit = DeviceManage.deviceList[AppGlobal.pageChance].nowData.motor_speed_l_limit
+    DataManger.PHData.SetData = DeviceManage.deviceList[AppGlobal.pageChance].nowData.target_PH
+    DataManger.PHData.MeasureData = DeviceManage.deviceList[AppGlobal.pageChance].nowData.timing_PH
+    DataManger.TemperatureData.SetData = DeviceManage.deviceList[AppGlobal.pageChance].nowData.target_temp
+    DataManger.TemperatureData.MeasureData = DeviceManage.deviceList[AppGlobal.pageChance].nowData.timing_temp
+    DataManger.TemperatureData.HeatingPower = DeviceManage.deviceList[AppGlobal.pageChance].nowData.heatpower
+    DataManger.TemperatureData.CondensateStatus = DeviceManage.deviceList[AppGlobal.pageChance].nowData.water_flag == 0 ? '关闭' : '开启'
+    DataManger.acidPumpData.RealTimeRate = DeviceManage.deviceList[AppGlobal.pageChance].nowData.acid_pump_now_speed
+    DataManger.acidPumpData.FeedAmount = DeviceManage.deviceList[AppGlobal.pageChance].nowData.acid_pump_now_ml
+    DataManger.lyePumpData.SetData = DeviceManage.deviceList[AppGlobal.pageChance].nowData.lye_pump_now_speed
+    DataManger.lyePumpData.MeasureData = DeviceManage.deviceList[AppGlobal.pageChance].nowData.lye_pump_now_ml
+    DataManger.defoamerPumpData.SetData = DeviceManage.deviceList[AppGlobal.pageChance].nowData.defoam_pump_now_speed
+    DataManger.feedPumpData.SetData = DeviceManage.deviceList[AppGlobal.pageChance].nowData.feed_pump_now_speed
+    DataManger.feedPumpData.MeasureData = DeviceManage.deviceList[AppGlobal.pageChance].nowData.feed_pump_now_ml
+
+
+}
+const controlSend = ((name, index, content) => {
+    if (name === 'begin_running') {
+
+        if (isAll.value) {
+            // 四个同时开启运行
+            const data = {
+                PH_flag: 0,
+                DO_flag: 0,
+                temp_flag: 0,
+                motor_speed_autoflag: 0
+            }
+        
+            console.log(data)
+            sendData(index, data);
+        } else {
+            // 四个同时开启运行
+            const data = {
+                PH_flag: 1,
+                DO_flag: 1,
+                temp_flag: 1,
+                motor_speed_autoflag: 1
+            }
+            sendData(index, data);
+            console.log(data)
+        }
+
+    } else if (name === 'end_running') {
+        // TODO: 关闭运行时应该用什么逻辑
+
+    }
+
+
+})
 const ProcessPopupMangerState = useProcessPopupMangerState()
 // 弹窗管理
 const popProcessManager = (val) => {
-  if (val === '补料泵') {
-    stateManger.FeedPump = !stateManger.FeedPump;
-  }
-  ProcessPopupMangerState.updateIsShowPop(true)
-  ProcessPopupMangerState.updatePopupContent(name_translation[val])
-  console.log(ProcessPopupMangerState.isShowPop)
-  console.log(ProcessPopupMangerState.popupContent)
+    if (val === '补料泵' || val === '消泡泵') {
+        stateManger.DefoamerPump = !stateManger.DefoamerPump;
+        stateManger.FeedPump = !stateManger.FeedPump;
+    }
+    console.log(name_translation[val], val, 'val______')
+    ProcessPopupMangerState.updateIsShowPop(true)
+    ProcessPopupMangerState.updatePopupContent(name_translation[val])
 }
 watch(() => ProcessPopupMangerState.isShowPop, (newValue, oldValue) => {
-  console.log("----------------sdfasfs")
-  if (newValue == false && oldValue == true) {
-    stateManger.FeedPump = false
-  }
+
+    if (newValue == false && oldValue == true) {
+        stateManger.FeedPump = false
+        stateManger.DefoamerPump = false
+    }
 });
 // 当按下键盘时的处理函数，ESC关闭弹窗
 const handleKeydownEsc = (event) => {
-  if (event.keyCode === 27) { // 27 是 esc 键的 keyCode
-    console.log('ESC key was pressed!');
-    // 在此处执行你想要的操作
-    ProcessPopupMangerState.updateIsShowPop(false)
-    stateManger.FeedPump = false
-  }
+    if (event.keyCode === 27) { // 27 是 esc 键的 keyCode
+
+        // 在此处执行你想要的操作
+        ProcessPopupMangerState.updateIsShowPop(false)
+        stateManger.FeedPump = false
+        stateManger.DefoamerPump = false
+    }
 };
 const name_translation = {
-  '温度': 'Temperature',
-  'PH值': 'PHValue',
-  '溶氧': 'DissolvedOxygen',
-  '转速': 'RPM',
-  '补料泵': 'FeedPump',
+    '温度': 'Temperature',
+    'PH值': 'PHValue',
+    '转速': 'RPM',
+    '溶氧': 'DissolvedOxygen',
+    '补料泵': 'FeedPump',
+    '消泡泵': 'DefoamerPump',
+    '开始发酵': 'BeginFermentation',
 }
 const stateManger = reactive({
-  AcidPump: false,
-  AddAcid: false,
-  LyePump: false,
-  AddLye: false,
-  DefoamerPump: false,
-  Defoamer: false,
-  FeedPump: false,
-  AddFeed: false
+    AcidPump: false,
+    AddAcid: false,
+    LyePump: false,
+    AddLye: false,
+    DefoamerPump: false,
+    Defoamer: false,
+    FeedPump: false,
+    AddFeed: false,
+    AcidPumpSpeed: 0,
+    LyePumpSpeed: 0,
+    DefoamerPumpSpeed: 0,
 })
 
-const controSend = ((name, index, content) => {
-    // 温度状态控制
-    if (name === 'start_flag') {
-        const data = {
-            start_flag:content
+const handleHandControl = ((content) => {
 
+    if (content == 'acid') {
+        if (stateManger.AcidPumpSpeed !== 0) {
+            stateManger.AddAcid = !stateManger.AddAcid
+        } else {
+            stateManger.AcidPump = !stateManger.AcidPump
         }
-        sendData(index, data);
-        
+    } else if (content == 'lye') {
+        if (stateManger.LyePumpSpeed !== 0) {
+            stateManger.AddLye = !stateManger.AddLye
+        } else {
+            stateManger.LyePump = !stateManger.LyePump
+        }
+    } else if (content == 'defoamer') {
+        if (stateManger.DefoamerPumpSpeed !== 0) {
+            stateManger.Defoamer = !stateManger.Defoamer
+        } else {
+            stateManger.DefoamerPump = !stateManger.DefoamerPump
+        }
     }
 
-    
-
-
 })
+
 onMounted(() => {
-  window.addEventListener('keydown', handleKeydownEsc);
+    window.addEventListener('keydown', handleKeydownEsc);
+    initDataManger()
 
 })
 onUnmounted(() => {
-  window.removeEventListener('keydown', handleKeydownEsc);
+    window.removeEventListener('keydown', handleKeydownEsc);
 });
 </script>
 

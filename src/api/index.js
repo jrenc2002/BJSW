@@ -234,9 +234,9 @@ export const sendData = (index,data) => {
 let dataCache = "";
 
 function onDataReceived(data) {
+    console.log("接收数据", data);
     // 添加到缓存
     dataCache += data;
-
     // 检查数据完整性
     while (dataCache.includes("{") && dataCache.includes("}")) {
         const startIndex = dataCache.indexOf("{");

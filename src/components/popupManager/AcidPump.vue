@@ -194,7 +194,19 @@ const initTableData = () => {
       if (!DeviceManage.deviceList[index] || !DeviceManage.deviceList[index].nowData) {
         console.error(`Error: Missing data for device at index ${index}.`);
         return;
-      }  else if (deviceProp.prop == "acid_sum") {
+      }
+      else if (deviceProp.prop == "acid_flag") {
+
+          if (DeviceManage.deviceList[index]?.nowData?.acid_pump_now_speed ==0){
+              tableItem[header.props] = 0;
+          }
+          else {
+              tableItem[header.props] = 1;
+          }
+
+
+      }
+      else if (deviceProp.prop == "acid_sum") {
         if (DeviceManage.deviceList[index]?.deviceSet?.acidPumpSpeed !== null) {
           const acidPumpSpeed = DeviceManage.deviceList[index]?.deviceSet?.acidPumpSpeed ?? 0;
           const acid_pump_sum_step_count = DeviceManage.deviceList[index]?.nowData?.acid_pump_sum_step_count ?? 0;
@@ -324,7 +336,7 @@ const tableScroll = () => {
 // 当按下键盘时的处理函数，ESC关闭弹窗
 const handleKeydown = (event) => {
   if (event.keyCode === 27) { // 27 是 esc 键的 keyCode
-    console.log('ESC key was pressed!');
+    
     // 在此处执行你想要的操作
     PopupMangerState.updateIsShowPop(false)
   }

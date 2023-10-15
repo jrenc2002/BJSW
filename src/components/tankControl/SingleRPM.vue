@@ -75,30 +75,44 @@
                     <tr v-for="(body,index) in tableBodyRows" :key="index" class="flex justify-center items-center">
                       <template v-for="(col, i) in tableBodyCols" :key="col.props + i">
                         <td v-if="index==0" class="w-[8.2rem] text-center border-r border-b flex justify-center items-center">
-                          <details class="dropdown ">
-                            <summary v-if="body[col.props]==0" class="m-1 btn w-[7rem] ">停止</summary>
-                            <summary v-if="body[col.props]==1"
-                                     class="m-1 btn w-[7rem] text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3]">自动
-                            </summary>
-                            <summary v-if="body[col.props]==2"
-                                     class="m-1 btn w-[7rem]  text-[#776B00] bg-[#FAF3B7] hover:bg-[#E5E0AA]">顺控
-                            </summary>
+                            <details class="dropdown ">
+                                <summary v-if="body[col.props]==0" class="m-1 btn w-[7rem] ">停止</summary>
+                                <summary v-if="body[col.props]==1"
+                                         class="m-1 btn w-[7rem] text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3]">开启
+                                </summary>
 
-                            <ul class="p-2 shadow-xl menu dropdown-content z-[1] bg-base-100 rounded-box w-[7rem] broder">
-                              <li class="text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2] rounded" @click="col.props=0"><a>停止</a>
-                              </li>
-                              <li class="text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] mt-2 rounded"
-                                  @click="col.props=1"><a>自动</a></li>
-                              <li class="text-[#776B00] bg-[#FAF3B7] hover:bg-[#E5E0AA] mt-2 rounded"
-                                  @click="col.props=2"><a>顺控</a></li>
-                            </ul>
-                          </details>
+
+                                <ul class="p-2 shadow-xl menu dropdown-content z-[1] bg-base-100 rounded-box w-[7rem] broder">
+                                    <li class="text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2] rounded"
+                                        @click="controlSend('PH_flag',i,0)"><a>停止</a>
+                                    </li>
+                                    <li class="text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] mt-2 rounded"
+                                        @click="controlSend('PH_flag',i,1)"><a>开启</a></li>
+
+                                </ul>
+                            </details>
                         </td>
 
-                        <td v-if="index!=0"
-                            class="w-[8.2rem] text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
-                          {{ body[col.props] }}
-                        </td>
+                          <td v-else-if="index>=2&&index<=6"
+                              class="w-[8.2rem] text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center"
+                              @dblclick="inputVisible[i][index-2].control = !inputVisible[i][index-2].control">
+                              <input
+                                      v-if="inputVisible[i][index-2].control&&DeviceManage.deviceList[i]?.deviceSet!==null"
+                                      v-model="inputVisible[i][index-2].cache"
+                                      :placeholder="placeholder[index-2]"
+                                      class="w-[8.2rem]  h-full text-center break-all whitespace-normal "
+                                      type="text"
+                                      @keyup.enter="keyupEnterInput(i,index-2)"
+                              />
+
+                              <span v-else
+                                    class="w-[8.2rem] leading-5 text-center whitespace-normal break-all flex justify-center items-center">
+                    {{ body[col.props] }}</span>
+                          </td>
+                          <td v-else
+                              class="w-[8.2rem] text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
+                              {{ body[col.props] }}
+                          </td>
                       </template>
 
 
@@ -126,15 +140,13 @@
 
 // ______________________导入模块_______________________
 import {computed, Ref, ref, watch, onUnmounted, onMounted, reactive} from 'vue'
-import PopupManger from "@/components/PopupManger.vue";
-import {usePopupMangerState} from "@/store/PopupMangerState";
-import {PopupType} from "@/store/PopupMangerState";
-import {sendData} from '@/api/index.js'
+import {useProcessPopupMangerState} from "@/store/ProcessPopupMangerState";
 import {useDeviceManage} from '@/store/DeviceManage'
 import {useAppGlobal} from '@/store/AppGlobal'
+import {sendData} from "@/api";
 
 const DeviceManage = useDeviceManage();
-const PopupMangerState = usePopupMangerState()
+const ProcessPopupMangerState = useProcessPopupMangerState()
 const AppGlobal = useAppGlobal();
 
 // ______________________表格数据处理_______________________
@@ -145,6 +157,14 @@ watch(() => AppGlobal.pageChance, () => {
   initTableData()
 }, {deep: true});
 
+const inputVisible = ref<DeviceInput[]>([]); // 用于追踪哪一行显示输入框
+interface InputVisible {
+    id: number;
+    control: boolean;
+    cache: number | null;
+}
+
+type DeviceInput = InputVisible[];
 
 
 // 读取表格数据
@@ -168,26 +188,28 @@ const initTableData = () => {
       return;
     }
     initheaderData.push({title: device.name, props: 'F1'});
+      inputVisible.value.push([])
   });
 
   headerData.length = 0;  // 清空原始数据
   initheaderData.forEach(item => headerData.push(item));  // 添加新的数据
 
-  const deviceProperties = [
-    {name: '状态', prop: 'start_flag'},
-    {name: '测量值', prop: 'timing_temp'},
-    {name: '设定值', prop: 'target_temp'},
-    {name: '比例P', prop: 'Temp_KP'},
-    {name: '积分I', prop: 'Temp_KI'},
-    {name: '微分D', prop: 'Temp_KD'},
-    {name: '报警上限', prop: 'cool_water_autoflag'}, // 同上。
-    {name: '报警下限', prop: 'cool_water_autoflag'}  // 同上。
-  ]
+    const deviceProperties = [
+        // todo 转速状态没有标志位
+        {name: '状态', prop: 'start_flag'},
+        {name: '测量值', prop: 'timing_motor_speed'},
+        {name: '设定值', prop: 'target_motor_speed'},
+        {name: '转速上限', prop: 'motor_speed_u_limit'}, // 同上。
+        {name: '转速下限', prop: 'motor_speed_l_limit'},  // 同上。
+        {name: '报警上限', prop: 'alarm_h_limit'}, // 同上。
+        {name: '报警下限', prop: 'alarm_l_limit'}  // 同上。
+    ]
+
 
 
 
   let resultItems: any[] = []; // 声明结果数组
-  deviceProperties.map(deviceProp => {
+    deviceProperties.map((deviceProp, deviceIndex) => {
     let tableItem = {
       name: deviceProp.name,
       prop: deviceProp.prop
@@ -196,7 +218,13 @@ const initTableData = () => {
       if (index == 0) {
         return;
       }
-      index--;
+        index--;
+        if (AppGlobal.pageChance === index) {
+            inputVisible.value[index].push({id: deviceIndex, control: false, cache: null});
+
+
+        }
+
 
       if (DeviceManage.deviceList[index].nowData == null) {
         tableItem[header.props] = 0;
@@ -204,35 +232,36 @@ const initTableData = () => {
         return;
       }
 
-      if (!DeviceManage.deviceList[index] || !DeviceManage.deviceList[index].nowData) {
-        console.error(`Error: Missing data for device at index ${index}.`);
-        return;
-      }  else if (deviceProp.prop == "alarm_h_limit") {
-        tableItem[header.props] = DeviceManage.deviceList[index].batch_name;
-      } else if (deviceProp.prop == "alarm_l_limit") {
-        tableItem[header.props] = 241;
-      } else if (deviceProp.prop == "control_dead") {
-        tableItem[header.props] = 241;
-      } else if (deviceProp.prop == "control_cycle") {
-        tableItem[header.props] = 241;
-      } else if (deviceProp.prop == "cycle_open") {
-        tableItem[header.props] = 241;
-      } else if (deviceProp.prop == "temp_flag") {
-        tableItem[header.props] = 241;
-      }
-      else {
-        try {
-          const value = DeviceManage.deviceList[index].nowData![deviceProp.prop];
-          if (typeof value === 'number' && !Number.isInteger(value)) {
-            tableItem[header.props] = parseFloat(value.toFixed(2));
-          } else {
-            tableItem[header.props] = value;
-          }
-        } catch (e) {
-          console.error(`Error: The property ${deviceProp.prop} is missing or null for device at index ${index}.`);
-          return;
+        // 报警上限
+        if (deviceProp.prop == "alarm_h_limit") {
+            if (DeviceManage.deviceList[index]?.deviceSet?.rpmMaxWarn !== null) {
+                const rpmMaxWarn = DeviceManage.deviceList[index]?.deviceSet?.rpmMaxWarn ?? 0;
+                tableItem[header.props] = rpmMaxWarn;
+            } else {
+                tableItem[header.props] = 0;
+            }
         }
-      }
+        // 报警下限
+        else if (deviceProp.prop == "alarm_l_limit") {
+            if (DeviceManage.deviceList[index]?.deviceSet?.rpmMinWarn !== null) {
+                const rpmMinWarn = DeviceManage.deviceList[index]?.deviceSet?.rpmMinWarn ?? 0;
+                tableItem[header.props] = rpmMinWarn;
+            } else {
+                tableItem[header.props] = 0;
+            }
+        }  else {
+            try {
+                const value = DeviceManage.deviceList[index].nowData![deviceProp.prop];
+                if (typeof value === 'number' && !Number.isInteger(value)) {
+                    tableItem[header.props] = parseFloat(value.toFixed(2));
+                } else {
+                    tableItem[header.props] = value;
+                }
+            } catch (e) {
+                console.error(`Error: The property ${deviceProp.prop} is missing or null for device at index ${index}.`);
+                return;
+            }
+        }
     });
 
     resultItems.push(tableItem);
@@ -250,8 +279,64 @@ const firstCol = computed(() => props.tableData.map(p => {
   const pArr = Object.keys(p);
   return p[pArr[0]]
 }))
+const keyupEnterInput = (deviceID: number, setIndex: number) => {
+
+    inputVisible.value[deviceID][setIndex].control = false;
+
+    if (setIndex == 0 && inputVisible.value[deviceID][setIndex].cache != null) {
+        if (DeviceManage.deviceList[deviceID] && DeviceManage.deviceList[deviceID]!.nowData) {
+            DeviceManage.deviceList[deviceID]!.nowData!.target_motor_speed = inputVisible.value[deviceID][setIndex].cache || 0;
+        }
+    }
+    if (setIndex == 1 && inputVisible.value[deviceID][setIndex].cache != null) {
+        if (DeviceManage.deviceList[deviceID] && DeviceManage.deviceList[deviceID]!.nowData) {
+            DeviceManage.deviceList[deviceID]!.nowData!.motor_speed_u_limit = inputVisible.value[deviceID][setIndex].cache || 0;
+        }
+    }
+    if (setIndex == 2 && inputVisible.value[deviceID][setIndex].cache != null) {
+        if (DeviceManage.deviceList[deviceID] && DeviceManage.deviceList[deviceID]!.nowData) {
+            DeviceManage.deviceList[deviceID]!.nowData!.motor_speed_l_limit = inputVisible.value[deviceID][setIndex].cache || 0;
+        }
+    }
+    if (setIndex == 3 && inputVisible.value[deviceID][setIndex].cache != null) {
+        if (DeviceManage.deviceList[deviceID] && DeviceManage.deviceList[deviceID]!.deviceSet) {
+            DeviceManage.deviceList[deviceID]!.deviceSet!. rpmMaxWarn= inputVisible.value[deviceID][setIndex].cache || 0;
+        }
+    }
+    if (setIndex == 4 && inputVisible.value[deviceID][setIndex].cache != null) {
+        if (DeviceManage.deviceList[deviceID] && DeviceManage.deviceList[deviceID]!.deviceSet) {
+            DeviceManage.deviceList[deviceID]!.deviceSet!.rpmMinWarn = inputVisible.value[deviceID][setIndex].cache || 0;
+        }
+    }
+    if (setIndex>=0&&setIndex<=4){
+        controlSend('all',deviceID,0)
+    }
 
 
+}
+
+const controlSend = ((name, index, content) => {
+    // todo 转速控制
+    if (name == 'PH_flag') {
+        const data = {
+            PH_flag: content,
+
+        }
+        sendData(index, data);
+    }
+    if (name == 'all') {
+        const data = {
+            target_motor_speed: Number(DeviceManage.deviceList[index]!.nowData!.target_motor_speed),
+            motor_speed_u_limit: Number(DeviceManage.deviceList[index]!.nowData!.motor_speed_u_limit),
+            motor_speed_l_limit: Number(DeviceManage.deviceList[index]!.nowData!.motor_speed_l_limit),
+
+
+        }
+        sendData(index, data);
+    }
+
+
+})
 const firstRow = computed(() => {
   const rows: string[] = [];
   props.headerData.forEach((f, i) => {
@@ -261,7 +346,15 @@ const firstRow = computed(() => {
   })
   return rows;
 })
+const placeholder = ref([
+    "请输设定值",
+    "请输转速上限",
+    "请输转速下限",
+    "请输报警上限",
+    "请输报警下限",
 
+
+])
 
 const tableBodyRows = computed(() => {
   let arr: { [key: string]: any }[] = [];
@@ -324,7 +417,7 @@ const props = {
 
 // ______________________功能函数_______________________
 const closePop = () => {
-  PopupMangerState.updateIsShowPop(false)
+  ProcessPopupMangerState.updateIsShowPop(false)
 }
 
 const tableContainer: Ref<HTMLDivElement | null> = ref(null);

@@ -77,20 +77,10 @@
                           <details class="dropdown ">
                             <summary v-if="body[col.props]==0" class="m-1 btn w-[7rem] ">停止</summary>
                             <summary v-if="body[col.props]==1"
-                                     class="m-1 btn w-[7rem] text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3]">自动
-                            </summary>
-                            <summary v-if="body[col.props]==2"
-                                     class="m-1 btn w-[7rem]  text-[#776B00] bg-[#FAF3B7] hover:bg-[#E5E0AA]">顺控
+                                     class="m-1 btn w-[7rem] text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3]">开启
                             </summary>
 
-                            <ul class="p-2 shadow-xl menu dropdown-content z-[1] bg-base-100 rounded-box w-[7rem] broder">
-                              <li class="text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2] rounded" @click="col.props=0"><a>停止</a>
-                              </li>
-                              <li class="text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] mt-2 rounded"
-                                  @click="col.props=1"><a>自动</a></li>
-                              <li class="text-[#776B00] bg-[#FAF3B7] hover:bg-[#E5E0AA] mt-2 rounded"
-                                  @click="col.props=2"><a>顺控</a></li>
-                            </ul>
+            
                           </details>
                         </td>
 
@@ -195,7 +185,18 @@ const initTableData = () => {
       if (!DeviceManage.deviceList[index] || !DeviceManage.deviceList[index].nowData) {
         console.error(`Error: Missing data for device at index ${index}.`);
         return;
-      }  else if (deviceProp.prop == "lye_sum") {
+      }else if (deviceProp.prop == "lye_flag") {
+ 
+              if (DeviceManage.deviceList[index]?.nowData?.feed_pump_now_speed ==0){
+                  tableItem[header.props] = 0;
+              }
+              else {
+                  tableItem[header.props] = 1;
+              }
+
+      
+      }
+      else if (deviceProp.prop == "lye_sum") {
         if (DeviceManage.deviceList[index]?.deviceSet?.lyePumpSpeed !== null) {
           const lyePumpSpeed = DeviceManage.deviceList[index]?.deviceSet?.lyePumpSpeed ?? 0;
           const lye_pump_sum_step_count = DeviceManage.deviceList[index]?.nowData?.lye_pump_sum_step_count ?? 0;
@@ -287,17 +288,17 @@ const headerData: HeaderItem[] = reactive([
 
 
 const tableData: any = reactive([
-  {name: '状态', F1: 1, F2: 1, F3: 2, F4: 1, F5: 0, F6: 1, F7: 2, F8: 1},
-  {name: '测量值', F1: 25, F2: 26, F3: 27, F4: 28, F5: 29, F6: 30, F7: 31, F8: 32},
-  {name: '设定值', F1: 28, F2: 29, F3: 30, F4: 31, F5: 32, F6: 33, F7: 34, F8: 35},
-  {name: '控制周期', F1: 30, F2: 31, F3: 32, F4: 33, F5: 34, F6: 35, F7: 36, F8: 37},
-  {name: '周期开度', F1: 30, F2: 31, F3: 32, F4: 33, F5: 34, F6: 35, F7: 36, F8: 37},
-  {name: '比例P', F1: 25, F2: 26, F3: 27, F4: 28, F5: 29, F6: 30, F7: 31, F8: 32},
-  {name: '积分I', F1: 28, F2: 29, F3: 30, F4: 31, F5: 32, F6: 33, F7: 34, F8: 35},
-  {name: '微分D', F1: 30, F2: 31, F3: 32, F4: 33, F5: 34, F6: 35, F7: 36, F8: 37},
-  {name: '控制死区', F1: 28, F2: 29, F3: 30, F4: 31, F5: 32, F6: 33, F7: 34, F8: 35},
-  {name: '报警上限', F1: 25, F2: 26, F3: 27, F4: 28, F5: 29, F6: 30, F7: 31, F8: 32},
-  {name: '报警下限', F1: 25, F2: 26, F3: 27, F4: 28, F5: 29, F6: 30, F7: 31, F8: 32},
+  // {name: '状态', F1: 1, F2: 1, F3: 2, F4: 1, F5: 0, F6: 1, F7: 2, F8: 1},
+  // {name: '测量值', F1: 25, F2: 26, F3: 27, F4: 28, F5: 29, F6: 30, F7: 31, F8: 32},
+  // {name: '设定值', F1: 28, F2: 29, F3: 30, F4: 31, F5: 32, F6: 33, F7: 34, F8: 35},
+  // {name: '控制周期', F1: 30, F2: 31, F3: 32, F4: 33, F5: 34, F6: 35, F7: 36, F8: 37},
+  // {name: '周期开度', F1: 30, F2: 31, F3: 32, F4: 33, F5: 34, F6: 35, F7: 36, F8: 37},
+  // {name: '比例P', F1: 25, F2: 26, F3: 27, F4: 28, F5: 29, F6: 30, F7: 31, F8: 32},
+  // {name: '积分I', F1: 28, F2: 29, F3: 30, F4: 31, F5: 32, F6: 33, F7: 34, F8: 35},
+  // {name: '微分D', F1: 30, F2: 31, F3: 32, F4: 33, F5: 34, F6: 35, F7: 36, F8: 37},
+  // {name: '控制死区', F1: 28, F2: 29, F3: 30, F4: 31, F5: 32, F6: 33, F7: 34, F8: 35},
+  // {name: '报警上限', F1: 25, F2: 26, F3: 27, F4: 28, F5: 29, F6: 30, F7: 31, F8: 32},
+  // {name: '报警下限', F1: 25, F2: 26, F3: 27, F4: 28, F5: 29, F6: 30, F7: 31, F8: 32},
 ]);
 
 
@@ -325,7 +326,7 @@ const tableScroll = () => {
 // 当按下键盘时的处理函数，ESC关闭弹窗
 const handleKeydown = (event) => {
   if (event.keyCode === 27) { // 27 是 esc 键的 keyCode
-    console.log('ESC key was pressed!');
+    
     // 在此处执行你想要的操作
     PopupMangerState.updateIsShowPop(false)
   }

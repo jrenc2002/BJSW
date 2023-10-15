@@ -16,6 +16,12 @@
     <div v-show="props.popcontent === PopupType.FeedPump" ref="popupCreateTaskCard">
       <ProcessFeedPump></ProcessFeedPump>
     </div>
+      <div v-show="props.popcontent === PopupType.BeginFermentation" ref="popupCreateTaskCard">
+          <ProcessBeginFermentation></ProcessBeginFermentation>
+      </div>
+      <div v-show="props.popcontent === PopupType.DefoamerPump" ref="popupCreateTaskCard">
+          <ProcessDefoamerPump></ProcessDefoamerPump>
+      </div>
   </div>
 </template>
 
@@ -24,14 +30,15 @@
  * 本组件管理弹窗，保证甘特页面只有一个弹窗
  * 通过弹窗共享状态，来获取怎么弹法
  */
-import {PopupType} from "@/store/PopupMangerState";
-import {defineProps} from "vue";
+import {PopupType} from "@/store/ProcessPopupMangerState";
+import {defineProps, onMounted} from "vue";
 import ProcessTemperatureControl from "@/components/tankControl/SingleTemperature.vue";
 import ProcessPHValue from "@/components/tankControl/SinglePHValue.vue";
 import ProcessDissolvedOxygen from "@/components/tankControl/SingleDissolvedOxygen.vue";
 import ProcessRPM from "@/components/tankControl/SingleRPM.vue"
 import ProcessFeedPump from "@/components/tankControl/SingleFeedPump.vue"
-
+import ProcessBeginFermentation from "@/components/tankControl/SingleBegin.vue"
+import ProcessDefoamerPump from "@/components/tankControl/SingleDefoamerPump.vue"
 const props = defineProps({
   popcontent: {
     type: String,
@@ -39,9 +46,9 @@ const props = defineProps({
   }
 })
 
-// onMounted(() => {
-//
-// })
+onMounted(() => {
+ console.log(props.popcontent, "11111111_____________________")
+})
 
 
 </script>

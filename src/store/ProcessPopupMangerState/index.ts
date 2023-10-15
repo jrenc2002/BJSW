@@ -1,7 +1,7 @@
 import {defineStore} from "pinia";
 
 // 给开发人员使用的debug
-const debug = false;
+const debug = true;
 
 export enum PopupType {
     // 无弹窗
@@ -14,9 +14,9 @@ export enum PopupType {
     DissolvedOxygen = 3,
     // 转速值
     RPM = 4,
-    // 酸泵
-    AcidPump = 5,
-    FeedPump = 6,
+    FeedPump = 5,
+    BeginFermentation=6,
+    DefoamerPump=7,
 
 }
 
@@ -35,10 +35,11 @@ const state = () => {
 /**
  * 提供弹窗管理
  */
-export const useProcessPopupMangerState = defineStore('popupManger', {
+export const useProcessPopupMangerState = defineStore('processPopupManger', {
     state,
     actions: {
         updatePopupContent(popupContent: PopupType) {
+
             if (debug) {
                 console.log('[调试] 当前弹窗为：', popupContent);
             }

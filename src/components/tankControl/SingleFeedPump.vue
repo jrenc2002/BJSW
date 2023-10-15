@@ -123,15 +123,12 @@
 
 // ______________________导入模块_______________________
 import {computed, Ref, ref, watch, onUnmounted, onMounted, reactive} from 'vue'
-import PopupManger from "@/components/PopupManger.vue";
-import {usePopupMangerState} from "@/store/PopupMangerState";
-import {PopupType} from "@/store/PopupMangerState";
-import {sendData} from '@/api/index.js'
+import {useProcessPopupMangerState} from "@/store/ProcessPopupMangerState";
 import {useDeviceManage} from '@/store/DeviceManage'
 import {useAppGlobal} from '@/store/AppGlobal'
 
 const DeviceManage = useDeviceManage();
-const PopupMangerState = usePopupMangerState()
+const ProcessPopupMangerState = useProcessPopupMangerState()
 const AppGlobal = useAppGlobal();
 
 // ______________________表格数据处理_______________________
@@ -318,7 +315,7 @@ const props = {
 
 // ______________________功能函数_______________________
 const closePop = () => {
-  PopupMangerState.updateIsShowPop(false)
+    ProcessPopupMangerState.updateIsShowPop(false)
 }
 
 const tableContainer: Ref<HTMLDivElement | null> = ref(null);

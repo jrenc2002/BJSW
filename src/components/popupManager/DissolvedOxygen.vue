@@ -80,35 +80,35 @@
                   <div class="flex-col justify-center items-center">
                     <tr v-for="(body,index) in tableBodyRows" :key="index" class="flex justify-center items-center">
                       <template v-for="(col, i) in tableBodyCols" :key="col.props + i">
-                        <td v-if="index==0"
-                            class="w-[8.2rem] text-center border-r border-b flex justify-center items-center ">
-                          <details class="dropdown ">
-                            <summary v-if="body[col.props]==0" class="m-1 btn w-[7rem] ">停止</summary>
-                            <summary v-if="body[col.props]==1"
-                                     class="m-1 btn w-[7rem] text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3]">关联
-                            </summary>
+                          <td v-if="index==0"
+                              class="w-[8.2rem] text-center border-r border-b flex justify-center items-center">
+                              <details class="dropdown ">
+                                  <summary v-if="body[col.props]==0" class="m-1 btn w-[7rem] ">停止</summary>
+                                  <summary v-if="body[col.props]==1"
+                                           class="m-1 btn w-[7rem] text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3]">开启
+                                  </summary>
 
 
-                            <ul class="p-2 shadow-xl menu dropdown-content z-[1] bg-base-100 rounded-box w-[7rem] broder">
-                              <li class="text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2] rounded" @click="col.props=0">
-                                <a>停止</a>
-                              </li>
-                              <li class="text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] mt-2 rounded"
-                                  @click="col.props=1"><a>关联</a></li>
+                                  <ul class="p-2 shadow-xl menu dropdown-content z-[1] bg-base-100 rounded-box w-[7rem] broder">
+                                      <li class="text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2] rounded"
+                                          @click="controlSend('DO_flag',i,0)"><a>停止</a>
+                                      </li>
+                                      <li class="text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] mt-2 rounded"
+                                          @click="controlSend('DO_flag',i,1)"><a>开启</a></li>
 
-                            </ul>
-                          </details>
-                        </td>
-                        <td v-else-if="index>=1&&index<=7"
+                                  </ul>
+                              </details>
+                          </td>
+                        <td v-else-if="index>=3&&index<=7"
                             class="w-[8.2rem] text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center"
-                            @dblclick="inputVisible[i][index-1].control = !inputVisible[i][index-1].control">
+                            @dblclick="inputVisible[i][index-3].control = !inputVisible[i][index-3].control">
                           <input
-                              v-if="inputVisible[i][index-1].control&&DeviceManage.deviceList[i]?.deviceSet!==null"
-                              v-model="inputVisible[i][index-1].cache"
-                              :placeholder="placeholder[index-1]"
+                              v-if="inputVisible[i][index-3].control&&DeviceManage.deviceList[i]?.deviceSet!==null"
+                              v-model="inputVisible[i][index-3].cache"
+                              :placeholder="placeholder[index-3]"
                               class="w-[8.2rem]  h-full text-center break-all whitespace-normal "
                               type="text"
-                              @keyup.enter="keyupEnterInput(i,index-1)"
+                              @keyup.enter="keyupEnterInput(i,index-3)"
                           />
 
                           <span v-else
@@ -161,7 +161,7 @@ const AppGlobal = useAppGlobal();
 watch(() => DeviceManage.deviceList, () => {
   initTableData()
 }, {deep: true});
-
+// todo 这里有个错行的BUG
 interface InputVisible {
   id: number;
   control: boolean;
@@ -199,12 +199,12 @@ const initTableData = () => {
   initheaderData.forEach(item => headerData.push(item));  // 添加新的数据
 
   const deviceProperties = [
+      {name: '状态', prop: 'DO_flag'}, // 0: 停止, 1: 自动
+    {name: '溶氧关联转速', prop: 'motor_speed_autoflag'},
     {name: '测量值', prop: 'timing_DO'},
     {name: '设定值', prop: 'target_DO'},
     {name: 'DO误差上限', prop: 'DO_upper_limit'},
     {name: 'DO误差下限', prop: 'DO_lower_limit'},
-    {name: '转速上限', prop: 'motor_speed_u_limit'},
-    {name: '转速下限', prop: 'motor_speed_l_limit'},
     {name: 'DO报警上限', prop: 'alarm_h_limit'},
     {name: 'DO报警下限', prop: 'alarm_l_limit'},
   ]
@@ -220,21 +220,22 @@ const initTableData = () => {
       if (index === 0) {
         return;
       }
-      if (deviceIndex >= 1 && deviceIndex <= 7) {
-        inputVisible.value[index - 1].push({id: deviceIndex, control: false, cache: null});
+        index--;
+      if (deviceIndex >= 3 && deviceIndex <= 7) {
+        inputVisible.value[index].push({id: deviceIndex, control: false, cache: null});
 
 
       }
 
 
-      index--;
+
 
       if (DeviceManage.deviceList[index].nowData == null && deviceProp.prop != "alarm_h_limit" && deviceProp.prop != "alarm_l_limit") {
         tableItem[header.props] = 0;
 
         return;
       }
-
+      
       // 报警上限
       if (deviceProp.prop == "alarm_h_limit") {
         if (DeviceManage.deviceList[index]?.deviceSet?.doMaxWarn !== null) {
@@ -252,7 +253,8 @@ const initTableData = () => {
         } else {
           tableItem[header.props] = 0;
         }
-      }  else {
+      }
+      else {
         try {
           const value = DeviceManage.deviceList[index].nowData![deviceProp.prop];
           if (typeof value === 'number' && !Number.isInteger(value)) {
@@ -295,34 +297,24 @@ const keyupEnterInput = (deviceID: number, setIndex: number) => {
     }
   }
   if (setIndex == 3 && inputVisible.value[deviceID][setIndex].cache != null) {
-    if (DeviceManage.deviceList[deviceID] && DeviceManage.deviceList[deviceID]!.nowData) {
-      DeviceManage.deviceList[deviceID]!.nowData!.motor_speed_u_limit = inputVisible.value[deviceID][setIndex].cache || 0;
-    }
-  }
-  if (setIndex == 4 && inputVisible.value[deviceID][setIndex].cache != null) {
-    if (DeviceManage.deviceList[deviceID] && DeviceManage.deviceList[deviceID]!.nowData) {
-      DeviceManage.deviceList[deviceID]!.nowData!.motor_speed_l_limit = inputVisible.value[deviceID][setIndex].cache || 0;
-    }
-  }
-  if (setIndex == 5 && inputVisible.value[deviceID][setIndex].cache != null) {
     if (DeviceManage.deviceList[deviceID] && DeviceManage.deviceList[deviceID]!.deviceSet) {
       DeviceManage.deviceList[deviceID]!.deviceSet!. doMaxWarn= inputVisible.value[deviceID][setIndex].cache || 0;
     }
   }
-  if (setIndex == 6 && inputVisible.value[deviceID][setIndex].cache != null) {
+  if (setIndex == 4 && inputVisible.value[deviceID][setIndex].cache != null) {
     if (DeviceManage.deviceList[deviceID] && DeviceManage.deviceList[deviceID]!.deviceSet) {
       DeviceManage.deviceList[deviceID]!.deviceSet!.doMinWarn = inputVisible.value[deviceID][setIndex].cache || 0;
     }
   }
-
+    if (setIndex>=0&&setIndex<=2){
+        controlSend('all',deviceID,0)
+    }
 }
 
 const placeholder = ref([
   "请输设定值",
   "请输误差上限",
   "请输误差下限",
-  "请输转速上限",
-  "请输转速下限",
   "请输报警下限",
   "请输报警上限",
 
@@ -396,7 +388,20 @@ const tableData: any = reactive([
   {name: '报警下限', F1: 25, F2: 26, F3: 27, F4: 28, F5: 29, F6: 30, F7: 31, F8: 32},
 ]);
 
+const controlSend = ((name, index, content) => {
+    if (name == 'all') {
+        const data = {
+            target_DO: Number(DeviceManage.deviceList[index]!.nowData!.target_DO),
+            DO_upper_limit: Number(DeviceManage.deviceList[index]!.nowData!.DO_upper_limit),
+            DO_lower_limit: Number(DeviceManage.deviceList[index]!.nowData!.DO_lower_limit),
+            motor_speed_u_limit: Number(DeviceManage.deviceList[index]!.nowData!.motor_speed_u_limit),
+            motor_speed_l_limit: Number(DeviceManage.deviceList[index]!.nowData!.motor_speed_l_limit),
+        }
+        sendData(index, data);
+    }
 
+
+})
 const props = {
   headerData: headerData,
   tableData: tableData
@@ -421,7 +426,7 @@ const tableScroll = () => {
 // 当按下键盘时的处理函数，ESC关闭弹窗
 const handleKeydown = (event) => {
   if (event.keyCode === 27) { // 27 是 esc 键的 keyCode
-    console.log('ESC key was pressed!');
+    
     // 在此处执行你想要的操作
     PopupMangerState.updateIsShowPop(false)
   }
