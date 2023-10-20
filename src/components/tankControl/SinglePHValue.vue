@@ -439,11 +439,15 @@ const tableData: any = reactive([
 const controlSend = ((name, index, content) => {
     if (name == 'all') {
         const data = {
-            target_DO: Number(DeviceManage.deviceList[index]!.nowData!.target_DO),
-            DO_upper_limit: Number(DeviceManage.deviceList[index]!.nowData!.DO_upper_limit),
-            DO_lower_limit: Number(DeviceManage.deviceList[index]!.nowData!.DO_lower_limit),
-            motor_speed_u_limit: Number(DeviceManage.deviceList[index]!.nowData!.motor_speed_u_limit),
-            motor_speed_l_limit: Number(DeviceManage.deviceList[index]!.nowData!.motor_speed_l_limit),
+            target_PH: Number(DeviceManage.deviceList[index]!.nowData!.target_PH),
+            PH_upper_limit: Number(DeviceManage.deviceList[index]!.nowData!.PH_upper_limit),
+            PH_lower_limit: Number(DeviceManage.deviceList[index]!.nowData!.PH_lower_limit),
+            acid_KP: Number(DeviceManage.deviceList[index]!.nowData!.acid_KP),
+            acid_KI: Number(DeviceManage.deviceList[index]!.nowData!.acid_KI),
+            acid_KD: Number(DeviceManage.deviceList[index]!.nowData!.acid_KD),
+            lye_KP: Number(DeviceManage.deviceList[index]!.nowData!.lye_KP),
+            lye_KI: Number(DeviceManage.deviceList[index]!.nowData!.lye_KI),
+            lye_KD: Number(DeviceManage.deviceList[index]!.nowData!.lye_KD),
         }
         sendData(index, data);
     }

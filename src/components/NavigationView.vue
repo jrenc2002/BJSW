@@ -65,7 +65,8 @@
                     @contextmenu.prevent="showMenu($event, team.id)"
                 >
                   <!-- 页面ID -->
-                  <button :class="[team.current ? 'text-green-600 border-green-600' : 'text-gray-400 border-gray-200  ', 'flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border text-[0.625rem] font-medium bg-white']">
+                  <button :class="[team.state===0?'bg-gray-200':'',team.state===1?'bg-white':'',team.state===2?'bg-[#BAE7C7]':'',team.state===3?'bg-[#FAB7B7]':'',
+                  team.current ? 'text-green-600 border-green-600' : 'text-gray-400 border-gray-200  ', 'flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border text-[0.625rem] font-medium ',]">
                     {{
                       team.id
                     }}

@@ -99,7 +99,26 @@
                                   </ul>
                               </details>
                           </td>
-                        <td v-else-if="index>=3&&index<=7"
+                          <td v-else-if="index==1"
+                              class="w-[8.2rem] text-center border-r border-b flex justify-center items-center">
+                              <details class="dropdown ">
+                                  <summary v-if="body[col.props]==0" class="m-1 btn w-[7rem] ">停止</summary>
+                                  <summary v-if="body[col.props]==1"
+                                           class="m-1 btn w-[7rem] text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3]">开启
+                                  </summary>
+
+
+                                  <ul class="p-2 shadow-xl menu dropdown-content z-[1] bg-base-100 rounded-box w-[7rem] broder">
+                                      <li class="text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2] rounded"
+                                          @click="controlSend('DO_flag',i,0)"><a>停止</a>
+                                      </li>
+                                      <li class="text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] mt-2 rounded"
+                                          @click="controlSend('DO_flag',i,1)"><a>开启</a></li>
+
+                                  </ul>
+                              </details>
+                          </td>
+                        <td v-else-if="index>=3&&index<=10"
                             class="w-[8.2rem] text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center"
                             @dblclick="inputVisible[i][index-3].control = !inputVisible[i][index-3].control">
                           <input
@@ -203,6 +222,9 @@ const initTableData = () => {
     {name: '溶氧关联转速', prop: 'motor_speed_autoflag'},
     {name: '测量值', prop: 'timing_DO'},
     {name: '设定值', prop: 'target_DO'},
+      {name: '比例P', prop: 'DO_KP'},
+      {name: '积分I', prop: 'DO_KI'},
+      {name: '微分D', prop: 'DO_KD'},
     {name: 'DO误差上限', prop: 'DO_upper_limit'},
     {name: 'DO误差下限', prop: 'DO_lower_limit'},
     {name: 'DO报警上限', prop: 'alarm_h_limit'},
@@ -221,7 +243,7 @@ const initTableData = () => {
         return;
       }
         index--;
-      if (deviceIndex >= 3 && deviceIndex <= 7) {
+      if (deviceIndex >= 3 && deviceIndex <= 10) {
         inputVisible.value[index].push({id: deviceIndex, control: false, cache: null});
 
 
@@ -286,34 +308,53 @@ const keyupEnterInput = (deviceID: number, setIndex: number) => {
       DeviceManage.deviceList[deviceID]!.nowData!.target_DO = inputVisible.value[deviceID][setIndex].cache || 0;
     }
   }
-  if (setIndex == 1 && inputVisible.value[deviceID][setIndex].cache != null) {
+    if (setIndex == 1 && inputVisible.value[deviceID][setIndex].cache != null) {
+        if (DeviceManage.deviceList[deviceID] && DeviceManage.deviceList[deviceID]!.nowData) {
+            DeviceManage.deviceList[deviceID]!.nowData!.DO_KP = inputVisible.value[deviceID][setIndex].cache || 0;
+        }
+    }
+    if (setIndex == 2 && inputVisible.value[deviceID][setIndex].cache != null) {
+        if (DeviceManage.deviceList[deviceID] && DeviceManage.deviceList[deviceID]!.nowData) {
+            DeviceManage.deviceList[deviceID]!.nowData!.DO_KI = inputVisible.value[deviceID][setIndex].cache || 0;
+        }
+    }
+    if (setIndex == 3 && inputVisible.value[deviceID][setIndex].cache != null) {
+        if (DeviceManage.deviceList[deviceID] && DeviceManage.deviceList[deviceID]!.nowData) {
+            DeviceManage.deviceList[deviceID]!.nowData!.DO_KI = inputVisible.value[deviceID][setIndex].cache || 0;
+        }
+    }
+  if (setIndex == 4 && inputVisible.value[deviceID][setIndex].cache != null) {
     if (DeviceManage.deviceList[deviceID] && DeviceManage.deviceList[deviceID]!.nowData) {
       DeviceManage.deviceList[deviceID]!.nowData!.DO_upper_limit = inputVisible.value[deviceID][setIndex].cache || 0;
     }
   }
-  if (setIndex == 2 && inputVisible.value[deviceID][setIndex].cache != null) {
+  if (setIndex == 5 && inputVisible.value[deviceID][setIndex].cache != null) {
     if (DeviceManage.deviceList[deviceID] && DeviceManage.deviceList[deviceID]!.nowData) {
       DeviceManage.deviceList[deviceID]!.nowData!.DO_lower_limit = inputVisible.value[deviceID][setIndex].cache || 0;
     }
   }
-  if (setIndex == 3 && inputVisible.value[deviceID][setIndex].cache != null) {
+  if (setIndex == 6 && inputVisible.value[deviceID][setIndex].cache != null) {
     if (DeviceManage.deviceList[deviceID] && DeviceManage.deviceList[deviceID]!.deviceSet) {
       DeviceManage.deviceList[deviceID]!.deviceSet!. doMaxWarn= inputVisible.value[deviceID][setIndex].cache || 0;
     }
   }
-  if (setIndex == 4 && inputVisible.value[deviceID][setIndex].cache != null) {
+  if (setIndex == 7 && inputVisible.value[deviceID][setIndex].cache != null) {
     if (DeviceManage.deviceList[deviceID] && DeviceManage.deviceList[deviceID]!.deviceSet) {
       DeviceManage.deviceList[deviceID]!.deviceSet!.doMinWarn = inputVisible.value[deviceID][setIndex].cache || 0;
     }
   }
-    if (setIndex>=0&&setIndex<=2){
+    if (setIndex>=0&&setIndex<=5){
         controlSend('all',deviceID,0)
     }
 }
 
 const placeholder = ref([
   "请输设定值",
-  "请输误差上限",
+    "请输溶氧P",
+    "请输溶氧I",
+    "请输溶氧D",
+
+    "请输误差上限",
   "请输误差下限",
   "请输报警下限",
   "请输报警上限",
@@ -391,6 +432,9 @@ const tableData: any = reactive([
 const controlSend = ((name, index, content) => {
     if (name == 'all') {
         const data = {
+            DO_KP: Number(DeviceManage.deviceList[index]!.nowData!.DO_KP),
+            DO_KI: Number(DeviceManage.deviceList[index]!.nowData!.DO_KI),
+            DO_KD: Number(DeviceManage.deviceList[index]!.nowData!.DO_KD),
             target_DO: Number(DeviceManage.deviceList[index]!.nowData!.target_DO),
             DO_upper_limit: Number(DeviceManage.deviceList[index]!.nowData!.DO_upper_limit),
             DO_lower_limit: Number(DeviceManage.deviceList[index]!.nowData!.DO_lower_limit),

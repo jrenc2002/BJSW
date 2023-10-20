@@ -222,6 +222,7 @@ const initTableData = () => {
   ];
 
   let resultItems: any[] = []; // 声明结果数组
+  
   deviceProperties.map(deviceProp => {
     let tableItem = {
       name: deviceProp.name,
@@ -258,6 +259,7 @@ const initTableData = () => {
       }
       // 批次名
       else if (deviceProp.prop == "start_flag") {
+          console.log(DeviceManage.deviceList[index].state,'2222222222')
         tableItem[header.props] = DeviceManage.deviceList[index].state;
       }
       // 酸泵

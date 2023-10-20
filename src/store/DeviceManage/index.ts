@@ -18,23 +18,18 @@ interface SetData {
     lye_KD: number;                  // PID参数
     acid_ml: number;                 // 酸泵目前送料量
     lye_ml: number;                  // 碱泵目前送料量
-    acid_handle_speed_set: number;   // 酸泵手动送料速率设置
-    lye_handle_speed_set: number;    // 碱泵手动送料速率设置
     PH_upper_limit: number;          // PH上限值
     PH_lower_limit: number;          // PH下限值
     PH_flag: number;                 // PH控制开启/停止标志位
     Ph_auto_handle: number;          // PH控制自动/手动控制标志位
 
-    // 新增的PH控制部分变量
-    accumulated_acid_value: number;          // 累计加酸值
-    accumulated_lye_value: number;           // 累计加碱值
+
     PH_calibration_status: number;           // PH校准状态
     PH_calibration_progress: number;         // PH校准进度
     acid_pump_step_count: number;            // 酸泵发送步数
     acid_pump_calibration_flag: number;      // 酸泵标定开始标志位
     lye_pump_step_count: number;             // 碱泵发送步数
     lye_pump_calibration_flag: number;       // 碱泵标定开始标志位
-
     // 温控部分变量
     timing_temp: number;                 // 实时温度值
     heatpower: number;                   // 加热毯实时功率
@@ -49,7 +44,7 @@ interface SetData {
     timing_DO: number;                   // 实时DO值
     oxy_ratio: number;                   // 氧气通度
     target_DO: number;                   // 设定目标DO值
-    target_oxy_ratio: number;            // 手动设定氧气通度
+
     DO_KP: number;                       // 氧含量KP
     DO_KI: number;                       // 氧含量KI
     DO_KD: number;                       // 氧含量KD
@@ -66,7 +61,7 @@ interface SetData {
     DO_saturation_calibration_flag: number;      // 溶氧校准标志位
     zero_point_value: number;                    // 零点值
     saturation_value: number;                    // 饱和值
-    oxygen_percentage: number;                   // 溶氧值
+    oxygen_percentage: number;                   // 需要显示的是百分比
     DO_upper_limit: number;                      // DO上限值
     DO_lower_limit: number;                      // DO下限值
 
@@ -111,11 +106,11 @@ interface SetData {
     feed_motor_cu_limit: number;         // 补料关联转速上限值
     feed_motor_cl_limit: number;         // 补料关联转速下限值
 
-    // 新增的补料控制部分变量
-    accumulated_feed_value: number;      // 累计补料值
+
     feed_pump_step_count: number;        // 补料泵发送步数
     feed_pump_calibration_flag: number;  // 补料泵标定开始标志位
-
+     condensate_water_flag:number;          // 冷凝水开关
+     heated_blanket_flag:number;           // 加热毯开关
     // 系统控制变量
     start_flag: number;          // 发酵开始标志位
     year: number;                // 年
@@ -264,7 +259,7 @@ export const useDeviceManage = defineStore('DeviceManage', {
                 /*——————————————————————————————对状态的处理———————————————————————————————————*/
                 // 未连接-未连接不会进行数据处理，在这里进行数据处理的只有已连接和报警两个选项
                 // 已连接-已连接的设备如果没有修改通讯标志进行修改
-                if (newDeviceData.communicate_flag === 0) {
+                 if (newDeviceData.communicate_flag === 0) {
                     const data = {
                         communicate_flag: 1,
 
@@ -299,7 +294,7 @@ export const useDeviceManage = defineStore('DeviceManage', {
                         currentDeviceSet.doState = 1;
                         isAlarmFlag = true;
                     }
-                    if (!isAlarmFlag) {
+                    if (!isAlarmFlag&&newDeviceData.communicate_flag === 1 && newDeviceData.start_flag === 1) {
                         this.deviceList[index].state = 2;
                         currentDeviceSet.tempState = 0;
                         currentDeviceSet.phState = 0;
@@ -309,7 +304,6 @@ export const useDeviceManage = defineStore('DeviceManage', {
 
 
             }
-            console.log(this.deviceList[index].state)
             this.deviceList[index].nowData = newDeviceData;
 
 

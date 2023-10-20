@@ -101,6 +101,50 @@
                                                         </ul>
                                                     </details>
                                                 </td>
+                                                <td v-else-if="index==1"
+                                                    class="w-[8.2rem] text-center border-r border-b flex justify-center items-center">
+                                                    <details class="dropdown ">
+                                                        <summary v-if="body[col.props]==0" class="m-1 btn w-[7rem] ">
+                                                            停止
+                                                        </summary>
+                                                        <summary v-if="body[col.props]==1"
+                                                                 class="m-1 btn w-[7rem] text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3]">
+                                                            开启
+                                                        </summary>
+
+
+                                                        <ul class="p-2 shadow-xl menu dropdown-content z-[1] bg-base-100 rounded-box w-[7rem] broder">
+                                                            <li class="text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2] rounded"
+                                                                @click="controlSend('condensate_water_flag',i,0)"><a>停止</a>
+                                                            </li>
+                                                            <li class="text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] mt-2 rounded"
+                                                                @click="controlSend('condensate_water_flag',i,1)"><a>开启</a></li>
+
+                                                        </ul>
+                                                    </details>
+                                                </td>
+                                                <td v-else-if="index==2"
+                                                    class="w-[8.2rem] text-center border-r border-b flex justify-center items-center">
+                                                    <details class="dropdown ">
+                                                        <summary v-if="body[col.props]==0" class="m-1 btn w-[7rem] ">
+                                                            停止
+                                                        </summary>
+                                                        <summary v-if="body[col.props]==1"
+                                                                 class="m-1 btn w-[7rem] text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3]">
+                                                            开启
+                                                        </summary>
+
+
+                                                        <ul class="p-2 shadow-xl menu dropdown-content z-[1] bg-base-100 rounded-box w-[7rem] broder">
+                                                            <li class="text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2] rounded"
+                                                                @click="controlSend('heated_blanket_flag',i,0)"><a>停止</a>
+                                                            </li>
+                                                            <li class="text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] mt-2 rounded"
+                                                                @click="controlSend('heated_blanket_flag',i,1)"><a>开启</a></li>
+
+                                                        </ul>
+                                                    </details>
+                                                </td>
                                                 <td v-else-if="index>=5&&index<=10"
                                                     class="w-[8.2rem] text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center"
                                                     @dblclick="inputVisible[i][index-5].control = !inputVisible[i][index-5].control">
@@ -205,9 +249,9 @@ const initTableData = () => {
 
     const deviceProperties = [
         {name: '状态', prop: 'temp_flag'}, // 0: 停止, 1: 自动, 2: 顺控
-        {name: '冷水阀开关', prop: 'control_cycle'},
-        {name: '加热毯开关', prop: 'cycle_open'},
-        {name: '加热毯功率', prop: 'control_dead_zone'},
+        {name: '冷水阀开关', prop: 'condensate_water_flag'},
+        {name: '加热毯开关', prop: 'heated_blanket_flag'},
+        {name: '加热毯功率', prop: 'heatpower'},
         {name: '测量值', prop: 'timing_temp'},
         {name: '设定值', prop: 'target_temp'},
         {name: '比例P', prop: 'Temp_KP'},
@@ -414,8 +458,27 @@ const controlSend = ((name, index, content) => {
         }
         sendData(index, data);
     }
+    if (name == 'temp_flag') {
+        const data = {
+            temp_flag: content,
 
+        }
+        sendData(index, data);
+    }
+    if (name=='heated_blanket_flag'){
+        const data = {
+            heated_blanket_flag: content,
 
+        }
+        sendData(index, data);
+    }
+    if (name=='condensate_water_flag'){
+        const data = {
+            condensate_water_flag: content,
+
+        }
+        sendData(index, data);
+    }
 })
 const props = {
     headerData: headerData,

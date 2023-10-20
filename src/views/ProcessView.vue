@@ -86,7 +86,7 @@
                             <div class="w-full  flex h-[3vh] flex items-center justify-center gap-2 ">
                                 <div class=" min-w-[7rem] mr-1 text-left relative">设定转速:</div>
                                 <span class="min-w-[2rem] flex text-center items-center justify-center relative">
-                                  {{ DataManger.RPMData.NowSpeed }}
+                                  {{ DataManger.RPMData.SetSpeed }}
                                 </span>
                             </div>
                             <div class="w-full  flex h-[3vh] flex items-center justify-center gap-2 ">
@@ -395,6 +395,7 @@ import ProcessPopupManger from "@/components/ProcessPopupManger.vue";
 import {sendData} from "@/api";
 import {useAppGlobal} from "@/store/AppGlobal";
 import {useDeviceManage} from "@/store/DeviceManage";
+import {toNumber} from "xe-utils";
 
 const AppGlobal = useAppGlobal()
 const DeviceManage = useDeviceManage();
@@ -406,6 +407,7 @@ const DataManger = reactive({
         DOLowerLimit: 0
     },
     RPMData: {
+        SetSpeed:0,
         NowSpeed: 0,
         RPMUpperLimit: 0,
         RPMLowerLimit: 120,
@@ -463,25 +465,33 @@ const initDataManger = () => {
         console.error("当前设备没有定义nowData。");
         return;
     }
-    DataManger.DoData.SetData = DeviceManage.deviceList[AppGlobal.pageChance].nowData.target_DO
-    DataManger.DoData.MeasureData = DeviceManage.deviceList[AppGlobal.pageChance].nowData.timing_DO
-    DataManger.DoData.DOUpperLimit = DeviceManage.deviceList[AppGlobal.pageChance].nowData.DO_upper_limit
-    DataManger.DoData.DOLowerLimit = DeviceManage.deviceList[AppGlobal.pageChance].nowData.DO_lower_limit
-    DataManger.RPMData.RPMUpperLimit = DeviceManage.deviceList[AppGlobal.pageChance].nowData.motor_speed_u_limit
-    DataManger.RPMData.RPMLowerLimit = DeviceManage.deviceList[AppGlobal.pageChance].nowData.motor_speed_l_limit
-    DataManger.PHData.SetData = DeviceManage.deviceList[AppGlobal.pageChance].nowData.target_PH
-    DataManger.PHData.MeasureData = DeviceManage.deviceList[AppGlobal.pageChance].nowData.timing_PH
-    DataManger.TemperatureData.SetData = DeviceManage.deviceList[AppGlobal.pageChance].nowData.target_temp
-    DataManger.TemperatureData.MeasureData = DeviceManage.deviceList[AppGlobal.pageChance].nowData.timing_temp
-    DataManger.TemperatureData.HeatingPower = DeviceManage.deviceList[AppGlobal.pageChance].nowData.heatpower
-    DataManger.TemperatureData.CondensateStatus = DeviceManage.deviceList[AppGlobal.pageChance].nowData.water_flag == 0 ? '关闭' : '开启'
-    DataManger.acidPumpData.RealTimeRate = DeviceManage.deviceList[AppGlobal.pageChance].nowData.acid_pump_now_speed
-    DataManger.acidPumpData.FeedAmount = DeviceManage.deviceList[AppGlobal.pageChance].nowData.acid_pump_now_ml
-    DataManger.lyePumpData.SetData = DeviceManage.deviceList[AppGlobal.pageChance].nowData.lye_pump_now_speed
-    DataManger.lyePumpData.MeasureData = DeviceManage.deviceList[AppGlobal.pageChance].nowData.lye_pump_now_ml
-    DataManger.defoamerPumpData.SetData = DeviceManage.deviceList[AppGlobal.pageChance].nowData.defoam_pump_now_speed
-    DataManger.feedPumpData.SetData = DeviceManage.deviceList[AppGlobal.pageChance].nowData.feed_pump_now_speed
-    DataManger.feedPumpData.MeasureData = DeviceManage.deviceList[AppGlobal.pageChance].nowData.feed_pump_now_ml
+    function formatData(value) {
+        return typeof value === "number" ? value.toFixed(2) : value;
+    }
+
+    let currentDevice = DeviceManage.deviceList[AppGlobal.pageChance].nowData;
+
+    DataManger.DoData.SetData = formatData(currentDevice.target_DO);
+    DataManger.DoData.MeasureData = formatData(currentDevice.timing_DO);
+    DataManger.DoData.DOUpperLimit = formatData(currentDevice.DO_upper_limit);
+    DataManger.DoData.DOLowerLimit = formatData(currentDevice.DO_lower_limit);
+    DataManger.RPMData.RPMUpperLimit = currentDevice.motor_speed_u_limit;
+    DataManger.RPMData.RPMLowerLimit = currentDevice.motor_speed_l_limit;
+    DataManger.RPMData.NowSpeed= currentDevice.timing_motor_speed;
+    DataManger.RPMData.SetSpeed= currentDevice.target_motor_speed;
+    DataManger.PHData.SetData = formatData(currentDevice.target_PH);
+    DataManger.PHData.MeasureData = formatData(currentDevice.timing_PH);
+    DataManger.TemperatureData.SetData = formatData(currentDevice.target_temp);
+    DataManger.TemperatureData.MeasureData = formatData(currentDevice.timing_temp);
+    DataManger.TemperatureData.HeatingPower = formatData(currentDevice.heatpower);
+    DataManger.TemperatureData.CondensateStatus = currentDevice.water_flag === 0 ? '关闭' : '开启';
+    DataManger.acidPumpData.RealTimeRate = formatData(currentDevice.acid_pump_now_speed);
+    DataManger.acidPumpData.FeedAmount = formatData(currentDevice.acid_pump_now_ml);
+    DataManger.lyePumpData.SetData = formatData(currentDevice.lye_pump_now_speed);
+    DataManger.lyePumpData.MeasureData = formatData(currentDevice.lye_pump_now_ml);
+    DataManger.defoamerPumpData.SetData = formatData(currentDevice.defoam_pump_now_speed);
+    DataManger.feedPumpData.SetData = formatData(currentDevice.feed_pump_now_speed);
+    DataManger.feedPumpData.MeasureData = formatData(currentDevice.feed_pump_now_ml);
 
 
 }
@@ -515,7 +525,22 @@ const controlSend = ((name, index, content) => {
         // TODO: 关闭运行时应该用什么逻辑
 
     }
+    else if (name === 'acid_pump_set') {
+        const data = {
+            acid_pump_now_set_speed: toNumber(content)
+        }
 
+        console.log(data)
+        sendData(index, data);
+    }
+    else if (name === 'lye_pump_set') {
+        const data = {
+            lye_pump_now_set_speed: toNumber(content)
+        }
+
+        console.log(data)
+        sendData(index, data);
+    }
 
 })
 const ProcessPopupMangerState = useProcessPopupMangerState()
@@ -571,23 +596,43 @@ const stateManger = reactive({
 
 const handleHandControl = ((content) => {
 
-    if (content == 'acid') {
-        if (stateManger.AcidPumpSpeed !== 0) {
-            stateManger.AddAcid = !stateManger.AddAcid
-        } else {
-            stateManger.AcidPump = !stateManger.AcidPump
-        }
-    } else if (content == 'lye') {
-        if (stateManger.LyePumpSpeed !== 0) {
-            stateManger.AddLye = !stateManger.AddLye
+    if (content == 'lye') {
+        if (stateManger.LyePumpSpeed !== 0&&stateManger.LyePumpSpeed!=undefined&&stateManger.LyePumpSpeed!=null) {
+            if (!stateManger.AddLye) {
+
+                controlSend('lye_pump_set',AppGlobal.pageChance,stateManger.LyePumpSpeed)
+                stateManger.AddLye = !stateManger.AddLye
+
+            }
+            else {
+                stateManger.LyePumpSpeed = 0
+                stateManger.AddLye = !stateManger.AddLye
+                controlSend('lye_pump_set',AppGlobal.pageChance,stateManger.LyePumpSpeed)
+
+            }
         } else {
             stateManger.LyePump = !stateManger.LyePump
         }
-    } else if (content == 'defoamer') {
-        if (stateManger.DefoamerPumpSpeed !== 0) {
-            stateManger.Defoamer = !stateManger.Defoamer
+    }
+    else  if (content == 'acid') {
+        if (stateManger.AcidPumpSpeed !== 0&&stateManger.AcidPumpSpeed!=undefined&&stateManger.AcidPumpSpeed!=null) {
+            
+            if (!stateManger.AddAcid) {
+                
+                controlSend('acid_pump_set',AppGlobal.pageChance,stateManger.AcidPumpSpeed)
+                stateManger.AddAcid = !stateManger.AddAcid
+
+            }
+            else {
+                stateManger.AcidPumpSpeed = 0
+                stateManger.AddAcid = !stateManger.AddAcid
+                controlSend('acid_pump_set',AppGlobal.pageChance,stateManger.LyePumpSpeed)
+
+            }
+            
         } else {
-            stateManger.DefoamerPump = !stateManger.DefoamerPump
+            stateManger.AcidPump = !stateManger.AcidPump
+     
         }
     }
 
