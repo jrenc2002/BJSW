@@ -349,15 +349,14 @@ const keyupEnterInput = (deviceID: number, setIndex: number) => {
 }
 
 const placeholder = ref([
-  "请输设定值",
+    "请输设定值",
     "请输溶氧P",
     "请输溶氧I",
     "请输溶氧D",
-
     "请输误差上限",
-  "请输误差下限",
-  "请输报警下限",
-  "请输报警上限",
+    "请输误差下限",
+    "请输报警下限",
+    "请输报警上限",
 
 ])
 

@@ -358,7 +358,7 @@
                         开始发酵
                     </button>
                     <div class="w-[21rem] h-[4rem]  right-[11rem] relative  rounded-xl text-black flex    top-[68vh]">
-                        <button :class="isAll?'bg-white hover:bg-neutral-50':'bg-[#4EA67D] hover:bg-[#327E5B] text-white'"
+                        <button :class="!isAll?'bg-white hover:bg-neutral-50':'bg-[#4EA67D] hover:bg-[#327E5B] text-white'"
                                 class=" swap w-[10rem] h-[4rem] mr-4 text-lg  relative  border-2 border-[#327E5B] rounded-xl text-black  flex items-center justify-center "
                                 @click.stop="controlSend('begin_running',AppGlobal.pageChance,1)">
                             <label class="swap swap-rotate w-full h-full">
@@ -546,8 +546,10 @@ const controlSend = ((name, index, content) => {
 const ProcessPopupMangerState = useProcessPopupMangerState()
 // 弹窗管理
 const popProcessManager = (val) => {
-    if (val === '补料泵' || val === '消泡泵') {
+    if ( val === '消泡泵') {
         stateManger.DefoamerPump = !stateManger.DefoamerPump;
+    }
+    if (val === '补料泵') {
         stateManger.FeedPump = !stateManger.FeedPump;
     }
     console.log(name_translation[val], val, 'val______')
