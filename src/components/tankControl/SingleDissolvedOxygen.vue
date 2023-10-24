@@ -432,10 +432,13 @@ const tableData: any = reactive([
 const controlSend = ((name, index, content) => {
     if (name=='DO_flag'){
         DeviceManage.deviceList[index]!.nowData!.DO_flag=content
+        const data = {
+            DO_flag: content
+
+        }
+        sendData(index, data);
     }
-    if (name=='motor_speed_autoflag'){
-        DeviceManage.deviceList[index]!.nowData!.motor_speed_autoflag=content
-    }
+
     
     if (name == 'all') {
         const data = {

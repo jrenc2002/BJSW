@@ -437,8 +437,15 @@ const tableData: any = reactive([
 ]);
 
 const controlSend = ((name, index, content) => {
+    if (name=='PH_flag') {
+        const data = {
+            PH_flag: content
+        }
+        sendData(index, data);
+    }
     if (name == 'all') {
         const data = {
+            // TODO 数据发送分割，一次性发送多了容易崩
             target_PH: Number(DeviceManage.deviceList[index]!.nowData!.target_PH),
             PH_upper_limit: Number(DeviceManage.deviceList[index]!.nowData!.PH_upper_limit),
             PH_lower_limit: Number(DeviceManage.deviceList[index]!.nowData!.PH_lower_limit),

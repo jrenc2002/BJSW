@@ -360,9 +360,9 @@
                     <div class="w-[21rem] h-[4rem]  right-[11rem] relative  rounded-xl text-black flex    top-[68vh]">
                         <button :class="!isAll?'bg-white hover:bg-neutral-50':'bg-[#4EA67D] hover:bg-[#327E5B] text-white'"
                                 class=" swap w-[10rem] h-[4rem] mr-4 text-lg  relative  border-2 border-[#327E5B] rounded-xl text-black  flex items-center justify-center "
-                                @click.stop="controlSend('begin_running',AppGlobal.pageChance,1)">
+                                >
                             <label class="swap swap-rotate w-full h-full">
-                                <input v-model="isAll" type="checkbox"/>
+                                <input v-model="isAll" type="checkbox" @click.stop="controlSend('begin_running',AppGlobal.pageChance,isAll)"/>
                                 <div class="swap-on">开始运行中</div>
                                 <div class="swap-off">一键开始</div>
                             </label>
@@ -488,14 +488,25 @@ const initDataManger = () => {
     DataManger.acidPumpData.RealTimeRate = formatData(currentDevice.acid_pump_now_speed);
     DataManger.acidPumpData.FeedAmount = formatData(currentDevice.acid_pump_now_ml);
     DataManger.lyePumpData.SetData = formatData(currentDevice.lye_pump_now_speed);
-    DataManger.lyePumpData.MeasureData = formatData(currentDevice.lye_pump_now_ml);
-    DataManger.defoamerPumpData.SetData = formatData(currentDevice.defoam_pump_now_speed);
+    DataManger.lyePumpData.MeasureData = formatData(Number(currentDevice.lye_pump_now_ml));
+    DataManger.defoamerPumpData.SetData = formatData(Number(currentDevice.defoam_pump_now_speed));
+    DataManger.defoamerPumpData.MeasureData = formatData(Number(currentDevice.defoam_pump_now_speed));
     DataManger.feedPumpData.SetData = formatData(currentDevice.feed_pump_now_speed);
-    DataManger.feedPumpData.MeasureData = formatData(currentDevice.feed_pump_now_ml);
+    DataManger.feedPumpData.MeasureData = formatData(Number(currentDevice.feed_pump_now_ml));
 
 
 }
+let lastClickTime = 0;
 const controlSend = ((name, index, content) => {
+    const debounceTime = 300; // 300ms
+    const currentTime = new Date().getTime();
+    
+    if (currentTime - lastClickTime < debounceTime) {
+        return; // If the function was called recently, do nothing
+    }
+    
+    lastClickTime = currentTime; // Update the last clicked time
+    
     if (name === 'begin_running') {
 
         if (isAll.value) {
@@ -504,10 +515,9 @@ const controlSend = ((name, index, content) => {
                 PH_flag: 0,
                 DO_flag: 0,
                 temp_flag: 0,
-                motor_speed_autoflag: 0
+                start_flag:0
             }
         
-            console.log(data)
             sendData(index, data);
         } else {
             // 四个同时开启运行
@@ -515,15 +525,21 @@ const controlSend = ((name, index, content) => {
                 PH_flag: 1,
                 DO_flag: 1,
                 temp_flag: 1,
-                motor_speed_autoflag: 1
+                start_flag:1
             }
             sendData(index, data);
-            console.log(data)
         }
 
     } else if (name === 'end_running') {
         // TODO: 关闭运行时应该用什么逻辑
-
+        const data = {
+            PH_flag: 0,
+            DO_flag: 0,
+            temp_flag: 0,
+            start_flag:0
+        }
+    
+        sendData(index, data);
     }
     else if (name === 'acid_pump_set') {
         const data = {

@@ -32,6 +32,7 @@ export const initDeviceManage = () => {
 			console.log(item.ip, ':', item.port, '连接成功');
 			// todo debug测试记得
 			item.start_time = new Date();
+			initValue(index)
 		});
 		
 		// 假设你的设备API有一个'error'或'fail'事件来处理连接失败的情况
@@ -55,6 +56,7 @@ export const initDeviceManage = () => {
 		});
 		
 	});
+
 }
 
 
@@ -83,6 +85,7 @@ export const addDevice = (ip, port, name) => {
 	
 	device.on('connect', () => {
 		setDeviceStatus(1, device);
+		initValue(index)
 		console.log(`${deviceInfo.ip}:${deviceInfo.port} 连接成功`);
 	});
 	
@@ -135,7 +138,10 @@ export const closeDevice = (index) => {
 	}
 	
 	const device = DeviceManage.deviceList[index];
-	
+	const data = {
+		communicate_flag: 0,
+	};
+	DeviceManage.deviceList[index].deviceSocket.send(JSON.stringify(data));
 	// 检查设备状态是否为 true
 	if (!device.state) {
 		console.warn(`设备 ${index} 已经关闭`);
@@ -174,6 +180,7 @@ export const openDevice = (index) => {
 	
 	device.on('connect', () => {
 		setDeviceStatus(1, device);
+		initValue(index)
 		console.log(`${ip}:${port} 连接成功`);
 	});
 	
@@ -227,7 +234,7 @@ export const sendData = (index, data) => {
 			}
 		};
 		
-		const intervalId = setInterval(sendDataChunk, 500);
+		const intervalId = setInterval(sendDataChunk, 1000);
 		
 	}
 }
@@ -263,4 +270,27 @@ function onDataReceived(data) {
 	}
 
 	return -2
+}
+
+function initValue(index){
+	const data = {
+		Temp_KP: 500,
+		Temp_KI: 5,
+		Temp_KD: 1,
+		DO_KP: 80,
+		DO_KI: 0.5,
+		DO_KD: 0,
+		acid_KP: 10,
+		acid_KI: 0.02,
+		acid_KD: 0,
+		lye_KP: 10,
+		lye_KI: 0.02,
+		lye_KD: 0,
+		motor_speed_u_limit: 1000,
+		motor_speed_l_limit: 300,
+		zero_point_value: 1.5,
+		saturation_value: 19.5,
+		
+	}
+	sendData(index, data)
 }

@@ -100,31 +100,31 @@
               <div
                   class="w-[4rem] h-full  bg-[#DAF0E4] hover:bg-[#C3DBCE] rounded-md flex items-center justify-center mx-2">
                 <button
-                    v-if="!currentNowDataPH||(currentNowDataPH&&DeviceManage.deviceList[AppGlobal.pageChance].nowData!=null&&DeviceManage.deviceList[AppGlobal.pageChance].nowData.PH_calibration_status==0)"
+                    v-if="!currentNowDataZero||(currentNowDataZero&&DeviceManage.deviceList[AppGlobal.pageChance].nowData!=null&&DeviceManage.deviceList[AppGlobal.pageChance].nowData.PH_calibration_status==0)"
                     class="w-full h-full  text-center text-black text-base font-normal font-['Inter'] leading-none flex items-center justify-center"
                     @click.stop="PHCalibrate('phBegin')">
                   开始
                 </button>
                 <button
-                    v-if="currentNowDataPH&&DeviceManage.deviceList[AppGlobal.pageChance].nowData!=null&&DeviceManage.deviceList[AppGlobal.pageChance].nowData.PH_calibration_status ==2"
+                    v-if="currentNowDataZero&&DeviceManage.deviceList[AppGlobal.pageChance].nowData!=null&&DeviceManage.deviceList[AppGlobal.pageChance].nowData.PH_calibration_status ==2"
                     class="w-full h-full  text-center text-black text-base font-normal font-['Inter'] leading-none flex items-center justify-center"
                     @click.stop="PHCalibrate('phContinue')">
                   继续
                 </button>
                 <button
-                    v-if="currentNowDataPH&&DeviceManage.deviceList[AppGlobal.pageChance].nowData!=null&&DeviceManage.deviceList[AppGlobal.pageChance].nowData.PH_calibration_status == 4"
+                    v-if="currentNowDataZero&&DeviceManage.deviceList[AppGlobal.pageChance].nowData!=null&&DeviceManage.deviceList[AppGlobal.pageChance].nowData.PH_calibration_status == 4"
                     class="w-full h-full  text-center text-black text-base font-normal font-['Inter'] leading-none flex items-center justify-center"
                     @click.stop="PHCalibrate('phFinish')">
                   完成
                 </button>
                 <button
-                    v-if="currentNowDataPH&&DeviceManage.deviceList[AppGlobal.pageChance].nowData!=null&&DeviceManage.deviceList[AppGlobal.pageChance].nowData.PH_calibration_status == 1"
+                    v-if="currentNowDataZero&&DeviceManage.deviceList[AppGlobal.pageChance].nowData!=null&&DeviceManage.deviceList[AppGlobal.pageChance].nowData.PH_calibration_status == 1"
                     class="w-full h-full  text-center text-black text-sm font-normal font-['Inter'] leading-none flex items-center justify-center"
                 >
                   酸校准中
                 </button>
                 <button
-                    v-if="currentNowDataPH&&DeviceManage.deviceList[AppGlobal.pageChance].nowData!=null&&DeviceManage.deviceList[AppGlobal.pageChance].nowData.PH_calibration_status == 3"
+                    v-if="currentNowDataZero&&DeviceManage.deviceList[AppGlobal.pageChance].nowData!=null&&DeviceManage.deviceList[AppGlobal.pageChance].nowData.PH_calibration_status == 3"
                     class="w-full h-full  text-center text-black text-sm font-normal font-['Inter'] leading-none flex items-center justify-center"
                 >
                   碱校准中
@@ -1370,4 +1370,7 @@ const countDown = (time) => {
   };
 }
 
+const currentNowDataZero = computed(() => {
+    return DeviceManage?.deviceList?.[AppGlobal?.pageChance]?.nowData;
+});
 </script>

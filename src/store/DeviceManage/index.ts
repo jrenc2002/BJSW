@@ -5,7 +5,7 @@ import {sendData} from "@/api";
 const debug = false;
 
 interface SetData {
-  
+
     // PH控制部分变量
     timing_PH: number;               // 实时PH值
     acid_speed: number;              // 酸泵实时送料速率
@@ -54,7 +54,6 @@ interface SetData {
     timing_motor_speed: number;          // 电机实时转速
     motor_speed_l_limit: number;         // 电机转速下限
     motor_speed_u_limit: number;         // 电机转速上限
-    motor_speed_autoflag: number;        // 转速关联氧含量开启/关闭标志位
     oxy_flag: number;                    // 通氧关联氧含量开启/关闭标志位
 
     // 新增的氧含量控制部分变量
@@ -84,9 +83,7 @@ interface SetData {
     feed_pump_now_speed: number;                // 补料泵当前速度-泵速==0为关闭
     acid_pump_now_speed: number;                // 酸泵当前速度-泵速==0为关闭
     lye_pump_now_speed: number;                 // 碱泵当前速度-泵速==0为关闭
-    feed_pump_now_ml: number;                   // 补料泵当前补料量
-    lye_pump_now_ml: number;                    // 碱泵当前补料量
-    acid_pump_now_ml: number;                   // 酸泵当前补料量
+
     lye_pump_now_set_speed: number;             // 碱泵当前设定速度-我设定的
     acid_pump_now_set_speed: number;            // 酸泵当前设定速度-我设定的
     feed_pump_now_set_speed: number;            // 补料泵当前设定速度-我设定的
@@ -158,6 +155,10 @@ interface deviceSet {
     tempState: number,
     phState: number,
     doState: number,
+    acidPumpSumStepCount: number,
+    lyePumpSumStepCount: number,
+    feedPumpSumStepCount: number,
+    defoamerPumpSumStepCount: number,
 }
 
 interface Device {
@@ -206,6 +207,10 @@ const state = (): {
                     lyePumpSpeed: 0,
                     feedPumpSpeed: 0,
                     defoamerPumpSpeed: 0,
+                    acidPumpSumStepCount: 0,
+                    lyePumpSumStepCount: 0,
+                    feedPumpSumStepCount: 0,
+                    defoamerPumpSumStepCount: 0,
                 }
             },
 
@@ -260,13 +265,15 @@ export const useDeviceManage = defineStore('DeviceManage', {
                 /*——————————————————————————————对状态的处理———————————————————————————————————*/
                 // 未连接-未连接不会进行数据处理，在这里进行数据处理的只有已连接和报警两个选项
                 // 已连接-已连接的设备如果没有修改通讯标志进行修改
+                
                  if (newDeviceData.communicate_flag === 0) {
                     const data = {
                         communicate_flag: 1,
-
+     
                     }
-                    console.log("发送数据", data);
+    
                     this.deviceList[index].deviceSocket.send(JSON.stringify(data));
+            
                 }
                 // 运行中-刚开始运行，状态还没变过来
                 if (this.deviceList[index].state == 1 && newDeviceData.communicate_flag === 1 && newDeviceData.start_flag === 1) {

@@ -173,7 +173,7 @@ const initTableData = () => {
 
   DeviceManage.deviceList.forEach(device => {
     if (AppGlobal.pageChance!=device.id){
-      console.log(AppGlobal.pageChance,device.id,"____________________")
+      
       return;
     }
     if (typeof device.name !== 'string' || typeof device.id !== 'number') {

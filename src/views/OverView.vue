@@ -164,7 +164,6 @@ import {computed, Ref, ref, watch, onUnmounted, onMounted, reactive} from 'vue'
 import PopupManger from "@/components/PopupManger.vue";
 import {usePopupMangerState} from "@/store/PopupMangerState";
 import {PopupType} from "@/store/PopupMangerState";
-import {sendData} from '@/api/index.js'
 import {useDeviceManage} from '@/store/DeviceManage'
 import {useAppGlobal} from '@/store/AppGlobal'
 
@@ -266,12 +265,12 @@ const initTableData = () => {
       else if (
           deviceProp.prop == "acid_pump"
       ) {
-        if (DeviceManage.deviceList[index]?.deviceSet?.acidPumpSpeed !== null) {
+        if (DeviceManage.deviceList[index]?.deviceSet?.acidPumpSpeed !== null&&DeviceManage.deviceList[index]?.deviceSet !== null) {
           const acidPumpSpeed = DeviceManage.deviceList[index]?.deviceSet?.acidPumpSpeed ?? 0;
           const acid_pump_sum_step_count = DeviceManage.deviceList[index]?.nowData?.acid_pump_sum_step_count ?? 0;
           tableItem[header.props] = acidPumpSpeed * acid_pump_sum_step_count;
-
-        } else {
+          // DeviceManage.deviceList[index].deviceSet.acidPumpSumStepCount= acidPumpSpeed * acid_pump_sum_step_count
+        // } else {
           tableItem[header.props] = 0;
         }
       }
