@@ -87,7 +87,7 @@
                                                 <td v-if="index==0"
                                                     class="w-[8.2rem] text-center border-r border-b flex justify-center items-center">
                                                     <details class="dropdown ">
-                                                        <summary v-if="body[col.props]==0" class="m-1 btn w-[7rem] ">
+                                                        <summary v-if="body[col.props]==0||body[col.props]==null||body[col.props]==undefined" class="m-1 btn w-[7rem] ">
                                                             停止
                                                         </summary>
                                                         <summary v-if="body[col.props]==1"
@@ -109,7 +109,7 @@
                                                 <td v-else-if="index==1"
                                                     class="w-[8.2rem] text-center border-r border-b flex justify-center items-center">
                                                     <details class="dropdown ">
-                                                        <summary v-if="body[col.props]==0" class="m-1 btn w-[7rem] ">
+                                                        <summary v-if="body[col.props]==0||body[col.props]==null||body[col.props]==undefined" class="m-1 btn w-[7rem] ">
                                                             停止
                                                         </summary>
                                                         <summary v-if="body[col.props]==1"
@@ -131,7 +131,7 @@
                                                 <td v-else-if="index==2"
                                                     class="w-[8.2rem] text-center border-r border-b flex justify-center items-center">
                                                     <details class="dropdown ">
-                                                        <summary v-if="body[col.props]==0" class="m-1 btn w-[7rem] ">
+                                                        <summary v-if="body[col.props]==0||body[col.props]==null||body[col.props]==undefined" class="m-1 btn w-[7rem] ">
                                                             停止
                                                         </summary>
                                                         <summary v-if="body[col.props]==1"

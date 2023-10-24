@@ -188,7 +188,10 @@ export const openDevice = (index) => {
 	});
 	
 	device.onReceive((data) => {
-		DeviceManage.updateDeviceListData(index, onDataReceived(data));
+		const jsonData = onDataReceived(data);
+		if (jsonData !== -2|| -1) {
+			DeviceManage.updateDeviceListData(index, jsonData);
+		}
 	});
 }
 
@@ -258,5 +261,6 @@ function onDataReceived(data) {
 			return -1
 		}
 	}
+
 	return -2
 }

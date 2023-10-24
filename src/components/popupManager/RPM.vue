@@ -83,20 +83,13 @@
                                                 <td v-if="index==0"
                                                     class="w-[8.2rem] text-center border-r border-b flex justify-center items-center">
                                                     <details class="dropdown ">
-                                                        <summary v-if="body[col.props]==0" class="m-1 btn w-[7rem] ">停止</summary>
-                                                        <summary v-if="body[col.props]==1"
+                                                        <summary v-if="body[col.props]==0||body[col.props]==null||body[col.props]==undefined" class="m-1 btn w-[7rem] ">停止</summary>
+                                                        <summary v-if="body[col.props]>0"
                                                                  class="m-1 btn w-[7rem] text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3]">开启
                                                         </summary>
 
 
-                                                        <ul class="p-2 shadow-xl menu dropdown-content z-[1] bg-base-100 rounded-box w-[7rem] broder">
-                                                            <li class="text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2] rounded"
-                                                                @click="controlSend('PH_flag',i,0)"><a>停止</a>
-                                                            </li>
-                                                            <li class="text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] mt-2 rounded"
-                                                                @click="controlSend('PH_flag',i,1)"><a>开启</a></li>
-
-                                                        </ul>
+                                        
                                                     </details>
                                                 </td>
                                                 <td v-else-if="index>=2&&index<=6"
@@ -200,7 +193,7 @@ const initTableData = () => {
 
     const deviceProperties = [
         // todo 转速状态没有标志位
-        {name: '状态', prop: 'start_flag'},
+        {name: '状态', prop: 'timing_motor_speed'},
         {name: '测量值', prop: 'timing_motor_speed'},
         {name: '设定值', prop: 'target_motor_speed'},
         {name: '转速上限', prop: 'motor_speed_u_limit'}, // 同上。
@@ -442,13 +435,6 @@ onUnmounted(() => {
 
 const controlSend = ((name, index, content) => {
     // todo 转速控制
-    if (name == 'PH_flag') {
-        const data = {
-            PH_flag: content,
-
-        }
-        sendData(index, data);
-    }
     if (name == 'all') {
         const data = {
             target_motor_speed: Number(DeviceManage.deviceList[index]!.nowData!.target_motor_speed),

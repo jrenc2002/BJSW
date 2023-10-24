@@ -301,7 +301,7 @@ const initTableData = () => {
       }
       // 消泡泵
       else if (deviceProp.prop == "defoamer_pump") {
-        if (DeviceManage.deviceList[index]?.deviceSet?.acidPumpSpeed !== null) {
+        if (DeviceManage.deviceList[index]?.deviceSet?.feedPumpSpeed !== null) {
           const feedPumpSpeed = DeviceManage.deviceList[index]?.deviceSet?.feedPumpSpeed ?? 0;
           const defoam_pump_sum_step_count = DeviceManage.deviceList[index]?.nowData?.defoam_pump_sum_step_count ?? 0;
           tableItem[header.props] = feedPumpSpeed * defoam_pump_sum_step_count;

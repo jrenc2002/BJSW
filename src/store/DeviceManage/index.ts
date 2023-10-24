@@ -5,6 +5,7 @@ import {sendData} from "@/api";
 const debug = false;
 
 interface SetData {
+  
     // PH控制部分变量
     timing_PH: number;               // 实时PH值
     acid_speed: number;              // 酸泵实时送料速率

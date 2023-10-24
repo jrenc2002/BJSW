@@ -16,8 +16,6 @@
     </div>
     <!--    表格栏-->
     <div class="  w-[100%] h-[92%]  bottom-0   items-center justify-center flex  ">
-
-
       <div class="rounded-2xl  h-[calc(100%-1.5rem)] w-[calc(100%-1.5rem)]  items-center justify-center flex     ">
         <div class=" w-full h-full ">
           <div class=" box-border overflow-x-hidden w-full h-full flex">
@@ -75,29 +73,41 @@
                       <template v-for="(col, i) in tableBodyCols" :key="col.props + i">
                         <td v-if="index==0" class="w-[8.2rem] text-center border-r border-b flex justify-center items-center text-center ">
                           <details class="dropdown ">
-                            <summary v-if="body[col.props]==0" class="m-1 btn w-[7rem] ">停止</summary>
+                            <summary v-if="body[col.props]==0||body[col.props]==null||body[col.props]==undefined" class="m-1 btn w-[7rem] ">停止</summary>
                             <summary v-if="body[col.props]==1"
                                      class="m-1 btn w-[7rem] text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3]">自动
                             </summary>
-                            <summary v-if="body[col.props]==2"
-                                     class="m-1 btn w-[7rem]  text-[#776B00] bg-[#FAF3B7] hover:bg-[#E5E0AA]">顺控
-                            </summary>
-
-                            <ul class="p-2 shadow-xl menu dropdown-content z-[1] bg-base-100 rounded-box w-[7rem] broder">
-                              <li class="text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2] rounded" @click="col.props=0"><a>停止</a>
-                              </li>
-                              <li class="text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] mt-2 rounded"
-                                  @click="col.props=1"><a>自动</a></li>
-                              <li class="text-[#776B00] bg-[#FAF3B7] hover:bg-[#E5E0AA] mt-2 rounded"
-                                  @click="col.props=2"><a>顺控</a></li>
-                            </ul>
+    
+    
+                              <ul class="p-2 shadow-xl menu dropdown-content z-[1] bg-base-100 rounded-box w-[7rem] broder">
+                                  <li class="text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2] rounded" @click="controlSend('clean_flag',i,0)"><a>手动</a>
+                                  </li>
+                                  <li class="text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] mt-2 rounded"
+                                      @click="controlSend('clean_flag',i,1)"><a>自动</a></li>
+                              </ul>
                           </details>
                         </td>
-
-                        <td v-if="index!=0"
-                            class="w-[8.2rem] text-center border-r border-b hover:bg-[#FAFAFA] flex justify-center items-center text-center">
-                          {{ body[col.props] }}
-                        </td>
+    
+                          <td v-else-if="index>=2&&index<=6"
+                              class="w-[8.2rem] text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center"
+                              @dblclick="inputVisible[i][index-2].control = !inputVisible[i][index-2].control">
+                              <input
+                                      v-if="inputVisible[i][index-2].control&&DeviceManage.deviceList[i]?.deviceSet!==null"
+                                      v-model="inputVisible[i][index-2].cache"
+                                      :placeholder="placeholder[index-2]"
+                                      class="w-[8.2rem]  h-full text-center break-all whitespace-normal "
+                                      type="text"
+                                      @keyup.enter="keyupEnterInput(i,index-2)"
+                              />
+        
+                              <span v-else
+                                    class="w-[8.2rem] leading-5 text-center whitespace-normal break-all flex justify-center items-center">
+                    {{ body[col.props] }}</span>
+                          </td>
+                          <td v-else
+                              class="w-[8.2rem] text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
+                              {{ body[col.props] }}
+                          </td>
                       </template>
 
 
@@ -143,6 +153,14 @@ watch(() => DeviceManage.deviceList, () => {
 }, {deep: true});
 
 
+const inputVisible = ref<DeviceInput[]>([]); // 用于追踪哪一行显示输入框
+interface InputVisible {
+    id: number;
+    control: boolean;
+    cache: number | null;
+}
+
+type DeviceInput = InputVisible[];
 // 读取表格数据
 const initTableData = () => {
   if (!DeviceManage || !Array.isArray(DeviceManage.deviceList)) {
@@ -161,21 +179,23 @@ const initTableData = () => {
     }
 
     initheaderData.push({title: device.name, props: 'F' + (device.id + 1)});
+      inputVisible.value.push([])
+  
   });
 
   headerData.length = 0;  // 清空原始数据
   initheaderData.forEach(item => headerData.push(item));  // 添加新的数据
 
   const deviceProperties = [
-    {name: '状态', prop: 'defoamer_flag'},
-    {name: '累计补料量', prop: 'defoamer_sum'},  // 这里选择了补料关联氧含量标志位，因为它看起来是一个功能关联标志
-  ]
+      {name: '状态', prop: 'clean_flag'},
+      {name: '累计补料量', prop: 'defoamer_pump'},  // 这里选择了补料关联氧含量标志位，因为它看起来是一个功能关联标志
+      {name: '补料速度', prop: 'defoam_pump_now_set_speed'}  ]
 
 
 
 
   let resultItems: any[] = []; // 声明结果数组
-  deviceProperties.map(deviceProp => {
+  deviceProperties.map((deviceProp, deviceIndex) => {
     let tableItem = {
       name: deviceProp.name,
       prop: deviceProp.prop
@@ -185,7 +205,11 @@ const initTableData = () => {
         return;
       }
       index--;
-
+        if (deviceIndex >= 2 && deviceIndex <= 6) {
+            inputVisible.value[index].push({id: deviceIndex, control: false, cache: null});
+        
+        
+        }
       if (DeviceManage.deviceList[index].nowData == null) {
         tableItem[header.props] = 0;
 
@@ -196,16 +220,17 @@ const initTableData = () => {
         console.error(`Error: Missing data for device at index ${index}.`);
         return;
       }
-      
-      else if (deviceProp.prop == "defoamer_sum") {
-        if (DeviceManage.deviceList[index]?.deviceSet?.acidPumpSpeed !== null) {
-          const feedPumpSpeed = DeviceManage.deviceList[index]?.deviceSet?.feedPumpSpeed ?? 0;
-          const defoam_pump_sum_step_count = DeviceManage.deviceList[index]?.nowData?.defoam_pump_sum_step_count ?? 0;
-          tableItem[header.props] = feedPumpSpeed * defoam_pump_sum_step_count;
 
-        } else {
-          tableItem[header.props] = 0;
-        }
+      else if (deviceProp.prop == "defoamer_pump") {
+          if (DeviceManage.deviceList[index]?.deviceSet?.feedPumpSpeed !== null) {
+              const feedPumpSpeed = DeviceManage.deviceList[index]?.deviceSet?.feedPumpSpeed ?? 0;
+              const defoam_pump_sum_step_count = DeviceManage.deviceList[index]?.nowData?.defoam_pump_sum_step_count ?? 0;
+              tableItem[header.props] = feedPumpSpeed * defoam_pump_sum_step_count;
+        
+          } else {
+              tableItem[header.props] = 0;
+          }
+    
       }
       
       else {
@@ -278,7 +303,9 @@ const tableBodyCols = computed(() => {
   return arr;
 })
 
-
+const placeholder = ref([
+    "请输消泡速度",
+])
 // ______________________表格数据变量_______________________
 
 const headerData: HeaderItem[] = reactive([
@@ -288,7 +315,30 @@ const headerData: HeaderItem[] = reactive([
   // 你可以按需增加其他列
 ]);
 
-
+const keyupEnterInput = (deviceID: number, setIndex: number) => {
+    
+    inputVisible.value[deviceID][setIndex].control = false;
+    
+    if (setIndex == 0 && inputVisible.value[deviceID][setIndex].cache != null) {
+        if (DeviceManage.deviceList[deviceID] && DeviceManage.deviceList[deviceID]!.nowData) {
+            DeviceManage.deviceList[deviceID]!.nowData!.defoam_pump_now_set_speed = inputVisible.value[deviceID][setIndex].cache || 0;
+        }
+    }
+    controlSend('defoam_pump_now_set_speed',deviceID,inputVisible.value[deviceID][setIndex].cache)
+    
+    
+}
+const controlSend = ((name, index, content) => {
+    if (name=='clean_flag'){
+        DeviceManage.deviceList[index]!.nowData!.clean_flag=content
+    }
+    if (name=='defoam_pump_now_set_speed'){
+        DeviceManage.deviceList[index]!.nowData!.defoam_pump_now_set_speed=content
+    }
+    
+    
+    
+})
 const tableData: any = reactive([
   {name: '状态', F1: 1, F2: 1, F3: 2, F4: 1, F5: 0, F6: 1, F7: 2, F8: 1},
   {name: '测量值', F1: 25, F2: 26, F3: 27, F4: 28, F5: 29, F6: 30, F7: 31, F8: 32},

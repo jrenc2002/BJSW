@@ -82,7 +82,7 @@
                                                 <td v-if="index==0"
                                                     class="w-[8.2rem] text-center border-r border-b flex justify-center items-center">
                                                     <details class="dropdown ">
-                                                        <summary v-if="body[col.props]==0" class="m-1 btn w-[7rem] ">停止</summary>
+                                                        <summary v-if="body[col.props]==0||body[col.props]==null||body[col.props]==undefined" class="m-1 btn w-[7rem] ">停止</summary>
                                                         <summary v-if="body[col.props]==1"
                                                                  class="m-1 btn w-[7rem] text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3]">开启
                                                         </summary>
@@ -101,7 +101,7 @@
                                                 <td v-else-if="index==1"
                                                     class="w-[8.2rem] text-center border-r border-b flex justify-center items-center">
                                                     <details class="dropdown ">
-                                                        <summary v-if="body[col.props]==0" class="m-1 btn w-[7rem] ">停止</summary>
+                                                        <summary v-if="body[col.props]==0||body[col.props]==null||body[col.props]==undefined" class="m-1 btn w-[7rem] ">停止</summary>
                                                         <summary v-if="body[col.props]==1"
                                                                  class="m-1 btn w-[7rem] text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3]">开启
                                                         </summary>
@@ -109,10 +109,10 @@
                 
                                                         <ul class="p-2 shadow-xl menu dropdown-content z-[1] bg-base-100 rounded-box w-[7rem] broder">
                                                             <li class="text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2] rounded"
-                                                                @click="controlSend('DO_flag',i,0)"><a>停止</a>
+                                                                @click="controlSend('motor_speed_autoflag',i,0)"><a>停止</a>
                                                             </li>
                                                             <li class="text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] mt-2 rounded"
-                                                                @click="controlSend('DO_flag',i,1)"><a>开启</a></li>
+                                                                @click="controlSend('motor_speed_autoflag',i,1)"><a>开启</a></li>
                 
                                                         </ul>
                                                     </details>
@@ -430,6 +430,13 @@ const tableData: any = reactive([
 ]);
 
 const controlSend = ((name, index, content) => {
+    if (name=='DO_flag'){
+        DeviceManage.deviceList[index]!.nowData!.DO_flag=content
+    }
+    if (name=='motor_speed_autoflag'){
+        DeviceManage.deviceList[index]!.nowData!.motor_speed_autoflag=content
+    }
+    
     if (name == 'all') {
         const data = {
             DO_KP: Number(DeviceManage.deviceList[index]!.nowData!.DO_KP),
