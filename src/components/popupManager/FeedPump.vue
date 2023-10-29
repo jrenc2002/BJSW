@@ -3,7 +3,7 @@
         
         <!--    标题-->
         <div class="h-[4%] self-stretch justify-start items-center  inline-flex mt-3  w-full ">
-            <div class="w-[calc(10rem)] text-xl leading-10 text-zinc-900 text-2xl font-medium leading-loose left-4 relative">消泡剂泵控制</div>
+            <div class="w-[calc(10rem)] text-xl leading-10 text-zinc-900 text-2xl font-medium leading-loose left-4 relative">补料控制</div>
             <div class="w-[calc(100%-10rem)] relative justify-end flex mr-3 ">
                 
                 <div class="bg-[#F5F5F5] right-0 relative w-7 h-7 justify-center items-center flex rounded-2xl hover:bg-[#F8F8F8] cursor-pointer" @click="closePop">
@@ -67,27 +67,30 @@
                             >
                                 <table  :style="{ width: `max(${(firstRow.length + 1) * 8.2}rem, 100%)` }" class="flex items-start  ">
                                     <div class="flex-col justify-center items-center">
-                                        
-                                        
-                                        <tr v-for="(body,index) in tableBodyRows" class="flex justify-center items-center" :key="index">
+                                        <tr v-for="(body,index) in tableBodyRows" :key="index" class="flex justify-center items-center">
                                             <template v-for="(col, i) in tableBodyCols" :key="col.props + i">
-                                                <td v-if="index==0" class="w-[8.2rem] text-center border-r border-b flex justify-center items-center text-center ">
+                                                <td v-if="index==0" class="w-[8.2rem] text-center border-r border-b flex justify-center items-center">
                                                     <details class="dropdown ">
-                                                        <summary v-if="body[col.props]==0||body[col.props]==null||body[col.props]==undefined" class="m-1 btn w-[7rem] ">停止</summary>
+                                                        <summary v-if="body[col.props]==0||body[col.props]==null||body[col.props]==undefined" class="m-1 btn w-[7rem] ">手动</summary>
                                                         <summary v-if="body[col.props]==1"
                                                                  class="m-1 btn w-[7rem] text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3]">自动
                                                         </summary>
-                                                        
-                                                        
-                                                        <ul class="p-2 shadow-xl menu dropdown-content z-[1] bg-base-100 rounded-box w-[7rem] broder">
-                                                            <li class="text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2] rounded" @click="controlSend('clean_flag',i,0)"><a>手动</a>
+                        
+                        
+                                                        <ul class="p-2 shadow-xl menu dropdown-content z-30 bg-base-100 rounded-box w-[7rem] broder">
+                                                            <li class="text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2] rounded" @click="controlSend('feed_flag',i,0)"><a>手动</a>
                                                             </li>
                                                             <li class="text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] mt-2 rounded"
-                                                                @click="controlSend('clean_flag',i,1)"><a>自动</a></li>
+                                                                @click="controlSend('feed_flag',i,1)"><a>全速补料</a></li>
+                                                            <li class="text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] mt-2 rounded"
+                                                                @click="controlSend('feed_flag',i,2)"><a>线性补料</a></li>
+                                                            <li class="text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] mt-2 rounded"
+                                                                @click="controlSend('feed_flag',i,3)"><a>占空比补料</a></li>
                                                         </ul>
                                                     </details>
                                                 </td>
-                                                
+                
+                
                                                 <td v-else-if="index>=2&&index<=6"
                                                     class="w-[8.2rem] text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center"
                                                     @dblclick="inputVisible[i][index-2].control = !inputVisible[i][index-2].control">
@@ -99,7 +102,7 @@
                                                             type="text"
                                                             @keyup.enter="keyupEnterInput(i,index-2)"
                                                     />
-                                                    
+                    
                                                     <span v-else
                                                           class="w-[8.2rem] leading-5 text-center whitespace-normal break-all flex justify-center items-center">
                     {{ body[col.props] }}</span>
@@ -109,8 +112,8 @@
                                                     {{ body[col.props] }}
                                                 </td>
                                             </template>
-                                        
-                                        
+        
+        
                                         </tr>
                                     </div>
                                 </table>
@@ -187,10 +190,13 @@ const initTableData = () => {
     initheaderData.forEach(item => headerData.push(item));  // 添加新的数据
     
     const deviceProperties = [
-        {name: '状态', prop: 'clean_flag'},
-        {name: '累计补料量', prop: 'defoamer_pump'},  // 这里选择了补料关联氧含量标志位，因为它看起来是一个功能关联标志
-        {name: '补料速度', prop: 'defoam_pump_now_set_speed'}  ]
+        {name: '补料模式', prop: 'feed_flag'},
+        {name: '累计补料量', prop: 'feed_pump'},  // 这里选择了补料关联氧含量标志位，因为它看起来是一个功能关联标志
+        {name: '补料速度', prop: 'feed_pump_now_set_speed'},
+        
+        
     
+    ]
     
     
     
@@ -220,17 +226,17 @@ const initTableData = () => {
                 console.error(`Error: Missing data for device at index ${index}.`);
                 return;
             }
-            
-            else if (deviceProp.prop == "defoamer_pump") {
+
+            else if (deviceProp.prop == "feed_pump") {
                 if (DeviceManage.deviceList[index]?.deviceSet?.feedPumpSpeed !== null) {
                     const feedPumpSpeed = DeviceManage.deviceList[index]?.deviceSet?.feedPumpSpeed ?? 0;
-                    const defoam_pump_sum_step_count = DeviceManage.deviceList[index]?.nowData?.defoam_pump_sum_step_count ?? 0;
-                    tableItem[header.props] = feedPumpSpeed * defoam_pump_sum_step_count;
-                    
+                    const feed_pump_sum_step_count = DeviceManage.deviceList[index]?.nowData?.feed_pump_sum_step_count ?? 0;
+                    tableItem[header.props] = feedPumpSpeed * feed_pump_sum_step_count;
+        
                 } else {
                     tableItem[header.props] = 0;
                 }
-                
+    
             }
             
             else {
@@ -321,19 +327,29 @@ const keyupEnterInput = (deviceID: number, setIndex: number) => {
     
     if (setIndex == 0 && inputVisible.value[deviceID][setIndex].cache != null) {
         if (DeviceManage.deviceList[deviceID] && DeviceManage.deviceList[deviceID]!.nowData) {
-            DeviceManage.deviceList[deviceID]!.nowData!.defoam_pump_now_set_speed = inputVisible.value[deviceID][setIndex].cache || 0;
+            DeviceManage.deviceList[deviceID]!.nowData!.feed_pump_now_set_speed = inputVisible.value[deviceID][setIndex].cache || 0;
         }
     }
-    controlSend('defoam_pump_now_set_speed',deviceID,inputVisible.value[deviceID][setIndex].cache)
+    controlSend('feed_pump_now_set_speed',deviceID,Number(inputVisible.value[deviceID][setIndex].cache))
     
     
 }
 const controlSend = ((name, index, content) => {
-    if (name=='clean_flag'){
-        DeviceManage.deviceList[index]!.nowData!.DO_flag=content
+    if (name=='feed_flag'){
+        DeviceManage.deviceList[index]!.nowData!.feed_flag=content
+        const data = {
+            feed_flag: content
+            
+        }
+        sendData(index, data);
     }
-    if (name=='defoam_pump_now_set_speed'){
-        DeviceManage.deviceList[index]!.nowData!.motor_speed_autoflag=content
+    if (name=='feed_pump_now_set_speed'){
+        DeviceManage.deviceList[index]!.nowData!.feed_pump_now_set_speed=content
+        const data = {
+            feed_pump_now_set_speed: content
+            
+        }
+        sendData(index, data);
     }
     
     

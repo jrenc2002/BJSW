@@ -79,67 +79,66 @@
                 <table :style="{ width: `max(${(firstRow.length + 1) * 8.2}rem, 100%)` }" class="flex items-start  ">
                   <div class="flex-col justify-center items-center">
                     <tr v-for="(body,index) in tableBodyRows" :key="index" class="flex justify-center items-center">
-                      <template v-for="(col, i) in tableBodyCols" :key="col.props + i">
-                          <td v-if="index==0"
-                              class="w-[8.2rem] text-center border-r border-b flex justify-center items-center">
-                              <details class="dropdown ">
-                                  <summary v-if="body[col.props]==0||body[col.props]==null||body[col.props]==undefined" class="m-1 btn w-[7rem] ">停止</summary>
-                                  <summary v-if="body[col.props]==1"
-                                           class="m-1 btn w-[7rem] text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3]">开启
-                                  </summary>
-
-
-                                  <ul class="p-2 shadow-xl menu dropdown-content z-[1] bg-base-100 rounded-box w-[7rem] broder">
-                                      <li class="text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2] rounded"
-                                          @click="controlSend('DO_flag',i,0)"><a>停止</a>
-                                      </li>
-                                      <li class="text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] mt-2 rounded"
-                                          @click="controlSend('DO_flag',i,1)"><a>开启</a></li>
-
-                                  </ul>
-                              </details>
-                          </td>
-                          <td v-else-if="index==1"
-                              class="w-[8.2rem] text-center border-r border-b flex justify-center items-center">
-                              <details class="dropdown ">
-                                  <summary v-if="body[col.props]==0||body[col.props]==null||body[col.props]==undefined" class="m-1 btn w-[7rem] ">停止</summary>
-                                  <summary v-if="body[col.props]==1"
-                                           class="m-1 btn w-[7rem] text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3]">开启
-                                  </summary>
-
-
-                                  <ul class="p-2 shadow-xl menu dropdown-content z-[1] bg-base-100 rounded-box w-[7rem] broder">
-                                      <li class="text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2] rounded"
-                                          @click="controlSend('motor_speed_autoflag',i,0)"><a>停止</a>
-                                      </li>
-                                      <li class="text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] mt-2 rounded"
-                                          @click="controlSend('motor_speed_autoflag',i,1)"><a>开启</a></li>
-
-                                  </ul>
-                              </details>
-                          </td>
-                        <td v-else-if="index>=3&&index<=10"
-                            class="w-[8.2rem] text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center"
-                            @dblclick="inputVisible[i][index-3].control = !inputVisible[i][index-3].control">
-                          <input
-                              v-if="inputVisible[i][index-3].control&&DeviceManage.deviceList[i]?.deviceSet!==null"
-                              v-model="inputVisible[i][index-3].cache"
-                              :placeholder="placeholder[index-3]"
-                              class="w-[8.2rem]  h-full text-center break-all whitespace-normal "
-                              type="text"
-                              @keyup.enter="keyupEnterInput(i,index-3)"
-                          />
-
-                          <span v-else
-                                class="w-[8.2rem] leading-5 text-center whitespace-normal break-all flex justify-center items-center">
+                        <template v-for="(col, i) in tableBodyCols" :key="col.props + i">
+                            <td v-if="index==0"
+                                class="w-[8.2rem] text-center border-r border-b flex justify-center items-center">
+                                <details class="dropdown ">
+                                    <summary v-if="body[col.props]==0||body[col.props]==null||body[col.props]==undefined" class="m-1 btn w-[7rem] ">停止</summary>
+                                    <summary v-if="body[col.props]==1"
+                                             class="m-1 btn w-[7rem] text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3]">开启
+                                    </summary>
+                
+                
+                                    <ul class="p-2 shadow-xl menu dropdown-content z-[1] bg-base-100 rounded-box w-[7rem] broder">
+                                        <li class="text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2] rounded"
+                                            @click="controlSend('DO_flag',i,0)"><a>停止</a>
+                                        </li>
+                                        <li class="text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] mt-2 rounded"
+                                            @click="controlSend('DO_flag',i,1)"><a>开启</a></li>
+                
+                                    </ul>
+                                </details>
+                            </td>
+                            <!--                                                <td v-else-if="index==1"-->
+                            <!--                                                    class="w-[8.2rem] text-center border-r border-b flex justify-center items-center">-->
+                            <!--                                                    <details class="dropdown ">-->
+                            <!--                                                        <summary v-if="body[col.props]==0||body[col.props]==null||body[col.props]==undefined" class="m-1 btn w-[7rem] ">停止</summary>-->
+                            <!--                                                        <summary v-if="body[col.props]==1"-->
+                            <!--                                                                 class="m-1 btn w-[7rem] text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3]">开启-->
+                            <!--                                                        </summary>-->
+                            <!--                -->
+                            <!--                -->
+                            <!--                                                        <ul class="p-2 shadow-xl menu dropdown-content z-[1] bg-base-100 rounded-box w-[7rem] broder">-->
+                            <!--                                                            <li class="text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2] rounded"-->
+                            <!--                                                                @click="controlSend('DO_flag',i,0)"><a>停止</a>-->
+                            <!--                                                            </li>-->
+                            <!--                                                            <li class="text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] mt-2 rounded"-->
+                            <!--                                                                @click="controlSend('DO_flag',i,1)"><a>开启</a></li>-->
+                            <!--                -->
+                            <!--                                                        </ul>-->
+                            <!--                                                    </details>-->
+                            <!--                                                </td>-->
+                            <td v-else-if="index>=2&&index<=10"
+                                class="w-[8.2rem] text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center"
+                                @dblclick="inputVisible[i][index-2].control = !inputVisible[i][index-2].control">
+                                <input
+                                        v-if="inputVisible[i][index-2].control&&DeviceManage.deviceList[i]?.deviceSet!==null"
+                                        v-model="inputVisible[i][index-2].cache"
+                                        :placeholder="placeholder[index-2]"
+                                        class="w-[8.2rem]  h-full text-center break-all whitespace-normal "
+                                        type="text"
+                                        @keyup.enter="keyupEnterInput(i,index-2)"
+                                />
+            
+                                <span v-else
+                                      class="w-[8.2rem] leading-5 text-center whitespace-normal break-all flex justify-center items-center">
                     {{ body[col.props] }}</span>
-                        </td>
-                        <td v-else
-                            class="w-[8.2rem] text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
-                          {{ body[col.props] }}
-                        </td>
-                      </template>
-
+                            </td>
+                            <td v-else
+                                class="w-[8.2rem] text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
+                                {{ body[col.props] }}
+                            </td>
+                        </template>
 
                     </tr>
                   </div>
@@ -243,7 +242,7 @@ const initTableData = () => {
         return;
       }
         index--;
-      if (deviceIndex >= 3 && deviceIndex <= 10) {
+      if (deviceIndex >= 2 && deviceIndex <= 10) {
         inputVisible.value[index].push({id: deviceIndex, control: false, cache: null});
 
 

@@ -45,7 +45,7 @@
 
 </template>
 <script lang="js" setup>
-import {reactive, onMounted, onUnmounted} from 'vue';
+import {reactive, onMounted, onUnmounted, watch, ref} from 'vue';
 import NavigationView from '../components/NavigationView.vue';
 import {useDeviceManage} from '@/store/DeviceManage'
 import {useAppGlobal} from '@/store/AppGlobal'
@@ -79,6 +79,98 @@ const updateWindowSize = () => {
     AppGlobal.updateDrawerState(isDrawerVisible.visible)
   }
 }
+//0是手动
+/* 全速补料V
+ * 1. 补料速度
+ * 2. 发酵时间-触发时间点
+ */
+/* 线性补料
+ * 1. 补料速度
+ * 2. 溶氧上限-到了上限开始补料
+ * 3. 溶氧下限-到了下限开始停止补料
+ */
+/* 占空比补料-不做
+ * 1. 补料速度
+ * 2. 检测周期
+ * 3. 补料量
+ * 4. 溶氧
+ */
+
+
+const deviceWatchers = {};
+
+DeviceManage.deviceList.forEach((item, index) => {
+    if (item.nowData !== null) {
+        const stopCurrentWatcher = watch(() => item.nowData.feed_flag, (newValue, oldValue) => {
+            
+            // 清除该设备的所有监听器
+            if (deviceWatchers[index]) {
+                deviceWatchers[index].forEach(unwatch => unwatch());
+                deviceWatchers[index].length = 0;
+            } else {
+                deviceWatchers[index] = [];
+            }
+            
+            switch (newValue) {
+                case 1: {
+                    let interval;
+                    const checkFermentationTime = () => {
+                        const now = new Date();
+                        const timeDiff = now - new Date(item.start_time);
+                        const hours = Math.floor(timeDiff / 3600000);
+                        
+                        if (hours >= item.recordFeedMode.FullSpeed.feedDate) {
+                            const data = {
+                                feed_pump_now_set_speed: item.recordFeedMode.FullSpeed.feedSpeed
+                            };
+                            item.nowData.feed_pump_now_set_speed = item.recordFeedMode.FullSpeed.feedSpeed;
+                            sendData(index, data);
+                        }
+                    };
+                    
+                    checkFermentationTime();
+                    interval = setInterval(checkFermentationTime, 60000);
+                    
+                    deviceWatchers[index].push(() => {
+                        clearInterval(interval);
+                    });
+                    
+                    break;
+                }
+                
+                case 2: {
+                    const timing_DO = item.nowData.timing_DO;
+                    const unwatchOxygen = watch(() => timing_DO, (newValue) => {
+                        if (newValue >= item.recordFeedMode.Line.DOTopLimit) {
+                            const data = {
+                                feed_pump_now_set_speed: item.recordFeedMode.Line.feedSpeed
+                            };
+                            item.nowData.feed_pump_now_set_speed = item.recordFeedMode.Line.feedSpeed;
+                            sendData(index, data);
+                        }
+                        if (newValue <= item.recordFeedMode.Line.DOBottomLimit) {
+                            const data = {
+                                feed_pump_now_set_speed: 0
+                            };
+                            item.nowData.feed_pump_now_set_speed = 0;
+                            sendData(index, data);
+                        }
+                    });
+                    
+                    deviceWatchers[index].push(unwatchOxygen);
+                    break;
+                }
+                
+                default:
+                    break;
+            }
+        });
+    }
+});
+
+
+
+// 在组件销毁时，确保停止所有监听器
 
 
 // 使用 Vue3 的生命周期钩子函数 onMounted，在组件挂载完成后添加窗口大小变化的监听事件
@@ -107,7 +199,6 @@ onMounted(() => {
 // 使用 Vue3 的生命周期钩子函数 onUnmounted，在组件卸载之前移除窗口大小变化的监听事件
 onUnmounted(() => {
   window.removeEventListener('resize', updateWindowSize);
-
 
 });
 

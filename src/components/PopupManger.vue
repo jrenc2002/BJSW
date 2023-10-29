@@ -44,7 +44,6 @@ import AcidPump from "@/components/popupManager/AcidPump.vue"
 import LyePump from "@/components/popupManager/LyePump.vue"
 import DefoamerPump from "@/components/popupManager/DefoamerPump.vue"
 import FeedPump from "@/components/popupManager/FeedPump.vue"
-
 const props = defineProps({
     popcontent: {
         type: String,

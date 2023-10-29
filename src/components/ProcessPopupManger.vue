@@ -22,6 +22,9 @@
       <div v-show="props.popcontent === PopupType.DefoamerPump" ref="popupCreateTaskCard">
           <ProcessDefoamerPump></ProcessDefoamerPump>
       </div>
+      <div v-show="props.popcontent === PopupType.FeedSetting" ref="popupCreateTaskCard">
+          <ProcessFeedSetting></ProcessFeedSetting>
+      </div>
   </div>
 </template>
 
@@ -39,6 +42,7 @@ import ProcessRPM from "@/components/tankControl/SingleRPM.vue"
 import ProcessFeedPump from "@/components/tankControl/SingleFeedPump.vue"
 import ProcessBeginFermentation from "@/components/tankControl/SingleBegin.vue"
 import ProcessDefoamerPump from "@/components/tankControl/SingleDefoamerPump.vue"
+import ProcessFeedSetting from "@/components/tankControl/SingleSet.vue"
 const props = defineProps({
   popcontent: {
     type: String,

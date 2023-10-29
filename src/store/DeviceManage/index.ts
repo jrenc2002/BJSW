@@ -175,9 +175,32 @@ interface Device {
     alarm: boolean;
     deviceSet: deviceSet | null
     batch_cycle:number;
+    recordFlag: boolean;
+    recordFeedMode:recordFeedMode ;
 
 }
 
+interface FeedFullSpeed{
+    feedSpeed:number;
+    feedDate:number;
+}
+interface FeedLine{
+    feedSpeed:number;
+    DOTopLimit:number;
+    DOBottomLimit:number;
+}
+interface FeedDutyCycle{
+    feedSpeed:number;
+    checkCycle:number;
+    feedQuantity:number;
+    DO:number;
+}
+interface recordFeedMode{
+    FullSpeed:FeedFullSpeed;
+    Line:FeedLine;
+    DutyCycle:FeedDutyCycle;
+    
+}
 // TODO:设备管理要重构
 // 1.内容数据表项不全仍然缺乏
 // 2.各个部分的状态灯
@@ -190,8 +213,25 @@ const state = (): {
         deviceList: [
             {
                 id: 0, name: '设备A', deviceNum: "BAB-00", ip: '192.168.1.3', port: 2000,batch_cycle:0,
-                state: 0, nowData: null, deviceSocket: null, start_time: null, batch_name: null,
-                alarm: false, deviceSet: {
+                state: 0, nowData: null, deviceSocket: null, start_time: null, batch_name: null,recordFlag: false,
+                alarm: false,recordFeedMode:{
+                    FullSpeed:{
+                        feedSpeed:-1,
+                        feedDate:-1
+                    },
+                    Line:{
+                        feedSpeed:-1,
+                        DOTopLimit:-1,
+                        DOBottomLimit:-1
+                        
+                    },
+                    DutyCycle:{
+                        feedSpeed:-1,
+                        checkCycle:-1,
+                        feedQuantity:-1,
+                        DO:-1
+                    }
+                }, deviceSet: {
                     tempState: 0,
                     phState: 0,
                     doState: 0,
@@ -234,6 +274,25 @@ export const useDeviceManage = defineStore('DeviceManage', {
                 ip: ip,
                 port: port,
                 state: 0,
+                recordFlag: false,
+                recordFeedMode:{
+                    FullSpeed:{
+                        feedSpeed:-1,
+                        feedDate:-1
+                    },
+                    Line:{
+                        feedSpeed:-1,
+                        DOTopLimit:-1,
+                        DOBottomLimit:-1
+        
+                    },
+                    DutyCycle:{
+                        feedSpeed:-1,
+                        checkCycle:-1,
+                        feedQuantity:-1,
+                        DO:-1
+                    }}
+                    ,
                 nowData: null,
                 deviceSocket: null,
                 start_time: null,
@@ -280,7 +339,7 @@ export const useDeviceManage = defineStore('DeviceManage', {
                     this.deviceList[index].state = 2
                 }
                 // 报警
-                if (this.deviceList && this.deviceList[index] && this.deviceList[index].deviceSet != null) {
+                if (this.deviceList && this.deviceList[index] && this.deviceList[index].deviceSet != null&&this.deviceList[index].state === 2) {
                     // 使用类型断言
                     const currentDeviceSet = this.deviceList[index].deviceSet as deviceSet;
                     let isAlarmFlag = false;

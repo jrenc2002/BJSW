@@ -227,9 +227,9 @@ const initTableData = () => {
             
             else if (deviceProp.prop == "defoamer_pump") {
                 if (DeviceManage.deviceList[index]?.deviceSet?.feedPumpSpeed !== null) {
-                    const feedPumpSpeed = DeviceManage.deviceList[index]?.deviceSet?.feedPumpSpeed ?? 0;
+                    const defoamerPumpSpeed = DeviceManage.deviceList[index]?.deviceSet?.defoamerPumpSpeed ?? 0;
                     const defoam_pump_sum_step_count = DeviceManage.deviceList[index]?.nowData?.defoam_pump_sum_step_count ?? 0;
-                    tableItem[header.props] = feedPumpSpeed * defoam_pump_sum_step_count;
+                    tableItem[header.props] = defoamerPumpSpeed * defoam_pump_sum_step_count;
                     
                 } else {
                     tableItem[header.props] = 0;
@@ -266,15 +266,16 @@ const firstCol = computed(() => props.tableData.map(p => {
     return p[pArr[0]]
 }))
 const keyupEnterInput = (deviceID: number, setIndex: number) => {
-    
+
     inputVisible.value[deviceID][setIndex].control = false;
     
     if (setIndex == 0 && inputVisible.value[deviceID][setIndex].cache != null) {
         if (DeviceManage.deviceList[deviceID] && DeviceManage.deviceList[deviceID]!.nowData) {
+            console.log('------')
             DeviceManage.deviceList[deviceID]!.nowData!.defoam_pump_now_set_speed = inputVisible.value[deviceID][setIndex].cache || 0;
         }
     }
-    controlSend('defoam_pump_now_set_speed',deviceID,inputVisible.value[deviceID][setIndex].cache)
+    controlSend('defoam_pump_now_set_speed',deviceID,Number(inputVisible.value[deviceID][setIndex].cache))
     
     
 }
@@ -282,9 +283,19 @@ const keyupEnterInput = (deviceID: number, setIndex: number) => {
 const controlSend = ((name, index, content) => {
     if (name=='clean_flag'){
         DeviceManage.deviceList[index]!.nowData!.clean_flag=content
+        const data = {
+            clean_flag: content
+        
+        }
+        sendData(index, data);
     }
     if (name=='defoam_pump_now_set_speed'){
         DeviceManage.deviceList[index]!.nowData!.defoam_pump_now_set_speed=content
+        const data = {
+            defoam_pump_now_set_speed: content
+        
+        }
+        sendData(index, data);
     }
     
     

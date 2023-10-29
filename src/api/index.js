@@ -31,8 +31,10 @@ export const initDeviceManage = () => {
 			item.deviceSocket = device;
 			console.log(item.ip, ':', item.port, '连接成功');
 			// todo debug测试记得
-			item.start_time = new Date();
-			initValue(index)
+			
+			setTimeout(() => {
+				initValue(index)
+			}, 1500);
 		});
 		
 		// 假设你的设备API有一个'error'或'fail'事件来处理连接失败的情况
@@ -85,7 +87,9 @@ export const addDevice = (ip, port, name) => {
 	
 	device.on('connect', () => {
 		setDeviceStatus(1, device);
-		initValue(index)
+		setTimeout(() => {
+			initValue(index)
+		}, 1500);
 		console.log(`${deviceInfo.ip}:${deviceInfo.port} 连接成功`);
 	});
 	
@@ -180,7 +184,10 @@ export const openDevice = (index) => {
 	
 	device.on('connect', () => {
 		setDeviceStatus(1, device);
-		initValue(index)
+		setTimeout(() => {
+			initValue(index)
+		}, 1500);
+	
 		console.log(`${ip}:${port} 连接成功`);
 	});
 	

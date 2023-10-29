@@ -92,6 +92,9 @@ const controlSend = ((name, index) => {
                 
             }
             sendData(index, data);
+            ProcessPopupMangerState.updateIsShowPop(false)
+            DeviceManage.deviceList[index].recordFlag=true;
+            DeviceManage.deviceList[index].start_time = new Date();
         }
      
         

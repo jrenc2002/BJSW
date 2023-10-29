@@ -17,6 +17,7 @@ export enum PopupType {
     FeedPump = 5,
     BeginFermentation=6,
     DefoamerPump=7,
+    FeedSetting=8,
 
 }
 
