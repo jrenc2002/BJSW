@@ -1,10 +1,12 @@
 import {ipcMain, IpcMainInvokeEvent} from 'electron';
-import path from 'path';
+const path = require('path');
 import sqlite3Lib, {RunResult} from 'sqlite3';
 
 // 为了避免 ESLint 的 'no-var-requires' 错误，我们这样导入 sqlite3
 const sqlite3 = sqlite3Lib.verbose();
+
 const dbPath = path.join(__dirname, '../src/database.db');
+console.log(dbPath)
 const db = new sqlite3.Database(dbPath);
 
 export function createInitDB(): any {

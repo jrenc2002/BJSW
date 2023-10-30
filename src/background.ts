@@ -20,6 +20,9 @@ const isDevelopment = process.env.NODE_ENV !== 'production'
 protocol.registerSchemesAsPrivileged([
   { scheme: 'app', privileges: { secure: true, standard: true } }
 ])
+const preloadPath = process.env.NODE_ENV === 'development'
+    ? path.join(__dirname, '../src/preload.js')
+    : path.join(__dirname, './preload.js');
 
 // 创建 Electron 窗口的异步函数
 async function createWindow() {
