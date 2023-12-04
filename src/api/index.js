@@ -295,7 +295,7 @@ function initValue(index){
 		lye_KD: 0,
 		motor_speed_u_limit: 1000,
 		motor_speed_l_limit: 300,
-		zero_point_value: 1.5,
+		zero_point_value: 0.057787,
 		saturation_value: 19.5,
 		
 	}

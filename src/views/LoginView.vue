@@ -16,7 +16,7 @@
         <div class="h-[2vh]  justify-start items-center gap-1.5 inline-flex relative left-10 top-10">
           <img src="../assets/image/login-logo.png" class=" h-[1.25rem]   bg-cover ">
           <div class="text-white text-base font-medium leading-normal font-wz subpixel-antialiased text-1xl">
-            中国生物</div>
+            华生生物</div>
         </div>
         <!-- 左下标题样式 -->
         <div class="h-[14vh] absolute bottom-10 left-10 gap-6  flex justify-center items-center  ">
@@ -26,7 +26,7 @@
               最趋于完美的生物发酵罐
             </div>
             <div class="w-[34vw] text-white text-wz font-normal text-[1.12vw] leading-normal subpixel-antialiased  ">
-              中国生物是一家致力于生物发酵产业的公司，如果您有需要可以致电0532-223212获取进一步相关信息₍ᐢ..ᐢ₎♡</div>
+                华生生物是一家致力于生物发酵产业的公司，如果您有需要可以致电0532-223212获取进一步相关信息₍ᐢ..ᐢ₎♡</div>
           </div>
         </div>
 
