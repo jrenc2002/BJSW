@@ -75,15 +75,17 @@
                     <tr v-for="(body,index) in tableBodyRows" :key="index" class="flex justify-center items-center">
                       <template v-for="(col, i) in tableBodyCols" :key="col.props + i">
                         <td v-if="index==0" class="w-[8.2rem] text-center border-r border-b flex justify-center items-center">
-                            <details class="dropdown ">
-                                <summary v-if="body[col.props]==0||body[col.props]==null||body[col.props]==undefined" class="m-1 btn w-[7rem] ">停止</summary>
-                                <summary v-if="body[col.props]>0"
-                                         class="m-1 btn w-[7rem] text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3]">开启
-                                </summary>
-
-
-         
-                            </details>
+<!--                          原按钮-->
+<!--                            <details class="dropdown ">-->
+<!--                                <summary v-if="body[col.props]==0||body[col.props]==null||body[col.props]==undefined" class="m-1 btn w-[7rem] ">停止</summary>-->
+<!--                                <summary v-if="body[col.props]>0"-->
+<!--                                         class="m-1 btn w-[7rem] text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3]">开启-->
+<!--                                </summary>-->
+<!--                            </details>-->
+                          <select class="dropdown m-1 btn w-[7rem]" v-model="body[col.props]" @change="controlSend('DO_flag', i, body[col.props])">
+                            <option value="0" :selected="body[col.props]==0||body[col.props]==null||body[col.props]==undefined">停止</option>
+                            <option value="1" :selected="body[col.props]>0" class="text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3]">开启</option>
+                          </select>
                         </td>
 
                           <td v-else-if="index>=2&&index<=6"

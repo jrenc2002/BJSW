@@ -79,27 +79,25 @@
                                         <tr v-for="(body,index) in tableBodyRows" :key="index"
                                             class="flex justify-center items-center">
                                             <template v-for="(col, i) in tableBodyCols" :key="col.props + i">
-                                                <td v-if="index==0"
-                                                    class="w-[8.2rem] text-center border-r border-b flex justify-center items-center">
-                                                    <details class="dropdown ">
-                                                        <summary v-if="body[col.props]==0||body[col.props]==null||body[col.props]==undefined" class="m-1 btn w-[7rem] ">
-                                                            停止
-                                                        </summary>
-                                                        <summary v-if="body[col.props]==1"
-                                                                 class="m-1 btn w-[7rem] text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3]">
-                                                            开启
-                                                        </summary>
+                                                <td v-if="index==0" class="w-[8.2rem] text-center border-r border-b flex justify-center items-center">
+<!--                                                    <details class="dropdown ">-->
+<!--                                                        <summary v-if="body[col.props]==0||body[col.props]==null||body[col.props]==undefined" class="m-1 btn w-[7rem] ">停止-->
+<!--                                                        </summary>-->
+<!--                                                        <summary v-if="body[col.props]==1" class="m-1 btn w-[7rem] text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3]">开启</summary>-->
+<!--                                                        <ul class="p-2 shadow-xl menu dropdown-content z-[1] bg-base-100 rounded-box w-[7rem] broder">-->
+<!--                                                            <li class="text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2] rounded"-->
+<!--                                                                @click="controlSend('PH_flag',i,0)"><a>停止</a>-->
+<!--                                                            </li>-->
+<!--                                                            <li class="text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] mt-2 rounded"-->
+<!--                                                                @click="controlSend('PH_flag',i,1)"><a>开启</a></li>-->
 
+<!--                                                        </ul>-->
+<!--                                                    </details>-->
+                                                  <select class="dropdown m-1 btn w-[7rem]" @change="controlSend('PH_flag', i, $event.target.value)">
+                                                    <option value="0" :selected="body[col.props]==0||body[col.props]==null||body[col.props]==undefined" class="text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2] rounded">停止</option>
+                                                    <option value="1" :selected="body[col.props]==1" class="text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] rounded">开启</option>
+                                                  </select>
 
-                                                        <ul class="p-2 shadow-xl menu dropdown-content z-[1] bg-base-100 rounded-box w-[7rem] broder">
-                                                            <li class="text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2] rounded"
-                                                                @click="controlSend('PH_flag',i,0)"><a>停止</a>
-                                                            </li>
-                                                            <li class="text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] mt-2 rounded"
-                                                                @click="controlSend('PH_flag',i,1)"><a>开启</a></li>
-
-                                                        </ul>
-                                                    </details>
                                                 </td>
                                                 <td v-else-if="index>=2&&index<=12"
                                                     class="w-[8.2rem] text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center"
