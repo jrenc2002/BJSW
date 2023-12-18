@@ -1,9 +1,6 @@
 <template>
     <div class="h-[94vh] w-[22rem] transition-all duration-300 ease-in-out shadow bg-white rounded-2xl">
-<button @click="controlSend()">
-    
-    2323
-</button>
+
     
 
     </div>
