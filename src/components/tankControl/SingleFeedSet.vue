@@ -1,7 +1,7 @@
 <template>
-    <div class="h-[90vh] w-[80vw] relative transition-all duration-300 ease-in-out shadow bg-white rounded-2xl border-2  border-[#4EA67D] flex justify-start items-center">
+    <div class="h-[92vh] w-[82vw] overflow-auto relative transition-all duration-300 ease-in-out shadow bg-white rounded-2xl border-2  border-[#4EA67D] flex justify-start items-center">
         <!-- 关闭按钮 -->
-        <div class="bg-[#F5F5F5] absolute right-3 top-3 top-0 w-7 h-7 justify-center items-center flex rounded-2xl hover:bg-[#F8F8F8] cursor-pointer"
+        <div class="bg-[#F5F5F5] z-10 absolute right-3 top-3 top-0 w-7 h-7 justify-center items-center flex rounded-2xl hover:bg-[#F8F8F8] cursor-pointer"
              @click="closePop">
             <svg fill="none" height="16" viewBox="0 0 16 16" width="16" xmlns="http://www.w3.org/2000/svg">
                 <path d="M12 4.7L11.3 4L8 7.3L4.7 4L4 4.7L7.3 8L4 11.3L4.7 12L8 8.7L11.3 12L12 11.3L8.7 8L12 4.7Z"
@@ -9,11 +9,19 @@
             </svg>
         </div>
         <!-- 左侧栏 -->
-        <div class="relative w-[26rem]   h-full  m-2  flex-col flex justify-start items-center">
+        <div class="relative w-[26rem]   h-[calc(100%-1rem)]   m-2  flex-col flex justify-start items-center">
             
             <!--开关选择-->
             <div class="relative  shadow  h-[26rem] overflow-auto  m-2 rounded-2xl flex-col flex justify-start items-center">
-                <div class="w-full h-14 bg-[#DAF0E4] rounded-t-2xl flex justify-center items-center">补料开关</div>
+                <div class="w-full h-14 bg-[#DAF0E4] rounded-t-2xl flex justify-center items-center">补料总开关
+    
+                    <Switch v-model="enabled"
+                            :class="[enabled ? 'bg-green-600' : 'bg-gray-200', 'relative inline-flex ml-2 h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2']">
+                        <span class="sr-only">Use setting</span>
+                        <span :class="[enabled ? 'translate-x-5' : 'translate-x-0', 'pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out']"
+                              aria-hidden="true"/>
+                    </Switch>
+                </div>
                 <!--手动开关-->
                 <div class="w-[90%] h-16 mt-2  rounded-xl flex justify-start items-center border border-[#D6D6D6] hover:border-[#4EA67D]">
                     <!--左边部分-->
@@ -319,7 +327,7 @@
             </div>
         </div>
         <!-- 中间栏 -->
-        <div class="relative w-[26rem]   h-full  m-2  flex-col flex justify-start items-center">
+        <div class="relative w-[26rem]   h-[calc(100%-1rem)]   m-2  flex-col flex justify-start items-center">
             <!--补料方式-->
             <div class="relative  shadow  h-[100%] overflow-auto  m-2 rounded-2xl flex-col flex justify-start items-center">
                 <div class="w-full h-14 bg-[#DAF0E4] rounded-t-2xl flex justify-center items-center">补料方式</div>
@@ -432,26 +440,14 @@
                         </div>
                         <!--右边部分-->
                         <div class="w-[60%]  h-full flex-col justify-center items-start m-3">
-                            <div class="h-1/2  flex  ">
-                                <div class="w-24 justify-start items-center flex">
-                                    补料速度
+                            <div class="h-full  flex  ">
+                                <div class="w-full justify-start items-center flex">
+    
+                                    <kbd class="kbd kbd-md">选择分段补料前请确保已完成顺控设置。</kbd>
                                 </div>
-                                <input id="name" v-model="contentSet.DutyFeed.feed_speed"
-                                       class="block w-[80%]  border-b-2 m-2" name="name"
-                                       placeholder="请填补料速度" required
-                                       type="number"/>
                             
                             </div>
-                            <div class="h-1/2  flex ">
-                                <div class="w-24 justify-start items-center flex">
-                                    检测周期
-                                </div>
-                                <input id="name" v-model="contentSet.DutyFeed.detection_cycle"
-                                       class="block w-[80%]  border-b-2  m-2" name="name"
-                                       placeholder="请填检测周期" required
-                                       type="number"/>
-                            
-                            </div>
+                  
                         </div>
                     </div>
                     <!--线性补料-->
@@ -696,7 +692,7 @@
                             </div>
                             <div class="h-10  flex justify-center items-center mt-1">
                                 <div class="w-24 justify-start items-center flex">
-                                    速度上限
+                                    速度下限
                                 </div>
                                 <input id="name" v-model="contentSet.DutyFeed.oxygen_trigger"
                                        class="block w-[80%]  border-b-2  m-2" name="name"
@@ -712,7 +708,38 @@
             
             </div>
         </div>
-    
+        <!-- 顺控栏 -->
+        <div class="relative w-[23rem]   h-[calc(100%-1rem)]  mr-2  flex-col flex justify-start items-center">
+            <!--补料方式-->
+            <div class="relative  shadow  h-[100%] overflow-y-auto  m-2 rounded-2xl flex-col flex justify-start items-center">
+                <div class="w-full h-14 bg-[#DAF0E4] rounded-t-2xl flex justify-center items-center">顺控设置</div>
+                <div class="h-[calc(100%-3.5rem)] w-[23rem] justify-start items-center flex-col flex">
+                        <div class="w-[calc(100%-0.5rem)] h-[85%] absolute overflow-y-auto">
+                            <form @submit.prevent="submitForm">
+                                <div v-for="(item, index) in formData.items" :key="item.id" class="flex m-2 border-2 p-4 border-[#83BA9B] rounded-lg">
+                                    <input type="text" v-model="item.id" placeholder="序号" class="w-1/4 text-center ">
+                                    <input type="text" v-model="item.speed" placeholder="补料速度" class="w-1/4 ">
+                                    <input type="text" v-model="item.time" placeholder="区段时间" class="w-1/4 ">
+                                    <button type="button" @click="removeItem(index)"  class="w-1/4 ">删除</button>
+                                </div>
+                            </form>
+                            <button type="button" @click="addItem" class="flex ml-2 w-[96%] hover:bg-green-50 border-2 p-4 border-[#83BA9B] rounded-lg justify-center items-center">
+                                <svg width="21" height="20" viewBox="0 0 21 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M11.5 9V0H9.5V9H0.5V11H9.5V20H11.5V11H20.5V9H11.5Z" fill="#83BA9B"/>
+                                </svg>
+                            </button>
+                        </div>
+                        
+                        <div class="flex  w-full h-12 absolute bottom-2">
+                            <div class="absolute left-2 w-28 h-12 justify-center items-center flex">发酵时间</div>
+                            <button type="submit" class=" bg-[#83BA9B] hover:bg-green-800 text-white rounded-xl w-28 h-12 absolute right-2">保存数据</button>
+                        </div>
+                     
+                </div>
+        
+        
+            </div>
+        </div>
     
     </div>
 
@@ -722,7 +749,7 @@
 <script lang='ts' setup>
 
 // ______________________导入模块_______________________
-import {ref} from 'vue'
+import {reactive, ref} from 'vue'
 import {useProcessPopupMangerState} from "@/store/ProcessPopupMangerState";
 import {sendData} from '@/api/index.js'
 import {useDeviceManage} from '@/store/DeviceManage'
@@ -809,6 +836,27 @@ const controlSend = ((name, index) => {
 })
 
 
+// ______________________顺控_______________________
+const formData = reactive({
+    items: [
+        { id: 1, speed: '', time: ''},
+        // 更多的项目可以根据需要添加
+    ]
+});
+
+const addItem = () => {
+    const nextId = formData.items.length + 1;
+    formData.items.push({ id: nextId, speed: '', time: ''});
+};
+
+const removeItem = (index) => {
+    formData.items.splice(index, 1);
+};
+
+const submitForm = () => {
+    // 这里可以添加提交表单的逻辑
+    console.log('Form Data:', formData.items);
+};
 // ______________________功能函数_______________________
 const closePop = () => {
     ProcessPopupMangerState.updateIsShowPop(false)
