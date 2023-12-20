@@ -82,15 +82,31 @@
                                             <template v-for="(col, i) in tableBodyCols" :key="col.props + i">
                                                 <td v-if="index==0"
                                                     class="w-[8.2rem] text-center border-r border-b flex justify-center items-center">
-                                                    <details class="dropdown ">
-                                                        <summary v-if="body[col.props]==0||body[col.props]==null||body[col.props]==undefined" class="m-1 btn w-[7rem] ">停止</summary>
-                                                        <summary v-if="body[col.props]>0"
-                                                                 class="m-1 btn w-[7rem] text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3]">开启
-                                                        </summary>
+<!--                                                    <details class="dropdown ">-->
+<!--                                                        <summary v-if="body[col.props]==0||body[col.props]==null||body[col.props]==undefined" class="m-1 btn w-[7rem] ">停止</summary>-->
+<!--                                                        <summary v-if="body[col.props]>0"-->
+<!--                                                                 class="m-1 btn w-[7rem] text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3]">开启-->
+<!--                                                        </summary>-->
+<!--                                                    </details>-->
+                                                  <Menu as="div" class="dropdown relative inline-block">
+                                                    <div>
+                                                      <MenuButton class="inline-flex w-[7rem] justify-center gap-x-1.5">
+                                                        <summary v-if="body[col.props] == 0 || body[col.props] == null || body[col.props] == undefined" class="m-1 btn w-[7rem] text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2] rounded">停止</summary>
+                                                        <summary v-if="body[col.props] > 0" class="m-1 btn w-[7rem] text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] rounded">开启</summary>
+                                                      </MenuButton>
+                                                    </div>
+
+                                                    <MenuItems class="p-2 shadow-xl menu dropdown-content z-[1] bg-base-100 rounded-box w-[7rem] border absolute origin-top-left left-0">
+                                                      <MenuItem v-slot="{ active }">
+                                                        <button :class="[active ? 'bg-[#E0E0E0] text-[#000000]' : 'text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2]', 'block px-4 py-2 text-sm rounded']" @click="controlSend('your_action_here', i, 0)">停止</button>
+                                                      </MenuItem>
+                                                      <MenuItem v-slot="{ active }">
+                                                        <button :class=" [active ? 'bg-[#BAE7C7] text-[#256637]' : 'text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3]', 'block px-4 py-2 text-sm rounded mt-2']" @click="controlSend('your_action_here', i, 1)">开启</button>
+                                                      </MenuItem>
+                                                    </MenuItems>
+                                                  </Menu>
 
 
-                                        
-                                                    </details>
                                                 </td>
                                                 <td v-else-if="index>=2&&index<=6"
                                                     class="w-[8.2rem] text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center"
@@ -145,6 +161,7 @@ import {PopupType} from "@/store/PopupMangerState";
 import {sendData} from '@/api/index.js'
 import {useDeviceManage} from '@/store/DeviceManage'
 import {useAppGlobal} from '@/store/AppGlobal'
+import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
 
 const DeviceManage = useDeviceManage();
 const PopupMangerState = usePopupMangerState()

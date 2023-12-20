@@ -82,10 +82,26 @@
 <!--                                         class="m-1 btn w-[7rem] text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3]">开启-->
 <!--                                </summary>-->
 <!--                            </details>-->
-                          <select class="dropdown m-1 btn w-[7rem]" v-model="body[col.props]" @change="controlSend('DO_flag', i, body[col.props])">
-                            <option value="0" :selected="body[col.props]==0||body[col.props]==null||body[col.props]==undefined">停止</option>
-                            <option value="1" :selected="body[col.props]>0" class="text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3]">开启</option>
-                          </select>
+
+                          <Menu as="div" class="dropdown relative inline-block">
+                            <div>
+                              <MenuButton class="inline-flex w-[7rem] justify-center gap-x-1.5">
+                                <summary v-if="body[col.props] == 0 || body[col.props] == null || body[col.props] == undefined" class="m-1 btn w-[7rem] text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2] rounded-[0.5rem]">停止</summary>
+                                <summary v-if="body[col.props] > 0" class="m-1 btn w-[7rem] text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] roundedrounded-[0.5rem]">开启</summary>
+                              </MenuButton>
+                            </div>
+
+                            <MenuItems class="p-2 shadow-xl menu dropdown-content z-[1] bg-base-100 rounded-box w-[7rem] border absolute origin-top-left left-0 mt-2">
+                              <MenuItem v-slot="{ active }">
+                                <button @click="controlSend('PH_flag', i, 0)" :class="[active ? 'bg-[#E0E0E0] text-[#000000]' : 'text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2]', 'block px-4 py-2 text-sm rounded']">停止</button>
+                              </MenuItem>
+                              <MenuItem v-slot="{ active }">
+                                <button @click="controlSend('PH_flag', i, 1)" :class="[active ? 'bg-[#BAE7C7] text-[#256637]' : 'text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] mt-2', 'block px-4 py-2 text-sm rounded mt-2']">开启</button>
+                              </MenuItem>
+                            </MenuItems>
+                          </Menu>
+
+
                         </td>
 
                           <td v-else-if="index>=2&&index<=6"
@@ -139,6 +155,7 @@ import {useProcessPopupMangerState} from "@/store/ProcessPopupMangerState";
 import {useDeviceManage} from '@/store/DeviceManage'
 import {useAppGlobal} from '@/store/AppGlobal'
 import {sendData} from "@/api/index.js";
+import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
 
 const DeviceManage = useDeviceManage();
 const ProcessPopupMangerState = useProcessPopupMangerState()

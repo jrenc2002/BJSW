@@ -70,24 +70,49 @@
                                         <tr v-for="(body,index) in tableBodyRows" :key="index" class="flex justify-center items-center">
                                             <template v-for="(col, i) in tableBodyCols" :key="col.props + i">
                                                 <td v-if="index==0" class="w-[8.2rem] text-center border-r border-b flex justify-center items-center">
-                                                    <details class="dropdown ">
-                                                        <summary v-if="body[col.props]==0||body[col.props]==null||body[col.props]==undefined" class="m-1 btn w-[7rem] ">手动</summary>
-                                                        <summary v-if="body[col.props]==1"
-                                                                 class="m-1 btn w-[7rem] text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3]">自动
-                                                        </summary>
-                        
-                        
-                                                        <ul class="p-2 shadow-xl menu dropdown-content z-30 bg-base-100 rounded-box w-[7rem] broder">
-                                                            <li class="text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2] rounded" @click="controlSend('feed_flag',i,0)"><a>手动</a>
-                                                            </li>
-                                                            <li class="text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] mt-2 rounded"
-                                                                @click="controlSend('feed_flag',i,1)"><a>全速补料</a></li>
-                                                            <li class="text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] mt-2 rounded"
-                                                                @click="controlSend('feed_flag',i,2)"><a>线性补料</a></li>
-                                                            <li class="text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] mt-2 rounded"
-                                                                @click="controlSend('feed_flag',i,3)"><a>占空比补料</a></li>
-                                                        </ul>
-                                                    </details>
+<!--                                                    <details class="dropdown ">-->
+<!--                                                        <summary v-if="body[col.props]==0||body[col.props]==null||body[col.props]==undefined" class="m-1 btn w-[7rem] ">手动</summary>-->
+<!--                                                        <summary v-if="body[col.props]==1"-->
+<!--                                                                 class="m-1 btn w-[7rem] text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3]">自动-->
+<!--                                                        </summary>-->
+
+
+<!--                                                        <ul class="p-2 shadow-xl menu dropdown-content z-30 bg-base-100 rounded-box w-[7rem] broder">-->
+<!--                                                            <li class="text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2] rounded" @click="controlSend('feed_flag',i,0)"><a>手动</a>-->
+<!--                                                            </li>-->
+<!--                                                            <li class="text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] mt-2 rounded"-->
+<!--                                                                @click="controlSend('feed_flag',i,1)"><a>全速补料</a></li>-->
+<!--                                                            <li class="text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] mt-2 rounded"-->
+<!--                                                                @click="controlSend('feed_flag',i,2)"><a>线性补料</a></li>-->
+<!--                                                            <li class="text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] mt-2 rounded"-->
+<!--                                                                @click="controlSend('feed_flag',i,3)"><a>占空比补料</a></li>-->
+<!--                                                        </ul>-->
+<!--                                                    </details>-->
+
+                                                  <Menu as="div" class="dropdown relative inline-block">
+                                                    <div>
+                                                      <MenuButton class="inline-flex w-[7rem] justify-center gap-x-1.5">
+                                                        <summary v-if="body[col.props] == 0 || body[col.props] == null || body[col.props] == undefined" class="m-1 btn w-[7rem] text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2] rounded">手动</summary>
+                                                        <summary v-if="body[col.props] == 1" class="m-1 btn w-[7rem] text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] rounded mt-2">自动</summary>
+                                                      </MenuButton>
+                                                    </div>
+
+                                                    <MenuItems class="p-2 shadow-xl menu dropdown-content z-30 bg-base-100 rounded-box w-[7rem] border absolute origin-top-left left-0">
+                                                      <MenuItem v-slot="{ active }">
+                                                        <button :class="[active ? 'bg-[#E0E0E0] text-[#000000]' : 'text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2]', 'block px-4 py-2 text-sm rounded']" @click="controlSend('feed_flag', i, 0)">手动</button>
+                                                      </MenuItem>
+                                                      <MenuItem v-slot="{ active }">
+                                                        <button :class="[active ? 'bg-[#BAE7C7] text-[#256637] mt-2' : 'text-[#256637] bg-[#BAE7C7] hover-bg-[#A9CDB3] mt-2', 'block px-4 py-2 text-sm rounded']" @click="controlSend('feed_flag', i, 1)">全速补料</button>
+                                                      </MenuItem>
+                                                      <MenuItem v-slot="{ active }">
+                                                        <button :class="[active ? 'bg-[#BAE7C7] text-[#256637] mt-2' : 'text-[#256637] bg-[#BAE7C7] hover-bg-[#A9CDB3] mt-2', 'block px-4 py-2 text-sm rounded']" @click="controlSend('feed_flag', i, 2)">线性补料</button>
+                                                      </MenuItem>
+                                                      <MenuItem v-slot="{ active }">
+                                                        <button :class="[active ? 'bg-[#BAE7C7] text-[#256637] mt-2' : 'text-[#256637] bg-[#BAE7C7] hover-bg-[#A9CDB3] mt-2', 'block px-4 py-2 text-sm rounded']" @click="controlSend('feed_flag', i, 3)">占空比补料</button>
+                                                      </MenuItem>
+                                                    </MenuItems>
+                                                  </Menu>
+
                                                 </td>
                 
                 
@@ -144,6 +169,7 @@ import {PopupType} from "@/store/PopupMangerState";
 import {sendData} from '@/api/index.js'
 import {useDeviceManage} from '@/store/DeviceManage'
 import {useAppGlobal} from '@/store/AppGlobal'
+import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
 
 const DeviceManage = useDeviceManage();
 const PopupMangerState = usePopupMangerState()

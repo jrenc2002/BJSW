@@ -1,5 +1,5 @@
 <template>
-    <div class="h-[94vh] w-[70vw] transition-all duration-300 ease-in-out shadow bg-white rounded-2xl" >
+    <div class="h-[94vh] w-[22rem] transition-all duration-300 ease-in-out shadow bg-white rounded-2xl" >
         
         <!--    标题-->
         <div class="h-[4%] self-stretch justify-start items-center  inline-flex mt-3  w-full ">
@@ -147,6 +147,7 @@ import {useProcessPopupMangerState} from "@/store/ProcessPopupMangerState";
 import {useDeviceManage} from '@/store/DeviceManage'
 import {useAppGlobal} from '@/store/AppGlobal'
 import {sendData} from "@/api/index.js";
+import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
 
 const DeviceManage = useDeviceManage();
 const ProcessPopupMangerState = useProcessPopupMangerState()

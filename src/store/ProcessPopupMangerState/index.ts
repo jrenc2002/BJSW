@@ -1,7 +1,7 @@
 import {defineStore} from "pinia";
 
 // 给开发人员使用的debug
-const debug = false;
+const debug = true;
 
 export enum PopupType {
     // 无弹窗
