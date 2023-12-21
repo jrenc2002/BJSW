@@ -1,5 +1,6 @@
-<!---->
 <template>
+    
+    
     <div class="h-[calc(100%-1.5rem)] w-[calc(100%-1.5rem)]  ">
         <transition name="fade">
             <div
@@ -386,16 +387,12 @@
                         开始发酵
                     </button>
                     <div class="w-[21rem] h-[4rem]  right-[11rem] relative  rounded-xl text-black flex    top-[68vh]">
-                        <button :class="!isAll?'bg-white hover:bg-neutral-50':'bg-[#4EA67D] hover:bg-[#327E5B] text-white'"
-                                class=" swap w-[10rem] h-[4rem] mr-4 text-lg  relative  border-2 border-[#327E5B] rounded-xl text-black  flex items-center justify-center "
+                        <div :class="!isAll?'bg-white hover:bg-neutral-50':'bg-[#4EA67D] hover:bg-[#327E5B] text-white'"
+                             @click="popProcessManager('开始发酵')"
+                             class=" swap w-[10rem] h-[4rem] mr-4 text-lg  relative  border-2 border-[#327E5B] rounded-xl text-black  flex items-center justify-center "
                         >
-                            <label class="swap swap-rotate w-full h-full">
-                                <input v-model="isAll" type="checkbox"
-                                       @click.stop="controlSend('begin_running',AppGlobal.pageChance,isAll)"/>
-                                <div class="swap-on">开始运行中</div>
-                                <div class="swap-off">一键开始</div>
-                            </label>
-                        </button>
+                            {{ DeviceManage.deviceList[AppGlobal.pageChance].deviceNum }}
+                        </div>
                         <button class="w-[10rem] h-[4rem]  text-lg  relative bg-[#E0E0E0] rounded-xl text-black hover:bg-[#CBCBCB]  "
                                 @click="controlSend('end_running',AppGlobal.pageChance,1)">
                             结束发酵
@@ -684,6 +681,9 @@ const handleHandControl = ((content) => {
 onMounted(() => {
     window.addEventListener('keydown', handleKeydownEsc);
     initDataManger()
+
+// 使用 setInterval 定时器每秒更新一次时间差
+    setInterval(()=>{calculateTimeDifference()}, 1000);
     
 })
 onUnmounted(() => {
@@ -694,6 +694,7 @@ onUnmounted(() => {
 
 // 创建一个函数来计算和显示时间差
 function calculateTimeDifference() {
+
     const now = new Date();
     if (!DeviceManage.deviceList || !Array.isArray(DeviceManage.deviceList)) {
         console.error("DeviceManage.deviceList未定义或不是数组。");
@@ -705,13 +706,14 @@ function calculateTimeDifference() {
     if (DeviceManage.deviceList[AppGlobal.pageChance].recordFlag===false) {
         return
     }
+
     const timeDiff = now - DeviceManage.deviceList[AppGlobal.pageChance].start_time;
-    console.log(DeviceManage.deviceList[AppGlobal.pageChance].state)
     // 将时间差转换为天、小时、分钟和秒
     const days = Math.floor(timeDiff / (24 * 3600000));
     const hours = Math.floor((timeDiff % (24 * 3600000)) / 3600000);
     const minutes = Math.floor((timeDiff % 3600000) / 60000);
     const seconds = Math.floor((timeDiff % 60000) / 1000);
+    console.log(days, hours, minutes, seconds)
     countdown.value = {
         days,
         hours,
@@ -727,8 +729,6 @@ const countdown = ref({
     minutes: 0,
     seconds: 0
 });
-// 使用 setInterval 定时器每秒更新一次时间差
-setInterval(calculateTimeDifference, 1000);
 
 </script>
 
