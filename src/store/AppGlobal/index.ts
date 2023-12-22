@@ -12,6 +12,8 @@ const state = () => {
         isDrawerState: true,
         // 触摸项-就是鼠标触摸到的选项
         selectedDeviceIndex:-1,
+        // 补料泵选择
+        FeedSet:0,
 
 
 

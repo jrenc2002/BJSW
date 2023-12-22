@@ -15,23 +15,24 @@
             <div class="relative  shadow w-[26rem]   h-[26rem] overflow-auto  m-2 rounded-2xl flex-col flex justify-start items-center">
                 <div class="w-full h-14 bg-[#DAF0E4] rounded-t-2xl flex justify-center items-center">补料总开关
                     
-                    <Switch v-model="enabled"
-                            :class="[enabled ? 'bg-green-600' : 'bg-gray-200', 'relative inline-flex ml-2 h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2']">
+                    <Switch v-model="localCache.totalSwitch"
+                            :class="[localCache.totalSwitch ? 'bg-green-600' : 'bg-gray-200', 'relative inline-flex ml-2 h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2']">
                         <span class="sr-only">Use setting</span>
-                        <span :class="[enabled ? 'translate-x-5' : 'translate-x-0', 'pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out']"
+                        <span :class="[localCache.totalSwitch ? 'translate-x-5' : 'translate-x-0', 'pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out']"
                               aria-hidden="true"/>
                     </Switch>
                 </div>
                 <!--手动开关-->
-                <div class="w-[90%] h-16 mt-2  rounded-xl flex justify-start items-center border border-[#D6D6D6] hover:border-[#4EA67D]">
+                <div :class="[localCache.supplementSwitch.type===1? 'border-[0.2rem]  border-[#4EA67D]':'border border-[#D6D6D6] hover:border-[#4EA67D] ']"
+                     class="w-[90%] h-16 mt-2  rounded-xl flex justify-start items-center  ">
                     <!--左边部分-->
                     <div class="w-[60%]  h-full flex  justify-center items-start m-3">
                         <div class="h-full gap-10  flex justify-center items-center">
                             手动补料
-                            <Switch v-model="enabled"
-                                    :class="[enabled ? 'bg-green-600' : 'bg-gray-200', 'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2']">
+                            <Switch v-model="localCache.supplementSwitch.manual"
+                                    :class="[localCache.supplementSwitch.manual ? 'bg-green-600' : 'bg-gray-200', 'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2']">
                                 <span class="sr-only">Use setting</span>
-                                <span :class="[enabled ? 'translate-x-5' : 'translate-x-0', 'pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out']"
+                                <span :class="[localCache.supplementSwitch.manual ? 'translate-x-5' : 'translate-x-0', 'pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out']"
                                       aria-hidden="true"/>
                             </Switch>
                         </div>
@@ -42,7 +43,7 @@
                         <div class="h-full flex justify-center items-center  pr-2">
                             
                             <div class="bg-[#83BA9B] w-16 h-7 rounded-md flex justify-center items-center cursor-pointer hover:bg-green-800 "
-                                 @click="postFeedSet(3)">
+                                 @click="postFeedSet(0,1)">
                                 <svg fill="none" height="13" viewBox="0 0 16 13" width="16"
                                      xmlns="http://www.w3.org/2000/svg">
                                     <path id="Vector"
@@ -54,7 +55,8 @@
                     </div>
                 </div>
                 <!--触发补料-->
-                <div class="w-[90%] h-[8rem] mt-2  rounded-2xl flex justify-start items-center border border-[#D6D6D6] hover:border-[#4EA67D]">
+                <div :class="[localCache.supplementSwitch.type===2? 'border-[0.2rem]  border-[#4EA67D]':'border border-[#D6D6D6] hover:border-[#4EA67D] ']"
+                        class="w-[90%] h-[8rem] mt-2  rounded-2xl flex justify-start items-center ">
                     <!--左边部分-->
                     <div class="w-[30%]  h-full flex-col justify-center items-start ml-5">
                         <div class="h-1/2  flex justify-center items-center mt-2">
@@ -62,7 +64,7 @@
                         </div>
                         <div class="h-1/2 flex justify-center items-center ">
                             <div class="bg-[#83BA9B] w-16 h-7 mb-4 rounded-md flex justify-center items-center cursor-pointer hover:bg-green-800 "
-                                 @click="postFeedSet(3)">
+                                 @click="postFeedSet(0,2)">
                                 <svg fill="none" height="13" viewBox="0 0 16 13" width="16"
                                      xmlns="http://www.w3.org/2000/svg">
                                     <path id="Vector"
@@ -77,11 +79,11 @@
                         
                         <div class="    w-full origin-top-right divide-y divide-gray-100  bg-white  ring-1 ring-black ring-opacity-5 focus:outline-none">
                             
-                            <div class="py-1">
-                                <div :class="[contentSet.chance==0 ? 'bg-gray-100 text-gray-900' : 'text-gray-700', 'group flex items-center text-sm cursor-pointer  py-1']">
+                            <div class="py-1" >
+                                <div :class="[localCache.supplementSwitch.trigger.dissolvedOxygen.selected ? 'bg-gray-100 text-gray-900' : 'text-gray-700', 'group flex items-center text-sm cursor-pointer  py-1']">
                                     
                                     
-                                    <input id="name" v-model="contentSet.DutyFeed.feed_speed"
+                                    <input id="name" v-model="localCache.supplementSwitch.trigger.dissolvedOxygen.upperLimit"
                                            class="block w-[2rem]  h-[100%] bg-transparent " name="name"
                                            placeholder="上限"
                                            type="text"/>
@@ -108,7 +110,7 @@
                                     
                                     <BeakerIcon aria-hidden="true"
                                                 class="mr-1 h-5 w-5 text-gray-400 group-hover:text-gray-500"/>
-                                    <span class="mr-1 h-5 w-7 ">
+                                    <span class="mr-1 h-5 w-7 " @click="localCache.supplementSwitch.trigger.dissolvedOxygen.selected=!localCache.supplementSwitch.trigger.dissolvedOxygen.selected">
                                         溶氧
                                     </span>
                                     <kbd class="kbd kbd-sm mr-1">
@@ -125,21 +127,22 @@
                                                 <g data-mml-node="math">
                                                     <g data-mml-node="mo">
                                                         <use xlink:href="#MJX-4-TEX-N-3E"></use>
+                                                        tt
                                                     </g>
                                                 </g>
                                             </g>
                                         </svg>
                                     </kbd>
-                                    <input id="name" v-model="contentSet.DutyFeed.feed_speed"
+                                    <input id="name" v-model="localCache.supplementSwitch.trigger.dissolvedOxygen.lowerLimit"
                                            class="block w-[2rem]  h-[100%] bg-transparent " name="name"
                                            placeholder="下限"
                                            type="text"/>
                                 </div>
                             </div>
-                            <div class="py-1">
+                            <div class="py-1" >
                                 
-                                <div :class="[contentSet.chance==1 ? 'bg-gray-100 text-gray-900' : 'text-gray-700', 'group flex items-center text-sm cursor-pointer  py-1']">
-                                    <input id="name" v-model="contentSet.DutyFeed.feed_speed"
+                                <div :class="[localCache.supplementSwitch.trigger.pH.selected ? 'bg-gray-100 text-gray-900' : 'text-gray-700', 'group flex items-center text-sm cursor-pointer  py-1']">
+                                    <input id="name" v-model="localCache.supplementSwitch.trigger.pH.upperLimit"
                                            class="block w-[2rem]  h-[100%] bg-transparent " name="name"
                                            placeholder="上限"
                                            type="text"/>
@@ -166,7 +169,7 @@
                                     
                                     <EyeDropperIcon aria-hidden="true"
                                                     class="mr-1 h-5 w-5 text-gray-400 group-hover:text-gray-500"/>
-                                    <span class="mr-1 h-5 w-7 ">
+                                    <span class="mr-1 h-5 w-7 " @click="localCache.supplementSwitch.trigger.pH.selected=!localCache.supplementSwitch.trigger.pH.selected">
                                         PH
                                     </span>
                                     <kbd class="kbd kbd-sm mr-1">
@@ -188,16 +191,16 @@
                                             </g>
                                         </svg>
                                     </kbd>
-                                    <input id="name" v-model="contentSet.DutyFeed.feed_speed"
+                                    <input id="name" v-model="localCache.supplementSwitch.trigger.pH.lowerLimit"
                                            class="block w-[2rem]  h-[100%] bg-transparent " name="name"
                                            placeholder="下限"
                                            type="text"/>
                                 </div>
                             </div>
-                            <div class="py-1">
+                            <div class="py-1" >
                                 
-                                <div :class="[contentSet.chance==1 ? 'bg-gray-100 text-gray-900' : 'text-gray-700', 'group flex items-center text-sm cursor-pointer  py-1']">
-                                    <input id="name" v-model="contentSet.DutyFeed.feed_speed"
+                                <div :class="[localCache.supplementSwitch.trigger.speed.selected ? 'bg-gray-100 text-gray-900' : 'text-gray-700', 'group flex items-center text-sm cursor-pointer  py-1']">
+                                    <input id="name" v-model="localCache.supplementSwitch.trigger.speed.upperLimit"
                                            class="block w-[2rem]  h-[100%]  bg-transparent" name="name"
                                            placeholder="上限"
                                            type="text"/>
@@ -223,7 +226,7 @@
                                     </kbd>
                                     <ArrowPathIcon aria-hidden="true"
                                                    class="mr-1 h-5 w-5 text-gray-400 group-hover:text-gray-500"/>
-                                    <span class="mr-1 h-5 w-7 ">
+                                    <span class="mr-1 h-5 w-7 " @click="localCache.supplementSwitch.trigger.speed.selected=!localCache.supplementSwitch.trigger.speed.selected">
                                         转速
                                     </span>
                                     <kbd class="kbd kbd-sm mr-1">
@@ -245,7 +248,7 @@
                                             </g>
                                         </svg>
                                     </kbd>
-                                    <input id="name" v-model="contentSet.DutyFeed.feed_speed"
+                                    <input id="name" v-model="localCache.supplementSwitch.trigger.speed.lowerLimit"
                                            class="block w-[2rem]  h-[100%] bg-transparent " name="name"
                                            placeholder="下限"
                                            type="text"/>
@@ -258,17 +261,17 @@
                     <div class="w-[10%]  h-full flex-col justify-center items-start m-3">
                         <div class="h-full  flex  justify-center items-center flex-col">
                             
-                            <div class="cursor-pointer ">
-                                <kbd class="kbd kbd-sm ">或</kbd>
+                            <div class="cursor-pointer " @click="localCache.supplementSwitch.trigger.logic===1?localCache.supplementSwitch.trigger.logic=0:localCache.supplementSwitch.trigger.logic=1">
+                                <kbd class="kbd kbd-sm ">{{localCache.supplementSwitch.trigger.logic===1?'或':'且'}}</kbd>
                             </div>
                             <div class="w-full bg-gray-200 h-0.5 m-2"></div>
                             <div class="cursor-pointer ">
                                 <div class="tooltip w-full   tooltip-bottom tooltip-success" data-tip="t0捕捉开关">
                                     
-                                    <Switch v-model="enabled"
-                                            :class="[enabled ? 'bg-green-600' : 'bg-gray-200', 'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2']">
+                                    <Switch v-model="localCache.supplementSwitch.trigger.t0"
+                                            :class="[localCache.supplementSwitch.trigger.t0 ? 'bg-green-600' : 'bg-gray-200', 'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2']">
                                         <span class="sr-only">Use setting</span>
-                                        <span :class="[enabled ? 'translate-x-5' : 'translate-x-0', 'pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out']"
+                                        <span :class="[localCache.supplementSwitch.trigger.t0 ? 'translate-x-5' : 'translate-x-0', 'pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out']"
                                               aria-hidden="true"/>
                                     </Switch>
                                 </div>
@@ -279,7 +282,8 @@
                 
                 </div>
                 <!--关联补料-->
-                <div class="w-[90%] h-[8rem] mt-2  rounded-2xl flex justify-start items-center border border-[#D6D6D6] hover:border-[#4EA67D]">
+                <div :class="[localCache.supplementSwitch.type===3? 'border-[0.2rem]  border-[#4EA67D]':'border border-[#D6D6D6] hover:border-[#4EA67D] ']"
+                     class="w-[90%] h-[8rem] mt-2  rounded-2xl flex justify-start items-center ">
                     <!--左边部分-->
                     <div class="w-[30%]  h-full flex-col justify-center items-start ml-5">
                         <div class="h-1/2  flex justify-center items-center mt-2">
@@ -287,7 +291,7 @@
                         </div>
                         <div class="h-1/2 flex justify-center items-center ">
                             <div class="bg-[#83BA9B] w-16 h-7 mb-4 rounded-md flex justify-center items-center cursor-pointer hover:bg-green-800 "
-                                 @click="postFeedSet(3)">
+                                 @click="postFeedSet(0,3)">
                                 <svg fill="none" height="13" viewBox="0 0 16 13" width="16"
                                      xmlns="http://www.w3.org/2000/svg">
                                     <path id="Vector"
@@ -299,18 +303,18 @@
                     </div>
                     <!--中间部分-->
                     <div class="w-[60%]  h-full flex-col flex justify-center items-center m-3">
-            
+                        
                         <div class="    w-full origin-top-right divide-y divide-gray-100  bg-white  ring-1 ring-black ring-opacity-5 focus:outline-none">
-                
-                            <div class="py-1">
-                                <div :class="[contentSet.chance==0 ? 'bg-gray-100 text-gray-900' : 'text-gray-700', 'group flex items-center text-sm cursor-pointer  py-1']">
-                        
-                        
-                                    <input id="name" v-model="contentSet.DutyFeed.feed_speed"
+    
+                            <div class="py-1" >
+                                <div :class="[localCache.supplementSwitch.relatedSwitch.dissolvedOxygen.selected ? 'bg-gray-100 text-gray-900' : 'text-gray-700', 'group flex items-center text-sm cursor-pointer  py-1']">
+            
+            
+                                    <input id="name" v-model="localCache.supplementSwitch.relatedSwitch.dissolvedOxygen.upperLimit"
                                            class="block w-[2rem]  h-[100%] bg-transparent " name="name"
                                            placeholder="上限"
                                            type="text"/>
-                        
+            
                                     <kbd class="kbd kbd-sm mr-1">
                                         <svg aria-hidden="true" height="1.312ex" style=""
                                              viewBox="0 -540 778 580" width="1.76ex"
@@ -330,10 +334,10 @@
                                             </g>
                                         </svg>
                                     </kbd>
-                        
+            
                                     <BeakerIcon aria-hidden="true"
                                                 class="mr-1 h-5 w-5 text-gray-400 group-hover:text-gray-500"/>
-                                    <span class="mr-1 h-5 w-7 ">
+                                    <span class="mr-1 h-5 w-7 " @click="localCache.supplementSwitch.relatedSwitch.dissolvedOxygen.selected=!localCache.supplementSwitch.relatedSwitch.dissolvedOxygen.selected">
                                         溶氧
                                     </span>
                                     <kbd class="kbd kbd-sm mr-1">
@@ -350,25 +354,26 @@
                                                 <g data-mml-node="math">
                                                     <g data-mml-node="mo">
                                                         <use xlink:href="#MJX-4-TEX-N-3E"></use>
+                                                        tt
                                                     </g>
                                                 </g>
                                             </g>
                                         </svg>
                                     </kbd>
-                                    <input id="name" v-model="contentSet.DutyFeed.feed_speed"
+                                    <input id="name" v-model="localCache.supplementSwitch.relatedSwitch.dissolvedOxygen.lowerLimit"
                                            class="block w-[2rem]  h-[100%] bg-transparent " name="name"
                                            placeholder="下限"
                                            type="text"/>
                                 </div>
                             </div>
-                            <div class="py-1">
-                    
-                                <div :class="[contentSet.chance==1 ? 'bg-gray-100 text-gray-900' : 'text-gray-700', 'group flex items-center text-sm cursor-pointer  py-1']">
-                                    <input id="name" v-model="contentSet.DutyFeed.feed_speed"
+                            <div class="py-1" >
+        
+                                <div :class="[localCache.supplementSwitch.relatedSwitch.pH.selected ? 'bg-gray-100 text-gray-900' : 'text-gray-700', 'group flex items-center text-sm cursor-pointer  py-1']">
+                                    <input id="name" v-model="localCache.supplementSwitch.relatedSwitch.pH.upperLimit"
                                            class="block w-[2rem]  h-[100%] bg-transparent " name="name"
                                            placeholder="上限"
                                            type="text"/>
-                        
+            
                                     <kbd class="kbd kbd-sm mr-1">
                                         <svg aria-hidden="true" height="1.312ex" style=""
                                              viewBox="0 -540 778 580" width="1.76ex"
@@ -388,10 +393,10 @@
                                             </g>
                                         </svg>
                                     </kbd>
-                        
+            
                                     <EyeDropperIcon aria-hidden="true"
                                                     class="mr-1 h-5 w-5 text-gray-400 group-hover:text-gray-500"/>
-                                    <span class="mr-1 h-5 w-7 ">
+                                    <span class="mr-1 h-5 w-7 " @click="localCache.supplementSwitch.relatedSwitch.pH.selected=!localCache.supplementSwitch.relatedSwitch.pH.selected">
                                         PH
                                     </span>
                                     <kbd class="kbd kbd-sm mr-1">
@@ -413,20 +418,20 @@
                                             </g>
                                         </svg>
                                     </kbd>
-                                    <input id="name" v-model="contentSet.DutyFeed.feed_speed"
+                                    <input id="name" v-model="localCache.supplementSwitch.relatedSwitch.pH.lowerLimit"
                                            class="block w-[2rem]  h-[100%] bg-transparent " name="name"
                                            placeholder="下限"
                                            type="text"/>
                                 </div>
                             </div>
-                            <div class="py-1">
-                    
-                                <div :class="[contentSet.chance==1 ? 'bg-gray-100 text-gray-900' : 'text-gray-700', 'group flex items-center text-sm cursor-pointer  py-1']">
-                                    <input id="name" v-model="contentSet.DutyFeed.feed_speed"
+                            <div class="py-1" >
+        
+                                <div :class="[localCache.supplementSwitch.relatedSwitch.speed.selected ? 'bg-gray-100 text-gray-900' : 'text-gray-700', 'group flex items-center text-sm cursor-pointer  py-1']">
+                                    <input id="name" v-model="localCache.supplementSwitch.relatedSwitch.speed.upperLimit"
                                            class="block w-[2rem]  h-[100%]  bg-transparent" name="name"
                                            placeholder="上限"
                                            type="text"/>
-                        
+            
                                     <kbd class="kbd kbd-sm mr-1">
                                         <svg aria-hidden="true" height="1.312ex" style=""
                                              viewBox="0 -540 778 580" width="1.76ex"
@@ -446,9 +451,10 @@
                                             </g>
                                         </svg>
                                     </kbd>
+                                    
                                     <ArrowPathIcon aria-hidden="true"
                                                    class="mr-1 h-5 w-5 text-gray-400 group-hover:text-gray-500"/>
-                                    <span class="mr-1 h-5 w-7 ">
+                                    <span class="mr-1 h-5 w-7 " @click="localCache.supplementSwitch.relatedSwitch.speed.selected=!localCache.supplementSwitch.relatedSwitch.speed.selected">
                                         转速
                                     </span>
                                     <kbd class="kbd kbd-sm mr-1">
@@ -470,27 +476,27 @@
                                             </g>
                                         </svg>
                                     </kbd>
-                                    <input id="name" v-model="contentSet.DutyFeed.feed_speed"
+                                    <input id="name" v-model="localCache.supplementSwitch.relatedSwitch.speed.lowerLimit"
                                            class="block w-[2rem]  h-[100%] bg-transparent " name="name"
                                            placeholder="下限"
                                            type="text"/>
                                 </div>
-                
+    
                             </div>
                         </div>
                     </div>
                     <!--右边部分-->
                     <div class="w-[10%]  h-full flex-col justify-center items-start m-3">
                         <div class="h-full  flex  justify-center items-center flex-col">
-                
-                            <div class="cursor-pointer ">
-                                <kbd class="kbd kbd-sm ">或</kbd>
+    
+                            <div class="cursor-pointer " @click="localCache.supplementSwitch.relatedSwitch.logic===1?localCache.supplementSwitch.relatedSwitch.logic=0:localCache.supplementSwitch.relatedSwitch.logic=1">
+                                <kbd class="kbd kbd-sm ">{{localCache.supplementSwitch.relatedSwitch.logic===1?'或':'且'}}</kbd>
                             </div>
-                           
-            
+                        
+                        
                         </div>
                     </div>
-    
+                
                 </div>
             
             </div>
@@ -498,7 +504,8 @@
             <div class="relative  shadow  h-[22rem]  w-[26rem]  overflow-auto  mb-2 rounded-2xl flex-col flex justify-start items-center">
                 <div class="w-full h-14 bg-[#DAF0E4] rounded-t-2xl flex justify-center items-center">补料方式</div>
                 <!--持续补料-->
-                <div class="w-[90%] h-20 mt-4  rounded-2xl flex justify-start items-center border border-[#D6D6D6] hover:border-[#4EA67D]">
+                <div :class="[localCache.supplementMethod.type===1? 'border-[0.2rem]  border-[#4EA67D]':'border border-[#D6D6D6] hover:border-[#4EA67D] ']"
+                     class="w-[90%] h-20 mt-4  rounded-2xl flex justify-start items-center ">
                     <!--左边部分-->
                     <div class="w-[40%]  h-full flex-col justify-center items-start m-3">
                         <div class="h-full  flex justify-center items-center">
@@ -510,7 +517,7 @@
                     <div class="w-[60%]  h-full flex-col justify-center items-start m-3">
                         <div class="h-full flex justify-center items-center ">
                             <div class="bg-[#83BA9B] w-16 h-7 rounded-md flex justify-center items-center cursor-pointer hover:bg-green-800 "
-                                 @click="postFeedSet(1)">
+                                 @click="postFeedSet(1,1)">
                                 <svg fill="none" height="13" viewBox="0 0 16 13" width="16"
                                      xmlns="http://www.w3.org/2000/svg">
                                     <path id="Vector"
@@ -522,7 +529,8 @@
                     </div>
                 </div>
                 <!--占空比补料-->
-                <div class="w-[90%] h-[10rem] mt-4  rounded-2xl flex justify-start items-center border border-[#D6D6D6] hover:border-[#4EA67D]">
+                <div  :class="[localCache.supplementMethod.type===2? 'border-[0.2rem]  border-[#4EA67D]':'border border-[#D6D6D6] hover:border-[#4EA67D] ']"
+                      class="w-[90%] h-[10rem] mt-4  rounded-2xl flex justify-start items-center ">
                     <!--左边部分-->
                     <div class="w-[40%]  h-full flex-col justify-center items-start m-3">
                         <div class="h-1/2  flex justify-center items-center mt-2">
@@ -530,7 +538,7 @@
                         </div>
                         <div class="h-1/2 flex justify-center items-center ">
                             <div class="bg-[#83BA9B] w-16 h-7 mb-4 rounded-md flex justify-center items-center cursor-pointer hover:bg-green-800 "
-                                 @click="postFeedSet(3)">
+                                 @click="postFeedSet(1,2)">
                                 <svg fill="none" height="13" viewBox="0 0 16 13" width="16"
                                      xmlns="http://www.w3.org/2000/svg">
                                     <path id="Vector"
@@ -546,8 +554,8 @@
                             <div class="w-24 justify-start items-center flex">
                                 补料开度
                             </div>
-                            <input id="name" v-model="contentSet.DutyFeed.feed_speed"
-                                   class="block w-[80%]  border-b-2 m-2" name="name" placeholder="请填补料速度"
+                            <input id="name" v-model="localCache.supplementMethod.dutyCycle.opening"
+                                   class="block w-[80%]  border-b-2 m-2" name="name" placeholder="请填补料开度"
                                    required type="number"/>
                         
                         </div>
@@ -556,16 +564,16 @@
                                 检测周期
                             </div>
                             <div class="block w-[80%]    m-2">
-    
+                                
                                 <Menu as="div" class="relative inline-block text-left">
                                     <div>
                                         <MenuButton
                                                 class="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white px-1 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
-                                            选择周期
+                                            {{ localCache.supplementMethod.dutyCycle.detectionPeriod===null? '选择周期':localCache.supplementMethod.dutyCycle.detectionPeriod+'s' }}
                                             <ChevronDownIcon aria-hidden="true" class="-mr-1 h-5 w-5 text-gray-400"/>
                                         </MenuButton>
                                     </div>
-        
+                                    
                                     <transition enter-active-class="transition ease-out duration-100"
                                                 enter-from-class="transform opacity-0 scale-95"
                                                 enter-to-class="transform opacity-100 scale-100"
@@ -573,28 +581,24 @@
                                                 leave-from-class="transform opacity-100 scale-100"
                                                 leave-to-class="transform opacity-0 scale-95">
                                         <MenuItems
-                                                class="absolute flex right-0 z-10 mt-2 w-50 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                                                class="absolute flex right-0 z-10 mt-2 w-50 origin-top-right  bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                                             <div class="py-1 flex">
-                                                <MenuItem v-slot="{ active }">
-                                                    <a :class="[active ? 'bg-gray-100 text-gray-900' : 'text-gray-700', 'block px-4 py-2 text-sm']"
-                                                       href="#">10s</a>
+                                                <MenuItem v-slot="{ active }" @click="localCache.supplementMethod.dutyCycle.detectionPeriod=10">
+                                                    <div :class="[active ? 'bg-gray-100 text-gray-900' : 'text-gray-700', 'block px-4 py-2 text-sm cursor-pointer'] "
+                                                       >10s</div>
                                                 </MenuItem>
-                                                <MenuItem v-slot="{ active }">
-                                                    <a :class="[active ? 'bg-gray-100 text-gray-900' : 'text-gray-700', 'block px-4 py-2 text-sm']"
-                                                       href="#">20s</a>
+                                                <MenuItem v-slot="{ active }" @click="localCache.supplementMethod.dutyCycle.detectionPeriod=20">
+                                                    <div :class="[active ? 'bg-gray-100 text-gray-900' : 'text-gray-700', 'block px-4 py-2 text-sm cursor-pointer']"
+                                                       >20s</div>
                                                 </MenuItem>
-                                                <MenuItem v-slot="{ active }">
-                                                    <a :class="[active ? 'bg-gray-100 text-gray-900' : 'text-gray-700', 'block px-4 py-2 text-sm']"
-                                                       href="#">30s</a>
+                                                <MenuItem v-slot="{ active }" @click="localCache.supplementMethod.dutyCycle.detectionPeriod=30">
+                                                    <div :class="[active ? 'bg-gray-100 text-gray-900' : 'text-gray-700', 'block px-4 py-2 text-sm cursor-pointer']"
+                                                       >30s</div>
                                                 </MenuItem>
-                                                <form action="#" method="POST">
-                                                    <MenuItem v-slot="{ active }">
-                                                        <button :class="[active ? 'bg-gray-100 text-gray-900' : 'text-gray-700', 'block w-full px-4 py-2 text-left text-sm']"
-                                                                type="submit">
-                                                            60s
-                                                        </button>
-                                                    </MenuItem>
-                                                </form>
+                                                <MenuItem v-slot="{ active }" @click="localCache.supplementMethod.dutyCycle.detectionPeriod=60">
+                                                    <div :class="[active ? 'bg-gray-100 text-gray-900' : 'text-gray-700', 'block px-4 py-2 text-sm cursor-pointer']"
+                                                    >60s</div>
+                                                </MenuItem>
                                             </div>
                                         </MenuItems>
                                     </transition>
@@ -602,13 +606,13 @@
                             </div>
                         
                         </div>
-               
+                        
                         <div class="h-1/3  flex ">
                             <div class="w-24 justify-start items-center flex">
                                 实际流速
                             </div>
-                            <input id="name" v-model="contentSet.DutyFeed.oxygen_trigger" disabled
-                                   class="block w-[80%]  border-b-2  m-2" name="name" placeholder="实际流速"
+                            <input id="name" v-model="contentSet.DutyFeed.oxygen_trigger" class="block w-[80%]  border-b-2  m-2"
+                                   disabled name="name" placeholder="实际流速"
                                    required type="number"/>
                         
                         </div>
@@ -620,12 +624,13 @@
         </div>
         <!-- 中间栏 -->
         <div class="relative w-[26rem]   h-[calc(100%-1rem)]   m-2  flex-col flex justify-start items-center">
-
+            
             <div class="relative  shadow  h-[100%] overflow-auto  m-2 rounded-2xl flex-col flex justify-start items-center">
                 <div class="w-full h-14 bg-[#DAF0E4] rounded-t-2xl flex justify-center items-center">控制方式</div>
                 <div class="h-[calc(100%-3.5rem)]  justify-start items-center flex-col flex">
                     <!--单次补料-->
-                    <div class="w-[90%] h-[10rem] mt-4  rounded-2xl flex justify-start items-center border border-[#D6D6D6] hover:border-[#4EA67D]">
+                    <div :class="[localCache.controlMethod.type===1? 'border-[0.2rem]  border-[#4EA67D]':'border border-[#D6D6D6] hover:border-[#4EA67D] ']"
+                         class="w-[90%] h-[10rem] mt-4  rounded-2xl flex justify-start items-center ">
                         <!--左边部分-->
                         <div class="w-[40%]  h-full flex-col justify-center items-start m-3">
                             <div class="h-1/2  flex justify-center items-center mt-2">
@@ -633,7 +638,7 @@
                             </div>
                             <div class="h-1/2 flex justify-center items-center ">
                                 <div class="bg-[#83BA9B] w-16 h-7 mb-4 rounded-md flex justify-center items-center cursor-pointer hover:bg-green-800 "
-                                     @click="postFeedSet(3)">
+                                     @click="postFeedSet(2,1)">
                                     <svg fill="none" height="13" viewBox="0 0 16 13" width="16"
                                          xmlns="http://www.w3.org/2000/svg">
                                         <path id="Vector"
@@ -649,44 +654,46 @@
                                 <div class="w-24 justify-start items-center flex">
                                     补料量
                                 </div>
-                                <input id="name" v-model="contentSet.DutyFeed.feed_speed"
+                                <input id="name" v-model="localCache.controlMethod.single.amount"
                                        class="block w-[80%]  border-b-2 m-2"
                                        name="name" placeholder="请填补料量" required
                                        type="number"/>
                             
                             </div>
-                            <div class="h-1/3  flex ">
-                                <div class="w-24 justify-start items-center flex">
-                                    关联周期
-                                </div>
-                                <input id="name" v-model="contentSet.DutyFeed.detection_cycle"
-                                       class="block w-[80%]  border-b-2  m-2" name="name"
-                                       placeholder="请填关联周期" required
-                                       type="number"/>
-                            
-                            </div>
+    
                             <div class="h-1/3  flex ">
                                 <div class="w-24 justify-start items-center flex">
                                     补料速度
                                 </div>
-                                <input id="name" v-model="contentSet.DutyFeed.feed_amount"
+                                <input id="name" v-model="localCache.controlMethod.single.speed"
                                        class="block w-[80%]  border-b-2  m-2" name="name"
                                        placeholder="请填补料速度" required
+                                       type="number"/>
+    
+                            </div>
+                            <div class="h-1/3  flex ">
+                                <div class="w-24 justify-start items-center flex">
+                                    关联周期
+                                </div>
+                                <input id="name" v-model="localCache.controlMethod.single.cycle"
+                                       class="block w-[80%]  border-b-2  m-2" name="name"
+                                       placeholder="请填关联周期" required
                                        type="number"/>
                             
                             </div>
                         </div>
                     </div>
                     <!--恒速补料-->
-                    <div class="w-[90%] h-[10rem] mt-4  rounded-2xl flex justify-start items-center border border-[#D6D6D6] hover:border-[#4EA67D]">
-                        <!--左边部分-->
+                    <div :class="[localCache.controlMethod.type===2? 'border-[0.2rem]  border-[#4EA67D]':'border border-[#D6D6D6] hover:border-[#4EA67D] ']"
+                         class="w-[90%] h-[10rem] mt-4  rounded-2xl flex justify-start items-center ">
+                          <!--左边部分-->
                         <div class="w-[40%]  h-full flex-col justify-center items-start m-3">
                             <div class="h-1/2  flex justify-center items-center mt-2">
                                 恒速补料
                             </div>
                             <div class="h-1/2 flex justify-center items-center ">
                                 <div class="bg-[#83BA9B] w-16 h-7 mb-4 rounded-md flex justify-center items-center cursor-pointer hover:bg-green-800 "
-                                     @click="postFeedSet(3)">
+                                     @click="postFeedSet(2,2)">
                                     <svg fill="none" height="13" viewBox="0 0 16 13" width="16"
                                          xmlns="http://www.w3.org/2000/svg">
                                         <path id="Vector"
@@ -702,7 +709,7 @@
                                 <div class="w-24 justify-start items-center flex">
                                     补料速度
                                 </div>
-                                <input id="name" v-model="contentSet.DutyFeed.feed_speed"
+                                <input id="name" v-model="localCache.controlMethod.constant.speed"
                                        class="block w-[80%]  border-b-2 m-2 h-8" name="name"
                                        placeholder="请填补料速度" required
                                        type="number"/>
@@ -712,15 +719,16 @@
                         </div>
                     </div>
                     <!--分段补料-->
-                    <div class="w-[90%] h-[10rem] mt-4  rounded-2xl flex justify-start items-center border border-[#D6D6D6] hover:border-[#4EA67D]">
-                        <!--左边部分-->
+                    <div :class="[localCache.controlMethod.type===3? 'border-[0.2rem]  border-[#4EA67D]':'border border-[#D6D6D6] hover:border-[#4EA67D] ']"
+                         class="w-[90%] h-[10rem] mt-4  rounded-2xl flex justify-start items-center ">
+                    <!--左边部分-->
                         <div class="w-[40%]  h-full flex-col justify-center items-start m-3">
                             <div class="h-1/2  flex justify-center items-center mt-2">
                                 分段补料
                             </div>
                             <div class="h-1/2 flex justify-center items-center ">
                                 <div class="bg-[#83BA9B] w-16 h-7 mb-4 rounded-md flex justify-center items-center cursor-pointer hover:bg-green-800 "
-                                     @click="postFeedSet(3)">
+                                     @click="postFeedSet(2,3)">
                                     <svg fill="none" height="13" viewBox="0 0 16 13" width="16"
                                          xmlns="http://www.w3.org/2000/svg">
                                         <path id="Vector"
@@ -743,8 +751,9 @@
                         </div>
                     </div>
                     <!--线性补料-->
-                    <div class="w-[90%] h-[17rem] mt-4  rounded-2xl flex justify-start items-center border border-[#D6D6D6] hover:border-[#4EA67D]">
-                        <!--左边部分-->
+                    <div :class="[localCache.controlMethod.type===4? 'border-[0.2rem]  border-[#4EA67D]':'border border-[#D6D6D6] hover:border-[#4EA67D] ']"
+                         class="w-[90%] h-[17rem] mt-4  rounded-2xl flex justify-start items-center ">
+                    <!--左边部分-->
                         <div class="w-[40%]  h-full flex-col justify-center items-start m-3">
                             <div class="h-1/2  flex justify-center items-center mt-2 flex-col">
                                 线性补料
@@ -755,7 +764,7 @@
                             </div>
                             <div class="h-1/2 flex justify-center items-center ">
                                 <div class="bg-[#83BA9B] w-16 h-7 mb-4 rounded-md flex justify-center items-center cursor-pointer hover:bg-green-800 "
-                                     @click="postFeedSet(3)">
+                                     @click="postFeedSet(2,4)">
                                     <svg fill="none" height="13" viewBox="0 0 16 13" width="16"
                                          xmlns="http://www.w3.org/2000/svg">
                                         <path id="Vector"
@@ -881,9 +890,9 @@
                                         </svg>
                                     </kbd>
                                 </div>
-                                <input id="name" v-model="contentSet.DutyFeed.feed_speed"
+                                <input id="name" v-model="localCache.controlMethod.linear.initialValue"
                                        class="block w-[80%]  border-b-2 m-2" name="name"
-                                       placeholder="请填补料速度" required
+                                       placeholder="时间初始值" required
                                        type="number"/>
                             
                             </div>
@@ -917,7 +926,7 @@
                                         </svg>
                                     </kbd>
                                 </div>
-                                <input id="name" v-model="contentSet.DutyFeed.detection_cycle"
+                                <input id="name" v-model="localCache.controlMethod.linear.offset"
                                        class="block w-[80%]  border-b-2  m-2" name="name"
                                        placeholder="请填检测周期" required
                                        type="number"/>
@@ -945,7 +954,7 @@
                                         </svg>
                                     </kbd>
                                 </div>
-                                <input id="name" v-model="contentSet.DutyFeed.feed_amount"
+                                <input id="name" v-model="localCache.controlMethod.linear.slope"
                                        class="block w-[80%]  border-b-2  m-2" name="name"
                                        placeholder="请填补料量" required
                                        type="number"/>
@@ -955,7 +964,7 @@
                                 <div class="w-24 justify-start items-center flex">
                                     速度上限
                                 </div>
-                                <input id="name" v-model="contentSet.DutyFeed.oxygen_trigger"
+                                <input id="name" v-model="localCache.controlMethod.linear.speedUpperLimit"
                                        class="block w-[80%]  border-b-2  m-2" name="name"
                                        placeholder="请填溶氧值" required
                                        type="number"/>
@@ -965,7 +974,7 @@
                                 <div class="w-24 justify-start items-center flex">
                                     速度下限
                                 </div>
-                                <input id="name" v-model="contentSet.DutyFeed.oxygen_trigger"
+                                <input id="name" v-model="localCache.controlMethod.linear.speedLowerLimit"
                                        class="block w-[80%]  border-b-2  m-2" name="name"
                                        placeholder="请填溶氧值" required
                                        type="number"/>
@@ -974,8 +983,9 @@
                         </div>
                     </div>
                     <!--指数补料-->
-                    <div class="w-[90%] h-[17rem] mt-4  rounded-2xl flex justify-start items-center border border-[#D6D6D6] hover:border-[#4EA67D]">
-                        <!--左边部分-->
+                    <div :class="[localCache.controlMethod.type===5? 'border-[0.2rem]  border-[#4EA67D]':'border border-[#D6D6D6] hover:border-[#4EA67D] ']"
+                         class="w-[90%] h-[17rem] mt-4  rounded-2xl flex justify-start items-center ">
+                    <!--左边部分-->
                         <div class="w-[40%]  h-full flex-col justify-center items-start m-3">
                             <div class="h-1/2  flex justify-center items-center mt-2 flex-col">
                                 指数补料
@@ -986,7 +996,7 @@
                             </div>
                             <div class="h-1/2 flex justify-center items-center ">
                                 <div class="bg-[#83BA9B] w-16 h-7 mb-4 rounded-md flex justify-center items-center cursor-pointer hover:bg-green-800 "
-                                     @click="postFeedSet(3)">
+                                     @click="postFeedSet(2,5)">
                                     <svg fill="none" height="13" viewBox="0 0 16 13" width="16"
                                          xmlns="http://www.w3.org/2000/svg">
                                         <path id="Vector"
@@ -1127,7 +1137,7 @@
                                         </svg>
                                     </kbd>
                                 </div>
-                                <input id="name" v-model="contentSet.DutyFeed.feed_speed"
+                                <input id="name" v-model="localCache.controlMethod.exponential.offset"
                                        class="block w-[80%]  border-b-2 m-2" name="name"
                                        placeholder="请填补料速度" required
                                        type="number"/>
@@ -1163,7 +1173,7 @@
                                         </svg>
                                     </kbd>
                                 </div>
-                                <input id="name" v-model="contentSet.DutyFeed.detection_cycle"
+                                <input id="name" v-model="localCache.controlMethod.exponential.initialValue"
                                        class="block w-[80%]  border-b-2  m-2" name="name"
                                        placeholder="请填检测周期" required
                                        type="number"/>
@@ -1191,7 +1201,7 @@
                                         </svg>
                                     </kbd>
                                 </div>
-                                <input id="name" v-model="contentSet.DutyFeed.feed_amount"
+                                <input id="name" v-model="localCache.controlMethod.exponential.exponent"
                                        class="block w-[80%]  border-b-2  m-2" name="name"
                                        placeholder="请填补料量" required
                                        type="number"/>
@@ -1201,7 +1211,7 @@
                                 <div class="w-24 justify-start items-center flex">
                                     速度上限
                                 </div>
-                                <input id="name" v-model="contentSet.DutyFeed.oxygen_trigger"
+                                <input id="name" v-model="localCache.controlMethod.exponential.speedUpperLimit"
                                        class="block w-[80%]  border-b-2  m-2" name="name"
                                        placeholder="请填溶氧值" required
                                        type="number"/>
@@ -1211,7 +1221,7 @@
                                 <div class="w-24 justify-start items-center flex">
                                     速度下限
                                 </div>
-                                <input id="name" v-model="contentSet.DutyFeed.oxygen_trigger"
+                                <input id="name" v-model="localCache.controlMethod.exponential.speedLowerLimit"
                                        class="block w-[80%]  border-b-2  m-2" name="name"
                                        placeholder="请填溶氧值" required
                                        type="number"/>
@@ -1227,7 +1237,7 @@
         </div>
         <!-- 顺控栏 -->
         <div class="relative w-[23rem]   h-[calc(100%-1rem)]  mr-2  flex-col flex justify-start items-center">
-       
+            
             <div class="relative  shadow  h-[100%] overflow-y-auto  m-2 rounded-2xl flex-col flex justify-start items-center">
                 <div class="w-full h-14 bg-[#DAF0E4] rounded-t-2xl flex justify-center items-center">分段补料设置</div>
                 <div class="h-[calc(100%-3.5rem)] w-[23rem] justify-start items-center flex-col flex">
@@ -1271,24 +1281,25 @@
 </template>
 
 <script lang='ts' setup>
+// todo 1。双击是取消选择还是反复提交？
+// todo 2. 作用域同步目前是使用的onMounted去同步，但补料泵1切换补料泵2不会触发，可以用监听或者其他生命阶段去实现双补料泵的数据作用域隔断。
 
 // ______________________导入模块_______________________
-import {reactive, ref} from 'vue'
+import {onMounted, reactive, ref} from 'vue'
 import {useProcessPopupMangerState} from "@/store/ProcessPopupMangerState";
-import {sendData} from '@/api/index.js'
 import {useDeviceManage} from '@/store/DeviceManage'
 import {useAppGlobal} from '@/store/AppGlobal'
-import {toNumber} from "xe-utils";
 import {Menu, MenuButton, MenuItem, MenuItems, Switch} from '@headlessui/vue'
 import {ArrowPathIcon, BeakerIcon, ChevronDownIcon, EyeDropperIcon,} from '@heroicons/vue/20/solid'
+import {useFeedManger} from "@/store/FeedManger";
 
 const enabled = ref(false)
 const DeviceManage = useDeviceManage();
 const ProcessPopupMangerState = useProcessPopupMangerState()
 const AppGlobal = useAppGlobal();
+const FeedManger = useFeedManger();
+
 // ______________________表单_______________________
-const batch_name = ref(null);
-const batch_cycle = ref(null);
 const contentSet = ref({
     FullSpeedFeed: {
         feedSpeed: null,
@@ -1310,55 +1321,129 @@ const contentSet = ref({
     
 });
 
+// ______________________本地缓存_______________________
+const localCache = ref({
+    totalSwitch: false, // 补料总开关，布尔值对应总的开启关闭
+    supplementSwitch: { // 补料开关
+        type: 0, // 0未选择，1，2，3对应三种类型
+        manual: false, // 手动补料是否开启
+        trigger: { // 触发补料
+            dissolvedOxygen: { // 溶氧
+                upperLimit: null, // 溶氧上限
+                lowerLimit: null, // 溶氧下限
+                selected: false, // 是否选择
+            },
+            pH: { // PH
+                upperLimit: null, // PH上限
+                lowerLimit: null, // PH下限
+                selected: false, // 是否选择
+            },
+            speed: { // 转速
+                upperLimit: null, // 转速上限
+                lowerLimit: null, // 转速下限
+                selected: false, // 是否选择
+            },
+            logic: 1, // 且或补料逻辑，1代表或，2代表且
+            t0: false, // t0选择按钮是否开启
+        },
+        relatedSwitch: { // 关联开关，结构同trigger
+            dissolvedOxygen: { // 溶氧
+                upperLimit: null, // 溶氧上限
+                lowerLimit: null, // 溶氧下限
+                selected: false, // 是否选择
+            },
+            pH: { // PH
+                upperLimit: null, // PH上限
+                lowerLimit: null, // PH下限
+                selected: false, // 是否选择
+            },
+            speed: { // 转速
+                upperLimit: null, // 转速上限
+                lowerLimit: null, // 转速下限
+                selected: false, // 是否选择
+            },
+            logic: 1, // 且或补料逻辑，1代表或，2代表且
+        },
+    },
+    
+    supplementMethod: { // 补料方式
+        type: 0, // 补料方式选择，持续补料为1，占空比补料为2
+        dutyCycle: { // 占空比补料内容设置
+            opening: null, // 补料开度
+            detectionPeriod: null, // 检测周期
+        },
+    },
+    
+    controlMethod: { // 控制方式
+        type: 0, // 控制方式选择，单次补料1，恒速补料2，分段补料3，线性补料4，指数补料5
+        single: { // 单次补料内容设置
+            amount: null, // 补料量
+            cycle: null, // 关联周期
+            speed: null, // 补料速度
+        },
+        constant: { // 恒速补料内容设置
+            speed: null, // 补料速度
+        },
+        segmented: { // 分段补料内容设置
+            sequenceControl: [ // 数组顺控表
+                // { id: null, supplementSpeed: null, segmentTime: null, totalSegmentTime: null }, ...
+            ],
+        },
+        linear: { // 线性补料内容设置
+            initialValue: null, // 时间初始值
+            offset: null, // 偏移量
+            slope: null, // 斜率
+            speedUpperLimit: null, // 速度上限
+            speedLowerLimit: null, // 速度下限
+        },
+        exponential: { // 指数补料内容设置
+            offset: null, // 偏移量
+            initialValue: null, // 时间初始值
+            exponent: null, // 指数量
+            speedUpperLimit: null, // 速度上限
+            speedLowerLimit: null, // 速度下限
+        },
+    },
+},);
 
-const postFeedSet = (flag) => {
-    if (flag === 1) {
-        const {feedSpeed, feedDate} = contentSet.value.FullSpeedFeed;
-        DeviceManage.deviceList[AppGlobal.pageChance].recordFeedMode.FullSpeed = {
-            feedSpeed: feedSpeed !== null ? feedSpeed : 0,
-            feedDate: feedDate !== null ? feedDate : 0
-        };
-    } else if (flag === 2) {
-        const {feedSpeed, DOTopLimit, DOBottomLimit} = contentSet.value.LinearFeed;
-        DeviceManage.deviceList[AppGlobal.pageChance].recordFeedMode.Line = {
-            feedSpeed: feedSpeed !== null ? feedSpeed : 0,
-            DOTopLimit: DOTopLimit !== null ? DOTopLimit : 0,
-            DOBottomLimit: DOBottomLimit !== null ? DOBottomLimit : 0
-        };
-    } else if (flag === 3) {
-        const {feedSpeed, checkCycle, feedQuantity, DO} = contentSet.value.DutyFeed;
-        DeviceManage.deviceList[AppGlobal.pageChance].recordFeedMode.DutyCycle = {
-            feedSpeed: feedSpeed !== null ? feedSpeed : 0,
-            checkCycle: checkCycle !== null ? checkCycle : 0,
-            feedQuantity: feedQuantity !== null ? feedQuantity : 0,
-            DO: DO !== null ? DO : 0
-        };
-        
-    }
-}
 
-const controlSend = ((name, index) => {
-    if (name == 'beginFerment') {
-        if (batch_name.value !== null && batch_name.value !== '' && batch_name.value !== undefined) {
-            DeviceManage.deviceList[index].batch_name = batch_name.value;
-            if (batch_cycle.value !== null && batch_cycle.value !== '' && batch_cycle.value !== undefined) {
-                DeviceManage.deviceList[index].batch_cycle = toNumber(batch_cycle.value);
-            }
-            const data = {
-                start_flag: 1,
-                
-            }
-            sendData(index, data);
-            ProcessPopupMangerState.updateIsShowPop(false)
+
+const postFeedSet = (kind, index) => {
+    // 补料开关选择
+    if (kind === 0) {
+        if (localCache.value.supplementSwitch.type===index){
+            localCache.value.supplementSwitch.type=0
         }
-        
-        
+        else {
+            localCache.value.supplementSwitch.type = index
+        }
     }
+    else if (kind === 1) {
+        if (localCache.value.supplementMethod.type===index){
+            localCache.value.supplementMethod.type=0
+        }
+        else {
+            localCache.value.supplementMethod.type = index
+        }
+    }
+    else if (kind === 2) {
+        if (localCache.value.controlMethod.type===index){
+            localCache.value.controlMethod.type=0
+        }
+        else {
+            localCache.value.controlMethod.type = index
+        }
+    }
+    // 本地缓存提交全局
+    FeedManger.supplementSystem[AppGlobal.pageChance][AppGlobal.FeedSet]=localCache.value
+    // 从全局读取数据存入本地，做二次确认
+    localCache.value=FeedManger.supplementSystem[AppGlobal.pageChance][AppGlobal.FeedSet]
     
-    
+}
+onMounted(()=>{
+    // 同步补料设置数据
+    localCache.value=FeedManger.supplementSystem[AppGlobal.pageChance][AppGlobal.FeedSet]
 })
-
-
 // ______________________顺控_______________________
 const formData = reactive({
     items: [

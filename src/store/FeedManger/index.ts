@@ -6,14 +6,177 @@ const debug = false;
 const route = useRoute()
 const state = () => {
     return {
-        // 选择项-就是已经点击选择上的选项
-        pageChance: 0,
-        // 侧边展开
-        isDrawerState: true,
-        // 触摸项-就是鼠标触摸到的选项
-        selectedDeviceIndex:-1,
         
+        supplementSystem: [
+            [
+                {
+                totalSwitch: false, // 补料总开关，布尔值对应总的开启关闭
+                supplementSwitch: { // 补料开关
+                    type: 0, // 0未选择，1，2，3对应三种类型
+                    manual: false, // 手动补料是否开启
+                    trigger: { // 触发补料
+                        dissolvedOxygen: { // 溶氧
+                            upperLimit: null, // 溶氧上限
+                            lowerLimit: null, // 溶氧下限
+                            selected: false, // 是否选择
+                        },
+                        pH: { // PH
+                            upperLimit: null, // PH上限
+                            lowerLimit: null, // PH下限
+                            selected: false, // 是否选择
+                        },
+                        speed: { // 转速
+                            upperLimit: null, // 转速上限
+                            lowerLimit: null, // 转速下限
+                            selected: false, // 是否选择
+                        },
+                        logic: 0, // 且或补料逻辑，0代表未选择，1代表或，2代表且
+                        t0: false, // t0选择按钮是否开启
+                    },
+                    relatedSwitch: { // 关联开关，结构同trigger
+                        dissolvedOxygen: { // 溶氧
+                            upperLimit: null, // 溶氧上限
+                            lowerLimit: null, // 溶氧下限
+                            selected: false, // 是否选择
+                        },
+                        pH: { // PH
+                            upperLimit: null, // PH上限
+                            lowerLimit: null, // PH下限
+                            selected: false, // 是否选择
+                        },
+                        speed: { // 转速
+                            upperLimit: null, // 转速上限
+                            lowerLimit: null, // 转速下限
+                            selected: false, // 是否选择
+                        },
+                        logic: 0, // 且或补料逻辑，0代表未选择，1代表或，2代表且
+                    },
+                },
+                
+                supplementMethod: { // 补料方式
+                    type: 0, // 补料方式选择，持续补料为1，占空比补料为2
+                    dutyCycle: { // 占空比补料内容设置
+                        opening: null, // 补料开度
+                        detectionPeriod: null, // 检测周期
+                    },
+                },
+                
+                controlMethod: { // 控制方式
+                    type: 0, // 控制方式选择，单次补料1，恒速补料2，分段补料3，线性补料4，指数补料5
+                    single: { // 单次补料内容设置
+                        amount: null, // 补料量
+                        cycle: null, // 关联周期
+                        speed: null, // 补料速度
+                    },
+                    constant: { // 恒速补料内容设置
+                        speed: null, // 补料速度
+                    },
+                    segmented: { // 分段补料内容设置
+                        sequenceControl: [ // 数组顺控表
+                            // { id: null, supplementSpeed: null, segmentTime: null, totalSegmentTime: null }, ...
+                        ],
+                    },
+                    linear: { // 线性补料内容设置
+                        initialValue: null, // 时间初始值
+                        offset: null, // 偏移量
+                        slope: null, // 斜率
+                        speedUpperLimit: null, // 速度上限
+                        speedLowerLimit: null, // 速度下限
+                    },
+                    exponential: { // 指数补料内容设置
+                        offset: null, // 偏移量
+                        initialValue: null, // 时间初始值
+                        exponent: null, // 指数量
+                        speedUpperLimit: null, // 速度上限
+                        speedLowerLimit: null, // 速度下限
+                    },
+                },
+            },
+                {
+                totalSwitch: false, // 补料总开关，布尔值对应总的开启关闭
+                supplementSwitch: { // 补料开关
+                    type: 0, // 0未选择，1，2，3对应三种类型
+                    manual: false, // 手动补料是否开启
+                    trigger: { // 触发补料
+                        dissolvedOxygen: { // 溶氧
+                            upperLimit: null, // 溶氧上限
+                            lowerLimit: null, // 溶氧下限
+                            selected: false, // 是否选择
+                        },
+                        pH: { // PH
+                            upperLimit: null, // PH上限
+                            lowerLimit: null, // PH下限
+                            selected: false, // 是否选择
+                        },
+                        speed: { // 转速
+                            upperLimit: null, // 转速上限
+                            lowerLimit: null, // 转速下限
+                            selected: false, // 是否选择
+                        },
+                        logic: 1, // 且或补料逻辑，1代表或，2代表且
+                        t0: false, // t0选择按钮是否开启
+                    },
+                    relatedSwitch: { // 关联开关，结构同trigger
+                        dissolvedOxygen: { // 溶氧
+                            upperLimit: null, // 溶氧上限
+                            lowerLimit: null, // 溶氧下限
+                            selected: false, // 是否选择
+                        },
+                        pH: { // PH
+                            upperLimit: null, // PH上限
+                            lowerLimit: null, // PH下限
+                            selected: false, // 是否选择
+                        },
+                        speed: { // 转速
+                            upperLimit: null, // 转速上限
+                            lowerLimit: null, // 转速下限
+                            selected: false, // 是否选择
+                        },
+                        logic: 0, // 且或补料逻辑，0代表未选择，1代表或，2代表且
+                    },
+                },
+                
+                supplementMethod: { // 补料方式
+                    type: 0, // 补料方式选择，持续补料为1，占空比补料为2
+                    dutyCycle: { // 占空比补料内容设置
+                        opening: null, // 补料开度
+                        detectionPeriod: null, // 检测周期
+                    },
+                },
+                
+                controlMethod: { // 控制方式
+                    type: 0, // 控制方式选择，单次补料1，恒速补料2，分段补料3，线性补料4，指数补料5
+                    single: { // 单次补料内容设置
+                        amount: null, // 补料量
+                        cycle: null, // 关联周期
+                        speed: null, // 补料速度
+                    },
+                    constant: { // 恒速补料内容设置
+                        speed: null, // 补料速度
+                    },
+                    segmented: { // 分段补料内容设置
+                        sequenceControl: [ // 数组顺控表
+                            // { id: null, supplementSpeed: null, segmentTime: null, totalSegmentTime: null }, ...
+                        ],
+                    },
+                    linear: { // 线性补料内容设置
+                        initialValue: null, // 时间初始值
+                        offset: null, // 偏移量
+                        slope: null, // 斜率
+                        speedUpperLimit: null, // 速度上限
+                        speedLowerLimit: null, // 速度下限
+                    },
+                    exponential: { // 指数补料内容设置
+                        offset: null, // 偏移量
+                        initialValue: null, // 时间初始值
+                        exponent: null, // 指数量
+                        speedUpperLimit: null, // 速度上限
+                        speedLowerLimit: null, // 速度下限
+                    },
+                },
+            }]
         
+        ]
         
         
     }
@@ -24,14 +187,5 @@ const state = () => {
  */
 export const useFeedManger = defineStore('FeedManger', {
     state,
-    actions: {
-        
-        updatePageChance(newpageChance: number) {
-            this.pageChance = newpageChance;
-        },
-        updateDrawerState(newDrawerState: boolean) {
-            this.isDrawerState = newDrawerState;
-        }
-        
-    },
+    actions: {},
 });
