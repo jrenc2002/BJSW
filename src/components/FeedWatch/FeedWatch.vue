@@ -132,6 +132,35 @@ onMounted(() => {
                     return;
                 }
                 // ————————————————— 控制方式的逻辑判断 —————————————————————————
+                if (feedSet.controlMethod.type===1){
+                    // 单次补料
+                    controlSend('单次补料',feedSet)
+                }else if (feedSet.controlMethod.type===2){
+                    // 恒速补料
+                    controlSend('恒速补料',feedSet)
+                }else if (feedSet.controlMethod.type===3){
+                    // 分段补料
+                    controlSend('分段补料',feedSet)
+                }else if (feedSet.controlMethod.type===4){
+                    // 线性补料
+                    controlSend('线性补料',feedSet)
+                }else if (feedSet.controlMethod.type===5){
+                    // 指数补料
+                    controlSend('指数补料',feedSet)
+                }else  {
+                    Swal.fire({
+                        icon: 'warning', //error\warning\info\question
+                        title: '补料警告',
+                        text: Math.floor(feedSet.id / 2)+'号设备补料已启动但未选择控制方式。',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: '确认',
+                        confirmButton: false,
+                        cancelButtonText: '取消',
+                    });
+                    return;
+                }
                 
     
     
