@@ -41,8 +41,8 @@
       </div>
     </div>
   </div>
-
-
+    
+    <FeedWatch></FeedWatch>
 </template>
 <script lang="js" setup>
 import {reactive, onMounted, onUnmounted, watch, ref} from 'vue';
@@ -51,6 +51,8 @@ import {useDeviceManage} from '@/store/DeviceManage'
 import {useAppGlobal} from '@/store/AppGlobal'
 import {usePopupMangerState} from "@/store/PopupMangerState";
 import {initDeviceManage, sendData} from '@/api/index.js'
+import FeedWatch from '@/components/FeedWatch/FeedWatch.vue'
+
 const PopupMangerState = usePopupMangerState()
 const AppGlobal = useAppGlobal();
 const DeviceManage = useDeviceManage();

@@ -307,10 +307,10 @@
                         <div class="    w-full origin-top-right divide-y divide-gray-100  bg-white  ring-1 ring-black ring-opacity-5 focus:outline-none">
     
                             <div class="py-1" >
-                                <div :class="[localCache.supplementSwitch.relatedSwitch.dissolvedOxygen.selected ? 'bg-gray-100 text-gray-900' : 'text-gray-700', 'group flex items-center text-sm cursor-pointer  py-1']">
+                                <div :class="[localCache.supplementSwitch.related.dissolvedOxygen.selected ? 'bg-gray-100 text-gray-900' : 'text-gray-700', 'group flex items-center text-sm cursor-pointer  py-1']">
             
             
-                                    <input id="name" v-model="localCache.supplementSwitch.relatedSwitch.dissolvedOxygen.upperLimit"
+                                    <input id="name" v-model="localCache.supplementSwitch.related.dissolvedOxygen.upperLimit"
                                            class="block w-[2rem]  h-[100%] bg-transparent " name="name"
                                            placeholder="上限"
                                            type="text"/>
@@ -337,7 +337,7 @@
             
                                     <BeakerIcon aria-hidden="true"
                                                 class="mr-1 h-5 w-5 text-gray-400 group-hover:text-gray-500"/>
-                                    <span class="mr-1 h-5 w-7 " @click="localCache.supplementSwitch.relatedSwitch.dissolvedOxygen.selected=!localCache.supplementSwitch.relatedSwitch.dissolvedOxygen.selected">
+                                    <span class="mr-1 h-5 w-7 " @click="localCache.supplementSwitch.related.dissolvedOxygen.selected=!localCache.supplementSwitch.related.dissolvedOxygen.selected">
                                         溶氧
                                     </span>
                                     <kbd class="kbd kbd-sm mr-1">
@@ -360,7 +360,7 @@
                                             </g>
                                         </svg>
                                     </kbd>
-                                    <input id="name" v-model="localCache.supplementSwitch.relatedSwitch.dissolvedOxygen.lowerLimit"
+                                    <input id="name" v-model="localCache.supplementSwitch.related.dissolvedOxygen.lowerLimit"
                                            class="block w-[2rem]  h-[100%] bg-transparent " name="name"
                                            placeholder="下限"
                                            type="text"/>
@@ -368,8 +368,8 @@
                             </div>
                             <div class="py-1" >
         
-                                <div :class="[localCache.supplementSwitch.relatedSwitch.pH.selected ? 'bg-gray-100 text-gray-900' : 'text-gray-700', 'group flex items-center text-sm cursor-pointer  py-1']">
-                                    <input id="name" v-model="localCache.supplementSwitch.relatedSwitch.pH.upperLimit"
+                                <div :class="[localCache.supplementSwitch.related.pH.selected ? 'bg-gray-100 text-gray-900' : 'text-gray-700', 'group flex items-center text-sm cursor-pointer  py-1']">
+                                    <input id="name" v-model="localCache.supplementSwitch.related.pH.upperLimit"
                                            class="block w-[2rem]  h-[100%] bg-transparent " name="name"
                                            placeholder="上限"
                                            type="text"/>
@@ -396,7 +396,7 @@
             
                                     <EyeDropperIcon aria-hidden="true"
                                                     class="mr-1 h-5 w-5 text-gray-400 group-hover:text-gray-500"/>
-                                    <span class="mr-1 h-5 w-7 " @click="localCache.supplementSwitch.relatedSwitch.pH.selected=!localCache.supplementSwitch.relatedSwitch.pH.selected">
+                                    <span class="mr-1 h-5 w-7 " @click="localCache.supplementSwitch.related.pH.selected=!localCache.supplementSwitch.related.pH.selected">
                                         PH
                                     </span>
                                     <kbd class="kbd kbd-sm mr-1">
@@ -418,7 +418,7 @@
                                             </g>
                                         </svg>
                                     </kbd>
-                                    <input id="name" v-model="localCache.supplementSwitch.relatedSwitch.pH.lowerLimit"
+                                    <input id="name" v-model="localCache.supplementSwitch.related.pH.lowerLimit"
                                            class="block w-[2rem]  h-[100%] bg-transparent " name="name"
                                            placeholder="下限"
                                            type="text"/>
@@ -426,8 +426,8 @@
                             </div>
                             <div class="py-1" >
         
-                                <div :class="[localCache.supplementSwitch.relatedSwitch.speed.selected ? 'bg-gray-100 text-gray-900' : 'text-gray-700', 'group flex items-center text-sm cursor-pointer  py-1']">
-                                    <input id="name" v-model="localCache.supplementSwitch.relatedSwitch.speed.upperLimit"
+                                <div :class="[localCache.supplementSwitch.related.speed.selected ? 'bg-gray-100 text-gray-900' : 'text-gray-700', 'group flex items-center text-sm cursor-pointer  py-1']">
+                                    <input id="name" v-model="localCache.supplementSwitch.related.speed.upperLimit"
                                            class="block w-[2rem]  h-[100%]  bg-transparent" name="name"
                                            placeholder="上限"
                                            type="text"/>
@@ -454,7 +454,7 @@
                                     
                                     <ArrowPathIcon aria-hidden="true"
                                                    class="mr-1 h-5 w-5 text-gray-400 group-hover:text-gray-500"/>
-                                    <span class="mr-1 h-5 w-7 " @click="localCache.supplementSwitch.relatedSwitch.speed.selected=!localCache.supplementSwitch.relatedSwitch.speed.selected">
+                                    <span class="mr-1 h-5 w-7 " @click="localCache.supplementSwitch.related.speed.selected=!localCache.supplementSwitch.related.speed.selected">
                                         转速
                                     </span>
                                     <kbd class="kbd kbd-sm mr-1">
@@ -476,7 +476,7 @@
                                             </g>
                                         </svg>
                                     </kbd>
-                                    <input id="name" v-model="localCache.supplementSwitch.relatedSwitch.speed.lowerLimit"
+                                    <input id="name" v-model="localCache.supplementSwitch.related.speed.lowerLimit"
                                            class="block w-[2rem]  h-[100%] bg-transparent " name="name"
                                            placeholder="下限"
                                            type="text"/>
@@ -489,8 +489,8 @@
                     <div class="w-[10%]  h-full flex-col justify-center items-start m-3">
                         <div class="h-full  flex  justify-center items-center flex-col">
     
-                            <div class="cursor-pointer " @click="localCache.supplementSwitch.relatedSwitch.logic===1?localCache.supplementSwitch.relatedSwitch.logic=0:localCache.supplementSwitch.relatedSwitch.logic=1">
-                                <kbd class="kbd kbd-sm ">{{localCache.supplementSwitch.relatedSwitch.logic===1?'或':'且'}}</kbd>
+                            <div class="cursor-pointer " @click="localCache.supplementSwitch.related.logic===1?localCache.supplementSwitch.related.logic=0:localCache.supplementSwitch.related.logic=1">
+                                <kbd class="kbd kbd-sm ">{{ localCache.supplementSwitch.related.logic === 1 ? '或' : '且' }}</kbd>
                             </div>
                         
                         
@@ -611,7 +611,8 @@
                             <div class="w-24 justify-start items-center flex">
                                 实际流速
                             </div>
-                            <input id="name" v-model="contentSet.DutyFeed.oxygen_trigger" class="block w-[80%]  border-b-2  m-2"
+                            <!--todo 绑定实际流速-->
+                            <input id="name" v-model="DeviceManage.deviceList[AppGlobal.pageChance]" class="block w-[80%]  border-b-2  m-2"
                                    disabled name="name" placeholder="实际流速"
                                    required type="number"/>
                         
@@ -1242,13 +1243,26 @@
                 <div class="w-full h-14 bg-[#DAF0E4] rounded-t-2xl flex justify-center items-center">分段补料设置</div>
                 <div class="h-[calc(100%-3.5rem)] w-[23rem] justify-start items-center flex-col flex">
                     <div class="w-[calc(100%-0.5rem)] h-[85%] absolute overflow-y-auto">
+                        <button class="flex m-2 w-[96%] text-sm hover:bg-green-50 border-2 p-4 border-[#83BA9B] rounded-lg justify-center items-center"
+                                type="button" @click="updateTotalSegmentTime()">
+                            <div class="w-1/5 text-center "> 序号</div>
+    
+                            <div class="w-1/5 text-center ">速度</div>
+    
+                            <div class="w-1/5 text-center ">设定时间</div>
+    
+                            <div class="w-1/5 text-center ">已分配</div>
+    
+                            <div class="w-1/5 text-center ">删除</div>
+                        </button>
                         <form @submit.prevent="submitForm">
                             <div v-for="(item, index) in formData.items" :key="item.id"
                                  class="flex m-2 border-2 p-4 border-[#83BA9B] rounded-lg">
-                                <input v-model="item.id" class="w-1/4 text-center " placeholder="序号" type="text">
-                                <input v-model="item.speed" class="w-1/4 " placeholder="补料速度" type="text">
-                                <input v-model="item.time" class="w-1/4 " placeholder="区段时间" type="text">
-                                <button class="w-1/4 " type="button" @click="removeItem(index)">删除</button>
+                                <input v-model="item.id" class="w-1/5 text-center " placeholder="序号" type="text">
+                                <input v-model="item.supplementSpeed" class="w-1/5 text-center"  type="number">
+                                <input v-model="item.segmentTime" class="w-1/5 text-center"  type="number">
+                                <input v-model="item.totalSegmentTime" class="w-1/5 text-center" disabled  type="text">
+                                <button class="w-1/5 text-center" type="button" @click="removeItem(index)" >删除</button>
                             </div>
                         </form>
                         <button class="flex ml-2 w-[96%] hover:bg-green-50 border-2 p-4 border-[#83BA9B] rounded-lg justify-center items-center"
@@ -1264,7 +1278,7 @@
                     <div class="flex  w-full h-12 absolute bottom-2">
                         <div class="absolute left-2 w-28 h-12 justify-center items-center flex">发酵时间</div>
                         <button class=" bg-[#83BA9B] hover:bg-green-800 text-white rounded-xl w-28 h-12 absolute right-2"
-                                type="submit">
+                                type="submit" @click="submitForm()">
                             保存数据
                         </button>
                     </div>
@@ -1280,7 +1294,7 @@
 
 </template>
 
-<script lang='ts' setup>
+<script lang='js' setup>
 // todo 1。双击是取消选择还是反复提交？
 // todo 2. 作用域同步目前是使用的onMounted去同步，但补料泵1切换补料泵2不会触发，可以用监听或者其他生命阶段去实现双补料泵的数据作用域隔断。
 
@@ -1293,33 +1307,12 @@ import {Menu, MenuButton, MenuItem, MenuItems, Switch} from '@headlessui/vue'
 import {ArrowPathIcon, BeakerIcon, ChevronDownIcon, EyeDropperIcon,} from '@heroicons/vue/20/solid'
 import {useFeedManger} from "@/store/FeedManger";
 
-const enabled = ref(false)
 const DeviceManage = useDeviceManage();
 const ProcessPopupMangerState = useProcessPopupMangerState()
 const AppGlobal = useAppGlobal();
 const FeedManger = useFeedManger();
 
-// ______________________表单_______________________
-const contentSet = ref({
-    FullSpeedFeed: {
-        feedSpeed: null,
-        feedDate: null,
-    },
-    LinearFeed: {
-        feedSpeed: null,
-        DOTopLimit: null,
-        DOBottomLimit: null
-    },
-    DutyFeed: {
-        feedSpeed: null,
-        checkCycle: null,
-        feedQuantity: null,
-        DO: null
-    },
-    chance: 0,
-    
-    
-});
+
 
 // ______________________本地缓存_______________________
 const localCache = ref({
@@ -1343,10 +1336,10 @@ const localCache = ref({
                 lowerLimit: null, // 转速下限
                 selected: false, // 是否选择
             },
-            logic: 1, // 且或补料逻辑，1代表或，2代表且
+            logic: 1, // 且或补料逻辑，0代表或，1代表且
             t0: false, // t0选择按钮是否开启
         },
-        relatedSwitch: { // 关联开关，结构同trigger
+        related: { // 关联开关，结构同trigger
             dissolvedOxygen: { // 溶氧
                 upperLimit: null, // 溶氧上限
                 lowerLimit: null, // 溶氧下限
@@ -1362,7 +1355,7 @@ const localCache = ref({
                 lowerLimit: null, // 转速下限
                 selected: false, // 是否选择
             },
-            logic: 1, // 且或补料逻辑，1代表或，2代表且
+            logic: 1, // 且或补料逻辑，0代表或，1代表且
         },
     },
     
@@ -1447,23 +1440,47 @@ onMounted(()=>{
 // ______________________顺控_______________________
 const formData = reactive({
     items: [
-        {id: 1, speed: '', time: ''},
         // 更多的项目可以根据需要添加
+        { id: 1, supplementSpeed: 23, segmentTime: 10, totalSegmentTime: 0 },
+        { id: 2, supplementSpeed: 23, segmentTime: 10, totalSegmentTime: 10 },
     ]
 });
 
 const addItem = () => {
     const nextId = formData.items.length + 1;
-    formData.items.push({id: nextId, speed: '', time: ''});
+    
+    formData.items.push( { id: nextId, supplementSpeed: null, segmentTime: null, totalSegmentTime: null });
+    updateTotalSegmentTime();
 };
 
 const removeItem = (index) => {
     formData.items.splice(index, 1);
+    updateTotalSegmentTime();
 };
-
+const updateTotalSegmentTime = () => {
+    // 重新排序 id
+    formData.items.forEach((item, index) => {
+        item.id = index + 1;
+    });
+    
+    // 计算 totalSegmentTime
+    formData.items.forEach((item, index) => {
+        let total = 0;
+        for (let i = 0; i < index; i++) {
+            
+            total += formData.items[i].segmentTime;
+        }
+        item.totalSegmentTime = total+'h';
+    });
+};
 const submitForm = () => {
     // 这里可以添加提交表单的逻辑
-    console.log('Form Data:', formData.items);
+    localCache.value.controlMethod.segmented.sequenceControl=formData.items
+    // 本地缓存提交全局
+    FeedManger.supplementSystem[AppGlobal.pageChance][AppGlobal.FeedSet]=localCache.value
+    // 从全局读取数据存入本地，做二次确认
+    localCache.value=FeedManger.supplementSystem[AppGlobal.pageChance][AppGlobal.FeedSet]
+ 
 };
 // ______________________功能函数_______________________
 const closePop = () => {

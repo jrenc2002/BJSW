@@ -23,6 +23,8 @@
     "core-js": "^3.8.3",
     "daisyui": "^3.3.1",
     "echarts": "^5.4.3",
+    "electron-builder": "^24.6.4",
+    "electron-rebuild": "^3.2.9",
     "element-plus": "^2.3.8",
     "express": "^4.18.2",
     "heroicons": "^2.0.18",
@@ -35,6 +37,7 @@
     "postcss-cli": "^10.1.0",
     "rebuild": "^0.1.2",
     "sqlite3": "^5.1.6",
+    "sweetalert2": "^11.10.1",
     "vant": "^4.7.1",
     "vue": "^3.2.13",
     "vue-class-component": "^8.0.0-0",
@@ -43,9 +46,7 @@
     "vuex": "^4.0.0",
     "vxe-table": "^4.5.5",
     "xe-clipboard": "^1.10.2",
-    "xe-utils": "^3.5.12",
-    "electron-builder": "^24.6.4",
-    "electron-rebuild": "^3.2.9"
+    "xe-utils": "^3.5.12"
   },
   "devDependencies": {
     "@types/electron-devtools-installer": "^2.2.0",
