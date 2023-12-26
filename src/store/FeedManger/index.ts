@@ -11,7 +11,11 @@ const state = () => {
             [
                 {
                     id: 0,
-                    t0_time: new Date(), // t0时间
+                    time:{
+                        t0_time: new Date(), // t0时间
+                        t0_time_diff: 0, // t0时间差
+                        
+                    },
                     totalSwitch: false, // 补料总开关，布尔值对应总的开启关闭
                     supplementSwitch: { // 补料开关
                         type: 0, // 0未选择，1，2，3对应三种类型
@@ -67,7 +71,7 @@ const state = () => {
                         type: 0, // 控制方式选择，单次补料1，恒速补料2，分段补料3，线性补料4，指数补料5
                         single: { // 单次补料内容设置
                             amount: null, // 补料量
-                            cycle: null, // 关联周期
+                            cycle: null, // 冷却周期
                             speed: null, // 补料速度
                         },
                         constant: { // 恒速补料内容设置
@@ -79,7 +83,6 @@ const state = () => {
                             ],
                         },
                         linear: { // 线性补料内容设置
-                            initialValue: null, // 时间初始值
                             offset: null, // 偏移量
                             slope: null, // 斜率
                             speedUpperLimit: null, // 速度上限
@@ -87,7 +90,6 @@ const state = () => {
                         },
                         exponential: { // 指数补料内容设置
                             offset: null, // 偏移量
-                            initialValue: null, // 时间初始值
                             exponent: null, // 指数量
                             speedUpperLimit: null, // 速度上限
                             speedLowerLimit: null, // 速度下限
@@ -96,7 +98,11 @@ const state = () => {
                 },
                 {
                     id: 1,
-                    t0_time: null, // t0时间
+                    time:{
+                        t0_time: new Date(), // t0时间
+                        t0_time_diff: 0, // t0时间差
+        
+                    },
                     totalSwitch: false, // 补料总开关，布尔值对应总的开启关闭
                     supplementSwitch: { // 补料开关
                         type: 0, // 0未选择，1，2，3对应三种类型
@@ -152,7 +158,7 @@ const state = () => {
                         type: 0, // 控制方式选择，单次补料1，恒速补料2，分段补料3，线性补料4，指数补料5
                         single: { // 单次补料内容设置
                             amount: null, // 补料量
-                            cycle: null, // 关联周期
+                            cycle: null, // 冷却周期
                             speed: null, // 补料速度
                         },
                         constant: { // 恒速补料内容设置
@@ -164,7 +170,6 @@ const state = () => {
                             ],
                         },
                         linear: { // 线性补料内容设置
-                            initialValue: null, // 时间初始值
                             offset: null, // 偏移量
                             slope: null, // 斜率
                             speedUpperLimit: null, // 速度上限
@@ -172,7 +177,6 @@ const state = () => {
                         },
                         exponential: { // 指数补料内容设置
                             offset: null, // 偏移量
-                            initialValue: null, // 时间初始值
                             exponent: null, // 指数量
                             speedUpperLimit: null, // 速度上限
                             speedLowerLimit: null, // 速度下限

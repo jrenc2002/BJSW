@@ -657,7 +657,7 @@
                                 </div>
                                 <input id="name" v-model="localCache.controlMethod.single.amount"
                                        class="block w-[80%]  border-b-2 m-2"
-                                       name="name" placeholder="请填补料量" required
+                                       name="name" placeholder="补料量" required
                                        type="number"/>
                             
                             </div>
@@ -668,17 +668,17 @@
                                 </div>
                                 <input id="name" v-model="localCache.controlMethod.single.speed"
                                        class="block w-[80%]  border-b-2  m-2" name="name"
-                                       placeholder="请填补料速度" required
+                                       placeholder="补料速度" required
                                        type="number"/>
     
                             </div>
                             <div class="h-1/3  flex ">
                                 <div class="w-24 justify-start items-center flex">
-                                    关联周期
+                                    冷却周期
                                 </div>
                                 <input id="name" v-model="localCache.controlMethod.single.cycle"
                                        class="block w-[80%]  border-b-2  m-2" name="name"
-                                       placeholder="请填关联周期" required
+                                       placeholder="冷却周期" required
                                        type="number"/>
                             
                             </div>
@@ -891,7 +891,7 @@
                                         </svg>
                                     </kbd>
                                 </div>
-                                <input id="name" v-model="localCache.controlMethod.linear.initialValue"
+                                <input id="name" v-model="localCache.time.t0_time_diff"
                                        class="block w-[80%]  border-b-2 m-2" name="name"
                                        placeholder="时间初始值" required
                                        type="number"/>
@@ -1174,7 +1174,7 @@
                                         </svg>
                                     </kbd>
                                 </div>
-                                <input id="name" v-model="localCache.controlMethod.exponential.initialValue"
+                                <input id="name" v-model="localCache.time.t0_time_diff"
                                        class="block w-[80%]  border-b-2  m-2" name="name"
                                        placeholder="请填检测周期" required
                                        type="number"/>
@@ -1317,6 +1317,11 @@ const FeedManger = useFeedManger();
 // ______________________本地缓存_______________________
 const localCache = ref({
     totalSwitch: false, // 补料总开关，布尔值对应总的开启关闭
+    time:{
+        t0_time: new Date(), // t0时间
+        t0_time_diff: 0, // t0时间差
+        
+    },
     supplementSwitch: { // 补料开关
         type: 0, // 0未选择，1，2，3对应三种类型
         manual: false, // 手动补料是否开启
@@ -1383,7 +1388,6 @@ const localCache = ref({
             ],
         },
         linear: { // 线性补料内容设置
-            initialValue: null, // 时间初始值
             offset: null, // 偏移量
             slope: null, // 斜率
             speedUpperLimit: null, // 速度上限
@@ -1391,7 +1395,6 @@ const localCache = ref({
         },
         exponential: { // 指数补料内容设置
             offset: null, // 偏移量
-            initialValue: null, // 时间初始值
             exponent: null, // 指数量
             speedUpperLimit: null, // 速度上限
             speedLowerLimit: null, // 速度下限
