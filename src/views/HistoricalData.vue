@@ -446,7 +446,7 @@ const updateBatchData = () => {
 
   let deviceNum = DeviceManage.deviceList[AppGlobal.pageChance]?.deviceNum;
   if (deviceNum) {
-    window.Electron.ipcRenderer.invoke('get-fermentation-batch-data', deviceNum).then(
+    window.Electron.ipcRenderer.invoke('get-batches-by-can', deviceNum).then(
         (res) => {
           if (res) { // 确保res是有效的
             batchdata.value = res;
@@ -470,7 +470,7 @@ const updateBatchContentData = () => {
     return;
   }
 
-  window.Electron.ipcRenderer.invoke('get-fermentation-data-by-batch-id', selectedBatch.value).then(
+  window.Electron.ipcRenderer.invoke('get-data-by-batch', selectedBatch.value).then(
       (res) => {
         if (res) { // 确保res是有效的
           gridOptions.data = res;

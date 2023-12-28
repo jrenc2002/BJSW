@@ -16,7 +16,7 @@ interface SetData {
     acid_KD: number;                 // PID参数
     lye_KP: number;                  // PID参数
     lye_KI: number;                  // PID参数
-    lye_KD: number;                  // PID参数
+    lye_KD: number;                  // PID参m数
     acid_ml: number;                 // 酸泵目前送料量
     lye_ml: number;                  // 碱泵目前送料量
     PH_upper_limit: number;          // PH上限值
@@ -390,3 +390,4 @@ export const useDeviceManage = defineStore('DeviceManage', {
 
     },
 });
+

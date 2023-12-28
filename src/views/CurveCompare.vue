@@ -20,7 +20,7 @@
                 <div class="h-[100%]  bg-white border-8 border-[#A8CDB8] rounded-xl relative flex">
                     <div class="w-[10rem] h-full  border-r-2 border-[#EBEBEB] overflow-auto">
                         <template v-if="ChartsData.chartSelected==1">
-                            <div v-for="item in DeviceSelect" :key="item.name"
+                            <div v-for="item in ChartsData.deviceSelected" :key="item.name"
                                  class="w-full h-24  flex justify-center items-center">
                                 <div :class="[item.selected?'bg-[#DAF0E4] text-black':'text-gray-500']"
                                      class="w-full mx-4 rounded-xl text-center  h-14 flex items-center justify-center cursor-pointer"
@@ -30,7 +30,7 @@
                             </div>
                         </template>
                         <template v-else>
-                            <div v-for="item in ParameterSelect" :key="item.name"
+                            <div v-for="item in ChartsData.paramSelected" :key="item.name"
                                  class="w-full h-[10%]  flex justify-center items-center">
                                 <div :class="[item.selected?'bg-[#DAF0E4] text-black':'text-gray-500']"
                                      class="w-full mx-4 rounded-xl text-center  h-14 flex items-center justify-center cursor-pointer"
@@ -41,11 +41,11 @@
                         </template>
                     </div>
                     <div class="h-full w-[calc(100%-10rem)] flex justify-center items-center">
-<!--                        单罐-->
+                        <!--单罐-->
                         <SingleAnalyCharts v-show="ChartsData.chartSelected==0" id="1" ref="SingleTank" :data="data"
                                            class=" w-full relative left-0 "
                         ></SingleAnalyCharts>
-<!--                        单参数-->
+                        <!--单参数-->
                         <ParamAnalyCharts v-show="ChartsData.chartSelected==1" id="2" ref="SingleParam" :data="data"
                                           class=" w-full relative left-0 ">
                         </ParamAnalyCharts>
@@ -108,56 +108,13 @@ let data = [data1, data2, data3]
 /* ——————————————————————————定时器时间函数配置—————————————————————————— */
 
 /* ——————————————————————————参数选择器—————————————————————————— */
-const ParameterSelect = ref<any>([
-    {
-        name: '温度',
-        selected: false
-    },
-    {
-        name: '酸碱',
-        selected: false
-    },
-    {
-        name: '溶氧',
-        selected: false
-    },
-    {
-        name: '转速',
-        selected: false
-    },
-    {
-        name: '酸泵补料量',
-        selected: false
-    },
-    {
-        name: '碱泵补料量',
-        selected: false
-    },
-    {
-        name: '补料一补料量',
-        selected: false
-    },
-    {
-        name: '补料二补料量',
-        selected: false
-    },
-    {
-        name: '补料一流速',
-        selected: false
-    },
-    {
-        name: '补料二流速',
-        selected: false
-    },
-
-]);
+// paramSelected
 
 /* ——————————————————————————设备选择器—————————————————————————— */
-const DeviceSelect = ref<any>(null);
 
 function initToDeviceSelect() {
     
-    DeviceSelect.value = DeviceManage.deviceList.map(device => ({
+    ChartsData.deviceSelected = DeviceManage.deviceList.map(device => ({
         name: device.name,
         selected: false
     }));

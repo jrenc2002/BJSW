@@ -6,9 +6,54 @@ const debug = false;
 const route = useRoute()
 const state = () => {
     return {
-        // 选择项-就是已经点击选择上的选项
+        // 选择图表
         chartSelected: 0,
+        // 参数选择
+        paramSelected: [
+            {
+                name: '温度',
+                selected: false
+            },
+            {
+                name: '酸碱',
+                selected: false
+            },
+            {
+                name: '溶氧',
+                selected: false
+            },
+            {
+                name: '转速',
+                selected: false
+            },
+            {
+                name: '酸泵补料量',
+                selected: false
+            },
+            {
+                name: '碱泵补料量',
+                selected: false
+            },
+            {
+                name: '补料一补料量',
+                selected: false
+            },
+            {
+                name: '补料二补料量',
+                selected: false
+            },
+            {
+                name: '补料一流速',
+                selected: false
+            },
+            {
+                name: '补料二流速',
+                selected: false
+            },
 
+        ],
+        // 设备选择
+        deviceSelected: <any>[],
         
         
         
