@@ -212,7 +212,7 @@ const state = (): {
     return {
         deviceList: [
             {
-                id: 0, name: '设备A', deviceNum: "BAB-00", ip: '192.168.1.3', port: 2000,batch_cycle:0,
+                id: 0, name: '设备A', deviceNum: "CCC-022", ip: '192.168.1.3', port: 2000,batch_cycle:0,
                 state: 0, nowData: null, deviceSocket: null, start_time: null, batch_name: null,recordFlag: false,
                 alarm: false,recordFeedMode:{
                     FullSpeed:{

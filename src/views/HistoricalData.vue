@@ -89,6 +89,7 @@
 
           <vxe-grid
               ref="xGrid"
+              :scroll-y="{enabled: true}"
               v-bind="gridOptions"
               v-on="gridEvent"
           >
@@ -195,19 +196,6 @@ const gridEvent: VxeGridListeners<any> = {
 
 // 模拟数据接口
 const tableData = ref<any>([
-  {id: 10001, name: 'Test1', nickname: 'T1', role: 'Develop', sex: 'Man', age: 28, address: 'Shenzhen'},
-  {id: 10002, name: 'Test2', nickname: 'T2', role: 'Test', sex: 'Women', age: 22, address: 'Guangzhou'},
-  {id: 10003, name: 'Test3', nickname: 'T3', role: 'PM', sex: 'Man', age: 32, address: 'Shanghai'},
-  {id: 10004, name: 'Test4', nickname: 'T4', role: 'Designer', sex: 'Women', age: 23, address: 'Shenzhen'},
-  {id: 10005, name: 'Test5', nickname: 'T5', role: 'Develop', sex: 'Women', age: 30, address: 'Shanghai'},
-  {id: 10006, name: 'Test6', nickname: 'T6', role: 'Designer', sex: 'Women', age: 21, address: 'Shenzhen'},
-  {id: 10007, name: 'Test7', nickname: 'T7', role: 'Test', sex: 'Man', age: 29, address: 'test abc'},
-  {id: 10008, name: 'Test8', nickname: 'T8', role: 'Develop', sex: 'Man', age: 35, address: 'Shenzhen'},
-  {id: 10009, name: 'Test9', nickname: 'T9', role: 'Develop', sex: 'Man', age: 35, address: 'Shenzhen'},
-  {id: 100010, name: 'Test10', nickname: 'T10', role: 'Develop', sex: 'Man', age: 35, address: 'Guangzhou'},
-  {id: 100011, name: 'Test11', nickname: 'T11', role: 'Test', sex: 'Women', age: 26, address: 'test abc'},
-  {id: 100012, name: 'Test12', nickname: 'T12', role: 'Develop', sex: 'Man', age: 34, address: 'Guangzhou'},
-  {id: 100013, name: 'Test13', nickname: 'T13', role: 'Test', sex: 'Women', age: 22, address: 'Shenzhen'}
 ])
 
 const xGrid = ref<VxeGridInstance<any>>()
@@ -225,11 +213,22 @@ const gridOptions = reactive<VxeGridProps<any>>({
   },
   printConfig: {
     columns: [
-      { field: 'name' },
-      { field: 'email' },
-      { field: 'nickname' },
-      { field: 'age' },
-      { field: 'amount' }
+        { field: 'can_number' },
+        { field: 'timing_temp' },
+        { field: 'timing_PH' },
+        { field: 'timing_DO' },
+        { field: 'timing_motor_speed' },
+        { field: 'relative_time' },
+        { field: 'absolute_time'},
+        { field: 'acid_ml'},
+        { field: 'lye_ml'},
+        { field: 'clean_ml'},
+        { field: 'feed_ml' },
+        { field: 'defoamerPumpSpeed' },
+        { field: 'feedPumpSpeed'},
+        { field: 'fermentation_flag' },
+        { field: 'data_id' },
+        { field: 'batch_id' },
     ]
   },
   sortConfig: {
@@ -264,65 +263,26 @@ const gridOptions = reactive<VxeGridProps<any>>({
     refresh: true,
     zoom: true
   },
-  columns: [
-    // { type: 'seq', width: 60, fixed: 'left' },
-    // { field: 'time', title: '时间', minWidth: 160, fixed: 'left' },
-    // { field: 'timing_PH', title: '实时PH值', minWidth: 140 },
-    // { field: 'acid_speed', title: '酸泵实时送料速率', minWidth: 160 },
-    // { field: 'lye_speed', title: '碱泵实时送料速率', minWidth: 160 },
-    // { field: 'target_PH', title: '设定目标PH', minWidth: 160 },
-    // { field: 'acid_KP', title: '酸泵P', minWidth: 160 },
-    // { field: 'acid_KI', title: '酸泵I', minWidth: 160 },
-    // { field: 'acid_KD', title: '酸泵D', minWidth: 160 },
-    // { field: 'lye_KP', title: '碱泵P', minWidth: 160 },
-    // { field: 'lye_KI', title: '碱泵I', minWidth: 160 },
-    // { field: 'lye_KD', title: '碱泵D', minWidth: 160 },
-    // { field: 'acid_ml', title: '酸泵目前送料量', minWidth: 160 },
-    // { field: 'lye_ml', title: '碱泵目前送料量', minWidth: 160 },
-    // { field: 'acid_handle_speed_set', title: '酸泵手动送料速率设置', minWidth: 160 },
-    // { field: 'lye_handle_speed_set', title: '碱泵手动送料速率设置', minWidth: 160 },
-    // { field: 'PH_flag', title: 'PH控制开启/停止标志位', minWidth: 180 },
-    // { field: 'Ph_auto_handle', title: 'PH控制自动/手动控制标志位', minWidth: 210 },
-    // { field: 'timing_temp', title: '实时温度值', minWidth: 160 },
-    // { field: 'heatpower', title: '加热毯实时功率', minWidth: 160 },
-    // { field: 'target_temp', title: '设定目标温度值', minWidth: 160 },
-    // { field: 'Temp_KP', title: '温控KP', minWidth: 160 },
-    // { field: 'Temp_KI', title: '温控KI', minWidth: 160 },
-    // { field: 'Temp_KD', title: '温控KD', minWidth: 160 },
-    // { field: 'water_flag', title: '冷凝水通断标志位', minWidth: 160 },
-    // { field: 'temp_flag', title: '温控开启/停止标志位', minWidth: 160 },
-    // { field: 'cool_water_autoflag', title: '冷凝水通断控制自动/手动标志位', minWidth: 220 },
-    // { field: 'timing_DO', title: '实时DO值', minWidth: 160 },
-    // { field: 'oxy_ratio', title: '氧气通度', minWidth: 160 },
-    // { field: 'target_DO', title: '设定目标DO值', minWidth: 160 },
-    // { field: 'target_oxy_ratio', title: '氧气通度', minWidth: 160 },
-    // { field: 'DO_KP', title: '氧含量KP', minWidth: 160 },
-    // { field: 'DO_KI', title: '氧含量KI', minWidth: 160 },
-    // { field: 'DO_KD', title: '氧含量KD', minWidth: 160 },
-    // { field: 'DO_flag', title: '氧含量控制开启标志位', minWidth: 160 },
-    // { field: 'target_motor_speed', title: '电机转速', minWidth: 160 },
-    // { field: 'timing_motor_speed', title: '电机实时转速', minWidth: 160 },
-    // { field: 'motor_speed_l_limit', title: '电机转速下限', minWidth: 160 },
-    // { field: 'motor_speed_u_limit', title: '电机转速上限', minWidth: 160 },
-    // { field: 'motor_speed_autoflag', title: '转速关联氧含量开启/关闭标志位', minWidth: 220 },
-    // { field: 'oxy_flag', title: '通氧关联氧含量开启/关闭标志位', minWidth: 160 },
-    // { field: 'clean_speed', title: '消泡泵设定送料速率', minWidth: 160 },
-    // { field: 'clean_ml', title: '消泡泵目前送料量', minWidth: 160 },
-    // { field: 'clean_single_time', title: '消泡单次泵入时间', minWidth: 160 },
-    // { field: 'clean_flag', title: '消泡开启/停止标志位', minWidth: 160 },
-    // { field: 'feed_speed', title: '补料泵设定补料速率', minWidth: 160 },
-    // { field: 'feed_ml', title: '补料泵目前补料量', minWidth: 160 },
-    // { field: 'feed_DO_cu_limit', title: '补料关联氧含量上限值', minWidth: 160 },
-    // { field: 'feed_DO_cl_limit', title: '补料关联氧含量下限值', minWidth: 160 },
-    // { field: 'feed_DO_connect_flag', title: '补料关联氧含量标志位', minWidth: 160 },
-    // { field: 'feed_flag', title: '补料开启/停止标志位', minWidth: 160 },
-    // { field: 'feed_motor_connect_flag', title: '补料关联转速标志位', minWidth: 160 },
-    // { field: 'feed_DO_motor_connect_flag', title: '补料双关联转速、氧含量标志位', minWidth: 210 },
-    // { field: 'feed_motor_flag', title: '补料泵开启标志位', minWidth: 160 },
-    // { field: 'feed_motor_cu_limit', title: '补料关联转速上限值', minWidth: 160 },
-    // { field: 'feed_motor_cl_limit', title: '补料关联转速下限值', minWidth: 160 },
-    // { field: 'start_flag', title: '发酵开始标志位', minWidth: 160 }
-  ]
+columns: [
+    
+    { field: 'absolute_time', title: '绝对时间', minWidth: 160,fixed: 'left' },
+    { field: 'timing_temp', title: '实时温度', minWidth: 160 },
+    { field: 'timing_PH', title: '实时PH值', minWidth: 160 },
+    { field: 'timing_DO', title: '实时溶氧值', minWidth: 160 },
+    { field: 'timing_motor_speed', title: '电机速度', minWidth: 160 },
+    { field: 'relative_time', title: '相对时间', minWidth: 160 },
+    { field: 'acid_ml', title: '酸泵目前送料量', minWidth: 160 },
+    { field: 'lye_ml', title: '碱泵目前送料量', minWidth: 160 },
+    { field: 'clean_ml', title: '补料泵一目前送料量', minWidth: 160 },
+    { field: 'feed_ml', title: '补料泵二目前送料量', minWidth: 160 },
+    { field: 'defoamerPumpSpeed', title: '补料泵一速度', minWidth: 160 },
+    { field: 'feedPumpSpeed', title: '补料泵二速度', minWidth: 160 },
+    { field: 'fermentation_flag', title: '发酵标志', minWidth: 160 },
+    { field: 'data_id', title: '数据ID', minWidth: 160 },
+    { field: 'batch_id', title: '批次ID', minWidth: 160 },
+    { field: 'can_number', title: '罐编号', minWidth: 160 },
+]
+
 });
 
 
@@ -334,38 +294,6 @@ const zoomEvent = () => {
   }
 }
 
-// 右键
-const gridEvents = reactive<VxeGridListeners<any>>({
-  cellMenu({row}) {
-    const $grid = xGrid.value
-    if ($grid) {
-      $grid.setCurrentRow(row)
-    }
-  },
-  menuClick({menu, row, column}) {
-    const $grid = xGrid.value
-    if ($grid) {
-      switch (menu.code) {
-        case 'copy':
-          if (row && column) {
-            if (XEClipboard.copy(row[column.field])) {
-              VXETable.modal.message({content: '已复制到剪贴板！', status: 'success'})
-            }
-          }
-          break
-        case 'clear':
-          $grid.clearData(row, column.field)
-          break
-        case 'myPrint':
-          $grid.print()
-          break
-        case 'myExport':
-          $grid.exportData()
-          break
-      }
-    }
-  }
-})
 // 打印
 const printEvent1: VxeButtonEvents.Click = () => {
   const $table = xGrid.value

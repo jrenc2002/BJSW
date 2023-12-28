@@ -145,8 +145,8 @@
             <!--自定义空数据模板-->
             <template #empty>
               <span style="color: red;">
-                <img src="https://pic2.zhimg.com/50/v2-f7031359103859e1ed38559715ef5f3f_hd.gif">
-                <p>没有更多数据了！</p>
+       
+                <p>暂无数据</p>
               </span>
             </template>
 

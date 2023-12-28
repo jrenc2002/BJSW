@@ -95,13 +95,12 @@ export function createInitDB(): any {
         }
         
         return new Promise((resolve, reject) => {
-            const query = 'SELECT * FROM fermentation_batch WHERE can_number = ?';
+            const query = 'SELECT * FROM fermentation_data WHERE batch_id = ? ORDER BY absolute_time ASC';
             db.prepare(query).all([canNumber], (err, rows) => {
                 if (err) {
                     console.error('查询发酵批次时出现错误:', err);
                     reject("查询失败");
                 } else {
-                    console.log("查询结果:", rows);
                     resolve(rows);
                 }
             });
@@ -128,7 +127,6 @@ export function createInitDB(): any {
                     console.error('查询批次数据时出现错误:', err);
                     reject("查询失败");
                 } else {
-                    console.log("查询结果:", rows);
                     resolve(rows);
                 }
             });
