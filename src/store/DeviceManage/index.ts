@@ -264,6 +264,7 @@ const state = (): {
 export const useDeviceManage = defineStore('DeviceManage', {
     state,
     actions: {
+        // 添加设备
         addDevice(ip: string, port: number, nameDevice: string) {
             const newId = this.deviceList.length;
             const newDevice: Device = {
@@ -304,6 +305,7 @@ export const useDeviceManage = defineStore('DeviceManage', {
             this.deviceList.push(newDevice);
             return newId;
         },
+        // 更新设备数据
         updateDeviceListData(index: number, newDeviceData: (SetData | number)) {
             console.log('newDeviceData', newDeviceData)
             if (typeof newDeviceData === 'number') {
@@ -314,7 +316,6 @@ export const useDeviceManage = defineStore('DeviceManage', {
             const currentDate = new Date();
 
             if (newDeviceData) {  // 确保 nowData 不为 null
-
                 newDeviceData.year = currentDate.getFullYear();     //年
                 newDeviceData.mounth = currentDate.getMonth() + 1;  //月 (注意: getMonth() 返回的月份是从0开始的，所以需要+1)
                 newDeviceData.day = currentDate.getDate();          //日
@@ -322,21 +323,21 @@ export const useDeviceManage = defineStore('DeviceManage', {
                 newDeviceData.minute = currentDate.getMinutes();    //分
                 newDeviceData.second = currentDate.getSeconds();    //秒
                 /*——————————————————————————————对状态的处理———————————————————————————————————*/
+                // 四种状态：未连接0，已连接1，运行中2，报警3
                 // 未连接-未连接不会进行数据处理，在这里进行数据处理的只有已连接和报警两个选项
                 // 已连接-已连接的设备如果没有修改通讯标志进行修改
                 
                  if (newDeviceData.communicate_flag === 0) {
                     const data = {
                         communicate_flag: 1,
-     
                     }
-    
                     this.deviceList[index].deviceSocket.send(JSON.stringify(data));
             
                 }
                 // 运行中-刚开始运行，状态还没变过来
                 if (this.deviceList[index].state == 1 && newDeviceData.communicate_flag === 1 && newDeviceData.start_flag === 1) {
                     this.deviceList[index].state = 2
+                    
                 }
                 // 报警
                 if (this.deviceList && this.deviceList[index] && this.deviceList[index].deviceSet != null&&this.deviceList[index].state === 2) {
@@ -368,9 +369,16 @@ export const useDeviceManage = defineStore('DeviceManage', {
                         currentDeviceSet.doState = 0;
                     }
                 }
+                
 
 
             }
+            // 数据存入到数据库
+            if (newDeviceData.communicate_flag === 1 || newDeviceData.communicate_flag === 2 || newDeviceData.communicate_flag === 3 ){
+                // 鉴定数据类别，如果存在批号就增加批号标志位；
+                
+            }
+            
             this.deviceList[index].nowData = newDeviceData;
 
 
