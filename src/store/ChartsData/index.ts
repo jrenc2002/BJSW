@@ -6,55 +6,64 @@ const debug = false;
 const route = useRoute()
 const state = () => {
     return {
-        // 选择图表
-        chartSelected: 0,
+
         // 参数选择
         paramSelected: [
             {
                 name: '温度',
-                selected: false
+                selected: false,
+                fieldName: 'timing_temp'
             },
             {
                 name: '酸碱',
-                selected: false
+                selected: false,
+                fieldName: 'timing_temp'
             },
             {
                 name: '溶氧',
-                selected: false
+                selected: false,
+                fieldName: 'timing_temp'
             },
             {
                 name: '转速',
-                selected: false
+                selected: false,
+                fieldName: 'timing_temp'
             },
             {
                 name: '酸泵补料量',
-                selected: false
+                selected: false,
+                fieldName: 'timing_temp'
             },
             {
                 name: '碱泵补料量',
-                selected: false
+                selected: false,
+                fieldName: 'timing_temp'
             },
             {
                 name: '补料一补料量',
-                selected: false
+                selected: false,
+                fieldName: 'timing_temp'
             },
             {
                 name: '补料二补料量',
-                selected: false
+                selected: false,
+                fieldName: 'timing_temp'
             },
             {
                 name: '补料一流速',
-                selected: false
+                selected: false,
+                fieldName: 'timing_temp'
             },
             {
                 name: '补料二流速',
-                selected: false
+                selected: false,
+                fieldName: 'timing_temp'
             },
 
         ],
         // 设备选择
         deviceSelected: <any>[],
-        
+
         
         
         

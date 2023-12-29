@@ -7,7 +7,9 @@ import {defineProps, onMounted, ref, onUnmounted, watch} from 'vue';
 // EChartsOption 为 option 的类型
 import {ECharts, EChartsOption, init} from 'echarts';
 import {useChartsData} from "@/store/ChartsData";
+import {useAppGlobal} from "@/store/AppGlobal";
 
+const AppGlobal = useAppGlobal();
 const ChartsData= useChartsData()
 const props = defineProps<{
   id: any ,
@@ -43,7 +45,7 @@ const updateChart = () => {
             }
         },
         legend: {
-            data: ['Fake Data'],
+            data: ['设备A-温度','设备B-温度'],
             type: 'scroll',
             left:'5%',
             width : '70%'
@@ -82,7 +84,7 @@ const updateChart = () => {
         },
         series: [
             {
-                name: 'Fake Data',
+                name: '设备A-温度',
                 type: 'line',
                 smooth: true,//是否平衡显示
                 symbol: 'none',//是否显示点
@@ -90,7 +92,7 @@ const updateChart = () => {
                 data: props.data[0]
             },
             {
-                name: 'Fake Data',
+                name: '设备B-温度',
                 type: 'line',
                 smooth: true,//是否平衡显示
                 symbol: 'none',//是否显示点
@@ -106,7 +108,7 @@ const updateChart = () => {
     chartEch.resize();
 };
 
-watch(() => ChartsData.chartSelected, (newData, oldValue) => {
+watch(() => AppGlobal.isDrawerState, (newData, oldValue) => {
     setTimeout(() => {
     updateChart();
 }, 100);
