@@ -1,5 +1,5 @@
 <template>
-    <div class="h-[80vh] w-[60rem] transition-all duration-300 ease-in-out shadow bg-white rounded-2xl">
+    <div class="h-[80vh] w-[60rem] transition-all duration-300 ease-in-out shadow bg-white rounded-2xl ">
 
         <!--    标题-->
         <div class="h-[4%] self-stretch justify-start items-center  inline-flex mt-3  w-full ">
@@ -7,7 +7,6 @@
                 溶氧控制123
             </div>
             <div class="w-[calc(100%-10rem)] relative justify-end flex mr-3 ">
-
                 <div class="bg-[#F5F5F5] right-0 relative w-7 h-7 justify-center items-center flex rounded-2xl hover:bg-[#F8F8F8] cursor-pointer"
                      @click="closePop">
                     <svg fill="none" height="16" viewBox="0 0 16 16" width="16" xmlns="http://www.w3.org/2000/svg">
@@ -18,11 +17,10 @@
             </div>
         </div>
         <!--    表格栏-->
-        <div class="  w-[100%] h-[92%]  bottom-0   items-center justify-center flex  ">
-
+        <div class="  w-[100%] h-[92%]     items-center justify-center flex  ">
             <div class="rounded-2xl  h-[calc(100%-1.5rem)] w-[calc(100%-1.5rem)]  items-center justify-center flex     ">
               <div class=" w-full h-[92%] ">
-                    <div class=" box-border overflow-x-hidden w-full h-full flex">
+                    <div class=" box-border overflow-y-hidden w-full h-full flex">
                         <!--原表格left-->
 <!--                        <div class="float-left  bg-[#E8F6ED] shadow border rounded-tl-2xl z-20">-->
 <!--                            <div class="  w-[10rem]">-->
@@ -51,7 +49,7 @@
 <!--                                </table>-->
 <!--                            </div>-->
 <!--                        </div>-->
-                        <!--原表格right-->
+<!--&lt;!&ndash;                        原表格right&ndash;&gt;-->
 <!--                        <div class="right-div ">-->
 <!--                            &lt;!&ndash;窗口&ndash;&gt;-->
 <!--                            <div ref="firstRowLayer"-->
@@ -131,249 +129,325 @@
 <!--                        </div>-->
                         <!-- 新格式-->
                       <!--左侧列-->
-                      <div class="relative w-[26rem]   h-[calc(100%-1rem)]   m-2  flex-col flex justify-start items-center">
-                        <div class="relative  shadow w-[26rem]   h-[26rem] overflow-auto  m-2 rounded-2xl flex-col flex justify-start items-center">
-                          <div class="w-full h-14 bg-[#DAF0E4] rounded-t-2xl flex justify-center items-center">设置参数
-                          </div>
-
-                          <!--状态                 -->
-                          <div class="w-[90%] h-16 mt-2  rounded-xl flex justify-start items-center border-[0.2rem]  border-[#4EA67D] ">
-                            <!--左边部分-->
-                            <div class="w-[60%]  h-full flex  justify-center items-start m-3">
-                              <div class="h-full gap-10  flex justify-center items-center">
-                                状态
-                              </div>
+                      <div class="relative w-[26rem]   h-[calc(100%-1rem)]   m-2  flex-col flex justify-start items-center ">
+                        <!--设置参数-->
+                        <div class="relative  shadow w-[20rem] m-2 rounded-2xl mb-14 justify-start items-center">
+                          <div class="w-full h-14  rounded-t-2xl flex   items-center text-lg font-medium ">
+                            <div class="ml-4 ">
+                              设置参数
                             </div>
-                            <!--右边部分-->
-                            <div class="w-[40%]  h-full flex-col justify-center items-start m-3">
-                              <div class="h-full flex justify-center items-center  pr-2">
-                                <Menu as="div" class="dropdown relative inline-block">
-                                  <div>
-                                    <MenuButton class="inline-flex w-[7rem] justify-center gap-x-1.5">
-                                      <summary v-if="DO_flag==0||DO_flag==null||DO_flag==undefined" class="m-1 btn w-[7rem] text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2] rounded-box">停止</summary>
-                                      <summary v-if="DO_flag==1" class="m-1 btn w-[7rem] text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] rounded-[1rem]">开启</summary>
-                                    </MenuButton>
+                          </div>
+                          <!--表格内容-->
+                          <div class="  w-[100%] h-[100%]  top-0    justify-center flex mb-10  ">
+                            <div class="rounded-2xl   w-[calc(100%-1.5rem)]   justify-center flex     ">
+                              <div class=" w-full h-[92%] ">
+                                <div class=" box-border overflow-x-hidden w-full  flex">
+                                  <!--原表格left-->
+                                  <div class="float-left  shadow  border-radius rounded-tl-2xl z-20">
+                                    <div class="w-[8rem]  overflow-hidden ">
+                                      <table class="mb-4 shadow  bg-[#E8F6ED] py-4 rounded-bl-2xl">
+                                        <tr>
+                                          <td class="w-full  flex justify-center items-center   ">
+                                            <div>状态</div>
+                                          </td>
+                                          <td class="w-full  flex justify-center items-center   ">
+                                            <div>测量值</div>
+                                          </td>
+                                          <td class="w-full  flex justify-center items-center   ">
+                                            <div>设定值</div>
+                                          </td>
+                                        </tr>
+                                      </table>
+                                    </div>
                                   </div>
-                                  <MenuItems class="p-2 shadow-xl menu dropdown-content z-[1] bg-base-100 rounded-box w-[7rem] border absolute origin-top-left left-0 mt-2">
-                                    <MenuItem v-slot="{ active }">
-                                      <button  :class="[active ? 'bg-[#E0E0E0] text-[#000000]' : 'text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2]', 'block px-4 py-2 text-sm rounded-[0.5rem]']">停止</button>
-                                    </MenuItem>
-                                    <MenuItem v-slot="{ active }">
-                                      <button  :class="[active ? 'bg-[#BAE7C7] text-[#256637]' : 'text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] mt-2', 'block px-4 py-2 text-sm rounded mt-2']">开启</button>
-                                    </MenuItem>
-                                  </MenuItems>
-                                </Menu>
+                                  <!--原表格right-->
+                                  <div class="right-div ">
+                                    <div  class="right-div2 flex items-start self-start" >
+                                      <table class="flex items-start w-[10rem]  ">
+                                        <div class="flex justify-center items-center">
+                                          <tr  class=" justify-center items-center">
+                                            <td class=" text-center border-t border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
+                                              <div class="h-full flex justify-center items-center  ">
+                                                <Menu as="div" class="dropdown relative inline-block">
+                                                  <div>
+                                                    <MenuButton class="inline-flex w-[7rem] justify-center gap-x-1.5">
+                                                      <summary v-if="DO_flag==0||DO_flag==null||DO_flag==undefined" class="m-1 btn w-[7rem] text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2] rounded-box">停止</summary>
+                                                      <summary v-if="DO_flag==1" class="m-1 btn w-[7rem] text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] rounded-[1rem]">开启</summary>
+                                                    </MenuButton>
+                                                  </div>
+                                                  <MenuItems class="p-2 shadow-xl menu dropdown-content z-[1] bg-base-100 rounded-box w-[7rem] border absolute origin-top-left left-0 mt-2">
+                                                    <MenuItem v-slot="{ active }">
+                                                      <button  :class="[active ? 'bg-[#E0E0E0] text-[#000000]' : 'text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2]', 'block px-4 py-2 text-sm rounded-[0.5rem]']">停止</button>
+                                                    </MenuItem>
+                                                    <MenuItem v-slot="{ active }">
+                                                      <button  :class="[active ? 'bg-[#BAE7C7] text-[#256637]' : 'text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] mt-2', 'block px-4 py-2 text-sm rounded mt-2']">开启</button>
+                                                    </MenuItem>
+                                                  </MenuItems>
+                                                </Menu>
 
+                                              </div>
+                                            </td>
+                                            <td class=" text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
+                                              0
+                                            </td>
+                                            <td class=" text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
+                                              <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
+                                                <input id="name" v-model="targetDO"
+                                                       class="block w-[80%]  border-b-2 m-2 text-center" name="name" placeholder="请填溶氧设定值"
+                                                       required type="number"/>
+                                              </div>
+                                            </td>
+                                          </tr>
+                                        </div>
+                                      </table>
+                                    </div>
+                                  </div>
+                                </div>
                               </div>
-                            </div>
-                          </div>
-
-                          <!--测量值-->
-                          <div class="w-[90%] h-16 mt-2  rounded-xl flex justify-start items-center border-[0.2rem]  border-[#4EA67D] ">
-                            <!--左边部分-->
-                            <div class="w-[60%]  h-full flex  justify-center items-start m-3">
-                              <div class="h-full gap-10  flex justify-center items-center">
-                                测量值
-                              </div>
-                            </div>
-                            <!--右边部分-->
-                            <div class="w-[40%]  h-full flex-col justify-center items-start m-3">
-                              {{timingDO}}
-                              </div>
-                          </div>
-
-                          <!--设定值-->
-                          <div class="w-[90%] h-16 mt-2  rounded-xl flex justify-start items-center border-[0.2rem]  border-[#4EA67D] ">
-                            <!--左边部分-->
-                            <div class="w-[60%]  h-full flex  justify-center items-start m-3">
-                              <div class="h-full gap-10  flex justify-center items-center">
-                                设定值
-                              </div>
-                            </div>
-                            <!--右边部分-->
-                            <div class="w-[40%]  h-full flex-col justify-center items-start m-3">
-                              <input id="name" v-model="targetDO"
-                                     class="block w-[80%]  border-b-2 m-2" name="name" placeholder="请填溶氧设定值"
-                                     required type="number"/>
                             </div>
                           </div>
                         </div>
 
-                        <div class="relative  shadow w-[26rem]   h-[26rem] overflow-auto  m-2 rounded-2xl flex-col flex justify-start items-center">
-                          <div class="w-full h-14 bg-[#DAF0E4] rounded-t-2xl flex justify-center items-center">
-                            控制参数
-                          </div>
-                          <!--状态-->
-                          <div class="w-[90%] h-16 mt-2  rounded-xl flex justify-start items-center border-[0.2rem]  border-[#4EA67D] ">
-                            <!--左边部分-->
-                            <div class="w-[60%]  h-full flex  justify-center items-start m-3">
-                              <div class="h-full gap-10  flex justify-center items-center">
-                                控制死区
-                              </div>
-                            </div>
-                            <!--右边部分-->
-                            <div class="w-[40%]  h-full flex-col justify-center items-start m-3">
-                              <div class="h-full flex justify-center items-center  pr-2">
-
-
-                              </div>
+                        <!--pid 自动参数-->
+                        <div class="relative  shadow w-[20rem]  mt-6   m-2 rounded-2xl  justify-start items-center">
+                          <div class="w-full h-14  rounded-t-2xl flex   items-center text-lg font-medium ">
+                            <div class="ml-4">
+                              自动参数
                             </div>
                           </div>
-                          <!--溶氧上限-->
-                          <div class="w-[90%] h-16 mt-2  rounded-xl flex justify-start items-center border-[0.2rem]  border-[#4EA67D] ">
-                            <!--左边部分-->
-                            <div class="w-[60%]  h-full flex  justify-center items-start m-3">
-                              <div class="h-full gap-10  flex justify-center items-center">
-                                溶氧上限
-                              </div>
-                            </div>
-                            <!--右边部分-->
-                            <div class="w-[40%]  h-full flex-col justify-center items-start m-3">
-                              <div class="h-full flex justify-center items-center  pr-2">
+                          <!--表格内容-->
+                          <div class="  w-[100%] h-[100%]  top-0   mb-14 justify-center flex  ">
+                            <div class="rounded-2xl   w-[calc(100%-1.5rem)]   justify-center flex     ">
+                              <div class=" w-full h-[92%] ">
+                                <div class=" box-border overflow-x-hidden w-full  flex">
+                                  <!--原表格left-->
+                                  <div class="float-left   shadow border-radius rounded-tl-2xl z-20">
+                                    <div class="  w-[8rem]">
+                                      <table class=" py-4 ">
+                                        <!--                                        <tr>-->
+                                        <!--                                          <th class="flex items-center justify-center gap-2   ">-->
+                                        <!--                                          </th>-->
+                                        <!--                                        </tr>-->
+                                      </table>
+                                    </div>
+                                    <div class="w-full overflow-hidden ">
+                                      <table class="mb-4 shadow  bg-[#E8F6ED] py-4 rounded-bl-2xl">
+                                        <tr >
+                                          <td class="w-full  flex justify-center items-center   ">
+                                            <div>P</div>
+                                          </td>
+                                          <td class="w-full  flex justify-center items-center   ">
+                                            <div>I</div>
+                                          </td>
+                                          <td class="w-full  flex justify-center items-center   ">
+                                            <div>D</div>
+                                          </td>
+                                        </tr>
+                                      </table>
+                                    </div>
+                                  </div>
+                                  <!--原表格right-->
+                                  <div class="right-div ">
+                                    <!--窗口-->
+                                    <div ref="firstRowLayer"
+                                         class="right-div1 bg-[#F1F1F1] rounded-tr-2xl">
+                                    </div>
+                                    <div ref="tableContainer" class="right-div2 flex items-start self-start" @scroll="tableScroll()"
 
+                                    >
+                                      <table class="flex items-start w-[10rem]  ">
+                                        <div class="flex-col justify-center items-center">
+                                          <tr  class="flex justify-center items-center">
+                                            <td class=" text-center border-t border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
+                                              <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
+                                                <input id="name" v-model="targetDO"
+                                                       class="block w-[80%]  border-b-2 m-2 text-center" name="name" placeholder="请输溶氧P"
+                                                       required type="number"/>
+                                              </div>
+                                            </td>
+                                          </tr>
+                                          <tr  class="flex justify-center items-center">
+                                            <td class=" text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
+                                              <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
+                                                <input id="name" v-model="targetDO"
+                                                       class="block w-[80%]  border-b-2 m-2 text-center" name="name" placeholder="请输溶氧I"
+                                                       required type="number"/>
+                                              </div>
+                                            </td>
+                                          </tr>
+                                          <tr  class="flex justify-center items-center">
+                                            <td class=" text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
+                                              <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
+                                                <input id="name" v-model="targetDO"
+                                                       class="block w-[80%]  border-b-2 m-2 text-center" name="name" placeholder="请输溶氧D"
+                                                       required type="number"/>
+                                              </div>
+                                            </td>
+                                          </tr>
+                                        </div>
+                                      </table>
+                                    </div>
+                                  </div>
+                                </div>
                               </div>
                             </div>
                           </div>
-                          <!--溶氧下限-->
-                          <div class="w-[90%] h-16 mt-2  rounded-xl flex justify-start items-center border-[0.2rem]  border-[#4EA67D] ">
-                            <!--左边部分-->
-                            <div class="w-[60%]  h-full flex  justify-center items-start m-3">
-                              <div class="h-full gap-10  flex justify-center items-center">
-                                溶氧下限
-                              </div>
-                            </div>
-                            <!--右边部分-->
-                            <div class="w-[40%]  h-full flex-col justify-center items-start m-3">
-                              <div class="h-full flex justify-center items-center  pr-2">
-
-                              </div>
-                            </div>
-                          </div>
-                          <!--转速上限-->
-                          <div class="w-[90%] h-16 mt-2  rounded-xl flex justify-start items-center border-[0.2rem]  border-[#4EA67D] ">
-                            <!--左边部分-->
-                            <div class="w-[60%]  h-full flex  justify-center items-start m-3">
-                              <div class="h-full gap-10  flex justify-center items-center">
-                                转速上限
-                              </div>
-                            </div>
-                            <!--右边部分-->
-                            <div class="w-[40%]  h-full flex-col justify-center items-start m-3">
-                              <div class="h-full flex justify-center items-center  pr-2">
-
-                              </div>
-                            </div>
-                          </div>
-
-                          <!--转速下限-->
-                          <div class="w-[90%] h-16 mt-2  rounded-xl flex justify-start items-center border-[0.2rem]  border-[#4EA67D] ">
-                            <!--左边部分-->
-                            <div class="w-[60%]  h-full flex  justify-center items-start m-3">
-                              <div class="h-full gap-10  flex justify-center items-center">
-                                转速下限
-                              </div>
-                            </div>
-                            <!--右边部分-->
-                            <div class="w-[40%]  h-full flex-col justify-center items-start m-3">
-                              <div class="h-full flex justify-center items-center  pr-2">
-
-                              </div>
-                            </div>
-                          </div>
-
                         </div>
+
+
+
+
                       </div>
                       <!--右侧-->
                       <div class="relative w-[26rem]   h-[calc(100%-1rem)]   m-2  flex-col flex justify-start items-center">
                         <!--报警参数-->
-                        <div class="relative  shadow w-[26rem]   h-[26rem] overflow-auto  m-2 rounded-2xl flex-col flex justify-start items-center">
-                          <div class="w-full h-14 bg-[#DAF0E4] rounded-t-2xl flex justify-center items-center">设置参数
-                          </div>
-
-                          <!--报警上线 -->
-                          <div class="w-[90%] h-16 mt-2  rounded-xl flex justify-start items-center border-[0.2rem]  border-[#4EA67D] ">
-                            <!--左边部分-->
-                            <div class="w-[60%]  h-full flex  justify-center items-start m-3">
-                              <div class="h-full gap-10  flex justify-center items-center">
-                                报警上限
-                              </div>
-                            </div>
-                            <!--右边部分-->
-                            <div class="w-[40%]  h-full flex-col justify-center items-start m-3">
-                              <div class="h-full flex justify-center items-center  pr-2">
-
-                              </div>
+                        <div class="relative  shadow w-[20rem]      m-2 rounded-2xl  justify-start items-center">
+                          <div class="w-full h-14  rounded-t-2xl flex   items-center text-lg font-medium ">
+                            <div class="ml-4">
+                              报警参数
                             </div>
                           </div>
-
-                          <!--报警下限-->
-                          <div class="w-[90%] h-16 mt-2  rounded-xl flex justify-start items-center border-[0.2rem]  border-[#4EA67D] ">
-                            <!--左边部分-->
-                            <div class="w-[60%]  h-full flex  justify-center items-start m-3">
-                              <div class="h-full gap-10  flex justify-center items-center">
-                                报警下限
+                          <!--表格内容-->
+                          <div class="  w-[100%] h-[100%]  top-0  mb-14  justify-center flex  ">
+                            <div class="rounded-2xl   w-[calc(100%-1.5rem)]   justify-center flex     ">
+                              <div class=" w-full h-[92%] ">
+                                <div class=" box-border overflow-hidden w-full  flex">
+                                  <!--原表格left-->
+                                  <div class="float-left   shadow border-radius rounded-tl-2xl z-20">
+                                    <div class="w-[8rem]  overflow-hidden ">
+                                      <table class="mb-4 shadow  bg-[#E8F6ED] py-4 rounded-bl-2xl">
+                                        <tr>
+                                          <td class="w-full  flex justify-center items-center   ">
+                                            <div>报警上限</div>
+                                          </td>
+                                          <td class="w-full  flex justify-center items-center   ">
+                                            <div>报警下限</div>
+                                          </td>
+                                        </tr>
+                                      </table>
+                                    </div>
+                                  </div>
+                                  <!--原表格right-->
+                                  <div class="right-div ">
+                                    <div  class="right-div2 flex items-start self-start" >
+                                      <table class="flex items-start w-[10rem]  ">
+                                        <div class="flex-col justify-center items-center">
+                                          <tr  class="flex justify-center items-center">
+                                            <td class=" text-center border-t border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
+                                              <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
+                                                <input id="name"
+                                                       class="block w-[80%]  border-b-2 m-2 text-center" name="name" placeholder="请输报警上限"
+                                                       required type="number"/>
+                                              </div>
+                                            </td>
+                                          </tr>
+                                          <tr  class="flex justify-center items-center">
+                                            <td class=" text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
+                                              <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
+                                                <input id="name"
+                                                       class="block w-[80%]  border-b-2 m-2 text-center" name="name" placeholder="请输报警下限"
+                                                       required type="number"/>
+                                              </div>
+                                            </td>
+                                          </tr>
+                                        </div>
+                                      </table>
+                                    </div>
+                                  </div>
+                                </div>
                               </div>
                             </div>
-                            <!--右边部分-->
-                            <div class="w-[40%]  h-full flex-col justify-center items-start m-3">
-                              {{timingDO}}
-                            </div>
                           </div>
-
                         </div>
-                        <!--pid-->
-                        <div class="relative  shadow w-[26rem]   h-[26rem] overflow-auto  m-2 rounded-2xl flex-col flex justify-start items-center">
-                          <div class="w-full h-14 bg-[#DAF0E4] rounded-t-2xl flex justify-center items-center">
-                            自动参数
-                          </div>
-                          <!--P-->
-                          <div class="w-[90%] h-16 mt-2  rounded-xl flex justify-start items-center border-[0.2rem]  border-[#4EA67D] ">
-                            <!--左边部分-->
-                            <div class="w-[60%]  h-full flex  justify-center items-start m-3">
-                              <div class="h-full gap-10  flex justify-center items-center">
-                                P
-                              </div>
-                            </div>
-                            <!--右边部分-->
-                            <div class="w-[40%]  h-full flex-col justify-center items-start m-3">
-                              <div class="h-full flex justify-center items-center  pr-2">
 
-
-                              </div>
+                        <!--控制参数-->
+                        <div class="relative  shadow w-[20rem] mt-5     m-2 rounded-2xl  justify-start items-center">
+                          <div class="w-full h-14  rounded-t-2xl flex   items-center text-lg font-medium">
+                            <div class="ml-4">
+                              控制参数
                             </div>
                           </div>
-                          <!--I-->
-                          <div class="w-[90%] h-16 mt-2  rounded-xl flex justify-start items-center border-[0.2rem]  border-[#4EA67D] ">
-                            <!--左边部分-->
-                            <div class="w-[60%]  h-full flex  justify-center items-start m-3">
-                              <div class="h-full gap-10  flex justify-center items-center">
-                                I
-                              </div>
-                            </div>
-                            <!--右边部分-->
-                            <div class="w-[40%]  h-full flex-col justify-center items-start m-3">
-                              <div class="h-full flex justify-center items-center  pr-2">
-
+                          <!--表格内容-->
+                          <div class="  w-[100%]   top-0    justify-center flex  ">
+                            <div class="rounded-2xl   w-[calc(100%-1.5rem)] mb-5  justify-center flex     ">
+                              <div class=" w-full h-[92%] ">
+                                <div class=" box-border overflow-x-hidden w-full   flex">
+                                  <!--原表格left-->
+                                  <div class="float-left   shadow-radius border-radius  rounded-tl-2xl z-20">
+                                    <div class="w-[8rem]  overflow-hidden ">
+                                      <table class="mb-4 shadow  bg-[#E8F6ED] py-4 rounded-bl-2xl">
+                                        <tr>
+                                          <td class="w-full  flex justify-center items-center   ">
+                                            <div>控制死区</div>
+                                          </td>
+                                          <td class="w-full  flex justify-center items-center   ">
+                                            <div>溶氧上限</div>
+                                          </td>
+                                          <td class="w-full  flex justify-center items-center   ">
+                                            <div>溶氧下限</div>
+                                          </td>
+                                          <td class="w-full  flex justify-center items-center   ">
+                                            <div>转速上限</div>
+                                          </td>
+                                          <td class="w-full  flex justify-center items-center   ">
+                                            <div>转速下限</div>
+                                          </td>
+                                        </tr>
+                                      </table>
+                                    </div>
+                                  </div>
+                                  <!--原表格right-->
+                                  <div class="right-div ">
+                                    <div  class="right-div2 flex items-start self-start" >
+                                      <table class="flex items-start w-[10rem]  ">
+                                        <div class="flex justify-center items-center">
+                                          <tr  class=" justify-center items-center">
+                                            <td class=" text-center border-t border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
+                                              <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
+                                                <input id="name"
+                                                       class="block w-[80%]  border-b-2 m-2 text-center" name="name" placeholder="请填控制死区"
+                                                       required type="number"/>
+                                              </div>
+                                            </td>
+                                            <td class=" text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
+                                              <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
+                                                <input id="name"
+                                                       class="block w-[80%]  border-b-2 m-2 text-center" name="name" placeholder="请填溶氧上限"
+                                                       required type="number"/>
+                                              </div>
+                                            </td>
+                                            <td class=" text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
+                                              <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
+                                                <input id="name"
+                                                       class="block w-[80%]  border-b-2 m-2 text-center" name="name" placeholder="请填溶氧下限"
+                                                       required type="number"/>
+                                              </div>
+                                            </td>
+                                            <td class=" text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
+                                              <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
+                                                <input id="name"
+                                                       class="block w-[80%]  border-b-2 m-2 text-center" name="name" placeholder="请填转速上限"
+                                                       required type="number"/>
+                                              </div>
+                                            </td>
+                                            <td class=" text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
+                                              <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
+                                                <input id="name"
+                                                       class="block w-[80%]  border-b-2 m-2 text-center" name="name" placeholder="请填转速下限"
+                                                       required type="number"/>
+                                              </div>
+                                            </td>
+                                          </tr>
+                                        </div>
+                                      </table>
+                                    </div>
+                                  </div>
+                                </div>
                               </div>
                             </div>
                           </div>
-                          <!--D-->
-                          <div class="w-[90%] h-16 mt-2  rounded-xl flex justify-start items-center border-[0.2rem]  border-[#4EA67D] ">
-                            <!--左边部分-->
-                            <div class="w-[60%]  h-full flex  justify-center items-start m-3">
-                              <div class="h-full gap-10  flex justify-center items-center">
-                                D
-                              </div>
-                            </div>
-                            <!--右边部分-->
-                            <div class="w-[40%]  h-full flex-col justify-center items-start m-3">
-                              <div class="h-full flex justify-center items-center  pr-2">
-
-                              </div>
-                            </div>
-                          </div>
-
                         </div>
+
                       </div>
                     </div>
 
