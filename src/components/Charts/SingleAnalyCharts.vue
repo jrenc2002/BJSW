@@ -27,10 +27,7 @@ const updateChart = () => {
             position: function (pt) {
                 return [pt[0], '10%'];
             },
-            formatter: function (params) {
-                // 自定义显示内容
-                return params.seriesName + ' 的具体信息: ' + params.value;
-            }
+            formatter:"{a}<br/>{b}：{c}"
         },
         
         xAxis: {
@@ -46,7 +43,7 @@ const updateChart = () => {
             }
         },
         legend: {
-            data: ['Fake Data', '2 Data', '12Data','FakeData','Fake Data', '22Data', '12Data','2FakeData','2','2','21','31','41'],
+            data: ['Fake Data'],
             type: 'scroll',
             left:'5%',
             width : '70%'

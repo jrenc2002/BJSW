@@ -95,7 +95,7 @@ export function createInitDB(): any {
         }
         
         return new Promise((resolve, reject) => {
-            const query = 'SELECT * FROM fermentation_data WHERE batch_id = ? ORDER BY absolute_time ASC';
+            const query = 'SELECT * FROM fermentation_batch WHERE can_number = ?';
             db.prepare(query).all([canNumber], (err, rows) => {
                 if (err) {
                     console.error('查询发酵批次时出现错误:', err);
@@ -121,7 +121,7 @@ export function createInitDB(): any {
         }
         
         return new Promise((resolve, reject) => {
-            const query = 'SELECT * FROM fermentation_data WHERE batch_id = ?';
+            const query = 'SELECT * FROM fermentation_data WHERE batch_id = ? ORDER BY absolute_time ASC';
             db.prepare(query).all([batchId], (err, rows) => {
                 if (err) {
                     console.error('查询批次数据时出现错误:', err);

@@ -21,7 +21,29 @@
                     <div class="w-[10rem] h-full  border-r-2 border-[#EBEBEB] overflow-auto">
                         <template v-if="ChartsData.chartSelected==1">
                             <div v-for="item in ChartsData.deviceSelected" :key="item.name"
-                                 class="w-full h-24  flex justify-center items-center">
+                                 class="w-full h-[10%]   flex justify-center items-center">
+                                <div :class="[item.selected?'bg-[#DAF0E4] text-black':'text-gray-500']"
+                                     class="w-full mx-4 rounded-xl text-center  h-14 flex items-center justify-center cursor-pointer"
+                                     @click="item.selected=!item.selected">
+                                    {{ item.name }}
+                                </div>
+                            </div>
+                        </template>
+                        <template v-else>
+                            <div v-for="item in ChartsData.paramSelected" :key="item.name"
+                                 class="w-full h-[10%]  flex justify-center items-center">
+                                <div :class="[item.selected?'bg-[#DAF0E4] text-black':'text-gray-500']"
+                                     class="w-full mx-4 rounded-xl text-center  h-14 flex items-center justify-center cursor-pointer"
+                                     @click="item.selected=!item.selected">
+                                    {{ item.name }}
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+                    <div class="w-[10rem] h-full  border-r-2 border-[#EBEBEB] overflow-auto">
+                        <template v-if="ChartsData.chartSelected==0">
+                            <div v-for="item in ChartsData.deviceSelected" :key="item.name"
+                                 class="w-full h-[10%]   flex justify-center items-center">
                                 <div :class="[item.selected?'bg-[#DAF0E4] text-black':'text-gray-500']"
                                      class="w-full mx-4 rounded-xl text-center  h-14 flex items-center justify-center cursor-pointer"
                                      @click="item.selected=!item.selected">
@@ -89,18 +111,18 @@ let base3 = +new Date();
 let data1 = [[base1, Math.random() * 300]];
 for (let i = 1; i < 100; i++) {
     let now = new Date((base1 += oneDay));
-    data1.push([+now, Math.round((Math.random() - 0.5) * 20 + data1[i - 1][1])]);
+    data1.push([+now, Math.round((Math.random() - 0.5) * 20 + data1[i - 1][1]),1]);
 }
 // data2数据
 let data2 = [[base2, Math.random() * 300]];
 for (let i = 1; i < 100; i++) {
     let now = new Date((base2 += oneDay));
-    data2.push([+now, Math.round((Math.random() - 0.5) * 20 + data2[i - 1][1])]);
+    data2.push([+now, Math.round((Math.random() - 0.5) * 20 + data2[i - 1][1]),3]);
 }
 let data3 = [[base3, Math.random() * 300]];
 for (let i = 1; i < 100; i++) {
     let now = new Date((base3 += oneDay));
-    data3.push([+now, Math.round((Math.random() - 0.5) * 20 + data3[i - 1][1])]);
+    data3.push([+now, Math.round((Math.random() - 0.5) * 20 + data3[i - 1][1]),2]);
 }
 let data = [data1, data2, data3]
 
