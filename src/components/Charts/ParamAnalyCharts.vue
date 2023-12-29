@@ -1,35 +1,35 @@
-<!-- 这个是参数分析的图表，他需要选择批次，在选择完批次后可以获取其数据，选择批次使用下拉框 -->
-
 <template>
-
-    <div ref="chartDiv" :style="{ width: '98%', height: '98%' }"></div>
-
+    <div :id="props.id" ref="chartDiv" :style="{ width: '98%', height: '98%' }"></div>
 </template>
-
-<script lang="ts" setup>
-import {defineProps, onMounted, onUnmounted, ref, watch} from 'vue';
+<script lang="ts" name="checkReport" setup>
+import {defineProps, onMounted, ref, onUnmounted, watch} from 'vue';
+// Echarts 为init（dom元素后的类型）
+// EChartsOption 为 option 的类型
 import {ECharts, EChartsOption, init} from 'echarts';
-import {usePopupMangerState} from "@/store/PopupMangerState";
+import {useChartsData} from "@/store/ChartsData";
 
-const props = defineProps<{ id: string }>();
-const chartDiv = ref<HTMLElement | null>(null);
+const ChartsData= useChartsData()
+const props = defineProps<{
+    id: any ,
+    data:any
+}>();
 let chartEch: ECharts | null = null;
-let data = ref();
-let alarmLimit = ref(0);
-let standardValue = ref(0);
-const PopupMangerState = usePopupMangerState()
+const rootRef = ref();
+const chartDiv = ref<HTMLElement | null>(null);
 
 const updateChart = () => {
     
     if (!chartDiv.value || !chartEch) return;
-    data.value = PopupMangerState.GraphData
-    
     
     const option: EChartsOption = {
         tooltip: {
             trigger: 'axis',
             position: function (pt) {
                 return [pt[0], '10%'];
+            },
+            formatter: function (params) {
+                // 自定义显示内容
+                return params.seriesName + ' 的具体信息: ' + params.value;
             }
         },
         
@@ -40,14 +40,16 @@ const updateChart = () => {
         yAxis: {
             type: 'value',
             min: 0,
-            max: PopupMangerState.kind === '温度' ? 100 : 20,
+            max: 500,
             axisLabel: {
-                formatter: PopupMangerState.kind === '温度' ? '{value} °C' : '{value} mm/s'
+                formatter: '{value}'
             }
-            
         },
         legend: {
-            data: [PopupMangerState.kind]
+            data: ['Fake Data', '2 Data', '12Data','FakeData','Fake Data', '22Data', '12Data','2FakeData','2','2','21','31','41'],
+            type: 'scroll',
+            left:'5%',
+            width : '70%'
         },
         dataZoom: [
             {
@@ -75,100 +77,48 @@ const updateChart = () => {
                 dataZoom: {
                     yAxisIndex: 'none'
                 },
-                magicType: {type: ['line', 'bar']},
-                dataView: {readOnly: false},
+                magicType: { type: ['line', 'bar'] },
+                dataView: { readOnly: false },
                 restore: {},
                 saveAsImage: {}
             }
         },
         series: [
             {
-                type: 'line',
-                smooth: true,
-                symbol: 'none',
-                markLine: {
-                    data: [{
-                        yAxis: alarmLimit.value,
-                        name: '报警上限',
-                        label: {
-                            formatter: '报警上限'
-                        },
-                        lineStyle: {
-                            color: 'red',
-                            type: 'dashed'
-                        }
-                    }]
-                }
-            },
-            {
-                type: 'line',
-                smooth: true,
-                symbol: 'none',
-                markLine: {
-                    data: [{
-                        yAxis: standardValue.value,
-                        name: '标准值',
-                        label: {
-                            formatter: '标准值'
-                        },
-                        lineStyle: {
-                            color: 'blue',
-                            type: 'solid'
-                        }
-                    }]
-                }
-            },
-            {
-                name: PopupMangerState.kind,
+                name: 'Fake Data',
                 type: 'line',
                 smooth: true,//是否平衡显示
                 symbol: 'none',//是否显示点
                 // areaStyle: {},//是否显示面积
-                data: data.value
-            }
+                data: props.data[0]
+            },
+            {
+                name: 'Fake Data',
+                type: 'line',
+                smooth: true,//是否平衡显示
+                symbol: 'none',//是否显示点
+                // areaStyle: {},//是否显示面积
+                data: props.data[1]
+            },
+        
         ]
     };
+    
     
     chartEch.setOption(option);
     chartEch.resize();
 };
 
-
-watch(() => PopupMangerState.setData.TempAlarm, (newData) => {
-    if (PopupMangerState.kind === '温度') {
-        alarmLimit.value = newData
-        updateChart();
-    }
-    
-})
-watch(() => PopupMangerState.setData.VibrationAlarm, (newData) => {
-    if (PopupMangerState.kind === '振动') {
-        alarmLimit.value = newData
-        updateChart();
-    }
-})
-watch(() => PopupMangerState.setData.Standard, (newData) => {
-    standardValue.value = newData
-    updateChart();
-})
-
-watch(() => PopupMangerState.selectTabs, (newData) => {
+watch(() => ChartsData.chartSelected, (newData, oldValue) => {
     setTimeout(() => {
         updateChart();
-    }, 500);
+    }, 100);
     
 })
-watch(() => PopupMangerState.isShowPop, (newData, oldValue) => {
-    if (oldValue === false && newData === true) {
-        
-        setTimeout(() => {
-            updateChart();
-        }, 500);
-    }
-    
-})
+
+/* ——————————————————————————生命周期配置—————————————————————————— */
 onMounted(() => {
-    
+    // 这里是由于图表渲染快于父元素导致图表比例溢出，做的一个延缓操作
     setTimeout(() => {
         if (chartDiv.value) {
             chartEch = init(chartDiv.value);
@@ -180,9 +130,8 @@ onMounted(() => {
             
             updateChart();
         }
-    }, 500); // 延迟 500 毫秒
+    }, 100); // 延迟 500 毫秒
 });
-
 onUnmounted(() => {
     if (chartEch) {
         chartEch.dispose();
@@ -192,5 +141,4 @@ onUnmounted(() => {
 });
 
 </script>
-
 <style lang="scss" scoped></style>
