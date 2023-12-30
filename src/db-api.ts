@@ -217,6 +217,7 @@ export function createInitDB(): any {
                         console.error("查询发酵数据时出错:", err);
                         reject(err);
                     } else {
+                        
                         // 返回查询到的数据
                         resolve(rows);
                     }

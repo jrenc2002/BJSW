@@ -17,52 +17,61 @@ const state = () => {
             {
                 name: '酸碱',
                 selected: false,
-                fieldName: 'timing_temp'
+                fieldName: 'timing_PH'
             },
             {
                 name: '溶氧',
                 selected: false,
-                fieldName: 'timing_temp'
+                fieldName: 'timing_DO'
             },
             {
                 name: '转速',
                 selected: false,
-                fieldName: 'timing_temp'
+                fieldName: 'timing_motor_speed'
             },
             {
                 name: '酸泵补料量',
                 selected: false,
-                fieldName: 'timing_temp'
+                fieldName: 'acid_ml'
             },
             {
                 name: '碱泵补料量',
                 selected: false,
-                fieldName: 'timing_temp'
+                fieldName: 'lye_ml'
             },
             {
                 name: '补料一补料量',
                 selected: false,
-                fieldName: 'timing_temp'
+                fieldName: 'clean_ml'
             },
             {
                 name: '补料二补料量',
                 selected: false,
-                fieldName: 'timing_temp'
+                fieldName: 'feed_ml'
             },
             {
                 name: '补料一流速',
                 selected: false,
-                fieldName: 'timing_temp'
+                fieldName: 'defoamerPumpSpeed'
             },
             {
                 name: '补料二流速',
                 selected: false,
-                fieldName: 'timing_temp'
+                fieldName: 'feedPumpSpeed'
             },
 
         ],
         // 设备选择
         deviceSelected: <any>[],
+        dataSeries: <any>[],
+        dataLegend: <any>[],
+    
+        // deviceSelected:[
+        //     {   name: device.name,
+        //         deviceNum: device.deviceNum,
+        //         selected: false
+        //     }
+        // ]
 
         
         

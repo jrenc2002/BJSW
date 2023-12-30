@@ -20,15 +20,15 @@
               text-[15px]"
               >
 
-                <el-text class="text-[#295C3F]">
+                <p class="text-[#295C3F]">
                   {{ item.batch_name }}
-                </el-text>
-                <el-text class="text-[#79930F]">
+                </p>
+                <p class="text-[#79930F]">
                   {{ item.can_number }}
-                </el-text>
-                <el-text class="text-[#1A3A8D]">
+                </p>
+                <p class="text-[#1A3A8D]">
                   {{ item.start_time }}
-                </el-text>
+                </p>
 
               </view>
 
@@ -144,7 +144,7 @@
 
             <!--自定义空数据模板-->
             <template #empty>
-              <span style="color: red;">
+              <span >
        
                 <p>暂无数据</p>
               </span>

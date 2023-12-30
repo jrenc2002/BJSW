@@ -51,7 +51,7 @@
 
 </template>
 
-<script lang="ts" setup>
+<script lang="js" setup>
 import {onMounted, onUnmounted, ref, watch} from "vue";
 import SingleAnalyCharts from "@/components/Charts/SingleAnalyCharts.vue";
 import {useDeviceManage} from '@/store/DeviceManage'
@@ -62,7 +62,7 @@ import {useAppGlobal} from "@/store/AppGlobal";
 // TODO:单参数曲线:左边选择各个参数，组件数据传入子组件，子组件上面选择各项罐
 const DeviceManage = useDeviceManage()
 const ChartsData= useChartsData()
-const SingleTank = ref<any>(null);
+const SingleTank = ref(null);
 const AppGlobal = useAppGlobal();
 
 /* ——————————————————————————时间数据配置—————————————————————————— */
@@ -99,48 +99,66 @@ watch(() => ChartsData.paramSelected, () => {
     updateChartData()
 }, {deep: true});
 watch(() => ChartsData.deviceSelected, () => {
+    
     updateChartData()
 }, {deep: true});
 
-
+function convertToEchartsData(resData,fieldName) {
+    
+    console.log(resData)
+    let echartsData = [];
+    resData.forEach(item => {
+        // 将时间字符串转换为Date对象，然后转换为时间戳
+        let date = new Date(item.absolute_time);
+        let timestamp = date.getTime();
+        
+        // 将时间戳和lye_ml的值作为一个数组添加到echartsData中
+        echartsData.push([timestamp, item[fieldName]]);
+    });
+    return echartsData;
+}
 function updateChartData() {
     let series = [];
+    let legend = [];
     ChartsData.deviceSelected.forEach((device, deviceIndex) => {
         if (device.selected) {
             // 如果设备被选中，则遍历所有参数
             ChartsData.paramSelected.forEach((param, paramIndex) => {
                 if (param.selected) {
+                    
                     // 生成参数对应的数据，输入设备索引和参数索引获取相应的值，获取五万条数据
                     let ChartsData;
                     window.Electron.ipcRenderer.invoke('get-recent-fermentation-data',device.deviceNum,param.fieldName,10000).then(
                         (res) => {
                             if (res) { // 确保res是有效的
-                                // gridOptions.data = res;
-                                console.log(res);
+                                ChartsData = convertToEchartsData(res,param.fieldName);
                                 
-                                //
-                                // // 如果参数也被选中，生成对应的系列
-                                // series.push({
-                                //     name: device.name + ' - ' + param.name, // 系列名称为“设备名称 - 参数名称”
-                                //     type: 'line',
-                                //     smooth: true,
-                                //     symbol: 'none',
-                                //     data:ChartsData  // 这里根据设备和参数索引从 allData 获取数据
-                                // });
+                                // 如果参数也被选中，生成对应的系列
+                                series.push({
+                                    name: device.name + '-' + param.name, // 系列名称为“设备名称 - 参数名称”
+                                    type: 'line',
+                                    smooth: true,
+                                    symbol: 'none',
+                                    data:ChartsData  // 这里根据设备和参数索引从 allData 获取数据
+                                });
+                                legend.push(device.name + '-' + param.name);
+                                console.log(series)
+                     
                             } else {
                                 console.error('请求批次内容数据没请求到.');
                             }
-                        }
-                    ).catch((error) => {
+                        }).catch((error) => {
                         console.error('请求批次内容数据没请求到,报错为:', error);
                     });
-                    
-                    
+    
         
                 }
             });
         }
     });
+    ChartsData.dataSeries = series;
+    ChartsData.dataLegend = legend;
+    
     
     return series;
     
