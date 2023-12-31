@@ -7,7 +7,10 @@ import {defineProps, onMounted, ref, onUnmounted, watch} from 'vue';
 // EChartsOption 为 option 的类型
 import {ECharts, EChartsOption, init} from 'echarts';
 import {useChartsData} from "@/store/ChartsData";
+import {useAppGlobal} from "@/store/AppGlobal";
+// todo 曲线刷新功能，为了保证内存只有监听到路由为曲线对比时才会定时渲染；
 
+const AppGlobal = useAppGlobal();
 const ChartsData= useChartsData()
 const props = defineProps<{
   id: any ,
@@ -20,7 +23,20 @@ const chartDiv = ref<HTMLElement | null>(null);
 const updateChart = () => {
     
     if (!chartDiv.value || !chartEch) return;
+    const dataSeries = ChartsData.dataSeries
+    const dataLegend = ChartsData.dataLegend
+
+    // 获取当前的选项
+    const currentOption = chartEch.getOption();
+    let currentDataZoom;
+    // 检查返回的结果是否是 undefined
+    if (currentOption) {
+         currentDataZoom = currentOption.dataZoom;
+    }
     
+
+    
+    console.log(dataSeries,'dataSeries')
     const option: EChartsOption = {
         tooltip: {
             trigger: 'axis',
@@ -28,8 +44,15 @@ const updateChart = () => {
                 return [pt[0], '10%'];
             },
             formatter: function (params) {
-                // 自定义显示内容
-                return params.seriesName + ' 的具体信息: ' + params.value;
+                let result = '时间: ';
+                if (params.length > 0) {
+                    let date = new Date(params[0].axisValue);
+                    result += `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}<br>`;
+                }
+                params.forEach(param => {
+                    result += `${param.seriesName}: ${param.value[1].toFixed(2)}<br>`;
+                });
+                return result;
             }
         },
         
@@ -40,13 +63,12 @@ const updateChart = () => {
         yAxis: {
             type: 'value',
             min: 0,
-            max: 500,
             axisLabel: {
                 formatter: '{value}'
             }
         },
         legend: {
-            data: ['Fake Data', '2 Data', '12Data','FakeData','Fake Data', '22Data', '12Data','2FakeData','2','2','21','31','41'],
+            data: dataLegend,
             type: 'scroll',
             left:'5%',
             width : '70%'
@@ -83,39 +105,34 @@ const updateChart = () => {
                 saveAsImage: {}
             }
         },
-        series: [
-            {
-                name: 'Fake Data',
-                type: 'line',
-                smooth: true,//是否平衡显示
-                symbol: 'none',//是否显示点
-                // areaStyle: {},//是否显示面积
-                data: props.data[0]
-            },
-            {
-                name: 'Fake Data',
-                type: 'line',
-                smooth: true,//是否平衡显示
-                symbol: 'none',//是否显示点
-                // areaStyle: {},//是否显示面积
-                data: props.data[1]
-            },
-        
-        ]
+        series: dataSeries
     };
-
     
-    chartEch.setOption(option);
+    
+    chartEch.setOption(option, true);
+    // 恢复保存的缩放比例
+    if (currentOption) {
+        chartEch.setOption({ dataZoom: currentDataZoom });
+    }
     chartEch.resize();
 };
 
-watch(() => ChartsData.chartSelected, (newData, oldValue) => {
+watch(() => AppGlobal.isDrawerState, (newData, oldValue) => {
     setTimeout(() => {
     updateChart();
 }, 100);
 
 })
-
+watch(() => ChartsData.dataSeries, () => {
+    setTimeout(() => {
+        updateChart();
+    }, 100);
+}, {deep: true});
+watch(() => ChartsData.dataLegend, () => {
+    setTimeout(() => {
+        updateChart();
+    }, 100);
+}, {deep: true});
 /* ——————————————————————————生命周期配置—————————————————————————— */
 onMounted(() => {
   // 这里是由于图表渲染快于父元素导致图表比例溢出，做的一个延缓操作

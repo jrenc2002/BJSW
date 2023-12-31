@@ -95,7 +95,7 @@ export function createInitDB(): any {
         }
         
         return new Promise((resolve, reject) => {
-            const query = 'SELECT * FROM fermentation_data WHERE batch_id = ? ORDER BY absolute_time ASC';
+            const query = 'SELECT * FROM fermentation_batch WHERE can_number = ?';
             db.prepare(query).all([canNumber], (err, rows) => {
                 if (err) {
                     console.error('查询发酵批次时出现错误:', err);
@@ -121,7 +121,7 @@ export function createInitDB(): any {
         }
         
         return new Promise((resolve, reject) => {
-            const query = 'SELECT * FROM fermentation_data WHERE batch_id = ?';
+            const query = 'SELECT * FROM fermentation_data WHERE batch_id = ? ORDER BY absolute_time ASC';
             db.prepare(query).all([batchId], (err, rows) => {
                 if (err) {
                     console.error('查询批次数据时出现错误:', err);
@@ -198,6 +198,36 @@ export function createInitDB(): any {
         }
     });
 
+    // 获取图表所需数据
+    ipcMain.handle('get-recent-fermentation-data', async (event, canNumber, fieldName, dataCount) => {
+        try {
+            return new Promise((resolve, reject) => {
+                // 构建查询语句，获取最近的指定数量的数据
+                const query = `
+                SELECT ${fieldName}, absolute_time
+                FROM fermentation_data
+                WHERE can_number = ?
+                ORDER BY datetime(absolute_time) DESC
+                LIMIT ?
+            `;
+                
+                // 执行查询语句
+                db.all(query, [canNumber, dataCount], (err, rows) => {
+                    if (err) {
+                        console.error("查询发酵数据时出错:", err);
+                        reject(err);
+                    } else {
+                        
+                        // 返回查询到的数据
+                        resolve(rows);
+                    }
+                });
+            });
+        } catch (error) {
+            console.error("查询发酵数据过程中出现异常:", error);
+            throw error; // 或者返回一个特定的错误消息或对象
+        }
+    });
     
     
 }
