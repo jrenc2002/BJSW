@@ -1,5 +1,5 @@
 <template>
-    <div class="h-[94vh] w-[22rem] transition-all duration-300 ease-in-out shadow bg-white rounded-2xl">
+    <div class="h-[94vh] w-[60rem] transition-all duration-300 ease-in-out shadow bg-white rounded-2xl">
 
         <!--    标题-->
         <div class="h-[4%] self-stretch justify-start items-center  inline-flex mt-3  w-full ">
@@ -18,194 +18,499 @@
             </div>
         </div>
         <!--    表格栏-->
-        <div class="  w-[100%] h-[92%]  bottom-0   items-center justify-center flex  ">
+      <div class="  w-[100%] h-[92%]     items-center justify-center  flex  " >
+        <div class="rounded-2xl  h-[calc(100%-1.5rem)] w-[calc(100%-1.5rem)]  items-center justify-center flex     ">
+          <div class=" w-full h-[92%] " >
+            <div class=" box-border  w-full h-full flex overflow-auto" >
+              <!--原表格left-->
+              <!--                        <div class="float-left  bg-[#E8F6ED] shadow border rounded-tl-2xl z-20">-->
+              <!--                            <div class="  w-[10rem]">-->
+              <!--                                <table class=" py-4 ">-->
+              <!--                                    <tr>-->
+              <!--                                        <th class="flex items-center justify-center gap-2   ">-->
 
-            <div class="rounded-2xl  h-[calc(100%-1.5rem)] w-[calc(100%-1.5rem)]  items-center justify-center flex     ">
-                <div class=" w-full h-full ">
-                    <div class=" box-border overflow-x-hidden w-full h-full flex">
-                        <!--left-->
-                        <div class="float-left  bg-[#E8F6ED] shadow border rounded-tl-2xl z-20">
-                            <div class="  w-[10rem]">
-                                <table class=" py-4 ">
-                                    <tr>
-                                        <th class="flex items-center justify-center gap-2   ">
+              <!--                                        </th>-->
+              <!--                                    </tr>-->
+              <!--                                </table>-->
+              <!--                            </div>-->
+              <!--                            <div-->
+              <!--                                    ref="firstColLayer"-->
+              <!--                                    class="w-full overflow-hidden "-->
+              <!--                            >-->
+              <!--                                <table class="mb-4 shadow  bg-[#E8F6ED] py-4 rounded-bl-2xl">-->
+              <!--                                    <tr v-for="(col, index) in firstCol" :key="index" class=" w-full  ">-->
+              <!--                                        <td class="w-full  flex justify-center items-center   ">-->
+              <!--                                            <div>-->
+              <!--                                                {{ col }}-->
 
-                                        </th>
-                                    </tr>
-                                </table>
+              <!--                                            </div>-->
+
+              <!--                                        </td>-->
+              <!--                                    </tr>-->
+              <!--                                </table>-->
+              <!--                            </div>-->
+              <!--                        </div>-->
+              <!--&lt;!&ndash;                        原表格right&ndash;&gt;-->
+              <!--                        <div class="right-div ">-->
+              <!--                            &lt;!&ndash;窗口&ndash;&gt;-->
+              <!--                            <div ref="firstRowLayer"-->
+              <!--                                 class="right-div1 bg-[#F1F1F1] rounded-tr-2xl">-->
+              <!--                                <table class=" flex items-start self-start w-[8.2rem]  rounded-br-2xl">-->
+
+              <!--                                    <tr>-->
+              <!--                                        <th v-for="(row, index) in firstRow" :key="index"-->
+              <!--                                            class="first-row-style w-[8.2rem]  ">{{-->
+              <!--                                                row-->
+              <!--                                            }}-->
+              <!--                                        </th>-->
+              <!--                                    </tr>-->
+              <!--                                </table>-->
+              <!--                            </div>-->
+              <!--                            <div-->
+
+              <!--                                    ref="tableContainer"-->
+              <!--                                    class="right-div2 flex items-start self-start"-->
+              <!--                                    @scroll="tableScroll()"-->
+
+              <!--                            >-->
+              <!--                                <table class="flex items-start w-[8.2rem]  ">-->
+              <!--                                    <div class="flex-col justify-center items-center">-->
+              <!--                                        <tr v-for="(body,index) in tableBodyRows" :key="index"-->
+              <!--                                            class="flex justify-center items-center">-->
+              <!--                                            <template v-for="(col, i) in tableBodyCols" :key="col.props + i">-->
+              <!--                                                <td v-if="index==0" class="w-[8.2rem] text-center border-r border-b flex justify-center items-center">-->
+
+              <!--                                                  <Menu as="div" class="dropdown relative inline-block">-->
+              <!--                                                    <div>-->
+              <!--                                                      <MenuButton class="inline-flex w-[7rem] justify-center gap-x-1.5">-->
+              <!--                                                        <summary v-if="body[col.props]==0||body[col.props]==null||body[col.props]==undefined" class="m-1 btn w-[7rem] text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2] rounded-box">停止</summary>-->
+              <!--                                                        <summary v-if="body[col.props]==1" class="m-1 btn w-[7rem] text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] rounded-[1rem]">开启</summary>-->
+              <!--                                                      </MenuButton>-->
+              <!--                                                    </div>-->
+              <!--                                                    <MenuItems class="p-2 shadow-xl menu dropdown-content z-[1] bg-base-100 rounded-box w-[7rem] border absolute origin-top-left left-0 mt-2">-->
+              <!--                                                      <MenuItem v-slot="{ active }">-->
+              <!--                                                        <button @click="controlSend('DO_flag', i, 0)" :class="[active ? 'bg-[#E0E0E0] text-[#000000]' : 'text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2]', 'block px-4 py-2 text-sm rounded-[0.5rem]']">停止</button>-->
+              <!--                                                      </MenuItem>-->
+              <!--                                                      <MenuItem v-slot="{ active }">-->
+              <!--                                                        <button @click="controlSend('DO_flag', i, 1)" :class="[active ? 'bg-[#BAE7C7] text-[#256637]' : 'text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] mt-2', 'block px-4 py-2 text-sm rounded mt-2']">开启</button>-->
+              <!--                                                      </MenuItem>-->
+              <!--                                                    </MenuItems>-->
+              <!--                                                  </Menu>-->
+
+              <!--                                                </td>-->
+
+              <!--                                                <td v-else-if="index>=2&&index<=10"-->
+              <!--                                                    class="w-[8.2rem] text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center"-->
+              <!--                                                    @dblclick="inputVisible[i][index-2].control = !inputVisible[i][index-2].control">-->
+              <!--                                                    <input-->
+              <!--                                                            v-if="inputVisible[i][index-2].control&&DeviceManage.deviceList[i]?.deviceSet!==null"-->
+              <!--                                                            v-model="inputVisible[i][index-2].cache"-->
+              <!--                                                            :placeholder="placeholder[index-2]"-->
+              <!--                                                            class="w-[8.2rem]  h-full text-center break-all whitespace-normal "-->
+              <!--                                                            type="text"-->
+              <!--                                                            @keyup.enter="keyupEnterInput(i,index-2)"-->
+              <!--                                                    />-->
+
+              <!--                                                    <span v-else-->
+              <!--                                                          class="w-[8.2rem] leading-5 text-center whitespace-normal break-all flex justify-center items-center">-->
+              <!--                    {{ body[col.props] }}</span>-->
+              <!--                                                </td>-->
+              <!--                                                <td v-else-->
+              <!--                                                    class="w-[8.2rem] text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">-->
+              <!--                                                    {{ body[col.props] }}-->
+              <!--                                                </td>-->
+              <!--                                            </template>-->
+
+
+
+              <!--                                        </tr>-->
+              <!--                                    </div>-->
+              <!--                                </table>-->
+              <!--                            </div>-->
+              <!--                        </div>-->
+              <!-- 新格式-->
+              <!--左侧列left-->
+              <div class="relative w-[26rem]   h-[calc(100%-1rem)] ml-8  m-2  flex-col flex justify-start items-center ">
+                <!--设置参数-->
+                <div class="relative  shadow w-[20rem] m-2 rounded-2xl mb-14 justify-start items-center">
+                  <div class="w-full h-14  rounded-t-2xl flex   items-center text-lg font-medium ">
+                    <div class="ml-4 ">
+                      设置参数
+                    </div>
+                  </div>
+                  <!--表格内容-->
+                  <div class="  w-[100%] h-[100%]  top-0    justify-center flex mb-10  ">
+                    <div class="rounded-2xl   w-[calc(100%-1.5rem)]   justify-center flex     ">
+                      <div class=" w-full h-[92%] ">
+                        <div class=" box-border overflow-x-hidden w-full  flex">
+                          <!--原表格left-->
+                          <div class="float-left  shadow  border-radius rounded-tl-2xl z-20">
+                            <div class="w-[8rem]  overflow-hidden ">
+                              <table class="mb-4 shadow  bg-[#E8F6ED] py-4 rounded-bl-2xl">
+                                <tr>
+                                  <td class="w-full  flex justify-center items-center   ">
+                                    <div>状态</div>
+                                  </td>
+                                  <td class="w-full  flex justify-center items-center   ">
+                                    <div>测量值</div>
+                                  </td>
+                                  <td class="w-full  flex justify-center items-center   ">
+                                    <div>设定值</div>
+                                  </td>
+                                </tr>
+                              </table>
                             </div>
-                            <div
-                                    ref="firstColLayer"
-                                    class="w-full overflow-hidden "
-                            >
-                                <table class="mb-4 shadow  bg-[#E8F6ED] py-4 rounded-bl-2xl">
-                                    <tr v-for="(col, index) in firstCol" :key="index" class=" w-full  ">
-                                        <td class="w-full  flex justify-center items-center   ">
-                                            <div>
-                                                {{ col }}
+                          </div>
+                          <!--原表格right-->
+                          <div class="right-div ">
+                            <div  class="right-div2 flex items-start self-start" >
+                              <table class="flex items-start w-[10rem]  ">
+                                <div class="flex justify-center items-center">
+                                  <tr  class=" justify-center items-center">
+                                    <td class=" text-center border-t border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
+                                      <div class="h-full flex justify-center items-center  ">
+                                        <Menu as="div" class="dropdown relative inline-block">
+                                          <div>
+                                            <MenuButton class="inline-flex w-[7rem] justify-center gap-x-1.5">
+                                              <summary v-if="DO_flag==0||DO_flag==null||DO_flag==undefined" class="m-1 btn w-[7rem] text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2] rounded-box">停止</summary>
+                                              <summary v-if="DO_flag==1" class="m-1 btn w-[7rem] text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] rounded-[1rem]">开启</summary>
+                                            </MenuButton>
+                                          </div>
+                                          <MenuItems class="p-2 shadow-xl menu dropdown-content z-[1] bg-base-100 rounded-box w-[7rem] border absolute origin-top-left left-0 mt-2">
+                                            <MenuItem v-slot="{ active }">
+                                              <button  :class="[active ? 'bg-[#E0E0E0] text-[#000000]' : 'text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2]', 'block px-4 py-2 text-sm rounded-[0.5rem]']">停止</button>
+                                            </MenuItem>
+                                            <MenuItem v-slot="{ active }">
+                                              <button  :class="[active ? 'bg-[#BAE7C7] text-[#256637]' : 'text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] mt-2', 'block px-4 py-2 text-sm rounded mt-2']">开启</button>
+                                            </MenuItem>
+                                          </MenuItems>
+                                        </Menu>
 
-                                            </div>
-
-                                        </td>
-                                    </tr>
-                                </table>
+                                      </div>
+                                    </td>
+                                    <td class=" text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
+                                      0
+                                    </td>
+                                    <td class=" text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
+                                      <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
+                                        <input id="name" v-model="targetDO"
+                                               class="block w-[80%]  border-b-2 m-2 text-center" name="name" placeholder="请填温度设定值"
+                                               required type="number"/>
+                                      </div>
+                                    </td>
+                                  </tr>
+                                </div>
+                              </table>
                             </div>
+                          </div>
                         </div>
-                        <!--right-->
-                        <div class="right-div ">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!--pid 自动参数-->
+                <div class="relative  shadow w-[20rem]  mt-6   m-2 rounded-2xl  justify-start items-center">
+                  <div class="w-full h-14  rounded-t-2xl flex   items-center text-lg font-medium ">
+                    <div class="ml-4">
+                      自动参数
+                    </div>
+                  </div>
+                  <!--表格内容-->
+                  <div class="  w-[100%] h-[100%]  top-0   mb-14 justify-center flex  ">
+                    <div class="rounded-2xl   w-[calc(100%-1.5rem)]   justify-center flex     ">
+                      <div class=" w-full h-[92%] ">
+                        <div class=" box-border overflow-x-hidden w-full  flex">
+                          <!--原表格left-->
+                          <div class="float-left   shadow border-radius rounded-tl-2xl z-20">
+                            <div class="  w-[8rem]">
+                              <table class=" py-4 ">
+                                <!--                                        <tr>-->
+                                <!--                                          <th class="flex items-center justify-center gap-2   ">-->
+                                <!--                                          </th>-->
+                                <!--                                        </tr>-->
+                              </table>
+                            </div>
+                            <div class="w-full overflow-hidden ">
+                              <table class="mb-4 shadow  bg-[#E8F6ED] py-4 rounded-bl-2xl">
+                                <tr >
+                                  <td class="w-full  flex justify-center items-center   ">
+                                    <div>P</div>
+                                  </td>
+                                  <td class="w-full  flex justify-center items-center   ">
+                                    <div>I</div>
+                                  </td>
+                                  <td class="w-full  flex justify-center items-center   ">
+                                    <div>D</div>
+                                  </td>
+                                </tr>
+                              </table>
+                            </div>
+                          </div>
+                          <!--原表格right-->
+                          <div class="right-div ">
                             <!--窗口-->
                             <div ref="firstRowLayer"
                                  class="right-div1 bg-[#F1F1F1] rounded-tr-2xl">
-                                <table class=" flex items-start self-start w-[8.2rem]  rounded-br-2xl">
-
-                                    <tr>
-                                        <th v-for="(row, index) in firstRow" :key="index"
-                                            class="first-row-style w-[8.2rem]  ">{{
-                                                row
-                                            }}
-                                        </th>
-                                    </tr>
-                                </table>
                             </div>
-                            <div
-
-                                    ref="tableContainer"
-                                    class="right-div2 flex items-start self-start"
-                                    @scroll="tableScroll()"
+                            <div ref="tableContainer" class="right-div2 flex items-start self-start" @scroll="tableScroll()"
 
                             >
-                                <table class="flex items-start w-[8.2rem]  ">
-                                    <div class="flex-col justify-center items-center">
-                                        <tr v-for="(body,index) in tableBodyRows" :key="index"
-                                            class="flex justify-center items-center">
-                                            <template v-for="(col, i) in tableBodyCols" :key="col.props + i">
-                                                <td v-if="index==0"
-                                                    class="w-[8.2rem] text-center border-r border-b flex justify-center items-center">
-<!--                                                    <details class="dropdown ">-->
-<!--                                                        <summary v-if="body[col.props]==0||body[col.props]==null||body[col.props]==undefined" class="m-1 btn w-[7rem] ">手动</summary>-->
-<!--                                                        <summary v-if="body[col.props]==1" class="m-1 btn w-[7rem] text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3]">自动</summary>-->
-<!--                                                        <ul class="p-2 shadow-xl menu dropdown-content z-[1] bg-base-100 rounded-box w-[7rem] broder">-->
-<!--                                                            <li class="text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2] rounded"-->
-<!--                                                                @click="controlSend('temp_flag',i,0)"><a>停止</a>-->
-<!--                                                            </li>-->
-<!--                                                            <li class="text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] mt-2 rounded"-->
-<!--                                                                @click="controlSend('temp_flag',i,1)"><a>开启</a></li>-->
-<!--                                                        </ul>-->
-<!--                                                    </details>-->
-
-                                                  <Menu as="div" class="dropdown relative inline-block">
-                                                    <div>
-                                                      <MenuButton class="inline-flex w-[7rem] justify-center gap-x-1.5">
-                                                        <summary v-if="body[col.props] == 0 || body[col.props] == null || body[col.props] == undefined" class="m-1 btn w-[7rem] text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2] rounded">手动</summary>
-                                                        <summary v-if="body[col.props] == 1" class="m-1 btn w-[7rem] text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] rounded">自动</summary>
-                                                      </MenuButton>
-                                                    </div>
-
-                                                    <MenuItems class="p-2 shadow-xl menu dropdown-content z-[1] bg-base-100 rounded-box w-[7rem] border absolute origin-top-left left-0 mt-2">
-                                                      <MenuItem v-slot="{ active }">
-                                                        <button @click="controlSend('temp_flag', i, 0)" :class="[active ? 'bg-[#E0E0E0] text-[#000000]' : 'text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2]', 'block px-4 py-2 text-sm rounded']">停止</button>
-                                                      </MenuItem>
-                                                      <MenuItem v-slot="{ active }">
-                                                        <button @click="controlSend('temp_flag', i, 1)" :class="[active ? 'bg-[#BAE7C7] text-[#256637]' : 'text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] mt-2', 'block px-4 py-2 text-sm rounded mt-2']">开启</button>
-                                                      </MenuItem>
-                                                    </MenuItems>
-                                                  </Menu>
-
-                                                </td>
-                                                <td v-else-if="index==1" class="w-[8.2rem] text-center border-r border-b flex justify-center items-center">
-<!--                                                    <details class="dropdown ">-->
-<!--                                                        <summary v-if="body[col.props]==0||body[col.props]==null||body[col.props]==undefined" class="m-1 btn w-[7rem] ">停止</summary>-->
-<!--                                                        <summary v-if="body[col.props]==1" class="m-1 btn w-[7rem] text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3]">开启</summary>-->
-<!--                                                        <ul class="p-2 shadow-xl menu dropdown-content z-[1] bg-base-100 rounded-box w-[7rem] broder">-->
-<!--                                                            <li class="text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2] rounded" @click="controlSend('condensate_water_flag',i,0)"><a>停止</a></li>-->
-<!--                                                            <li class="text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] mt-2 rounded" @click="controlSend('condensate_water_flag',i,1)"><a>开启</a></li>-->
-<!--                                                        </ul>-->
-<!--                                                    </details>-->
-
-                                                  <Menu as="div" class="dropdown relative inline-block">
-                                                    <div>
-                                                      <MenuButton class="inline-flex w-[7rem] justify-center gap-x-1.5">
-                                                        <summary v-if="body[col.props] == 0 || body[col.props] == null || body[col.props] == undefined" class="m-1 btn w-[7rem] text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2] rounded">停止</summary>
-                                                        <summary v-if="body[col.props] == 1" class="m-1 btn w-[7rem] text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] rounded">开启</summary>
-                                                      </MenuButton>
-                                                    </div>
-
-                                                    <MenuItems class="p-2 shadow-xl menu dropdown-content z-[1] bg-base-100 rounded-box w-[7rem] border absolute origin-top-left left-0 mt-2">
-                                                      <MenuItem v-slot="{ active }">
-                                                        <button @click="controlSend('condensate_water_flag', i, 0)" :class="[active ? 'bg-[#E0E0E0] text-[#000000]' : 'text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2]', 'block px-4 py-2 text-sm rounded']">停止</button>
-                                                      </MenuItem>
-                                                      <MenuItem v-slot="{ active }">
-                                                        <button @click="controlSend('condensate_water_flag', i, 1)" :class="[active ? 'bg-[#BAE7C7] text-[#256637]' : 'text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] mt-2', 'block px-4 py-2 text-sm rounded mt-2']">开启</button>
-                                                      </MenuItem>
-                                                    </MenuItems>
-                                                  </Menu>
-
-                                                </td>
-                                                <td v-else-if="index==2"
-                                                    class="w-[8.2rem] text-center border-r border-b flex justify-center items-center">
-<!--                                                    <details class="dropdown ">-->
-<!--                                                        <summary v-if="body[col.props]==0||body[col.props]==null||body[col.props]==undefined" class="m-1 btn w-[7rem] ">停止</summary>-->
-<!--                                                        <summary v-if="body[col.props]==1" class="m-1 btn w-[7rem] text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3]">开启</summary>-->
-<!--                                                        <ul class="p-2 shadow-xl menu dropdown-content z-[1] bg-base-100 rounded-box w-[7rem] broder"><li class="text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2] rounded" @click="controlSend('heated_blanket_flag',i,0)"><a>停止</a></li>-->
-<!--                                                          <li class="text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] mt-2 rounded" @click="controlSend('heated_blanket_flag',i,1)"><a>开启</a></li>-->
-<!--                                                        </ul>-->
-<!--                                                    </details>-->
-                                                  <Menu as="div" class="dropdown relative inline-block">
-                                                    <div>
-                                                      <MenuButton class="inline-flex w-[7rem] justify-center gap-x-1.5">
-                                                        <summary v-if="body[col.props] == 0 || body[col.props] == null || body[col.props] == undefined" class="m-1 btn w-[7rem] text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2] rounded">停止</summary>
-                                                        <summary v-if="body[col.props] == 1" class="m-1 btn w-[7rem] text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] rounded">开启</summary>
-                                                      </MenuButton>
-                                                    </div>
-
-                                                    <MenuItems class="p-2 shadow-xl menu dropdown-content z-[1] bg-base-100 rounded-box w-[7rem] border absolute origin-top-left left-0 mt-2">
-                                                      <MenuItem v-slot="{ active }">
-                                                        <button @click="controlSend('heated_blanket_flag', i, 0)" :class="[active ? 'bg-[#E0E0E0] text-[#000000]' : 'text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2]', 'block px-4 py-2 text-sm rounded']">停止</button>
-                                                      </MenuItem>
-                                                      <MenuItem v-slot="{ active }">
-                                                        <button @click="controlSend('heated_blanket_flag', i, 1)" :class="[active ? 'bg-[#BAE7C7] text-[#256637]' : 'text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] mt-2', 'block px-4 py-2 text-sm rounded mt-2']">开启</button>
-                                                      </MenuItem>
-                                                    </MenuItems>
-                                                  </Menu>
-
-
-                                                </td>
-                                                <td v-else-if="index>=5&&index<=10"
-                                                    class="w-[8.2rem] text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center"
-                                                    @dblclick="inputVisible[i][index-5].control = !inputVisible[i][index-5].control">
-                                                    <input
-                                                            v-if="inputVisible[i][index-5].control&&DeviceManage.deviceList[i]?.deviceSet!==null"
-                                                            v-model="inputVisible[i][index-5].cache"
-                                                            :placeholder="placeholder[index-5]"
-                                                            class="w-[8.2rem]  h-full text-center break-all whitespace-normal "
-                                                            type="text"
-                                                            @keyup.enter="keyupEnterInput(i,index-5)"
-                                                    />
-
-                                                    <span v-else
-                                                          class="w-[8.2rem] leading-5 text-center whitespace-normal break-all flex justify-center items-center">
-                    {{ body[col.props] }}</span>
-                                                </td>
-                                                <td v-else
-                                                    class="w-[8.2rem] text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
-                                                    {{ body[col.props] }}
-                                                </td>
-                                            </template>
-
-
-                                        </tr>
-                                    </div>
-                                </table>
+                              <table class="flex items-start w-[10rem]  ">
+                                <div class="flex-col justify-center items-center">
+                                  <tr  class="flex justify-center items-center">
+                                    <td class=" text-center border-t border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
+                                      <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
+                                        <input id="name" v-model="targetDO"
+                                               class="block w-[80%]  border-b-2 m-2 text-center" name="name" placeholder="请输温度P"
+                                               required type="number"/>
+                                      </div>
+                                    </td>
+                                  </tr>
+                                  <tr  class="flex justify-center items-center">
+                                    <td class=" text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
+                                      <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
+                                        <input id="name" v-model="targetDO"
+                                               class="block w-[80%]  border-b-2 m-2 text-center" name="name" placeholder="请输温度I"
+                                               required type="number"/>
+                                      </div>
+                                    </td>
+                                  </tr>
+                                  <tr  class="flex justify-center items-center">
+                                    <td class=" text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
+                                      <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
+                                        <input id="name" v-model="targetDO"
+                                               class="block w-[80%]  border-b-2 m-2 text-center" name="name" placeholder="请输温度D"
+                                               required type="number"/>
+                                      </div>
+                                    </td>
+                                  </tr>
+                                </div>
+                              </table>
                             </div>
+                          </div>
                         </div>
-
+                      </div>
                     </div>
+                  </div>
                 </div>
 
+
+
+
+              </div>
+              <!--右侧-->
+              <div class="relative w-[26rem]   h-[calc(100%-1rem)]   m-2  flex-col flex justify-start items-center">
+                <!--报警参数-->
+                <div class="relative  shadow w-[20rem]      m-2 rounded-2xl  justify-start items-center">
+                  <div class="w-full h-14  rounded-t-2xl flex   items-center text-lg font-medium ">
+                    <div class="ml-4">
+                      报警参数
+                    </div>
+                  </div>
+                  <!--表格内容-->
+                  <div class="  w-[100%] h-[100%]  top-0  mb-14  justify-center flex  ">
+                    <div class="rounded-2xl   w-[calc(100%-1.5rem)]   justify-center flex     ">
+                      <div class=" w-full h-[92%] ">
+                        <div class=" box-border overflow-hidden w-full  flex">
+                          <!--原表格left-->
+                          <div class="float-left   shadow border-radius rounded-tl-2xl z-20">
+                            <div class="w-[8rem]  overflow-hidden ">
+                              <table class="mb-4 shadow  bg-[#E8F6ED] py-4 rounded-bl-2xl">
+                                <tr>
+                                  <td class="w-full  flex justify-center items-center   ">
+                                    <div>温度报警上限</div>
+                                  </td>
+                                  <td class="w-full  flex justify-center items-center   ">
+                                    <div>温度报警下限</div>
+                                  </td>
+                                </tr>
+                              </table>
+                            </div>
+                          </div>
+                          <!--原表格right-->
+                          <div class="right-div ">
+                            <div  class="right-div2 flex items-start self-start" >
+                              <table class="flex items-start w-[10rem]  ">
+                                <div class="flex-col justify-center items-center">
+                                  <tr  class="flex justify-center items-center">
+                                    <td class=" text-center border-t border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
+                                      <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
+                                        <input id="name"
+                                               class="block w-[80%]  border-b-2 m-2 text-center" name="name" placeholder="请输报警上限"
+                                               required type="number"/>
+                                      </div>
+                                    </td>
+                                  </tr>
+                                  <tr  class="flex justify-center items-center">
+                                    <td class=" text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
+                                      <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
+                                        <input id="name"
+                                               class="block w-[80%]  border-b-2 m-2 text-center" name="name" placeholder="请输报警下限"
+                                               required type="number"/>
+                                      </div>
+                                    </td>
+                                  </tr>
+                                </div>
+                              </table>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!--控制参数-->
+                <div class="relative  shadow w-[20rem]      m-2 rounded-2xl  justify-start items-center">
+                  <div class="w-full h-14  rounded-t-2xl flex   items-center text-lg font-medium ">
+                    <div class="ml-4">
+                      控制参数
+                    </div>
+                  </div>
+                  <!--表格内容-->
+                  <div class="  w-[100%] h-[100%]  top-0  mb-14  justify-center flex  ">
+                    <div class="rounded-2xl   w-[calc(100%-1.5rem)]   justify-center flex     ">
+                      <div class=" w-full h-[92%] ">
+                        <div class=" box-border overflow-hidden w-full  flex">
+                          <!--原表格left-->
+                          <div class="float-left   shadow border-radius rounded-tl-2xl z-20">
+                            <div class="w-[8rem]  overflow-hidden ">
+                              <table class="mb-4 shadow  bg-[#E8F6ED] py-4 rounded-bl-2xl">
+                                <tr>
+                                  <td class="w-full  flex justify-center items-center   ">
+                                    <div>控制死区</div>
+                                  </td>
+                                  <td class="w-full  flex justify-center items-center   ">
+                                    <div>误差上限</div>
+                                  </td>
+                                  <td class="w-full  flex justify-center items-center   ">
+                                    <div>误差下限</div>
+                                  </td>
+                                </tr>
+                              </table>
+                            </div>
+                          </div>
+                          <!--原表格right-->
+                          <div class="right-div ">
+                            <div  class="right-div2 flex items-start self-start" >
+                              <table class="flex items-start w-[10rem]  ">
+                                <div class="flex-col justify-center items-center">
+                                  <tr  class="flex justify-center items-center">
+                                    <td class=" text-center border-t border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
+                                      <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
+                                        <input id="name"
+                                               class="block w-[80%]  border-b-2 m-2 text-center" name="name" placeholder="请输控制死区"
+                                               required type="number"/>
+                                      </div>
+                                    </td>
+                                  </tr>
+                                  <tr  class="flex justify-center items-center">
+                                    <td class=" text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
+                                      <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
+                                        <input id="name"
+                                               class="block w-[80%]  border-b-2 m-2 text-center" name="name" placeholder="请输误差上限"
+                                               required type="number"/>
+                                      </div>
+                                    </td>
+                                  </tr>
+                                  <tr  class="flex justify-center items-center">
+                                    <td class=" text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
+                                      <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
+                                        <input id="name"
+                                               class="block w-[80%]  border-b-2 m-2 text-center" name="name" placeholder="请输误差下限"
+                                               required type="number"/>
+                                      </div>
+                                    </td>
+                                  </tr>
+                                </div>
+                              </table>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!--温控参数-->
+                <div class="relative  shadow w-[20rem]      m-2 rounded-2xl  justify-start items-center">
+                  <div class="w-full h-14  rounded-t-2xl flex   items-center text-lg font-medium ">
+                    <div class="ml-4">
+                      控制参数
+                    </div>
+                  </div>
+                  <!--表格内容-->
+                  <div class="  w-[100%] h-[100%]  top-0  mb-14  justify-center flex  ">
+                    <div class="rounded-2xl   w-[calc(100%-1.5rem)]   justify-center flex     ">
+                      <div class=" w-full h-[92%] ">
+                        <div class=" box-border overflow-hidden w-full  flex">
+                          <!--原表格left-->
+                          <div class="float-left   shadow border-radius rounded-tl-2xl z-20">
+                            <div class="w-[8rem]  overflow-hidden ">
+                              <table class="mb-4 shadow  bg-[#E8F6ED] py-4 rounded-bl-2xl">
+                                <tr>
+                                  <td class="w-full  flex justify-center items-center   ">
+                                    <div>冷水阀开关</div>
+                                  </td>
+                                  <td class="w-full  flex justify-center items-center   ">
+                                    <div>加热毯开关</div>
+                                  </td>
+                                  <td class="w-full  flex justify-center items-center   ">
+                                    <div>加热实时功率</div>
+                                  </td>
+                                </tr>
+                              </table>
+                            </div>
+                          </div>
+                          <!--原表格right-->
+                          <div class="right-div ">
+                            <div  class="right-div2 flex items-start self-start" >
+                              <table class="flex items-start w-[10rem]  ">
+                                <div class="flex-col justify-center items-center">
+                                  <tr  class="flex justify-center items-center">
+                                    <td class=" text-center border-t border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
+                                      <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
+
+                                      </div>
+                                    </td>
+                                  </tr>
+                                  <tr  class="flex justify-center items-center">
+                                    <td class=" text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
+                                      <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
+                                        <input id="name"
+                                               class="block w-[80%]  border-b-2 m-2 text-center" name="name" placeholder="请输误差上限"
+                                               required type="number"/>
+                                      </div>
+                                    </td>
+                                  </tr>
+                                  <tr  class="flex justify-center items-center">
+                                    <td class=" text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
+                                      <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
+                                        <input id="name"
+                                               class="block w-[80%]  border-b-2 m-2 text-center" name="name" placeholder="请输误差下限"
+                                               required type="number"/>
+                                      </div>
+                                    </td>
+                                  </tr>
+                                </div>
+                              </table>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
             </div>
 
+          </div>
 
         </div>
+
+
+      </div>
 
 
     </div>
@@ -221,7 +526,7 @@ import {useProcessPopupMangerState} from "@/store/ProcessPopupMangerState";
 import {sendData} from '@/api/index.js'
 import {useDeviceManage} from '@/store/DeviceManage'
 import {useAppGlobal} from '@/store/AppGlobal'
-import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
+import {Menu, MenuButton, MenuItem, MenuItems, Switch} from '@headlessui/vue'
 
 const DeviceManage = useDeviceManage();
 const ProcessPopupMangerState = useProcessPopupMangerState()
