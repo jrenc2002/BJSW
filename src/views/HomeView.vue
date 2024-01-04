@@ -59,7 +59,6 @@ const DeviceManage = useDeviceManage();
 // 使用 Vue3 的 reactive 函数来创建一个响应式对象，用于控制抽屉的显示状态
 const isDrawerVisible = reactive({
   visible: true
-
 });
 
 // 定义一个函数，用于切换抽屉的显示状态
@@ -81,8 +80,6 @@ const updateWindowSize = () => {
     AppGlobal.updateDrawerState(isDrawerVisible.visible)
   }
 }
-
-
 
 
 

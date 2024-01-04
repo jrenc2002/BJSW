@@ -158,7 +158,7 @@ function updateChartData() {
     });
     ChartsData.dataSeries = series;
     ChartsData.dataLegend = legend;
-    
+    console.log(series)
     
     return series;
     

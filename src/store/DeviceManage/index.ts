@@ -1,12 +1,13 @@
 import {defineStore} from "pinia";
-import {sendData} from "@/api";
 
+import Swal from 'sweetalert2';
 // 给开发人员使用的debug
 const debug = false;
 
 interface SetData {
-
+    
     // PH控制部分变量
+    deviceNum: any;
     timing_PH: number;               // 实时PH值
     acid_speed: number;              // 酸泵实时送料速率
     lye_speed: number;               // 碱泵实时送料速率
@@ -23,8 +24,8 @@ interface SetData {
     PH_lower_limit: number;          // PH下限值
     PH_flag: number;                 // PH控制开启/停止标志位
     Ph_auto_handle: number;          // PH控制自动/手动控制标志位
-
-
+    
+    
     PH_calibration_status: number;           // PH校准状态
     PH_calibration_progress: number;         // PH校准进度
     acid_pump_step_count: number;            // 酸泵发送步数
@@ -40,12 +41,12 @@ interface SetData {
     Temp_KD: number;                     // 温控KD
     water_flag: number;                  // 冷凝水通断标志位
     temp_flag: number;                   // 温控开启/停止标志位
-
+    
     // 氧含量控制部分变量
     timing_DO: number;                   // 实时DO值
     oxy_ratio: number;                   // 氧气通度
     target_DO: number;                   // 设定目标DO值
-
+    
     DO_KP: number;                       // 氧含量KP
     DO_KI: number;                       // 氧含量KI
     DO_KD: number;                       // 氧含量KD
@@ -55,7 +56,7 @@ interface SetData {
     motor_speed_l_limit: number;         // 电机转速下限
     motor_speed_u_limit: number;         // 电机转速上限
     oxy_flag: number;                    // 通氧关联氧含量开启/关闭标志位
-
+    
     // 新增的氧含量控制部分变量
     DO_zero_calibration_flag: number;            // 溶氧校准标志位
     DO_saturation_calibration_flag: number;      // 溶氧校准标志位
@@ -64,13 +65,13 @@ interface SetData {
     oxygen_percentage: number;                   // 需要显示的是百分比
     DO_upper_limit: number;                      // DO上限值
     DO_lower_limit: number;                      // DO下限值
-
+    
     // 消泡控制部分
     clean_speed: number;                 // 消泡泵设定送料速率
     clean_ml: number;                    // 消泡泵目前送料量
     clean_single_time: number;           // 消泡单次泵入时间
     clean_flag: number;                  // 消泡开启/停止标志位
-
+    
     // 新增的消泡控制部分变量
     accumulated_defoam_value: number;            // 累计消泡值
     defoam_pump_step_count: number;              // 消泡泵发送步数
@@ -83,14 +84,14 @@ interface SetData {
     feed_pump_now_speed: number;                // 补料泵当前速度-泵速==0为关闭
     acid_pump_now_speed: number;                // 酸泵当前速度-泵速==0为关闭
     lye_pump_now_speed: number;                 // 碱泵当前速度-泵速==0为关闭
-
+    
     lye_pump_now_set_speed: number;             // 碱泵当前设定速度-我设定的
     acid_pump_now_set_speed: number;            // 酸泵当前设定速度-我设定的
     feed_pump_now_set_speed: number;            // 补料泵当前设定速度-我设定的
     defoam_pump_now_speed: number;              // 消泡泵当前速度-泵速==0为关闭
-    defoam_pump_now_set_speed:number;           // 消泡泵设定速度
-
-
+    defoam_pump_now_set_speed: number;           // 消泡泵设定速度
+    
+    
     // 补料控制部分
     feed_speed: number;                  // 补料泵设定补料速率
     feed_ml: number;                     // 补料泵目前补料量
@@ -103,12 +104,12 @@ interface SetData {
     feed_motor_flag: number;             // 补料泵开启标志位
     feed_motor_cu_limit: number;         // 补料关联转速上限值
     feed_motor_cl_limit: number;         // 补料关联转速下限值
-
-
+    
+    
     feed_pump_step_count: number;        // 补料泵发送步数
     feed_pump_calibration_flag: number;  // 补料泵标定开始标志位
-     condensate_water_flag:number;          // 冷凝水开关
-     heated_blanket_flag:number;           // 加热毯开关
+    condensate_water_flag: number;          // 冷凝水开关
+    heated_blanket_flag: number;           // 加热毯开关
     // 系统控制变量
     start_flag: number;          // 发酵开始标志位
     year: number;                // 年
@@ -123,33 +124,33 @@ interface SetData {
 interface deviceSet {
     /** 温度报警上限 */
     tempMaxWarn: number;
-
+    
     /** 温度报警下限 */
     tempMinWarn: number;
-
+    
     /** PH报警上限 */
     phMaxWarn: number;
-
+    
     /** PH报警下限 */
     phMinWarn: number;
-
+    
     /** DO报警上限 */
     doMaxWarn: number;
-
+    
     /** DO报警下限 */
     doMinWarn: number;
-
+    
     /** 酸泵单步速度 */
     acidPumpSpeed: number;
-
+    
     /** 碱泵单步速度 */
     lyePumpSpeed: number;
-
+    
     /** 补料泵单步速度 */
     feedPumpSpeed: number;
     rpmMaxWarn: number;
     rpmMinWarn: number;
-
+    
     /** 消泡泵单步速度 */
     defoamerPumpSpeed: number;
     tempState: number,
@@ -174,33 +175,37 @@ interface Device {
     batch_name: any;
     alarm: boolean;
     deviceSet: deviceSet | null
-    batch_cycle:number;
+    batch_cycle: number;
     recordFlag: boolean;
-    recordFeedMode:recordFeedMode ;
-
-}
-
-interface FeedFullSpeed{
-    feedSpeed:number;
-    feedDate:number;
-}
-interface FeedLine{
-    feedSpeed:number;
-    DOTopLimit:number;
-    DOBottomLimit:number;
-}
-interface FeedDutyCycle{
-    feedSpeed:number;
-    checkCycle:number;
-    feedQuantity:number;
-    DO:number;
-}
-interface recordFeedMode{
-    FullSpeed:FeedFullSpeed;
-    Line:FeedLine;
-    DutyCycle:FeedDutyCycle;
+    recordFeedMode: recordFeedMode;
     
 }
+
+interface FeedFullSpeed {
+    feedSpeed: number;
+    feedDate: number;
+}
+
+interface FeedLine {
+    feedSpeed: number;
+    DOTopLimit: number;
+    DOBottomLimit: number;
+}
+
+interface FeedDutyCycle {
+    feedSpeed: number;
+    checkCycle: number;
+    feedQuantity: number;
+    DO: number;
+}
+
+interface recordFeedMode {
+    FullSpeed: FeedFullSpeed;
+    Line: FeedLine;
+    DutyCycle: FeedDutyCycle;
+    
+}
+
 // TODO:设备管理要重构
 // 1.内容数据表项不全仍然缺乏
 // 2.各个部分的状态灯
@@ -212,24 +217,24 @@ const state = (): {
     return {
         deviceList: [
             {
-                id: 0, name: '设备A', deviceNum: "CCC-022", ip: '192.168.1.3', port: 2000,batch_cycle:0,
-                state: 0, nowData: null, deviceSocket: null, start_time: null, batch_name: null,recordFlag: false,
-                alarm: false,recordFeedMode:{
-                    FullSpeed:{
-                        feedSpeed:-1,
-                        feedDate:-1
+                id: 0, name: '设备A', deviceNum: "CCC-022", ip: '192.168.1.3', port: 2000, batch_cycle: 0,
+                state: 0, nowData: null, deviceSocket: null, start_time: null, batch_name: null, recordFlag: false,
+                alarm: false, recordFeedMode: {
+                    FullSpeed: {
+                        feedSpeed: -1,
+                        feedDate: -1
                     },
-                    Line:{
-                        feedSpeed:-1,
-                        DOTopLimit:-1,
-                        DOBottomLimit:-1
+                    Line: {
+                        feedSpeed: -1,
+                        DOTopLimit: -1,
+                        DOBottomLimit: -1
                         
                     },
-                    DutyCycle:{
-                        feedSpeed:-1,
-                        checkCycle:-1,
-                        feedQuantity:-1,
-                        DO:-1
+                    DutyCycle: {
+                        feedSpeed: -1,
+                        checkCycle: -1,
+                        feedQuantity: -1,
+                        DO: -1
                     }
                 }, deviceSet: {
                     tempState: 0,
@@ -253,7 +258,7 @@ const state = (): {
                     defoamerPumpSumStepCount: 0,
                 }
             },
-
+        
         ]
     }
 }
@@ -271,29 +276,30 @@ export const useDeviceManage = defineStore('DeviceManage', {
                 id: newId,
                 name: nameDevice,
                 deviceNum: `BAB-${newId}`,
-                batch_cycle:0,
+                batch_cycle: 0,
                 ip: ip,
                 port: port,
                 state: 0,
                 recordFlag: false,
-                recordFeedMode:{
-                    FullSpeed:{
-                        feedSpeed:-1,
-                        feedDate:-1
+                recordFeedMode: {
+                    FullSpeed: {
+                        feedSpeed: -1,
+                        feedDate: -1
                     },
-                    Line:{
-                        feedSpeed:-1,
-                        DOTopLimit:-1,
-                        DOBottomLimit:-1
-        
+                    Line: {
+                        feedSpeed: -1,
+                        DOTopLimit: -1,
+                        DOBottomLimit: -1
+                        
                     },
-                    DutyCycle:{
-                        feedSpeed:-1,
-                        checkCycle:-1,
-                        feedQuantity:-1,
-                        DO:-1
-                    }}
-                    ,
+                    DutyCycle: {
+                        feedSpeed: -1,
+                        checkCycle: -1,
+                        feedQuantity: -1,
+                        DO: -1
+                    }
+                }
+                ,
                 nowData: null,
                 deviceSocket: null,
                 start_time: null,
@@ -301,7 +307,7 @@ export const useDeviceManage = defineStore('DeviceManage', {
                 alarm: false,
                 deviceSet: null
             };
-
+            
             this.deviceList.push(newDevice);
             return newId;
         },
@@ -314,7 +320,7 @@ export const useDeviceManage = defineStore('DeviceManage', {
             }
             // 将数据的时间归为现在时间
             const currentDate = new Date();
-
+            
             if (newDeviceData) {  // 确保 nowData 不为 null
                 newDeviceData.year = currentDate.getFullYear();     //年
                 newDeviceData.mounth = currentDate.getMonth() + 1;  //月 (注意: getMonth() 返回的月份是从0开始的，所以需要+1)
@@ -327,20 +333,50 @@ export const useDeviceManage = defineStore('DeviceManage', {
                 // 未连接-未连接不会进行数据处理，在这里进行数据处理的只有已连接和报警两个选项
                 // 已连接-已连接的设备如果没有修改通讯标志进行修改
                 
-                 if (newDeviceData.communicate_flag === 0) {
+                if (newDeviceData.communicate_flag === 0) {
                     const data = {
                         communicate_flag: 1,
                     }
                     this.deviceList[index].deviceSocket.send(JSON.stringify(data));
-            
                 }
                 // 运行中-刚开始运行，状态还没变过来
                 if (this.deviceList[index].state == 1 && newDeviceData.communicate_flag === 1 && newDeviceData.start_flag === 1) {
                     this.deviceList[index].state = 2
+                    // 如果没有这个批次数据存入批次数据
+                    
+                    const batchdata = {
+                        batch_name: this.deviceList[index].batch_name,
+                        can_number: newDeviceData.deviceNum,
+                        start_time: currentDate,
+                    };
+                    window.Electron.ipcRenderer.invoke('add-fermentation-batch', batchdata).then(
+                        (res) => {
+                            if (res) { // 确保res是有效的
+                                console.log('已存储数据.');
+                            } else {
+                                console.error('请求批次内容数据没请求到.');
+                            }
+                        }
+                    ).catch((error) => {
+               
+                        Swal.fire({
+                            icon: 'error', //error\warning\info\question
+                            title: '添加批次',
+                            text: '添加批次内容至数据库报错,报错为:'+error,
+                            showCancelButton: true,
+                            confirmButtonColor: '#3085d6',
+                            cancelButtonColor: '#d33',
+                            confirmButtonText: '确认',
+                            cancelButtonText: '取消',
+                        });
+                        
+                        console.error('添加批次内容至数据库报错,报错为:', error);
+                    });
+                    
                     
                 }
                 // 报警
-                if (this.deviceList && this.deviceList[index] && this.deviceList[index].deviceSet != null&&this.deviceList[index].state === 2) {
+                if (this.deviceList && this.deviceList[index] && this.deviceList[index].deviceSet != null && this.deviceList[index].state === 2) {
                     // 使用类型断言
                     const currentDeviceSet = this.deviceList[index].deviceSet as deviceSet;
                     let isAlarmFlag = false;
@@ -362,32 +398,62 @@ export const useDeviceManage = defineStore('DeviceManage', {
                         currentDeviceSet.doState = 1;
                         isAlarmFlag = true;
                     }
-                    if (!isAlarmFlag&&newDeviceData.communicate_flag === 1 && newDeviceData.start_flag === 1) {
+                    if (!isAlarmFlag && newDeviceData.communicate_flag === 1 && newDeviceData.start_flag === 1) {
                         this.deviceList[index].state = 2;
                         currentDeviceSet.tempState = 0;
                         currentDeviceSet.phState = 0;
                         currentDeviceSet.doState = 0;
                     }
                 }
+                if (this.deviceList[index].start_time !== null) {
+                    // 获取相对时间单位为h
+                    const relativeTime = (currentDate.getTime() - this.deviceList[index].start_time.getTime()) / 1000 / 60 / 60;
+                    // 数据存入到数据库
+                    const fermentationData = {
+                        can_number: newDeviceData.deviceNum,
+                        timing_temp: newDeviceData.timing_temp,
+                        timing_PH: newDeviceData.timing_PH,
+                        timing_DO: newDeviceData.timing_DO,
+                        timing_motor_speed: newDeviceData.timing_motor_speed,
+                        relative_time: relativeTime,
+                        absolute_time: currentDate,
+                        acid_ml: newDeviceData.acid_ml,
+                        lye_ml: newDeviceData.lye_ml,
+                        clean_ml: newDeviceData.clean_ml,
+                        feed_ml: newDeviceData.feed_ml,
+                        defoamerPumpSpeed: this.deviceList[index].deviceSet!.defoamerPumpSpeed,
+                        feedPumpSpeed: this.deviceList[index].deviceSet!.feedPumpSpeed,
+                        fermentation_flag: newDeviceData.start_flag,
+                        
+                        
+                    };
+                    window.Electron.ipcRenderer.invoke('add-fermentation-data', fermentationData).then(
+                        (res) => {
+                            if (res) { // 确保res是有效的
+                                
+                                console.log('已存储数据.');
+                            } else {
+                                console.error('请求批次内容数据没请求到.');
+                            }
+                        }
+                    ).catch((error) => {
+                        console.error('请求批次内容数据没请求到,报错为:', error);
+                    });
+                }
                 
-
-
-            }
-            // 数据存入到数据库
-            if (newDeviceData.communicate_flag === 1 || newDeviceData.communicate_flag === 2 || newDeviceData.communicate_flag === 3 ){
-                // 鉴定数据类别，如果存在批号就增加批号标志位；
                 
             }
             
+            
             this.deviceList[index].nowData = newDeviceData;
-
-
+            
+            
         },
         updateDeviceList(newDeviceList: Device[]) {
             this.deviceList = newDeviceList;
         }
-
-
+        
+        
     },
 });
 
