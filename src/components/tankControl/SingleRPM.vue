@@ -128,7 +128,7 @@
             <!--左侧列left-->
             <div class="relative w-[26rem]   h-[calc(100%-1rem)] ml-8  m-2  flex-col flex justify-start items-center ">
               <!--设置参数-->
-              <div class="relative  shadow w-[20rem] m-2 rounded-2xl mb-14 justify-start items-center">
+              <div class="relative  shadow border w-[20rem] m-2 rounded-2xl mb-14 justify-start items-center">
                 <div class="w-full h-14  rounded-t-2xl flex   items-center text-lg font-medium ">
                   <div class="ml-4 ">
                     设置参数
@@ -189,8 +189,9 @@
                                   </td>
                                   <td class=" text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
                                     <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
-                                      <input id="name"
+                                      <input id="name" v-model="logcache.setNum.target_motor_speed"
                                              class="block w-[80%]  border-b-2 m-2 text-center" name="name" placeholder="请填转速设定值"
+                                             @blur="controlSend('all',AppGlobal.pageChance,0)"
                                              required type="number"/>
                                     </div>
                                   </td>
@@ -206,7 +207,7 @@
               </div>
 
               <!--报警参数-->
-              <div class="relative  shadow w-[20rem]      m-2 rounded-2xl  justify-start items-center">
+              <div class="relative border shadow w-[20rem]      m-2 rounded-2xl  justify-start items-center">
                 <div class="w-full h-14  rounded-t-2xl flex   items-center text-lg font-medium ">
                   <div class="ml-4">
                     报警参数
@@ -270,10 +271,8 @@
             </div>
             <!--右侧-->
             <div class="relative w-[26rem]   h-[calc(100%-1rem)]   m-2  flex-col flex justify-start items-center">
-
-
               <!--控制参数-->
-              <div class="relative  shadow w-[20rem] mt-5     m-2 rounded-2xl  justify-start items-center">
+              <div class="relative border shadow w-[20rem] mt-2     m-2 rounded-2xl  justify-start items-center">
                 <div class="w-full h-14  rounded-t-2xl flex   items-center text-lg font-medium">
                   <div class="ml-4">
                     控制参数
@@ -282,28 +281,28 @@
                 <!--表格内容-->
                 <div class="  w-[100%]   top-0    justify-center flex  ">
                   <div class="rounded-2xl   w-[calc(100%-1.5rem)] mb-5  justify-center flex     ">
-                    <div class=" w-full h-[92%] ">
+                    <div class=" w-full  h-[92%] ">
                       <div class=" box-border overflow-x-hidden w-full   flex">
-                        <!--原表格left-->
+                        <!--表格left-->
                         <div class="float-left   shadow-radius border-radius  rounded-tl-2xl z-20">
                           <div class="w-[8rem]  overflow-hidden ">
                             <table class="mb-4 shadow  bg-[#E8F6ED] py-4 rounded-bl-2xl">
                               <tr>
-                                <td class="w-full  flex justify-center items-center   ">
+                                <tdr class="w-full flex  border justify-center items-center   ">
                                   <div>控制死区</div>
-                                </td>
-                                <td class="w-full  flex justify-center items-center   ">
+                                </tdr>
+                                <tdr class="w-full  flex justify-center items-center   ">
                                   <div>溶氧上限</div>
-                                </td>
-                                <td class="w-full  flex justify-center items-center   ">
+                                </tdr>
+                                <tdr class="w-full  flex justify-center items-center   ">
                                   <div>溶氧下限</div>
-                                </td>
-                                <td class="w-full  flex justify-center items-center   ">
+                                </tdr>
+                                <tdr class="w-full  flex justify-center items-center   ">
                                   <div>转速上限</div>
-                                </td>
-                                <td class="w-full  flex justify-center items-center   ">
+                                </tdr>
+                                <tdr class="w-full  flex justify-center items-center   ">
                                   <div>转速下限</div>
-                                </td>
+                                </tdr>
                               </tr>
                             </table>
                           </div>
@@ -314,41 +313,45 @@
                             <table class="flex items-start w-[10rem]  ">
                               <div class="flex justify-center items-center">
                                 <tr  class=" justify-center items-center">
-                                  <td class=" text-center border-t border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
+                                  <tdr class=" text-center border-t border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
                                     <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
                                       <input id="name"
                                              class="block w-[80%]  border-b-2 m-2 text-center" name="name" placeholder="请填控制死区"
                                              required type="number"/>
                                     </div>
-                                  </td>
-                                  <td class=" text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
+                                  </tdr>
+                                  <tdr class=" text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
                                     <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
-                                      <input id="name"
+                                      <input id="name" v-model="logcache.controlNum.DO_upper_limit"
                                              class="block w-[80%]  border-b-2 m-2 text-center" name="name" placeholder="请填溶氧上限"
+                                             @blur="controlSend('all',AppGlobal.pageChance,0)"
                                              required type="number"/>
                                     </div>
-                                  </td>
-                                  <td class=" text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
+                                  </tdr>
+                                  <tdr class=" text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
                                     <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
-                                      <input id="name"
+                                      <input id="name" v-model="logcache.controlNum.DO_lower_limit"
                                              class="block w-[80%]  border-b-2 m-2 text-center" name="name" placeholder="请填溶氧下限"
+                                              @blur="controlSend('all',AppGlobal.pageChance,0)"
                                              required type="number"/>
                                     </div>
-                                  </td>
-                                  <td class=" text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
+                                  </tdr>
+                                  <tdr class=" text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
                                     <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
-                                      <input id="name"
+                                      <input id="name" v-model="logcache.controlNum.motor_speed_u_limit"
                                              class="block w-[80%]  border-b-2 m-2 text-center" name="name" placeholder="请填转速上限"
+                                              @blur="controlSend('all',AppGlobal.pageChance,0)"
                                              required type="number"/>
                                     </div>
-                                  </td>
-                                  <td class=" text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
+                                  </tdr>
+                                  <tdr class=" text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
                                     <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
-                                      <input id="name"
+                                      <input id="name" v-model="logcache.controlNum.motor_speed_l_limit"
                                              class="block w-[80%]  border-b-2 m-2 text-center" name="name" placeholder="请填转速下限"
+                                              @blur="controlSend('all',AppGlobal.pageChance,0)"
                                              required type="number"/>
                                     </div>
-                                  </td>
+                                  </tdr>
                                 </tr>
                               </div>
                             </table>
@@ -390,6 +393,24 @@ const DeviceManage = useDeviceManage();
 const ProcessPopupMangerState = useProcessPopupMangerState()
 const AppGlobal = useAppGlobal();
 
+// -------------数据缓冲-----------------
+const logcache = ref({
+  setNum:{
+    target_motor_speed:null,
+
+  },
+  alarmNum:{
+    rpmMaxWarn:null,
+    rpmMinWarn:null,
+  },
+  controlNum:{
+    motor_speed_u_limit:null,
+    motor_speed_l_limit:null,
+    DO_upper_limit: null,
+    DO_lower_limit: null,
+  }
+
+});
 // ______________________表格数据处理_______________________
 watch(() => DeviceManage.deviceList, () => {
   initTableData()
@@ -739,9 +760,12 @@ td {
   //line-height: 30px;
   //border-left: 1px solid #999;
   //box-sizing: border-box;
-  height: 4.5rem;
+  height: 4rem;
 }
 
+tdr{
+  height:5rem;
+}
 //
 //tr {
 //  border-top: 1px solid #999;

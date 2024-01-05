@@ -1,5 +1,5 @@
 <template>
-    <div class="h-[94vh] w-[60rem] transition-all duration-300 ease-in-out shadow bg-white rounded-2xl">
+    <div class="h-[80vh] w-[60rem] transition-all duration-300 ease-in-out shadow bg-white rounded-2xl">
 
         <!--    标题-->
         <div class="h-[4%] self-stretch justify-start items-center  inline-flex mt-3  w-full ">
@@ -132,7 +132,7 @@
               <!--左侧列left-->
               <div class="relative w-[26rem]   h-[calc(100%-1rem)] ml-8  m-2  flex-col flex justify-start items-center ">
                 <!--设置参数-->
-                <div class="relative  shadow w-[20rem] m-2 rounded-2xl mb-14 justify-start items-center">
+                <div class="relative border shadow w-[20rem] m-2 rounded-2xl  justify-start items-center">
                   <div class="w-full h-14  rounded-t-2xl flex   items-center text-lg font-medium ">
                     <div class="ml-4 ">
                       设置参数
@@ -172,20 +172,19 @@
                                         <Menu as="div" class="dropdown relative inline-block">
                                           <div>
                                             <MenuButton class="inline-flex w-[7rem] justify-center gap-x-1.5">
-                                              <summary v-if="DO_flag==0||DO_flag==null||DO_flag==undefined" class="m-1 btn w-[7rem] text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2] rounded-box">停止</summary>
-                                              <summary v-if="DO_flag==1" class="m-1 btn w-[7rem] text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] rounded-[1rem]">开启</summary>
+                                              <summary v-if="temp_flag==0||temp_flag==null||temp_flag==undefined" class="m-1 btn w-[7rem] text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2] rounded-box">停止</summary>
+                                              <summary v-if="temp_flag==1" class="m-1 btn w-[7rem] text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] rounded-[1rem]">开启</summary>
                                             </MenuButton>
                                           </div>
                                           <MenuItems class="p-2 shadow-xl menu dropdown-content z-[1] bg-base-100 rounded-box w-[7rem] border absolute origin-top-left left-0 mt-2">
                                             <MenuItem v-slot="{ active }">
-                                              <button  :class="[active ? 'bg-[#E0E0E0] text-[#000000]' : 'text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2]', 'block px-4 py-2 text-sm rounded-[0.5rem]']">停止</button>
+                                              <button @click="controlSend('temp_flag',AppGlobal.pageChance,0)" :class="[active ? 'bg-[#E0E0E0] text-[#000000]' : 'text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2]', 'block px-4 py-2 text-sm rounded-[0.5rem]']">停止</button>
                                             </MenuItem>
                                             <MenuItem v-slot="{ active }">
-                                              <button  :class="[active ? 'bg-[#BAE7C7] text-[#256637]' : 'text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] mt-2', 'block px-4 py-2 text-sm rounded mt-2']">开启</button>
+                                              <button @click="controlSend('temp_flag',AppGlobal.pageChance,1)" :class="[active ? 'bg-[#BAE7C7] text-[#256637]' : 'text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] mt-2', 'block px-4 py-2 text-sm rounded mt-2']">开启</button>
                                             </MenuItem>
                                           </MenuItems>
                                         </Menu>
-
                                       </div>
                                     </td>
                                     <td class=" text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
@@ -193,8 +192,9 @@
                                     </td>
                                     <td class=" text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
                                       <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
-                                        <input id="name" v-model="targetDO"
+                                        <input id="name" v-model="localcache.setNum.target_temp"
                                                class="block w-[80%]  border-b-2 m-2 text-center" name="name" placeholder="请填温度设定值"
+                                               @blur="controlSend('target_temp',AppGlobal.pageChance,localcache.setNum.target_temp)"
                                                required type="number"/>
                                       </div>
                                     </td>
@@ -210,7 +210,7 @@
                 </div>
 
                 <!--pid 自动参数-->
-                <div class="relative  shadow w-[20rem]  mt-6   m-2 rounded-2xl  justify-start items-center">
+                <div class="relative  shadow w-[20rem] border    m-2 rounded-2xl  justify-start items-center">
                   <div class="w-full h-14  rounded-t-2xl flex   items-center text-lg font-medium ">
                     <div class="ml-4">
                       自动参数
@@ -261,8 +261,9 @@
                                   <tr  class="flex justify-center items-center">
                                     <td class=" text-center border-t border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
                                       <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
-                                        <input id="name" v-model="targetDO"
+                                        <input id="name" v-model="localcache.pidNum.Temp_KP"
                                                class="block w-[80%]  border-b-2 m-2 text-center" name="name" placeholder="请输温度P"
+                                               @blur="controlSend('Temp_KP',AppGlobal.pageChance,localcache.pidNum.Temp_KP)"
                                                required type="number"/>
                                       </div>
                                     </td>
@@ -270,8 +271,9 @@
                                   <tr  class="flex justify-center items-center">
                                     <td class=" text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
                                       <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
-                                        <input id="name" v-model="targetDO"
+                                        <input id="name" v-model="localcache.pidNum.Temp_KI"
                                                class="block w-[80%]  border-b-2 m-2 text-center" name="name" placeholder="请输温度I"
+                                               @blur="controlSend('Temp_KI',AppGlobal.pageChance,localcache.pidNum.Temp_KI)"
                                                required type="number"/>
                                       </div>
                                     </td>
@@ -279,8 +281,9 @@
                                   <tr  class="flex justify-center items-center">
                                     <td class=" text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
                                       <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
-                                        <input id="name" v-model="targetDO"
+                                        <input id="name" v-model="localcache.pidNum.Temp_KD"
                                                class="block w-[80%]  border-b-2 m-2 text-center" name="name" placeholder="请输温度D"
+                                               @blur="controlSend('Temp_KD',AppGlobal.pageChance,localcache.pidNum.Temp_KD)"
                                                required type="number"/>
                                       </div>
                                     </td>
@@ -302,7 +305,7 @@
               <!--右侧-->
               <div class="relative w-[26rem]   h-[calc(100%-1rem)]   m-2  flex-col flex justify-start items-center">
                 <!--报警参数-->
-                <div class="relative  shadow w-[20rem]      m-2 rounded-2xl  justify-start items-center">
+                <div class="relative  shadow w-[20rem]  border    m-2 rounded-2xl  justify-start items-center">
                   <div class="w-full h-14  rounded-t-2xl flex   items-center text-lg font-medium ">
                     <div class="ml-4">
                       报警参数
@@ -336,8 +339,9 @@
                                   <tr  class="flex justify-center items-center">
                                     <td class=" text-center border-t border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
                                       <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
-                                        <input id="name"
+                                        <input id="name" v-model="localcache.alarmNum.alarm_h_limit"
                                                class="block w-[80%]  border-b-2 m-2 text-center" name="name" placeholder="请输报警上限"
+                                               @blur="controlSend('alarm_h_limit',AppGlobal.pageChance,localcache.alarmNum.alarm_h_limit)"
                                                required type="number"/>
                                       </div>
                                     </td>
@@ -345,8 +349,9 @@
                                   <tr  class="flex justify-center items-center">
                                     <td class=" text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
                                       <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
-                                        <input id="name"
+                                        <input id="name" v-model="localcache.alarmNum.alarm_l_limit"
                                                class="block w-[80%]  border-b-2 m-2 text-center" name="name" placeholder="请输报警下限"
+                                                @blur="controlSend('alarm_l_limit',AppGlobal.pageChance,localcache.alarmNum.alarm_l_limit)"
                                                required type="number"/>
                                       </div>
                                     </td>
@@ -362,7 +367,7 @@
                 </div>
 
                 <!--控制参数-->
-                <div class="relative  shadow w-[20rem]      m-2 rounded-2xl  justify-start items-center">
+                <div class="relative  shadow w-[20rem]   border   m-2 rounded-2xl  justify-start items-center">
                   <div class="w-full h-14  rounded-t-2xl flex   items-center text-lg font-medium ">
                     <div class="ml-4">
                       控制参数
@@ -399,8 +404,9 @@
                                   <tr  class="flex justify-center items-center">
                                     <td class=" text-center border-t border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
                                       <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
-                                        <input id="name"
+                                        <input id="name" v-model="localcache.controlNum.dead_zone"
                                                class="block w-[80%]  border-b-2 m-2 text-center" name="name" placeholder="请输控制死区"
+                                               @blur="controlSend('dead_zone',AppGlobal.pageChance,localcache.controlNum.dead_zone)"
                                                required type="number"/>
                                       </div>
                                     </td>
@@ -408,8 +414,9 @@
                                   <tr  class="flex justify-center items-center">
                                     <td class=" text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
                                       <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
-                                        <input id="name"
+                                        <input id="name"  v-model="localcache.controlNum.error_h_limit"
                                                class="block w-[80%]  border-b-2 m-2 text-center" name="name" placeholder="请输误差上限"
+                                               @blur="controlSend('error_h_limit',AppGlobal.pageChance,localcache.controlNum.error_h_limit)"
                                                required type="number"/>
                                       </div>
                                     </td>
@@ -417,8 +424,9 @@
                                   <tr  class="flex justify-center items-center">
                                     <td class=" text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
                                       <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
-                                        <input id="name"
+                                        <input id="name" v-model="localcache.controlNum.error_l_limit"
                                                class="block w-[80%]  border-b-2 m-2 text-center" name="name" placeholder="请输误差下限"
+                                               @blur="controlSend('error_l_limit',AppGlobal.pageChance,localcache.controlNum.error_l_limit)"
                                                required type="number"/>
                                       </div>
                                     </td>
@@ -433,10 +441,10 @@
                   </div>
                 </div>
                 <!--温控参数-->
-                <div class="relative  shadow w-[20rem]      m-2 rounded-2xl  justify-start items-center">
+                <div class="relative  shadow w-[20rem]  border    m-2 rounded-2xl  justify-start items-center">
                   <div class="w-full h-14  rounded-t-2xl flex   items-center text-lg font-medium ">
                     <div class="ml-4">
-                      控制参数
+                      温控参数
                     </div>
                   </div>
                   <!--表格内容-->
@@ -468,26 +476,59 @@
                               <table class="flex items-start w-[10rem]  ">
                                 <div class="flex-col justify-center items-center">
                                   <tr  class="flex justify-center items-center">
-                                    <td class=" text-center border-t border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
+                                    <td class="w-full text-center border-t border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
+                                      <div style="display: flex; justify-content: center; align-items: center; height: 100%;" >
+                                        <div class=" h-full flex justify-center items-center  ">
+                                          <Menu as="div" class="dropdown relative inline-block">
+                                            <div>
+                                              <MenuButton class="inline-flex w-[7rem] justify-center gap-x-1.5">
+                                                <summary v-if="condensate_water_flag==0||condensate_water_flag==null||condensate_water_flag==undefined" class="m-1 btn w-[7rem] text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2] rounded-box">停止</summary>
+                                                <summary v-if="condensate_water_flag==1" class="m-1 btn w-[7rem] text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] rounded-[1rem]">开启</summary>
+                                              </MenuButton>
+                                            </div>
+                                            <MenuItems class="p-2 shadow-xl menu dropdown-content z-[1] bg-base-100 rounded-box w-[7rem] border absolute origin-top-left left-0 mt-2">
+                                              <MenuItem v-slot="{ active }">
+                                                <button @click="controlSend('condensate_water_flag',AppGlobal.pageChance,0)" :class="[active ? 'bg-[#E0E0E0] text-[#000000]' : 'text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2]', 'block px-4 py-2 text-sm rounded-[0.5rem]']">停止</button>
+                                              </MenuItem>
+                                              <MenuItem v-slot="{ active }">
+                                                <button @click="controlSend('condensate_water_flag',AppGlobal.pageChance,1)" :class="[active ? 'bg-[#BAE7C7] text-[#256637]' : 'text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] mt-2', 'block px-4 py-2 text-sm rounded mt-2']">开启</button>
+                                              </MenuItem>
+                                            </MenuItems>
+                                          </Menu>
+                                        </div>
+                                      </div>
+                                    </td>
+                                  </tr>
+                                  <tr  class="flex justify-center items-center">
+                                    <td class="w-full text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
                                       <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
-
+                                        <div class=" h-full flex justify-center items-center  ">
+                                          <Menu as="div" class="dropdown relative inline-block">
+                                            <div>
+                                              <MenuButton class="inline-flex w-[7rem] justify-center gap-x-1.5">
+                                                <summary v-if="heated_blanket_flag==0||heated_blanket_flag==null||heated_blanket_flag==undefined" class="m-1 btn w-[7rem] text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2] rounded-box">停止</summary>
+                                                <summary v-if="heated_blanket_flag==1" class="m-1 btn w-[7rem] text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] rounded-[1rem]">开启</summary>
+                                              </MenuButton>
+                                            </div>
+                                            <MenuItems class="p-2 shadow-xl menu dropdown-content z-[1] bg-base-100 rounded-box w-[7rem] border absolute origin-top-left left-0 mt-2">
+                                              <MenuItem v-slot="{ active }">
+                                                <button @click="controlSend('heated_blanket_flag',AppGlobal.pageChance,0)" :class="[active ? 'bg-[#E0E0E0] text-[#000000]' : 'text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2]', 'block px-4 py-2 text-sm rounded-[0.5rem]']">停止</button>
+                                              </MenuItem>
+                                              <MenuItem v-slot="{ active }">
+                                                <button @click="controlSend('heated_blanket_flag',AppGlobal.pageChance,1)" :class="[active ? 'bg-[#BAE7C7] text-[#256637]' : 'text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] mt-2', 'block px-4 py-2 text-sm rounded mt-2']">开启</button>
+                                              </MenuItem>
+                                            </MenuItems>
+                                          </Menu>
+                                        </div>
                                       </div>
                                     </td>
                                   </tr>
                                   <tr  class="flex justify-center items-center">
                                     <td class=" text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
                                       <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
-                                        <input id="name"
-                                               class="block w-[80%]  border-b-2 m-2 text-center" name="name" placeholder="请输误差上限"
-                                               required type="number"/>
-                                      </div>
-                                    </td>
-                                  </tr>
-                                  <tr  class="flex justify-center items-center">
-                                    <td class=" text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
-                                      <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
-                                        <input id="name"
-                                               class="block w-[80%]  border-b-2 m-2 text-center" name="name" placeholder="请输误差下限"
+                                        <input id="name" v-model="localcache.temperatureControl.heatpower"
+                                               class="block w-[80%]  border-b-2 m-2 text-center" name="name" placeholder="请输实时功率"
+                                                @blur="controlSend('heatpower',AppGlobal.pageChance,localcache.temperatureControl.heatpower)"
                                                required type="number"/>
                                       </div>
                                     </td>
@@ -532,6 +573,35 @@ const DeviceManage = useDeviceManage();
 const ProcessPopupMangerState = useProcessPopupMangerState()
 const AppGlobal = useAppGlobal();
 
+// -------------------localcache-------------------
+const localcache = ref({
+  setNum:{
+    temp_flag:null,
+    target_temp:null,
+  },
+  pidNum:{
+    Temp_KP:null,
+    Temp_KI:null,
+    Temp_KD:null,
+  },
+  alarmNum:{
+    alarm_h_limit:null,
+    alarm_l_limit:null,
+  },
+  controlNum:{
+    dead_zone:null,
+    error_h_limit:null,
+    error_l_limit:null,
+  },
+  temperatureControl:{
+    condensate_water_flag:null,
+    heated_blanket_flag:null,
+    heatpower:null,
+  }
+})
+const temp_flag = localcache.value.setNum.temp_flag;
+const condensate_water_flag = localcache.value.temperatureControl.condensate_water_flag;
+const heated_blanket_flag = localcache.value.temperatureControl.heated_blanket_flag;
 // ______________________表格数据处理_______________________
 watch(() => DeviceManage.deviceList, () => {
     initTableData()

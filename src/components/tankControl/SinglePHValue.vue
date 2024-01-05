@@ -132,7 +132,7 @@
               <!--左侧列left-->
               <div class="relative w-[26rem]   h-[calc(100%-1rem)] ml-8  m-2  flex-col flex justify-start items-center ">
                 <!--设置参数-->
-                <div class="relative  shadow w-[20rem] m-2 rounded-2xl mb-14 justify-start items-center">
+                <div class="relative border shadow w-[20rem] m-2 rounded-2xl mb-14 justify-start items-center">
                   <div class="w-full h-14  rounded-t-2xl flex   items-center text-lg font-medium ">
                     <div class="ml-4 ">
                       设置参数
@@ -172,16 +172,16 @@
                                         <Menu as="div" class="dropdown relative inline-block">
                                           <div>
                                             <MenuButton class="inline-flex w-[7rem] justify-center gap-x-1.5">
-                                              <summary v-if="DO_flag==0||DO_flag==null||DO_flag==undefined" class="m-1 btn w-[7rem] text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2] rounded-box">停止</summary>
-                                              <summary v-if="DO_flag==1" class="m-1 btn w-[7rem] text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] rounded-[1rem]">开启</summary>
+                                              <summary v-if="PH_flag==0||PH_flag==null||PH_flag==undefined" class="m-1 btn w-[7rem] text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2] rounded-box">停止</summary>
+                                              <summary v-if="PH_flag==1" class="m-1 btn w-[7rem] text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] rounded-[1rem]">开启</summary>
                                             </MenuButton>
                                           </div>
                                           <MenuItems class="p-2 shadow-xl menu dropdown-content z-[1] bg-base-100 rounded-box w-[7rem] border absolute origin-top-left left-0 mt-2">
                                             <MenuItem v-slot="{ active }">
-                                              <button  :class="[active ? 'bg-[#E0E0E0] text-[#000000]' : 'text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2]', 'block px-4 py-2 text-sm rounded-[0.5rem]']">停止</button>
+                                              <button @click="controlSend('PH_flag',AppGlobal.pageChance,0)" :class="[active ? 'bg-[#E0E0E0] text-[#000000]' : 'text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2]', 'block px-4 py-2 text-sm rounded-[0.5rem]']">停止</button>
                                             </MenuItem>
                                             <MenuItem v-slot="{ active }">
-                                              <button  :class="[active ? 'bg-[#BAE7C7] text-[#256637]' : 'text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] mt-2', 'block px-4 py-2 text-sm rounded mt-2']">开启</button>
+                                              <button @click="controlSend('PH_flag',AppGlobal.pageChance,1)" :class="[active ? 'bg-[#BAE7C7] text-[#256637]' : 'text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] mt-2', 'block px-4 py-2 text-sm rounded mt-2']">开启</button>
                                             </MenuItem>
                                           </MenuItems>
                                         </Menu>
@@ -193,8 +193,9 @@
                                     </td>
                                     <td class=" text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
                                       <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
-                                        <input id="name"
+                                        <input id="name" v-model="localcache.setNum.target_PH"
                                                class="block w-[80%]  border-b-2 m-2 text-center" name="name" placeholder="请填设定值"
+                                               @blur="controlSend('target_PH', AppGlobal.pageChance, localcache.setNum.target_PH)"
                                                required type="number"/>
                                       </div>
                                     </td>
@@ -210,7 +211,7 @@
                 </div>
 
                 <!--控制参数-->
-                <div class="relative  shadow w-[20rem]      m-2 rounded-2xl  justify-start items-center">
+                <div class="relative  shadow w-[20rem]   border   m-2 rounded-2xl  justify-start items-center">
                   <div class="w-full h-14  rounded-t-2xl flex   items-center text-lg font-medium ">
                     <div class="ml-4">
                       控制参数
@@ -249,6 +250,7 @@
                                       <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
                                         <input id="name"
                                                class="block w-[80%]  border-b-2 m-2 text-center" name="name" placeholder="请输控制死区"
+
                                                required type="number"/>
                                       </div>
                                     </td>
@@ -256,8 +258,9 @@
                                   <tr  class="flex justify-center items-center">
                                     <td class=" text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
                                       <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
-                                        <input id="name"
+                                        <input id="name" v-model="localcache.controlNum.PH_upper_limit"
                                                class="block w-[80%]  border-b-2 m-2 text-center" name="name" placeholder="请输误差上限"
+                                               @blur="controlSend('PH_upper_limit', AppGlobal.pageChance, localcache.controlNum.PH_upper_limit)"
                                                required type="number"/>
                                       </div>
                                     </td>
@@ -265,8 +268,9 @@
                                   <tr  class="flex justify-center items-center">
                                     <td class=" text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
                                       <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
-                                        <input id="name"
+                                        <input id="name" v-model="localcache.controlNum.PH_lower_limit"
                                                class="block w-[80%]  border-b-2 m-2 text-center" name="name" placeholder="请输误差下限"
+                                                @blur="controlSend('PH_lower_limit', AppGlobal.pageChance, localcache.controlNum.PH_lower_limit)"
                                                required type="number"/>
                                       </div>
                                     </td>
@@ -289,7 +293,7 @@
 
 
                 <!--报警参数-->
-                <div class="relative  shadow w-[20rem] mt-11   rounded-2xl  justify-start items-center">
+                <div class="relative  shadow w-[20rem] mt-11 border  rounded-2xl  justify-start items-center">
                   <div class="w-full h-14  rounded-t-2xl flex   items-center text-lg font-medium">
                     <div class="ml-4">
                       报警参数
@@ -324,15 +328,17 @@
                                   <tr  class=" justify-center items-center">
                                     <td class=" text-center border-t border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
                                       <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
-                                        <input id="name"
+                                        <input id="name" v-model="localcache.alarmNum.alarm_h_limit"
                                                class="block w-[80%]  border-b-2 m-2 text-center" name="name" placeholder="请填报警上限"
+                                               @blur="controlSend('alarm_h_limit', AppGlobal.pageChance, localcache.alarmNum.alarm_h_limit)"
                                                required type="number"/>
                                       </div>
                                     </td>
                                     <td class=" text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
                                       <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
-                                        <input id="name"
+                                        <input id="name"  v-model="localcache.alarmNum.alarm_l_limit"
                                                class="block w-[80%]  border-b-2 m-2 text-center" name="name" placeholder="请填报警下限"
+                                                @blur="controlSend('alarm_l_limit', AppGlobal.pageChance, localcache.alarmNum.alarm_l_limit)"
                                                required type="number"/>
                                       </div>
                                     </td>
@@ -348,8 +354,8 @@
                   </div>
                 </div><!--报警参数-->
 
-                <!--酸碱pid-->
-                <div class="relative  shadow w-[30rem] mt-20   m-2 rounded-2xl  justify-start items-center">
+                <!--自动参数酸碱pid-->
+                <div class="relative  shadow w-[30rem] mt-20  border m-2 rounded-2xl  justify-start items-center">
                   <div class="w-full h-14  rounded-t-2xl flex   items-center text-lg font-medium">
                     <div class="ml-4">
                       自动参数
@@ -408,22 +414,25 @@
                                   <tr  class=" justify-center items-center">
                                     <td class=" text-center border-t border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
                                       <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
-                                        <input id="name"
+                                        <input id="name" v-model="localcache.acidNum.acid_KP"
                                                class="block w-[80%]  border-b-2 m-2 text-center" name="name" placeholder="请填酸泵P"
+                                                @blur="controlSend('acid_KP', AppGlobal.pageChance, localcache.acidNum.acid_KP)"
                                                required type="number"/>
                                       </div>
                                     </td>
                                     <td class=" text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
                                       <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
-                                        <input id="name"
+                                        <input id="name" v-model="localcache.acidNum.acid_KI"
                                                class="block w-[80%]  border-b-2 m-2 text-center" name="name" placeholder="请填酸泵I"
+                                                @blur="controlSend('acid_KI', AppGlobal.pageChance, localcache.acidNum.acid_KI)"
                                                required type="number"/>
                                       </div>
                                     </td>
                                     <td class=" text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
                                       <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
-                                        <input id="name"
+                                        <input id="name" v-model="localcache.acidNum.acid_KD"
                                                class="block w-[80%]  border-b-2 m-2 text-center" name="name" placeholder="请填酸泵D"
+                                                @blur="controlSend('acid_KD', AppGlobal.pageChance, localcache.acidNum.acid_KD)"
                                                required type="number"/>
                                       </div>
                                     </td>
@@ -451,22 +460,25 @@
                                   <tr  class=" justify-center items-center">
                                     <td class=" text-center border-t border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
                                       <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
-                                        <input id="name"
+                                        <input id="name" v-model="localcache.lyeNum.lye_KP"
                                                class="block w-[80%]  border-b-2 m-2 text-center" name="name" placeholder="请填碱泵P"
+                                                @blur="controlSend('lye_KP', AppGlobal.pageChance, localcache.lyeNum.lye_KP)"
                                                required type="number"/>
                                       </div>
                                     </td>
                                     <td class=" text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
                                       <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
-                                        <input id="name"
+                                        <input id="name" v-model="localcache.lyeNum.lye_KI"
                                                class="block w-[80%]  border-b-2 m-2 text-center" name="name" placeholder="请填碱泵I"
+                                                @blur="controlSend('lye_KI', AppGlobal.pageChance, localcache.lyeNum.lye_KI)"
                                                required type="number"/>
                                       </div>
                                     </td>
                                     <td class=" text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
                                       <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
-                                        <input id="name"
+                                        <input id="name" v-model="localcache.lyeNum.lye_KD"
                                                class="block w-[80%]  border-b-2 m-2 text-center" name="name" placeholder="请填碱泵D"
+                                                @blur="controlSend('lye_KD', AppGlobal.pageChance, localcache.lyeNum.lye_KD)"
                                                required type="number"/>
                                       </div>
                                     </td>
@@ -512,6 +524,36 @@ const DeviceManage = useDeviceManage();
 const ProcessPopupMangerState = useProcessPopupMangerState()
 const AppGlobal = useAppGlobal();
 
+// --------------------localcache-------------
+
+const localcache = ref({
+  setNum: {
+    target_PH: null,
+    PH_flag: null,
+  },
+  controlNum: {
+
+    PH_upper_limit: null,
+    PH_lower_limit: null,
+  },
+  alarmNum: {
+    alarm_h_limit: null,
+    alarm_l_limit: null,
+  },
+  acidNum: {
+    acid_KP: null,
+    acid_KI: null,
+    acid_KD: null,
+  },
+  lyeNum: {
+    lye_KP: null,
+    lye_KI: null,
+    lye_KD: null,
+  },
+
+})
+const PH_flag = localcache.value.setNum.PH_flag
+
 // ______________________表格数据处理_______________________
 watch(() => DeviceManage.deviceList, () => {
     initTableData()
@@ -526,6 +568,7 @@ interface InputVisible {
 type DeviceInput = InputVisible[];
 
 const inputVisible = ref<DeviceInput[]>([]); // 用于追踪哪一行显示输入框
+
 
 // 读取表格数据
 const initTableData = () => {

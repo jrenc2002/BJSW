@@ -37,6 +37,7 @@
     "postcss-cli": "^10.1.0",
     "rebuild": "^0.1.2",
     "sqlite3": "^5.1.6",
+    "sweetalert": "^2.1.2",
     "sweetalert2": "^11.10.1",
     "vant": "^4.7.1",
     "vue": "^3.2.13",

@@ -24,11 +24,10 @@
                 <div class="h-full w-[20%] overflow-hidden p-1 flex-col gap-2.5 relative flex  items-end">
                     <!--溶氧栏-->
                     
-                    <div
-                            class="card min-w-[10vw]  bg-base-100 shadow-lg  border border-zinc-100 cursor-pointer top-[6vh] absolute "
-                            @click="popProcessManager('溶氧')">
-                        <div
-                                class="w-full h-[2.5rem] mb-2 font-black  bg-[#FAD6DA] flex items-center justify-center rounded-t-2xl ">
+                    <div class="card min-w-[10vw]  bg-base-100 shadow-lg  border border-zinc-100 cursor-pointer top-[6vh] absolute "
+                            >
+                        <div class="w-full h-[2.5rem] mb-2 font-black  bg-[#FAD6DA] flex items-center justify-center rounded-t-2xl "
+                             @click="popProcessManager('溶氧')">
                             
                             <div class="w-full text-center relative">
                                 溶氧
@@ -36,46 +35,71 @@
                         
                         </div>
                         <div class="mx-6 my-3  mt-0 flex-col  ">
-                            <div class="w-full  flex h-[3vh] flex items-center justify-start  gap-2 ">
-                                <div class=" min-w-[7rem] mr-1 text-left relative ">设定值:</div>
-                                <span class="min-w-[2rem] flex text-center items-center justify-center relative">
-                  {{ DataManger.DoData.SetData }}
+                            <div class="w-full   flex h-[3vh] flex items-center justify-start mt-2  gap-1 ">
+                                <div class=" min-w-[5rem]   text-left relative ">设定值:</div>
+                                <span class="min-w-[5rem]   flex text-center items-center justify-center relative">
+<!--                  {{ DataManger.DoData.SetData }}-->
+                                  <input v-model="DataManger.DoData.SetData"
+                                         class=" w-[80px] border-b-2 text-center "  placeholder="请填设定值"
+                                         type="number"
+
+                                         min="0" max="100" step="1"
+
+                                         >{{'%'}}
+
                 </span>
                             </div>
-                            <div class="w-full  flex h-[3vh] flex items-center justify-start gap-2 ">
-                                <div class=" min-w-[7rem] mr-1 text-left relative">测量值:</div>
-                                <span class="min-w-[2rem] flex text-center items-center justify-center relative">
+
+                            <div class="w-full  flex h-[3vh] flex items-center justify-start mt-2 gap-1 ">
+                                <div class=" min-w-[5rem] mr-1 text-left relative">测量值:</div>
+                                <span class="min-w-[5rem]  flex text-center items-center justify-center relative">
                   {{ DataManger.DoData.MeasureData }}
                 </span>
                             </div>
                             
-                            <div class="w-full  flex h-[3vh] flex items-center justify-start gap-2 ">
-                                <div class=" min-w-[7rem] mr-1 text-left relative">溶氧上限:</div>
-                                <span class="min-w-[2rem] flex text-center items-center justify-center relative">
-                {{ DataManger.DoData.DOUpperLimit }}
-                </span>
-                            </div>
-                            <div class="w-full  flex h-[3vh] flex items-center justify-start gap-2 ">
-                                <div class=" min-w-[7rem] mr-1 text-left relative">溶氧下限:</div>
-                                <span class="min-w-[2rem] flex text-center items-center justify-center relative">
-                {{ DataManger.DoData.DOLowerLimit }}
-                </span>
-                            
-                            </div>
-                            <div class="w-full  flex h-[3vh] flex items-center justify-start gap-2 ">
-                                <div class=" min-w-[7rem] mr-1 text-left relative">关联转速:</div>
-                                <span class="min-w-[2rem] flex text-center items-center justify-center relative">
-                开启
-                </span>
-                            
+<!--                            <div class="w-full  flex h-[3vh] flex items-center justify-start gap-2 ">-->
+<!--                                <div class=" min-w-[7rem] mr-1 text-left relative">溶氧上限:</div>-->
+<!--                                <span class="min-w-[2rem] flex text-center items-center justify-center relative">-->
+<!--                {{ DataManger.DoData.DOUpperLimit }}-->
+<!--                </span>-->
+<!--                            </div>-->
+<!--                            <div class="w-full  flex h-[3vh] flex items-center justify-start gap-2 ">-->
+<!--                                <div class=" min-w-[7rem] mr-1 text-left relative">溶氧下限:</div>-->
+<!--                                <span class="min-w-[2rem] flex text-center items-center justify-center relative">-->
+<!--                {{ DataManger.DoData.DOLowerLimit }}-->
+<!--                </span>-->
+<!--                            -->
+<!--                            </div>-->
+                            <div class="w-full  flex h-[3vh] flex items-center justify-start mt-2 gap-2 ">
+                                <div class=" min-w-[5rem]   text-left relative">关联转速:</div>
+                                <span class="min-w-[5rem]  flex text-center items-center justify-center relative">
+<!--                                  <div class="h-full flex justify-center items-center  ">-->
+                                    <Menu as="div" class="dropdown relative inline-block">
+                                      <div>
+                                        <MenuButton class="inline-flex w-[5rem] justify-center gap-x-1.5 scale-75">
+                                          <summary @click="switchflag" v-if="testFlag==0||testFlag==null||testFlag==undefined" class="m-1 btn w-[7rem] text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2] rounded-box">关闭</summary>
+                                          <summary @click="switchflag" v-if="testFlag==1" class="m-1 btn w-[7rem] text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] rounded-[1rem]">关联</summary>
+                                        </MenuButton>
+                                      </div>
+<!--                                      <MenuItems class="p-2 shadow-xl menu dropdown-content z-[1] bg-base-100 rounded-box w-[7rem] border absolute origin-top-left left-0 mt-2">-->
+<!--                                        <MenuItem v-slot="{ active }">-->
+<!--                                          <button  :class="[active ? 'bg-[#E0E0E0] text-[#000000]' : 'text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2]', 'block px-4 py-2 text-sm rounded-[0.5rem]']">关联</button>-->
+<!--                                        </MenuItem>-->
+<!--                                        <MenuItem v-slot="{ active }">-->
+<!--                                          <button  :class="[active ? 'bg-[#BAE7C7] text-[#256637]' : 'text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] mt-2', 'block px-4 py-2 text-sm rounded mt-2']">关闭</button>-->
+<!--                                        </MenuItem>-->
+<!--                                      </MenuItems>-->
+                                    </Menu>
+<!--                                  </div>-->
+                                </span>
                             </div>
                         
                         </div>
                     </div>
                     <!--转速栏-->
-                    <div class="card min-w-[10vw] bg-base-100 shadow-lg  border cursor-pointer border-zinc-100  top-[29vh] absolute  "
-                         @click="popProcessManager('转速')">
-                        <div
+                    <div class="card min-w-[10vw] bg-base-100 shadow-lg  border cursor-pointer border-zinc-100  top-[25vh] absolute  "
+                         >
+                        <div @click="popProcessManager('转速')"
                                 class="w-full h-[2.5rem]   mb-2 font-black  bg-[#E1EEFF] flex items-center justify-center rounded-t-2xl ">
                             <div class="w-full text-center relative">
                                 转速
@@ -83,38 +107,46 @@
                         
                         </div>
                         <div class="mx-6 my-3  mt-0 flex-col  ">
-                            <div class="w-full  flex h-[3vh] flex items-center justify-center gap-2 ">
-                                <div class=" min-w-[7rem] mr-1 text-left relative">设定转速:</div>
-                                <span class="min-w-[2rem] flex text-center items-center justify-center relative">
-                                  {{ DataManger.RPMData.SetSpeed }}
+                            <div class="w-full  flex h-[3vh] flex items-center justify-center mt-2 gap-2 ">
+                                <div class=" min-w-[5rem] mr-1 text-left relative">设定转速:</div>
+                                <span class="min-w-[5rem] flex text-center items-center justify-center relative">
+<!--                                  {{ DataManger.RPMData.SetSpeed }}-->
+                                  <input v-model="DataManger.RPMData.SetSpeed"
+                                         id="numberInput"
+                                         class=" w-[80px]  border-b-2 text-center"  placeholder="请填设定值"
+                                         type="number"
+                                         min="0" max="1600" step="1"
+                                  >{{'rpm'}}
                                 </span>
                             </div>
-                            <div class="w-full  flex h-[3vh] flex items-center justify-center gap-2 ">
-                                <div class=" min-w-[7rem] mr-1 text-left relative">实时转速:</div>
-                                <span class="min-w-[2rem] flex text-center items-center justify-center relative">
+                            <div class="w-full  flex h-[3vh] flex items-center justify-center mt-2 gap-2 ">
+                                <div class=" min-w-[5rem] mr-1 text-left relative">实时转速:</div>
+                                <span class="min-w-[5rem] flex text-center items-center justify-center relative">
                   {{ DataManger.RPMData.NowSpeed }}
                 </span>
                             </div>
-                            <div class="w-full  flex h-[3vh] flex items-center justify-center gap-2 ">
-                                <div class=" min-w-[7rem] mr-1 text-left relative ">转速上限:</div>
-                                <span class="min-w-[2rem] flex text-center items-center justify-center relative">
-                  {{ DataManger.RPMData.RPMUpperLimit }}
+                            <div class="w-full  flex h-[3vh] flex items-center justify-center mt-2 gap-2 ">
+                                <div class=" min-w-[5rem] mr-1 text-left relative ">电机开关:</div>
+                                <span class="min-w-[5rem] flex text-center items-center justify-center relative">
+                                <Menu as="div" class="dropdown relative inline-block">
+                                      <div>
+                                        <MenuButton class="inline-flex w-[5rem] justify-center gap-x-1.5 scale-75">
+                                          <summary @click="switchflag1" v-if="testFlag1==0||testFlag1==null||testFlag1==undefined" class="m-1 btn w-[7rem] text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2] rounded-box">关闭</summary>
+                                          <summary @click="switchflag1" v-if="testFlag1==1" class="m-1 btn w-[7rem] text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] rounded-[1rem]">关联</summary>
+                                        </MenuButton>
+                                      </div>
+                                </Menu>
                 </span>
                             </div>
-                            <div class="w-full  flex h-[3vh] flex items-center justify-center gap-2 ">
-                                <div class=" min-w-[7rem] mr-1 text-left relative">转速下限:</div>
-                                <span class="min-w-[2rem] flex text-center items-center justify-center relative">
-                  {{ DataManger.RPMData.RPMLowerLimit }}
-                </span>
-                            </div>
+
                         
                         </div>
                     </div>
                     <!--PH-->
                     <div
-                            class="card min-w-[10vw] bg-base-100 shadow-lg  border border-zinc-100  cursor-pointer top-[49vh] absolute "
-                            @click="popProcessManager('PH值')">
-                        <div
+                            class="card min-w-[10vw] bg-base-100 shadow-lg  border border-zinc-100  cursor-pointer top-[45vh] absolute "
+                            >
+                        <div @click="popProcessManager('PH值')"
                                 class="w-full h-[2.5rem]   mb-2 font-black  bg-[#FCF8DA] flex items-center justify-center rounded-t-2xl ">
                             <div class="w-full text-center relative">
                                 PH值
@@ -122,51 +154,98 @@
                         
                         </div>
                         <div class="mx-6 my-3  mt-0 flex-col  ">
-                            <div class="w-full  flex h-[3vh] flex items-center justify-center gap-2 ">
-                                <div class=" min-w-[7rem] mr-1 text-left relative ">设定值:</div>
-                                <span class="min-w-[2rem] flex text-center items-center justify-center relative">
-                  {{ DataManger.PHData.SetData }}
+                            <div class="w-full  flex h-[3vh] flex items-center justify-center mt-2 gap-2 ">
+                                <div class=" min-w-[5rem] mr-1 text-left relative ">设定值:</div>
+                                <span class="min-w-[5rem] flex text-center items-center justify-center relative">
+<!--                  {{ DataManger.PHData.SetData }}-->
+                                  <input v-model="DataManger.PHData.SetData"
+                                         id="numberInput"
+                                         class=" w-[80px]  border-b-2 text-center"  placeholder="请填设定值"
+                                         type="number"
+                                         min="0.00" max="14.00" step="0.01"
+                                  >
                 </span>
                             </div>
-                            <div class="w-full  flex h-[3vh] flex items-center justify-center gap-2 ">
-                                <div class=" min-w-[7rem] mr-1 text-left relative">测量值:</div>
-                                <span class="min-w-[2rem] flex text-center items-center justify-center relative">
+                            <div class="w-full  flex h-[3vh] flex items-center justify-center mt-2 gap-2 ">
+                                <div class=" min-w-[5rem] mr-1 text-left relative">测量值:</div>
+                                <span class="min-w-[5rem] flex text-center items-center justify-center relative">
                    {{ DataManger.PHData.MeasureData }}
                 </span>
                             </div>
+                          <div class="w-full  flex h-[3vh] flex items-center justify-center mt-2 gap-2 ">
+                            <div class=" min-w-[5rem] mr-1 text-left relative">控制状态:</div>
+                            <span class="min-w-[5rem] flex text-center items-center justify-center relative">
+                                  <Menu as="div" class="dropdown relative inline-block">
+                                      <div>
+                                        <MenuButton class="inline-flex w-[5rem] justify-center gap-x-1.5 scale-75">
+                                          <summary @click="switchflag" v-if="testFlag==0||testFlag==null||testFlag==undefined" class="m-1 btn w-[7rem] text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2] rounded-box">关闭</summary>
+                                          <summary @click="switchflag" v-if="testFlag==1" class="m-1 btn w-[7rem] text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] rounded-[1rem]">关联</summary>
+                                        </MenuButton>
+                                      </div>
+                                  </Menu>
+                </span>
+                          </div>
                         
                         </div>
                     </div>
                     <!--温度-->
-                    <div
-                            class="card min-w-[10vw] bg-base-100 shadow-lg  border border-zinc-100 cursor-pointer top-[65vh] absolute "
-                            @click="popProcessManager('温度')">
-                        <div
-                                class="w-full h-[2.5rem]   mb-2 font-black  bg-[#D9F0E4] flex items-center justify-center rounded-t-2xl ">
-                            <div class="w-full text-center relative">
+                    <div class="card min-w-[10vw] bg-base-100 shadow-lg  border border-zinc-100 cursor-pointer top-[65vh] absolute ">
+                        <div @click="popProcessManager('温度')"
+                             class="w-full h-[2.5rem] mb-2 font-black  bg-[#D9F0E4] flex items-center justify-center rounded-t-2xl ">
+<!--                          <div class=" h-full  w-4 flex justify-center items-center rounded mx-1 ">-->
+                            <div class="w-4 h-4 left-20  rounded-full relative" :class="[testFlag? 'bg-red-600' : 'bg-green-600']"></div>
+<!--                          </div>-->
+                          <div class="w-full text-center relative">
                                 温度
-                            </div>
+                          </div>
                         
                         </div>
                         <div class="mx-6 my-3  mt-0 flex-col  ">
-                            <div class="w-full  flex h-[3vh] flex items-center justify-center gap-2 ">
-                                <div class=" min-w-[7rem] mr-1 text-left relative ">设定值:</div>
-                                <span class="min-w-[2rem] flex text-center items-center justify-center relative">
-                 {{ DataManger.TemperatureData.SetData }}
+                            <div class="w-full  flex h-[3vh] flex items-center justify-center mt-2 gap-2 ">
+                                <div class=" min-w-[5rem] mr-1 text-left relative ">设定值:</div>
+                                <span class="min-w-[5rem]  flex text-center items-center justify-center relative">
+<!--                 {{ DataManger.TemperatureData.SetData }}-->
+                                  <input v-model="DataManger.TemperatureData.SetData"
+                                         id="numberInput"
+                                         class=" w-[80px]  border-b-2 text-center "  placeholder="请填设定值"
+                                         type="number"
+                                         min="0" max="150" step="0.1"
+                                  >
+                                  {{'℃'}}
                 </span>
                             </div>
-                            <div class="w-full  flex h-[3vh] flex items-center justify-center gap-2  ">
-                                <div class=" min-w-[7rem] mr-1 text-left relative">测量值:</div>
-                                <span class="min-w-[2rem] flex text-center items-center justify-center relative">
+                            <div class="w-full  flex h-[3vh] flex items-center justify-center mt-2 gap-3  ">
+                                <div class=" min-w-[5rem] mr-1 text-left relative">测量值:</div>
+                                <span class="min-w-[5rem] flex text-center items-center justify-center relative">
                   {{ DataManger.TemperatureData.MeasureData }}
                 </span>
                             </div>
-                            <div class="w-full  flex h-[3vh] flex items-center justify-center gap-2 ">
-                                <div class=" min-w-[7rem] mr-1 text-left relative">加热功率:</div>
-                                <span class="min-w-[2rem] flex text-center items-center justify-center relative">
-                  {{ DataManger.TemperatureData.HeatingPower }}
+                          <div class="w-full  flex h-[3vh] flex items-center justify-center mt-2 gap-2 ">
+                            <div class=" min-w-[5rem] mr-1 text-left relative">控制状态:</div>
+                            <span class="min-w-[5rem] flex text-center items-center justify-center relative">
+                                  <Menu as="div" class="dropdown relative inline-block">
+                                      <div>
+                                        <MenuButton class="inline-flex w-[5rem] justify-center gap-x-1.5 scale-75">
+                                          <summary @click="switchflag" v-if="testFlag==0||testFlag==null||testFlag==undefined" class="m-1 btn w-[7rem] text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2] rounded-box">手动</summary>
+                                          <summary @click="switchflag" v-if="testFlag==1" class="m-1 btn w-[7rem] text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] rounded-[1rem]">自动</summary>
+                                        </MenuButton>
+                                      </div>
+                                  </Menu>
                 </span>
-                            </div>
+                          </div>
+                          <div class="w-full  flex h-[3vh] flex items-center justify-center mt-2 gap-2 ">
+                            <div class=" min-w-[5rem] mr-1 text-left relative">温控状态:</div>
+                            <span class="min-w-[5rem] flex text-center items-center justify-center relative">
+                                  <Menu as="div" class="dropdown relative inline-block">
+                                      <div>
+                                        <MenuButton class="inline-flex w-[5rem] justify-center gap-x-1.5 scale-75">
+                                          <summary @click="switchflag" v-if="testFlag==0||testFlag==null||testFlag==undefined" class="m-1 btn w-[7rem] text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2] rounded-box">冷却</summary>
+                                          <summary @click="switchflag" v-if="testFlag==1" class="m-1 btn w-[7rem] text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] rounded-[1rem]">加热</summary>
+                                        </MenuButton>
+                                      </div>
+                                  </Menu>
+                </span>
+                          </div>
                         
                         </div>
                     </div>
@@ -413,14 +492,47 @@
 
 </template>
 
-<script setup>
+<script   setup >
 import {PopupType, useProcessPopupMangerState} from "@/store/ProcessPopupMangerState";
-import {onMounted, onUnmounted, reactive, ref, watch} from "vue";
+import {computed, onMounted, onUnmounted, reactive, ref, watch} from "vue";
 import ProcessPopupManger from "@/components/ProcessPopupManger.vue";
 import {sendData} from "@/api";
 import {useAppGlobal} from "@/store/AppGlobal";
 import {useDeviceManage} from "@/store/DeviceManage";
 import {toNumber} from "xe-utils";
+import {Menu, MenuButton, MenuItem, MenuItems} from "@headlessui/vue";
+import swal from "sweetalert";
+
+
+
+
+// -------------test----------------------
+const testFlag = ref(0);
+const switchflag = () =>{
+  testFlag.value = testFlag.value === 0 ? 1 : 0;
+}
+const testFlag1 = ref(0);
+const switchflag1 = () =>{
+  if(testFlag1.value === 1){
+  swal("确认关闭电机吗?", {
+    buttons: ["取消", "确认"],
+  })
+      .then((result) => {
+        if (result) {
+          // 用户点击了确认按钮 ("Aww yiss!")
+          testFlag1.value = testFlag1.value === 0 ? 1 : 0;
+        }
+      })}
+  else{
+    testFlag1.value = testFlag1.value === 0 ? 1 : 0;
+  }
+}
+
+
+
+
+
+// -------------test结束----------------------
 
 const AppGlobal = useAppGlobal()
 const DeviceManage = useDeviceManage();
@@ -465,6 +577,7 @@ const DataManger = reactive({
     },
     
 })
+
 const isAll = ref(false);
 watch(() => isAll.value, () => {
     console.log(isAll.value)
@@ -730,7 +843,27 @@ const countdown = ref({
     minutes: 0,
     seconds: 0
 });
-
+// --------------------
+watch(() => DataManger.DoData.SetData, (newValue) => {
+  if (newValue > 150) {
+    DataManger.DoData.SetData = 150; // 将值设为100
+  }
+});
+watch(() => DataManger.RPMData.SetSpeed, (newValue) => {
+  if (newValue > 1600) {
+    DataManger.RPMData.SetSpeed = 1600; // 将值设为100
+  }
+});
+watch(() => DataManger.PHData.SetData, (newValue) => {
+  if (newValue > 14) {
+    DataManger.PHData.SetData = 14; // 将值设为100
+  }
+});
+watch(() => DataManger.TemperatureData.SetData, (newValue) => {
+  if (newValue > 150) {
+    DataManger.TemperatureData.SetData = 150; // 将值设为100
+  }
+});
 </script>
 
 <style lang="scss" scoped>
