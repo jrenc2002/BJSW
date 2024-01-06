@@ -40,9 +40,9 @@
                                 <span class="min-w-[5rem]   flex text-center items-center justify-center relative">
 <!--                  {{ DataManger.DoData.SetData }}-->
                                   <input v-model="DataManger.DoData.SetData"
-                                         class=" w-[80px] border-b-2 text-center "  placeholder="请填设定值"
+                                         class=" w-[80px] border-b-2 text-center pl-5"
                                          type="number"
-
+                                         @blur="sendData(AppGlobal.pageChance,DataManger.DoData)"
                                          min="0" max="100" step="1"
 
                                          >{{'%'}}
@@ -77,8 +77,8 @@
                                     <Menu as="div" class="dropdown relative inline-block">
                                       <div>
                                         <MenuButton class="inline-flex w-[5rem] justify-center gap-x-1.5 scale-75">
-                                          <summary @click="switchflag" v-if="testFlag==0||testFlag==null||testFlag==undefined" class="m-1 btn w-[7rem] text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2] rounded-box">关闭</summary>
-                                          <summary @click="switchflag" v-if="testFlag==1" class="m-1 btn w-[7rem] text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] rounded-[1rem]">关联</summary>
+                                          <summary @click="switchFlag('DoData','oxy_flag')" v-if="DataManger.DoData.oxy_flag==0||DataManger.DoData.oxy_flag==null||DataManger.DoData.oxy_flag==undefined" class="m-1 btn w-[7rem] text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2] rounded-box">关闭</summary>
+                                          <summary @click="switchFlag('DoData','oxy_flag')" v-if="DataManger.DoData.oxy_flag==1" class="m-1 btn w-[7rem] text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] rounded-[1rem]">关联</summary>
                                         </MenuButton>
                                       </div>
 <!--                                      <MenuItems class="p-2 shadow-xl menu dropdown-content z-[1] bg-base-100 rounded-box w-[7rem] border absolute origin-top-left left-0 mt-2">-->
@@ -101,20 +101,21 @@
                          >
                         <div @click="popProcessManager('转速')"
                                 class="w-full h-[2.5rem]   mb-2 font-black  bg-[#E1EEFF] flex items-center justify-center rounded-t-2xl ">
-                            <div class="w-full text-center relative">
+                            <div class="w-full text-center relative ">
                                 转速
                             </div>
                         
                         </div>
                         <div class="mx-6 my-3  mt-0 flex-col  ">
                             <div class="w-full  flex h-[3vh] flex items-center justify-center mt-2 gap-2 ">
-                                <div class=" min-w-[5rem] mr-1 text-left relative">设定转速:</div>
+                                <div class=" min-w-[5rem] ml-4 text-left relative ">设定转速:</div>
                                 <span class="min-w-[5rem] flex text-center items-center justify-center relative">
 <!--                                  {{ DataManger.RPMData.SetSpeed }}-->
                                   <input v-model="DataManger.RPMData.SetSpeed"
                                          id="numberInput"
-                                         class=" w-[80px]  border-b-2 text-center"  placeholder="请填设定值"
+                                         class=" w-[80px]  border-b-2 text-center pl-7"
                                          type="number"
+                                         @blur="sendData(AppGlobal.pageChance,DataManger.RPMData)"
                                          min="0" max="1600" step="1"
                                   >{{'rpm'}}
                                 </span>
@@ -160,8 +161,9 @@
 <!--                  {{ DataManger.PHData.SetData }}-->
                                   <input v-model="DataManger.PHData.SetData"
                                          id="numberInput"
-                                         class=" w-[80px]  border-b-2 text-center"  placeholder="请填设定值"
+                                         class=" w-[80px]  border-b-2 text-center pl-4"
                                          type="number"
+                                         @blur="sendData(AppGlobal.pageChance,DataManger.PHData)"
                                          min="0.00" max="14.00" step="0.01"
                                   >
                 </span>
@@ -178,8 +180,8 @@
                                   <Menu as="div" class="dropdown relative inline-block">
                                       <div>
                                         <MenuButton class="inline-flex w-[5rem] justify-center gap-x-1.5 scale-75">
-                                          <summary @click="switchflag" v-if="testFlag==0||testFlag==null||testFlag==undefined" class="m-1 btn w-[7rem] text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2] rounded-box">关闭</summary>
-                                          <summary @click="switchflag" v-if="testFlag==1" class="m-1 btn w-[7rem] text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] rounded-[1rem]">关联</summary>
+                                          <summary @click="switchFlag('PHData','PH_flag')" v-if="DataManger.PHData.PH_flag==0||DataManger.PHData.PH_flag==null||DataManger.PHData.PH_flag==undefined" class="m-1 btn w-[7rem] text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2] rounded-box">关闭</summary>
+                                          <summary @click="switchFlag('PHData','PH_flag')" v-if="DataManger.PHData.PH_flag==1" class="m-1 btn w-[7rem] text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] rounded-[1rem]">关联</summary>
                                         </MenuButton>
                                       </div>
                                   </Menu>
@@ -193,7 +195,7 @@
                         <div @click="popProcessManager('温度')"
                              class="w-full h-[2.5rem] mb-2 font-black  bg-[#D9F0E4] flex items-center justify-center rounded-t-2xl ">
 <!--                          <div class=" h-full  w-4 flex justify-center items-center rounded mx-1 ">-->
-                            <div class="w-4 h-4 left-20  rounded-full relative" :class="[testFlag? 'bg-red-600' : 'bg-green-600']"></div>
+                            <div class="w-4 h-4 left-20  rounded-full relative" :class="[DataManger.TemperatureData.water_flag? 'bg-blue-600' : 'bg-red-600']"></div>
 <!--                          </div>-->
                           <div class="w-full text-center relative">
                                 温度
@@ -207,8 +209,9 @@
 <!--                 {{ DataManger.TemperatureData.SetData }}-->
                                   <input v-model="DataManger.TemperatureData.SetData"
                                          id="numberInput"
-                                         class=" w-[80px]  border-b-2 text-center "  placeholder="请填设定值"
+                                         class=" w-[80px]  border-b-2 text-center pl-8"
                                          type="number"
+                                         @blur="sendData(AppGlobal.pageChance,DataManger.TemperatureData)"
                                          min="0" max="150" step="0.1"
                                   >
                                   {{'℃'}}
@@ -226,8 +229,8 @@
                                   <Menu as="div" class="dropdown relative inline-block">
                                       <div>
                                         <MenuButton class="inline-flex w-[5rem] justify-center gap-x-1.5 scale-75">
-                                          <summary @click="switchflag" v-if="testFlag==0||testFlag==null||testFlag==undefined" class="m-1 btn w-[7rem] text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2] rounded-box">手动</summary>
-                                          <summary @click="switchflag" v-if="testFlag==1" class="m-1 btn w-[7rem] text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] rounded-[1rem]">自动</summary>
+                                          <summary @click="switchFlag('TemperatureData','temp_flag')" v-if="DataManger.TemperatureData.temp_flag==0||DataManger.TemperatureData.temp_flag==null||DataManger.TemperatureData.temp_flag==undefined" class="m-1 btn w-[7rem] text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2] rounded-box">手动</summary>
+                                          <summary @click="switchFlag('TemperatureData','temp_flag')" v-if="DataManger.TemperatureData.temp_flag==1" class="m-1 btn w-[7rem] text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] rounded-[1rem]">自动</summary>
                                         </MenuButton>
                                       </div>
                                   </Menu>
@@ -239,8 +242,8 @@
                                   <Menu as="div" class="dropdown relative inline-block">
                                       <div>
                                         <MenuButton class="inline-flex w-[5rem] justify-center gap-x-1.5 scale-75">
-                                          <summary @click="switchflag" v-if="testFlag==0||testFlag==null||testFlag==undefined" class="m-1 btn w-[7rem] text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2] rounded-box">冷却</summary>
-                                          <summary @click="switchflag" v-if="testFlag==1" class="m-1 btn w-[7rem] text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] rounded-[1rem]">加热</summary>
+                                          <summary @click="switchFlag('TemperatureData','water_flag')" v-if="DataManger.TemperatureData.water_flag==0||DataManger.TemperatureData.water_flag==null||DataManger.TemperatureData.water_flag==undefined" class="m-1 btn w-[7rem] text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2] rounded-box">加热</summary>
+                                          <summary @click="switchFlag('TemperatureData','water_flag')" v-if="DataManger.TemperatureData.water_flag==1" class="m-1 btn w-[7rem] text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] rounded-[1rem]">冷却</summary>
                                         </MenuButton>
                                       </div>
                                   </Menu>
@@ -541,7 +544,8 @@ const DataManger = reactive({
         SetData: 0,
         MeasureData: 0,
         DOUpperLimit: 0,
-        DOLowerLimit: 0
+        DOLowerLimit: 0,
+        oxy_flag: 0,
     },
     RPMData: {
         SetSpeed: 0,
@@ -552,12 +556,15 @@ const DataManger = reactive({
     PHData: {
         SetData: 0,
         MeasureData: 0,
+        PH_flag: 0,
     },
     TemperatureData: {
         SetData: 0,
         MeasureData: 0,
         HeatingPower: 0,
         CondensateStatus: '关闭',
+        temp_flag: 0,
+        water_flag: 0,
     },
     acidPumpData: {
         RealTimeRate: 0,
@@ -577,6 +584,13 @@ const DataManger = reactive({
     },
     
 })
+
+const switchFlag = (prop,flagName) =>{
+  DataManger[prop][flagName] = DataManger[prop][flagName] === 0 ? 1 : 0;
+  sendData(AppGlobal.pageChance,DataManger[prop]);
+}
+
+
 
 const isAll = ref(false);
 watch(() => isAll.value, () => {
@@ -845,21 +859,33 @@ const countdown = ref({
 });
 // --------------------
 watch(() => DataManger.DoData.SetData, (newValue) => {
+  if(newValue== ''){
+    DataManger.DoData.SetData=0
+  }
   if (newValue > 150) {
     DataManger.DoData.SetData = 150; // 将值设为100
   }
 });
 watch(() => DataManger.RPMData.SetSpeed, (newValue) => {
+  if(newValue===''){
+    DataManger.RPMData.SetSpeed=0
+  }
   if (newValue > 1600) {
     DataManger.RPMData.SetSpeed = 1600; // 将值设为100
   }
 });
 watch(() => DataManger.PHData.SetData, (newValue) => {
+  if(newValue===''){
+    DataManger.PHData.SetData=0
+  }
   if (newValue > 14) {
     DataManger.PHData.SetData = 14; // 将值设为100
   }
 });
 watch(() => DataManger.TemperatureData.SetData, (newValue) => {
+  if(newValue===''){
+    DataManger.TemperatureData.SetData=0
+  }
   if (newValue > 150) {
     DataManger.TemperatureData.SetData = 150; // 将值设为100
   }

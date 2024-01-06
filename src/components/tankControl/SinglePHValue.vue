@@ -1,5 +1,5 @@
 <template>
-    <div class="h-[94vh] w-[70rem] transition-all duration-300 ease-in-out shadow bg-white rounded-2xl">
+    <div class="h-[60vh] w-[63rem] border transition-all duration-300 ease-in-out shadow bg-white rounded-2xl">
 
         <!--    标题-->
         <div class="h-[4%] self-stretch justify-start items-center  inline-flex mt-3  w-full ">
@@ -552,7 +552,7 @@ const localcache = ref({
   },
 
 })
-const PH_flag = localcache.value.setNum.PH_flag
+const PH_flag = localcache.value.setNum.PH_flag;
 
 // ______________________表格数据处理_______________________
 watch(() => DeviceManage.deviceList, () => {

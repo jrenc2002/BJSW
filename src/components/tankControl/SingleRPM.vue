@@ -185,13 +185,13 @@
                                     </div>
                                   </td>
                                   <td class=" text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
-                                    0
+                                  未定义
                                   </td>
                                   <td class=" text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
                                     <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
                                       <input id="name" v-model="logcache.setNum.target_motor_speed"
                                              class="block w-[80%]  border-b-2 m-2 text-center" name="name" placeholder="请填转速设定值"
-                                             @blur="controlSend('all',AppGlobal.pageChance,0)"
+                                             @blur="sendData(AppGlobal.pageChance,logcache.setNum)"
                                              required type="number"/>
                                     </div>
                                   </td>
@@ -241,8 +241,9 @@
                                 <tr  class="flex justify-center items-center">
                                   <td class=" text-center border-t border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
                                     <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
-                                      <input id="name"
+                                      <input id="name" v-model="logcache.alarmNum.rpmMaxWarn"
                                              class="block w-[80%]  border-b-2 m-2 text-center" name="name" placeholder="请输报警上限"
+                                             @blur="sendData(AppGlobal.pageChance,logcache.alarmNum)"
                                              required type="number"/>
                                     </div>
                                   </td>
@@ -250,8 +251,9 @@
                                 <tr  class="flex justify-center items-center">
                                   <td class=" text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
                                     <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
-                                      <input id="name"
+                                      <input id="name" v-model="logcache.alarmNum.rpmMinWarn"
                                              class="block w-[80%]  border-b-2 m-2 text-center" name="name" placeholder="请输报警下限"
+                                              @blur="sendData(AppGlobal.pageChance,logcache.alarmNum)"
                                              required type="number"/>
                                     </div>
                                   </td>
@@ -324,7 +326,7 @@
                                     <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
                                       <input id="name" v-model="logcache.controlNum.DO_upper_limit"
                                              class="block w-[80%]  border-b-2 m-2 text-center" name="name" placeholder="请填溶氧上限"
-                                             @blur="controlSend('all',AppGlobal.pageChance,0)"
+                                             @blur="sendData(AppGlobal.pageChance,logcache.controlNum)"
                                              required type="number"/>
                                     </div>
                                   </tdr>
@@ -332,7 +334,7 @@
                                     <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
                                       <input id="name" v-model="logcache.controlNum.DO_lower_limit"
                                              class="block w-[80%]  border-b-2 m-2 text-center" name="name" placeholder="请填溶氧下限"
-                                              @blur="controlSend('all',AppGlobal.pageChance,0)"
+                                              @blur="sendData(AppGlobal.pageChance,logcache.controlNum)"
                                              required type="number"/>
                                     </div>
                                   </tdr>
@@ -340,7 +342,7 @@
                                     <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
                                       <input id="name" v-model="logcache.controlNum.motor_speed_u_limit"
                                              class="block w-[80%]  border-b-2 m-2 text-center" name="name" placeholder="请填转速上限"
-                                              @blur="controlSend('all',AppGlobal.pageChance,0)"
+                                              @blur="sendData(AppGlobal.pageChance,logcache.controlNum)"
                                              required type="number"/>
                                     </div>
                                   </tdr>
@@ -348,7 +350,7 @@
                                     <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
                                       <input id="name" v-model="logcache.controlNum.motor_speed_l_limit"
                                              class="block w-[80%]  border-b-2 m-2 text-center" name="name" placeholder="请填转速下限"
-                                              @blur="controlSend('all',AppGlobal.pageChance,0)"
+                                              @blur="sendData(AppGlobal.pageChance,logcache.controlNum)"
                                              required type="number"/>
                                     </div>
                                   </tdr>

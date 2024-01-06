@@ -193,8 +193,9 @@
                                             </td>
                                             <td class=" text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
                                               <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
-                                                <input id="name" v-model="targetDO"
+                                                <input id="name" v-model="localCache.setNum.targetDO"
                                                        class="block w-[80%]  border-b-2 m-2 text-center" name="name" placeholder="请填溶氧设定值"
+                                                        @blur="controlSend('target_DO', AppGlobal.pageChance, localCache.setNum.targetDO)"
                                                        required type="number"/>
                                               </div>
                                             </td>
@@ -254,7 +255,6 @@
                                          class="right-div1 bg-[#F1F1F1] rounded-tr-2xl">
                                     </div>
                                     <div ref="tableContainer" class="right-div2 flex items-start self-start" @scroll="tableScroll()"
-
                                     >
                                       <table class="flex items-start w-[10rem]  ">
                                         <div class="flex-col justify-center items-center">
@@ -339,8 +339,9 @@
                                           <tr  class="flex justify-center items-center">
                                             <td class=" text-center border-t border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
                                               <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
-                                                <input id="name"
+                                                <input id="name" v-model="localCache.alarmNum.doMaxWarn"
                                                        class="block w-[80%]  border-b-2 m-2 text-center" name="name" placeholder="请输报警上限"
+                                                       @blur="controlSend('doMaxWarn', AppGlobal.pageChance, localCache.alarmNum.doMaxWarn)"
                                                        required type="number"/>
                                               </div>
                                             </td>
@@ -348,8 +349,9 @@
                                           <tr  class="flex justify-center items-center">
                                             <td class=" text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
                                               <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
-                                                <input id="name"
+                                                <input id="name" v-model="localCache.alarmNum.doMinWarn"
                                                        class="block w-[80%]  border-b-2 m-2 text-center" name="name" placeholder="请输报警下限"
+                                                        @blur="controlSend('doMinWarn', AppGlobal.pageChance, localCache.alarmNum.doMinWarn)"
                                                        required type="number"/>
                                               </div>
                                             </td>
@@ -415,29 +417,33 @@
                                             </td>
                                             <td class=" text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
                                               <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
-                                                <input id="name"
+                                                <input id="name" v-model="localCache.controlNum.DO_upper_limit"
                                                        class="block w-[80%]  border-b-2 m-2 text-center" name="name" placeholder="请填溶氧上限"
+                                                       @blur="controlSend('DO_upper_limit', AppGlobal.pageChance, localCache.controlNum.DO_upper_limit)"
                                                        required type="number"/>
                                               </div>
                                             </td>
                                             <td class=" text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
                                               <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
-                                                <input id="name"
+                                                <input id="name" v-model="localCache.controlNum.DO_lower_limit"
                                                        class="block w-[80%]  border-b-2 m-2 text-center" name="name" placeholder="请填溶氧下限"
+                                                        @blur="controlSend('DO_lower_limit', AppGlobal.pageChance, localCache.controlNum.DO_lower_limit)"
                                                        required type="number"/>
                                               </div>
                                             </td>
                                             <td class=" text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
                                               <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
-                                                <input id="name"
+                                                <input id="name" v-model="localCache.controlNum.speed_upper_limit"
                                                        class="block w-[80%]  border-b-2 m-2 text-center" name="name" placeholder="请填转速上限"
+                                                       @blur="controlSend('speed_upper_limit', AppGlobal.pageChance, localCache.controlNum.speed_upper_limit)"
                                                        required type="number"/>
                                               </div>
                                             </td>
                                             <td class=" text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
                                               <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
-                                                <input id="name"
+                                                <input id="name" v-model="localCache.controlNum.speed_lower_limit"
                                                        class="block w-[80%]  border-b-2 m-2 text-center" name="name" placeholder="请填转速下限"
+                                                        @blur="controlSend('speed_lower_limit', AppGlobal.pageChance, localCache.controlNum.speed_lower_limit)"
                                                        required type="number"/>
                                               </div>
                                             </td>
@@ -496,8 +502,8 @@ const localCache = ref({
     DO_KD: null,
   },
   alarmNum:{
-    alarm_h_limit: null,
-    alarm_l_limit: null,
+    doMaxWarn: null,
+    doMinWarn: null,
   },
   controlNum:{
     DO_dead_zone: null,
