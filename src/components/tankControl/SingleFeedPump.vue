@@ -82,7 +82,7 @@
                                                         </summary>
                                                         
                                                         
-                                                        <ul class="p-2 shadow-xl menu dropdown-content z-30 bg-base-100 rounded-box w-[7rem] broder">
+                                                        <ul class="p-2 shadow-xl menu dropdown-content z-30 bg-base-100 rounded-md w-[7rem] broder">
                                                             <li class="text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2] rounded" @click="controlSend('feed_flag',i,0)"><a>手动</a>
                                                             </li>
                                                             <li class="text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] mt-2 rounded"

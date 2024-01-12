@@ -1,12 +1,15 @@
 <template>
-    <div class="h-[94vh] w-[22rem] transition-all duration-300 ease-in-out shadow bg-white rounded-2xl" >
+    <div class="h-[94vh]  w-[22rem] transition-all duration-300 ease-in-out shadow bg-white rounded-2xl">
         
         <!--    标题-->
         <div class="h-[4%] self-stretch justify-start items-center  inline-flex mt-3  w-full ">
-            <div class="w-[calc(10rem)] text-xl leading-10 text-zinc-900 text-2xl font-medium leading-loose left-4 relative">消泡控制</div>
+            <div class="w-[calc(10rem)] text-xl leading-10 text-zinc-900 text-2xl font-medium leading-loose left-4 relative">
+                消泡控制
+            </div>
             <div class="w-[calc(100%-10rem)] relative justify-end flex mr-3 ">
                 
-                <div class="bg-[#F5F5F5] right-0 relative w-7 h-7 justify-center items-center flex rounded-2xl hover:bg-[#F8F8F8] cursor-pointer" @click="closePop">
+                <div class="bg-[#F5F5F5] right-0 relative w-7 h-7 justify-center items-center flex rounded-2xl hover:bg-[#F8F8F8] cursor-pointer"
+                     @click="closePop">
                     <svg fill="none" height="16" viewBox="0 0 16 16" width="16" xmlns="http://www.w3.org/2000/svg">
                         <path d="M12 4.7L11.3 4L8 7.3L4.7 4L4 4.7L7.3 8L4 11.3L4.7 12L8 8.7L11.3 12L12 11.3L8.7 8L12 4.7Z"
                               fill="#19161D"/>
@@ -38,7 +41,7 @@
                                 <table class="mb-4 shadow  bg-[#E8F6ED] py-4 rounded-bl-2xl">
                                     <tr v-for="(col, index) in firstCol" :key="index" class=" w-full  ">
                                         <td class="w-full  flex justify-center items-center   ">
-                                            <div >
+                                            <div>
                                                 {{ col }}
                                             
                                             </div>
@@ -53,10 +56,11 @@
                             <!--窗口-->
                             <div ref="firstRowLayer"
                                  class="right-div1 bg-[#F1F1F1] rounded-tr-2xl">
-                                <table  class=" flex items-start self-start w-[8.2rem]  rounded-br-2xl">
+                                <table class=" flex items-start self-start w-[8.2rem]  rounded-br-2xl">
                                     
                                     <tr>
-                                        <th v-for="(row, index) in firstRow" :key="index" class="first-row-style w-[8.2rem]  ">{{
+                                        <th v-for="(row, index) in firstRow" :key="index"
+                                            class="first-row-style w-[8.2rem]  ">{{
                                                 row
                                             }}
                                         </th>
@@ -70,20 +74,27 @@
                                     @scroll="tableScroll()"
                             
                             >
-                                <table   class="flex items-start w-[8.2rem]  ">
+                                <table class="flex items-start w-[8.2rem]  ">
                                     <div class="flex-col justify-center items-center">
-                                        <tr v-for="(body,index) in tableBodyRows" :key="index" class="flex justify-center items-center">
+                                        <tr v-for="(body,index) in tableBodyRows" :key="index"
+                                            class="flex justify-center items-center">
                                             <template v-for="(col, i) in tableBodyCols" :key="col.props + i">
-                                                <td v-if="index==0" class="w-[8.2rem] text-center border-r border-b flex justify-center items-center">
+                                                <td v-if="index==0"
+                                                    class="w-[8.2rem] text-center border-r border-b flex justify-center items-center">
                                                     <details class="dropdown ">
-                                                        <summary v-if="body[col.props]==0||body[col.props]==null||body[col.props]==undefined" class="m-1 btn w-[7rem] ">手动</summary>
+                                                        <summary
+                                                                v-if="body[col.props]==0||body[col.props]==null||body[col.props]==undefined"
+                                                                class="m-1 btn w-[7rem] ">手动
+                                                        </summary>
                                                         <summary v-if="body[col.props]==1"
-                                                                 class="m-1 btn w-[7rem] text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3]">自动
+                                                                 class="m-1 btn w-[7rem] text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3]">
+                                                            自动
                                                         </summary>
                                                         
                                                         
-                                                        <ul class="p-2 shadow-xl menu dropdown-content z-[1] bg-base-100 rounded-box w-[7rem] broder">
-                                                            <li class="text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2] rounded" @click="controlSend('clean_flag',i,0)"><a>手动</a>
+                                                        <ul class="p-2 shadow-xl menu dropdown-content z-[1] bg-base-100 rounded-md w-[7rem] broder">
+                                                            <li class="text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2] rounded"
+                                                                @click="controlSend('clean_flag',i,0)"><a>手动</a>
                                                             </li>
                                                             <li class="text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] mt-2 rounded"
                                                                 @click="controlSend('clean_flag',i,1)"><a>自动</a></li>
@@ -103,9 +114,8 @@
                                                             @keyup.enter="keyupEnterInput(i,index-2)"
                                                     />
                                                     
-                                                    <span v-else
-                                                          class="w-[8.2rem] leading-5 text-center whitespace-normal break-all flex justify-center items-center">
-                    {{ body[col.props] }}</span>
+                                                    <span v-else class="w-[8.2rem] leading-5 text-center whitespace-normal break-all flex justify-center items-center">
+                                                    {{ body[col.props] }}</span>
                                                 </td>
                                                 <td v-else
                                                     class="w-[8.2rem] text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
@@ -137,7 +147,7 @@
 <script lang='ts' setup>
 
 // ______________________导入模块_______________________
-import {computed, Ref, ref, watch, onUnmounted, onMounted, reactive} from 'vue'
+import {computed, onMounted, reactive, Ref, ref, watch} from 'vue'
 import {useProcessPopupMangerState} from "@/store/ProcessPopupMangerState";
 import {useDeviceManage} from '@/store/DeviceManage'
 import {useAppGlobal} from '@/store/AppGlobal'
@@ -177,7 +187,7 @@ const initTableData = () => {
     ];
     
     DeviceManage.deviceList.forEach(device => {
-        if (AppGlobal.pageChance!=device.id){
+        if (AppGlobal.pageChance != device.id) {
             
             return;
         }
@@ -197,8 +207,6 @@ const initTableData = () => {
         {name: '累计补料量', prop: 'defoamer_pump'},  // 这里选择了补料关联氧含量标志位，因为它看起来是一个功能关联标志
         {name: '补料速度', prop: 'defoam_pump_now_set_speed'}
     ]
-    
-    
     
     
     let resultItems: any[] = []; // 声明结果数组
@@ -223,9 +231,7 @@ const initTableData = () => {
                 tableItem[header.props] = 0;
                 
                 return;
-            }
-            
-            else if (deviceProp.prop == "defoamer_pump") {
+            } else if (deviceProp.prop == "defoamer_pump") {
                 if (DeviceManage.deviceList[index]?.deviceSet?.feedPumpSpeed !== null) {
                     const defoamerPumpSpeed = DeviceManage.deviceList[index]?.deviceSet?.defoamerPumpSpeed ?? 0;
                     const defoam_pump_sum_step_count = DeviceManage.deviceList[index]?.nowData?.defoam_pump_sum_step_count ?? 0;
@@ -260,13 +266,12 @@ const initTableData = () => {
 }
 
 
-
 const firstCol = computed(() => props.tableData.map(p => {
     const pArr = Object.keys(p);
     return p[pArr[0]]
 }))
 const keyupEnterInput = (deviceID: number, setIndex: number) => {
-
+    
     inputVisible.value[deviceID][setIndex].control = false;
     
     if (setIndex == 0 && inputVisible.value[deviceID][setIndex].cache != null) {
@@ -275,25 +280,25 @@ const keyupEnterInput = (deviceID: number, setIndex: number) => {
             DeviceManage.deviceList[deviceID]!.nowData!.defoam_pump_now_set_speed = inputVisible.value[deviceID][setIndex].cache || 0;
         }
     }
-    controlSend('defoam_pump_now_set_speed',deviceID,Number(inputVisible.value[deviceID][setIndex].cache))
+    controlSend('defoam_pump_now_set_speed', deviceID, Number(inputVisible.value[deviceID][setIndex].cache))
     
     
 }
 
 const controlSend = ((name, index, content) => {
-    if (name=='clean_flag'){
-        DeviceManage.deviceList[index]!.nowData!.clean_flag=content
+    if (name == 'clean_flag') {
+        DeviceManage.deviceList[index]!.nowData!.clean_flag = content
         const data = {
             clean_flag: content
-        
+            
         }
         sendData(index, data);
     }
-    if (name=='defoam_pump_now_set_speed'){
-        DeviceManage.deviceList[index]!.nowData!.defoam_pump_now_set_speed=content
+    if (name == 'defoam_pump_now_set_speed') {
+        DeviceManage.deviceList[index]!.nowData!.defoam_pump_now_set_speed = content
         const data = {
             defoam_pump_now_set_speed: content
-        
+            
         }
         sendData(index, data);
     }
@@ -390,7 +395,6 @@ const tableScroll = () => {
 }
 
 
-
 // ______________________生命周期_______________________
 
 // 当组件挂载时添加事件监听器
@@ -404,15 +408,11 @@ onMounted(() => {
 });
 
 
-
-
 /* ______________________静态接口_____________________________ */
 interface HeaderItem {
     title: string;
     props: string;
 }
-
-
 
 
 const name_translation = {
@@ -473,7 +473,6 @@ td {
 //  border-top: 1px solid #999;
 //  box-sizing: border-box;
 //}
-
 
 
 .right-div {

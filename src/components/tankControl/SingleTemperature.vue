@@ -1,13 +1,12 @@
 <template>
-    <div class="h-[80vh] w-[60rem] transition-all duration-300 ease-in-out shadow bg-white rounded-2xl">
-
+    <div class="h-[90vh] border   transition-all duration-300 ease-in-out shadow bg-white rounded-2xl">
+        
         <!--    标题-->
-        <div class="h-[4%] self-stretch justify-start items-center  inline-flex mt-3  w-full ">
-            <div class="w-[calc(10rem)] text-xl leading-10 text-zinc-900 text-2xl font-medium leading-loose left-4 relative">
+        <div class="h-[3rem] self-stretch justify-start items-center  inline-flex mt-3  w-full ">
+            <div class="w-[calc(10rem)] m-auto text-xl leading-10 text-zinc-900 text-2xl font-medium p-2 leading-loose left-4 relative">
                 温度控制
             </div>
             <div class="w-[calc(100%-10rem)] relative justify-end flex mr-3 ">
-
                 <div class="bg-[#F5F5F5] right-0 relative w-7 h-7 justify-center items-center flex rounded-2xl hover:bg-[#F8F8F8] cursor-pointer"
                      @click="closePop">
                     <svg fill="none" height="16" viewBox="0 0 16 16" width="16" xmlns="http://www.w3.org/2000/svg">
@@ -18,542 +17,445 @@
             </div>
         </div>
         <!--    表格栏-->
-      <div class="  w-[100%] h-[92%]     items-center justify-center  flex  " >
-        <div class="rounded-2xl  h-[calc(100%-1.5rem)] w-[calc(100%-1.5rem)]  items-center justify-center flex     ">
-          <div class=" w-full h-[92%] " >
-            <div class=" box-border  w-full h-full flex overflow-auto" >
-              <!--原表格left-->
-              <!--                        <div class="float-left  bg-[#E8F6ED] shadow border rounded-tl-2xl z-20">-->
-              <!--                            <div class="  w-[10rem]">-->
-              <!--                                <table class=" py-4 ">-->
-              <!--                                    <tr>-->
-              <!--                                        <th class="flex items-center justify-center gap-2   ">-->
-
-              <!--                                        </th>-->
-              <!--                                    </tr>-->
-              <!--                                </table>-->
-              <!--                            </div>-->
-              <!--                            <div-->
-              <!--                                    ref="firstColLayer"-->
-              <!--                                    class="w-full overflow-hidden "-->
-              <!--                            >-->
-              <!--                                <table class="mb-4 shadow  bg-[#E8F6ED] py-4 rounded-bl-2xl">-->
-              <!--                                    <tr v-for="(col, index) in firstCol" :key="index" class=" w-full  ">-->
-              <!--                                        <td class="w-full  flex justify-center items-center   ">-->
-              <!--                                            <div>-->
-              <!--                                                {{ col }}-->
-
-              <!--                                            </div>-->
-
-              <!--                                        </td>-->
-              <!--                                    </tr>-->
-              <!--                                </table>-->
-              <!--                            </div>-->
-              <!--                        </div>-->
-              <!--&lt;!&ndash;                        原表格right&ndash;&gt;-->
-              <!--                        <div class="right-div ">-->
-              <!--                            &lt;!&ndash;窗口&ndash;&gt;-->
-              <!--                            <div ref="firstRowLayer"-->
-              <!--                                 class="right-div1 bg-[#F1F1F1] rounded-tr-2xl">-->
-              <!--                                <table class=" flex items-start self-start w-[8.2rem]  rounded-br-2xl">-->
-
-              <!--                                    <tr>-->
-              <!--                                        <th v-for="(row, index) in firstRow" :key="index"-->
-              <!--                                            class="first-row-style w-[8.2rem]  ">{{-->
-              <!--                                                row-->
-              <!--                                            }}-->
-              <!--                                        </th>-->
-              <!--                                    </tr>-->
-              <!--                                </table>-->
-              <!--                            </div>-->
-              <!--                            <div-->
-
-              <!--                                    ref="tableContainer"-->
-              <!--                                    class="right-div2 flex items-start self-start"-->
-              <!--                                    @scroll="tableScroll()"-->
-
-              <!--                            >-->
-              <!--                                <table class="flex items-start w-[8.2rem]  ">-->
-              <!--                                    <div class="flex-col justify-center items-center">-->
-              <!--                                        <tr v-for="(body,index) in tableBodyRows" :key="index"-->
-              <!--                                            class="flex justify-center items-center">-->
-              <!--                                            <template v-for="(col, i) in tableBodyCols" :key="col.props + i">-->
-              <!--                                                <td v-if="index==0" class="w-[8.2rem] text-center border-r border-b flex justify-center items-center">-->
-
-              <!--                                                  <Menu as="div" class="dropdown relative inline-block">-->
-              <!--                                                    <div>-->
-              <!--                                                      <MenuButton class="inline-flex w-[7rem] justify-center gap-x-1.5">-->
-              <!--                                                        <summary v-if="body[col.props]==0||body[col.props]==null||body[col.props]==undefined" class="m-1 btn w-[7rem] text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2] rounded-box">停止</summary>-->
-              <!--                                                        <summary v-if="body[col.props]==1" class="m-1 btn w-[7rem] text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] rounded-[1rem]">开启</summary>-->
-              <!--                                                      </MenuButton>-->
-              <!--                                                    </div>-->
-              <!--                                                    <MenuItems class="p-2 shadow-xl menu dropdown-content z-[1] bg-base-100 rounded-box w-[7rem] border absolute origin-top-left left-0 mt-2">-->
-              <!--                                                      <MenuItem v-slot="{ active }">-->
-              <!--                                                        <button @click="controlSend('DO_flag', i, 0)" :class="[active ? 'bg-[#E0E0E0] text-[#000000]' : 'text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2]', 'block px-4 py-2 text-sm rounded-[0.5rem]']">停止</button>-->
-              <!--                                                      </MenuItem>-->
-              <!--                                                      <MenuItem v-slot="{ active }">-->
-              <!--                                                        <button @click="controlSend('DO_flag', i, 1)" :class="[active ? 'bg-[#BAE7C7] text-[#256637]' : 'text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] mt-2', 'block px-4 py-2 text-sm rounded mt-2']">开启</button>-->
-              <!--                                                      </MenuItem>-->
-              <!--                                                    </MenuItems>-->
-              <!--                                                  </Menu>-->
-
-              <!--                                                </td>-->
-
-              <!--                                                <td v-else-if="index>=2&&index<=10"-->
-              <!--                                                    class="w-[8.2rem] text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center"-->
-              <!--                                                    @dblclick="inputVisible[i][index-2].control = !inputVisible[i][index-2].control">-->
-              <!--                                                    <input-->
-              <!--                                                            v-if="inputVisible[i][index-2].control&&DeviceManage.deviceList[i]?.deviceSet!==null"-->
-              <!--                                                            v-model="inputVisible[i][index-2].cache"-->
-              <!--                                                            :placeholder="placeholder[index-2]"-->
-              <!--                                                            class="w-[8.2rem]  h-full text-center break-all whitespace-normal "-->
-              <!--                                                            type="text"-->
-              <!--                                                            @keyup.enter="keyupEnterInput(i,index-2)"-->
-              <!--                                                    />-->
-
-              <!--                                                    <span v-else-->
-              <!--                                                          class="w-[8.2rem] leading-5 text-center whitespace-normal break-all flex justify-center items-center">-->
-              <!--                    {{ body[col.props] }}</span>-->
-              <!--                                                </td>-->
-              <!--                                                <td v-else-->
-              <!--                                                    class="w-[8.2rem] text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">-->
-              <!--                                                    {{ body[col.props] }}-->
-              <!--                                                </td>-->
-              <!--                                            </template>-->
-
-
-
-              <!--                                        </tr>-->
-              <!--                                    </div>-->
-              <!--                                </table>-->
-              <!--                            </div>-->
-              <!--                        </div>-->
-              <!-- 新格式-->
-              <!--左侧列left-->
-              <div class="relative w-[26rem]   h-[calc(100%-1rem)] ml-8  m-2  flex-col flex justify-start items-center ">
-                <!--设置参数-->
-                <div class="relative border shadow w-[20rem] m-2 rounded-2xl  justify-start items-center">
-                  <div class="w-full h-14  rounded-t-2xl flex   items-center text-lg font-medium ">
-                    <div class="ml-4 ">
-                      设置参数
-                    </div>
-                  </div>
-                  <!--表格内容-->
-                  <div class="  w-[100%] h-[100%]  top-0    justify-center flex mb-10  ">
-                    <div class="rounded-2xl   w-[calc(100%-1.5rem)]   justify-center flex     ">
-                      <div class=" w-full h-[92%] ">
-                        <div class=" box-border overflow-x-hidden w-full  flex">
-                          <!--原表格left-->
-                          <div class="float-left  shadow  border-radius rounded-tl-2xl z-20">
-                            <div class="w-[8rem]  overflow-hidden ">
-                              <table class="mb-4 shadow  bg-[#E8F6ED] py-4 rounded-bl-2xl">
-                                <tr>
-                                  <td class="w-full  flex justify-center items-center   ">
-                                    <div>状态</div>
-                                  </td>
-                                  <td class="w-full  flex justify-center items-center   ">
-                                    <div>测量值</div>
-                                  </td>
-                                  <td class="w-full  flex justify-center items-center   ">
-                                    <div>设定值</div>
-                                  </td>
-                                </tr>
-                              </table>
-                            </div>
-                          </div>
-                          <!--原表格right-->
-                          <div class="right-div ">
-                            <div  class="right-div2 flex items-start self-start" >
-                              <table class="flex items-start w-[10rem]  ">
-                                <div class="flex justify-center items-center">
-                                  <tr  class=" justify-center items-center">
-                                    <td class=" text-center border-t border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
-                                      <div class="h-full flex justify-center items-center  ">
-                                        <Menu as="div" class="dropdown relative inline-block">
-                                          <div>
-                                            <MenuButton class="inline-flex w-[7rem] justify-center gap-x-1.5">
-                                              <summary v-if="temp_flag==0||temp_flag==null||temp_flag==undefined" class="m-1 btn w-[7rem] text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2] rounded-box">停止</summary>
-                                              <summary v-if="temp_flag==1" class="m-1 btn w-[7rem] text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] rounded-[1rem]">开启</summary>
-                                            </MenuButton>
-                                          </div>
-                                          <MenuItems class="p-2 shadow-xl menu dropdown-content z-[1] bg-base-100 rounded-box w-[7rem] border absolute origin-top-left left-0 mt-2">
-                                            <MenuItem v-slot="{ active }">
-                                              <button @click="controlSend('temp_flag',AppGlobal.pageChance,0)" :class="[active ? 'bg-[#E0E0E0] text-[#000000]' : 'text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2]', 'block px-4 py-2 text-sm rounded-[0.5rem]']">停止</button>
-                                            </MenuItem>
-                                            <MenuItem v-slot="{ active }">
-                                              <button @click="controlSend('temp_flag',AppGlobal.pageChance,1)" :class="[active ? 'bg-[#BAE7C7] text-[#256637]' : 'text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] mt-2', 'block px-4 py-2 text-sm rounded mt-2']">开启</button>
-                                            </MenuItem>
-                                          </MenuItems>
-                                        </Menu>
-                                      </div>
-                                    </td>
-                                    <td class=" text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
-                                      0
-                                    </td>
-                                    <td class=" text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
-                                      <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
-                                        <input id="name" v-model="localcache.setNum.target_temp"
-                                               class="block w-[80%]  border-b-2 m-2 text-center" name="name" placeholder="请填温度设定值"
-                                               @blur="controlSend('target_temp',AppGlobal.pageChance,localcache.setNum.target_temp)"
-                                               required type="number"/>
-                                      </div>
-                                    </td>
-                                  </tr>
+        <div class="  w-[100%] h-[92%]     items-center justify-center  flex  ">
+            <div class="rounded-2xl  h-[calc(100%-1.5rem)] w-[calc(100%-1.5rem)]  items-center justify-center flex     ">
+                <div class=" w-full h-[100%] ">
+                    <div class=" box-border  w-full h-full flex" style="overflow: auto;">
+                        
+                        <!-- 新格式-->
+                        <!--左侧列left-->
+                        <div class="relative w-[20rem]  h-[calc(100%-1rem)]  flex-col flex justify-start items-center ">
+                            <!--设置参数-->
+                            <div class="relative  shadow w-[19rem] m-2 rounded-2xl  justify-start items-center border border-gray-300 ">
+                                <div class="w-full h-14  rounded-t-2xl flex   items-center text-lg font-medium ">
+                                    <div class="ml-4 ">
+                                        设置参数
+                                    </div>
                                 </div>
-                              </table>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <!--pid 自动参数-->
-                <div class="relative  shadow w-[20rem] border    m-2 rounded-2xl  justify-start items-center">
-                  <div class="w-full h-14  rounded-t-2xl flex   items-center text-lg font-medium ">
-                    <div class="ml-4">
-                      自动参数
-                    </div>
-                  </div>
-                  <!--表格内容-->
-                  <div class="  w-[100%] h-[100%]  top-0   mb-14 justify-center flex  ">
-                    <div class="rounded-2xl   w-[calc(100%-1.5rem)]   justify-center flex     ">
-                      <div class=" w-full h-[92%] ">
-                        <div class=" box-border overflow-x-hidden w-full  flex">
-                          <!--原表格left-->
-                          <div class="float-left   shadow border-radius rounded-tl-2xl z-20">
-                            <div class="  w-[8rem]">
-                              <table class=" py-4 ">
-                                <!--                                        <tr>-->
-                                <!--                                          <th class="flex items-center justify-center gap-2   ">-->
-                                <!--                                          </th>-->
-                                <!--                                        </tr>-->
-                              </table>
-                            </div>
-                            <div class="w-full overflow-hidden ">
-                              <table class="mb-4 shadow  bg-[#E8F6ED] py-4 rounded-bl-2xl">
-                                <tr >
-                                  <td class="w-full  flex justify-center items-center   ">
-                                    <div>P</div>
-                                  </td>
-                                  <td class="w-full  flex justify-center items-center   ">
-                                    <div>I</div>
-                                  </td>
-                                  <td class="w-full  flex justify-center items-center   ">
-                                    <div>D</div>
-                                  </td>
-                                </tr>
-                              </table>
-                            </div>
-                          </div>
-                          <!--原表格right-->
-                          <div class="right-div ">
-                            <!--窗口-->
-                            <div ref="firstRowLayer"
-                                 class="right-div1 bg-[#F1F1F1] rounded-tr-2xl">
-                            </div>
-                            <div ref="tableContainer" class="right-div2 flex items-start self-start" @scroll="tableScroll()"
-
-                            >
-                              <table class="flex items-start w-[10rem]  ">
-                                <div class="flex-col justify-center items-center">
-                                  <tr  class="flex justify-center items-center">
-                                    <td class=" text-center border-t border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
-                                      <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
-                                        <input id="name" v-model="localcache.pidNum.Temp_KP"
-                                               class="block w-[80%]  border-b-2 m-2 text-center" name="name" placeholder="请输温度P"
-                                               @blur="controlSend('Temp_KP',AppGlobal.pageChance,localcache.pidNum.Temp_KP)"
-                                               required type="number"/>
-                                      </div>
-                                    </td>
-                                  </tr>
-                                  <tr  class="flex justify-center items-center">
-                                    <td class=" text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
-                                      <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
-                                        <input id="name" v-model="localcache.pidNum.Temp_KI"
-                                               class="block w-[80%]  border-b-2 m-2 text-center" name="name" placeholder="请输温度I"
-                                               @blur="controlSend('Temp_KI',AppGlobal.pageChance,localcache.pidNum.Temp_KI)"
-                                               required type="number"/>
-                                      </div>
-                                    </td>
-                                  </tr>
-                                  <tr  class="flex justify-center items-center">
-                                    <td class=" text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
-                                      <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
-                                        <input id="name" v-model="localcache.pidNum.Temp_KD"
-                                               class="block w-[80%]  border-b-2 m-2 text-center" name="name" placeholder="请输温度D"
-                                               @blur="controlSend('Temp_KD',AppGlobal.pageChance,localcache.pidNum.Temp_KD)"
-                                               required type="number"/>
-                                      </div>
-                                    </td>
-                                  </tr>
-                                </div>
-                              </table>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-
-
-
-              </div>
-              <!--右侧-->
-              <div class="relative w-[26rem]   h-[calc(100%-1rem)]   m-2  flex-col flex justify-start items-center">
-                <!--报警参数-->
-                <div class="relative  shadow w-[20rem]  border    m-2 rounded-2xl  justify-start items-center">
-                  <div class="w-full h-14  rounded-t-2xl flex   items-center text-lg font-medium ">
-                    <div class="ml-4">
-                      报警参数
-                    </div>
-                  </div>
-                  <!--表格内容-->
-                  <div class="  w-[100%] h-[100%]  top-0  mb-14  justify-center flex  ">
-                    <div class="rounded-2xl   w-[calc(100%-1.5rem)]   justify-center flex     ">
-                      <div class=" w-full h-[92%] ">
-                        <div class=" box-border overflow-hidden w-full  flex">
-                          <!--原表格left-->
-                          <div class="float-left   shadow border-radius rounded-tl-2xl z-20">
-                            <div class="w-[8rem]  overflow-hidden ">
-                              <table class="mb-4 shadow  bg-[#E8F6ED] py-4 rounded-bl-2xl">
-                                <tr>
-                                  <td class="w-full  flex justify-center items-center   ">
-                                    <div>温度报警上限</div>
-                                  </td>
-                                  <td class="w-full  flex justify-center items-center   ">
-                                    <div>温度报警下限</div>
-                                  </td>
-                                </tr>
-                              </table>
-                            </div>
-                          </div>
-                          <!--原表格right-->
-                          <div class="right-div ">
-                            <div  class="right-div2 flex items-start self-start" >
-                              <table class="flex items-start w-[10rem]  ">
-                                <div class="flex-col justify-center items-center">
-                                  <tr  class="flex justify-center items-center">
-                                    <td class=" text-center border-t border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
-                                      <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
-                                        <input id="name" v-model="localcache.alarmNum.alarm_h_limit"
-                                               class="block w-[80%]  border-b-2 m-2 text-center" name="name" placeholder="请输报警上限"
-                                               @blur="controlSend('alarm_h_limit',AppGlobal.pageChance,localcache.alarmNum.alarm_h_limit)"
-                                               required type="number"/>
-                                      </div>
-                                    </td>
-                                  </tr>
-                                  <tr  class="flex justify-center items-center">
-                                    <td class=" text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
-                                      <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
-                                        <input id="name" v-model="localcache.alarmNum.alarm_l_limit"
-                                               class="block w-[80%]  border-b-2 m-2 text-center" name="name" placeholder="请输报警下限"
-                                                @blur="controlSend('alarm_l_limit',AppGlobal.pageChance,localcache.alarmNum.alarm_l_limit)"
-                                               required type="number"/>
-                                      </div>
-                                    </td>
-                                  </tr>
-                                </div>
-                              </table>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <!--控制参数-->
-                <div class="relative  shadow w-[20rem]   border   m-2 rounded-2xl  justify-start items-center">
-                  <div class="w-full h-14  rounded-t-2xl flex   items-center text-lg font-medium ">
-                    <div class="ml-4">
-                      控制参数
-                    </div>
-                  </div>
-                  <!--表格内容-->
-                  <div class="  w-[100%] h-[100%]  top-0  mb-14  justify-center flex  ">
-                    <div class="rounded-2xl   w-[calc(100%-1.5rem)]   justify-center flex     ">
-                      <div class=" w-full h-[92%] ">
-                        <div class=" box-border overflow-hidden w-full  flex">
-                          <!--原表格left-->
-                          <div class="float-left   shadow border-radius rounded-tl-2xl z-20">
-                            <div class="w-[8rem]  overflow-hidden ">
-                              <table class="mb-4 shadow  bg-[#E8F6ED] py-4 rounded-bl-2xl">
-                                <tr>
-                                  <td class="w-full  flex justify-center items-center   ">
-                                    <div>控制死区</div>
-                                  </td>
-                                  <td class="w-full  flex justify-center items-center   ">
-                                    <div>误差上限</div>
-                                  </td>
-                                  <td class="w-full  flex justify-center items-center   ">
-                                    <div>误差下限</div>
-                                  </td>
-                                </tr>
-                              </table>
-                            </div>
-                          </div>
-                          <!--原表格right-->
-                          <div class="right-div ">
-                            <div  class="right-div2 flex items-start self-start" >
-                              <table class="flex items-start w-[10rem]  ">
-                                <div class="flex-col justify-center items-center">
-                                  <tr  class="flex justify-center items-center">
-                                    <td class=" text-center border-t border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
-                                      <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
-                                        <input id="name" v-model="localcache.controlNum.dead_zone"
-                                               class="block w-[80%]  border-b-2 m-2 text-center" name="name" placeholder="请输控制死区"
-                                               @blur="controlSend('dead_zone',AppGlobal.pageChance,localcache.controlNum.dead_zone)"
-                                               required type="number"/>
-                                      </div>
-                                    </td>
-                                  </tr>
-                                  <tr  class="flex justify-center items-center">
-                                    <td class=" text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
-                                      <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
-                                        <input id="name"  v-model="localcache.controlNum.error_h_limit"
-                                               class="block w-[80%]  border-b-2 m-2 text-center" name="name" placeholder="请输误差上限"
-                                               @blur="controlSend('error_h_limit',AppGlobal.pageChance,localcache.controlNum.error_h_limit)"
-                                               required type="number"/>
-                                      </div>
-                                    </td>
-                                  </tr>
-                                  <tr  class="flex justify-center items-center">
-                                    <td class=" text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
-                                      <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
-                                        <input id="name" v-model="localcache.controlNum.error_l_limit"
-                                               class="block w-[80%]  border-b-2 m-2 text-center" name="name" placeholder="请输误差下限"
-                                               @blur="controlSend('error_l_limit',AppGlobal.pageChance,localcache.controlNum.error_l_limit)"
-                                               required type="number"/>
-                                      </div>
-                                    </td>
-                                  </tr>
-                                </div>
-                              </table>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <!--温控参数-->
-                <div class="relative  shadow w-[20rem]  border    m-2 rounded-2xl  justify-start items-center">
-                  <div class="w-full h-14  rounded-t-2xl flex   items-center text-lg font-medium ">
-                    <div class="ml-4">
-                      温控参数
-                    </div>
-                  </div>
-                  <!--表格内容-->
-                  <div class="  w-[100%] h-[100%]  top-0  mb-14  justify-center flex  ">
-                    <div class="rounded-2xl   w-[calc(100%-1.5rem)]   justify-center flex     ">
-                      <div class=" w-full h-[92%] ">
-                        <div class=" box-border overflow-hidden w-full  flex">
-                          <!--原表格left-->
-                          <div class="float-left   shadow border-radius rounded-tl-2xl z-20">
-                            <div class="w-[8rem]  overflow-hidden ">
-                              <table class="mb-4 shadow  bg-[#E8F6ED] py-4 rounded-bl-2xl">
-                                <tr>
-                                  <td class="w-full  flex justify-center items-center   ">
-                                    <div>冷水阀开关</div>
-                                  </td>
-                                  <td class="w-full  flex justify-center items-center   ">
-                                    <div>加热毯开关</div>
-                                  </td>
-                                  <td class="w-full  flex justify-center items-center   ">
-                                    <div>加热实时功率</div>
-                                  </td>
-                                </tr>
-                              </table>
-                            </div>
-                          </div>
-                          <!--原表格right-->
-                          <div class="right-div ">
-                            <div  class="right-div2 flex items-start self-start" >
-                              <table class="flex items-start w-[10rem]  ">
-                                <div class="flex-col justify-center items-center">
-                                  <tr  class="flex justify-center items-center">
-                                    <td class="w-full text-center border-t border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
-                                      <div style="display: flex; justify-content: center; align-items: center; height: 100%;" >
-                                        <div class=" h-full flex justify-center items-center  ">
-                                          <Menu as="div" class="dropdown relative inline-block">
-                                            <div>
-                                              <MenuButton class="inline-flex w-[7rem] justify-center gap-x-1.5">
-                                                <summary v-if="condensate_water_flag==0||condensate_water_flag==null||condensate_water_flag==undefined" class="m-1 btn w-[7rem] text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2] rounded-box">停止</summary>
-                                                <summary v-if="condensate_water_flag==1" class="m-1 btn w-[7rem] text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] rounded-[1rem]">开启</summary>
-                                              </MenuButton>
+                                <!--表格内容-->
+                                <div class="  w-[100%] h-[calc(92%-3.5rem)]  top-0    justify-center flex mb-4  ">
+                                    <div class="rounded-2xl   w-[calc(100%-1.5rem)]   justify-center flex     ">
+                                        <div class=" w-full h-[100%] ">
+                                            <div class=" box-border overflow-x-hidden w-full  flex mb-1">
+                                                <!--原表格left-->
+                                                <div class=" float-left  shadow  border-radius z-20">
+                                                    <div class="w-[8rem]  overflow-hidden ">
+                                                        <table class="mb-4   bg-[#E8F6ED] py-4 rounded-l-2xl">
+                                                            <tr>
+                                                                <td class="w-full  flex justify-center items-center   ">
+                                                                    <div>状态</div>
+                                                                </td>
+                                                                <td class="w-full  flex justify-center items-center   ">
+                                                                    <div>测量值</div>
+                                                                </td>
+                                                                <td class="w-full  flex justify-center items-center   ">
+                                                                    <div>设定值</div>
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                                <div class="right-div ">
+                                                    <div class="right-div2 flex items-start self-start">
+                                                        <table class="flex items-start  ">
+                                                            <div class="flex justify-center items-center">
+                                                                <tr class=" justify-center items-center">
+                                                                    <td class=" text-center border-t border-b border-r rounded-tr-2xl hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
+                                                                        <div class="h-full flex justify-center items-center  ">
+                                                                            <Menu as="div"
+                                                                                  class="dropdown relative inline-block">
+                                                                                <div>
+                                                                                    <MenuButton
+                                                                                            class="inline-flex w-[7rem] justify-center gap-x-1.5">
+                                                                                        <summary
+                                                                                                v-if="DO_flag==0||DO_flag==null||DO_flag==undefined"
+                                                                                                class="m-1 btn w-[7rem] text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2] rounded-md">
+                                                                                            停止
+                                                                                        </summary>
+                                                                                        <summary v-if="DO_flag==1"
+                                                                                                 class="m-1 btn w-[7rem] text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] rounded-md">
+                                                                                            开启
+                                                                                        </summary>
+                                                                                    </MenuButton>
+                                                                                </div>
+                                                                                <MenuItems
+                                                                                        class="p-2 shadow-xl menu dropdown-content z-[1] bg-base-100 rounded-md w-[7rem] border absolute origin-top-left left-0 mt-2">
+                                                                                    <MenuItem v-slot="{ active }">
+                                                                                        <button :class="[active ? 'bg-[#E0E0E0] text-[#000000]' : 'text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2]', 'block px-4 py-2 text-sm rounded']">
+                                                                                            停止
+                                                                                        </button>
+                                                                                    </MenuItem>
+                                                                                    <MenuItem v-slot="{ active }">
+                                                                                        <button :class="[active ? 'bg-[#BAE7C7] text-[#256637]' : 'text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] mt-2', 'block px-4 py-2 text-sm rounded mt-2']">
+                                                                                            开启
+                                                                                        </button>
+                                                                                    </MenuItem>
+                                                                                </MenuItems>
+                                                                            </Menu>
+                                                                        
+                                                                        </div>
+                                                                    </td>
+                                                                    <td class=" text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
+                                                                        0
+                                                                    </td>
+                                                                    <td class=" text-center  border-b border-r rounded-br-2xl  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
+                                                                        <div class="flex justify-center items-center w-full">
+                                                                            <input id="name" v-model="targetDO"
+                                                                                   class="block w-[80%]  border-b-2 m-2 text-center bg-inherit"
+                                                                                   name="name"
+                                                                                   placeholder="请填溶氧设定值"
+                                                                                   required type="number"/>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                            </div>
+                                                        </table>
+                                                    </div>
+                                                </div>
                                             </div>
-                                            <MenuItems class="p-2 shadow-xl menu dropdown-content z-[1] bg-base-100 rounded-box w-[7rem] border absolute origin-top-left left-0 mt-2">
-                                              <MenuItem v-slot="{ active }">
-                                                <button @click="controlSend('condensate_water_flag',AppGlobal.pageChance,0)" :class="[active ? 'bg-[#E0E0E0] text-[#000000]' : 'text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2]', 'block px-4 py-2 text-sm rounded-[0.5rem]']">停止</button>
-                                              </MenuItem>
-                                              <MenuItem v-slot="{ active }">
-                                                <button @click="controlSend('condensate_water_flag',AppGlobal.pageChance,1)" :class="[active ? 'bg-[#BAE7C7] text-[#256637]' : 'text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] mt-2', 'block px-4 py-2 text-sm rounded mt-2']">开启</button>
-                                              </MenuItem>
-                                            </MenuItems>
-                                          </Menu>
                                         </div>
-                                      </div>
-                                    </td>
-                                  </tr>
-                                  <tr  class="flex justify-center items-center">
-                                    <td class="w-full text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
-                                      <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
-                                        <div class=" h-full flex justify-center items-center  ">
-                                          <Menu as="div" class="dropdown relative inline-block">
-                                            <div>
-                                              <MenuButton class="inline-flex w-[7rem] justify-center gap-x-1.5">
-                                                <summary v-if="heated_blanket_flag==0||heated_blanket_flag==null||heated_blanket_flag==undefined" class="m-1 btn w-[7rem] text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2] rounded-box">停止</summary>
-                                                <summary v-if="heated_blanket_flag==1" class="m-1 btn w-[7rem] text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] rounded-[1rem]">开启</summary>
-                                              </MenuButton>
-                                            </div>
-                                            <MenuItems class="p-2 shadow-xl menu dropdown-content z-[1] bg-base-100 rounded-box w-[7rem] border absolute origin-top-left left-0 mt-2">
-                                              <MenuItem v-slot="{ active }">
-                                                <button @click="controlSend('heated_blanket_flag',AppGlobal.pageChance,0)" :class="[active ? 'bg-[#E0E0E0] text-[#000000]' : 'text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2]', 'block px-4 py-2 text-sm rounded-[0.5rem]']">停止</button>
-                                              </MenuItem>
-                                              <MenuItem v-slot="{ active }">
-                                                <button @click="controlSend('heated_blanket_flag',AppGlobal.pageChance,1)" :class="[active ? 'bg-[#BAE7C7] text-[#256637]' : 'text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] mt-2', 'block px-4 py-2 text-sm rounded mt-2']">开启</button>
-                                              </MenuItem>
-                                            </MenuItems>
-                                          </Menu>
-                                        </div>
-                                      </div>
-                                    </td>
-                                  </tr>
-                                  <tr  class="flex justify-center items-center">
-                                    <td class=" text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
-                                      <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
-                                        <input id="name" v-model="localcache.temperatureControl.heatpower"
-                                               class="block w-[80%]  border-b-2 m-2 text-center" name="name" placeholder="请输实时功率"
-                                                @blur="controlSend('heatpower',AppGlobal.pageChance,localcache.temperatureControl.heatpower)"
-                                               required type="number"/>
-                                      </div>
-                                    </td>
-                                  </tr>
+                                    </div>
                                 </div>
-                              </table>
                             </div>
-                          </div>
+                            
+                            <!--报警参数-->
+                            <div class="relative  shadow w-[19rem]  mt-6    m-2 rounded-2xl  justify-start items-center  border border-gray-300">
+                                <div class="w-full h-14  rounded-t-2xl flex   items-center text-lg font-medium ">
+                                    <div class="ml-4">
+                                        报警参数
+                                    </div>
+                                </div>
+                                <!--表格内容-->
+                                <div class="  w-[100%] h-[calc(100%-3.5rem)]  top-0  mb-4  justify-center flex  ">
+                                    <div class="rounded-2xl   w-[calc(100%-1.5rem)]   justify-center flex     ">
+                                        <div class=" w-full h-[92%] ">
+                                            <div class="  overflow-hidden w-full  flex">
+                                                <!--原表格left-->
+                                                <div class="float-left     rounded-l-2xl z-20">
+                                                    <div class="w-[8rem]  overflow-hidden ">
+                                                        <table class="   bg-[#E8F6ED] py-4 rounded-l-2xl">
+                                                            <tr>
+                                                                <td class="w-full  flex justify-center items-center   ">
+                                                                    <div>溶氧报警上限</div>
+                                                                </td>
+                                                                <td class="w-full  flex justify-center items-center   ">
+                                                                    <div>溶氧报警下限</div>
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                                <!--原表格right-->
+                                                <div class="right-div ">
+                                                    <div class="right-div2 flex items-start self-start">
+                                                        <table class="flex items-start w-[10rem]  rounded-r-2xl ">
+                                                            <div class="flex-col justify-center items-center">
+                                                                <tr class="flex justify-center items-center">
+                                                                    <td class=" text-center border-t border-b border-r rounded-tr-2xl  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
+                                                                        <div class="flex justify-center items-center w-full">
+                                                                            
+                                                                            <input id="name"
+                                                                                   class="block w-[80%]  border-b-2 m-2 text-center bg-inherit"
+                                                                                   name="name"
+                                                                                   placeholder="请输报警上限"
+                                                                                   required type="number"/>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr class="flex justify-center items-center">
+                                                                    <td class=" text-center  border-b border-r  rounded-br-2xl hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
+                                                                        <div class="flex justify-center items-center w-full">
+                                                                            <input id="name"
+                                                                                   class="block w-[80%]  border-b-2 m-2 text-center bg-inherit"
+                                                                                   name="name"
+                                                                                   placeholder="请输报警下限"
+                                                                                   required type="number"/>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                            </div>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        
                         </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                        <!--中侧-->
+                        <div class="relative w-[22rem]   h-[calc(100%-1rem)]     flex-col flex justify-start items-center">
+                            <!--自动参数-温度-->
+                            <div class="relative  shadow w-[19rem]      m-2 rounded-2xl  justify-start items-center  border border-gray-300">
+                                <div class="w-full h-14  rounded-t-2xl flex   items-center text-lg font-medium">
+                                    <div class="ml-4">
+                                        自动参数-
+                                        <span class="font-bold underline-offset-2 decoration-solid underline  ">温度</span>设置
+                                    </div>
+                                </div>
+                                <!--表格内容-->
+                                <div class="  w-[100%]   top-0    justify-center flex  ">
+                                    <div class="rounded-2xl   w-[calc(100%-1.5rem)] mb-5  justify-center flex     ">
+                                        <div class=" w-full h-[92%] ">
+                                            <div class=" box-border overflow-x-hidden w-full   flex">
+                                                <!--原表格left-->
+                                                <div class="float-left   shadow-radius border-radius  rounded-tl-2xl z-20">
+                                                    <div class="w-[8rem]  overflow-hidden ">
+                                                        <table class="mb-4   bg-[#E8F6ED] py-4 rounded-l-2xl">
+                                                            <tr>
+                                                                <td class="w-full  flex justify-center items-center   ">
+                                                                    <div>比例P</div>
+                                                                </td>
+                                                                <td class="w-full  flex justify-center items-center   ">
+                                                                    <div>积分I</div>
+                                                                </td>
+                                                                <td class="w-full  flex justify-center items-center   ">
+                                                                    <div>微分D</div>
+                                                                </td>
+                                                            
+                                                            </tr>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                                <!--原表格right-->
+                                                <div class="right-div ">
+                                                    <div class="right-div2 flex items-start self-start">
+                                                        <table class="flex items-start w-[10rem]  ">
+                                                            <div class="flex justify-center items-center">
+                                                                <tr class=" justify-center items-center">
+                                                                    <td class=" text-center border-t border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center rounded-tr-2xl">
+                                                                        <div class="flex justify-center items-center w-full">
+                                                                            <input id="name"
+                                                                                   class="block w-[80%]  border-b-2 m-2 text-center bg-inherit"
+                                                                                   name="name"
+                                                                                   placeholder="请填控制死区"
+                                                                                   required type="number"/>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td class=" text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
+                                                                        <div class="flex justify-center items-center w-full">
+                                                                            <input id="name"
+                                                                                   class="block w-[80%]  border-b-2 m-2 text-center bg-inherit"
+                                                                                   name="name"
+                                                                                   placeholder="请填溶氧上限"
+                                                                                   required type="number"/>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td class=" text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
+                                                                        <div class="flex justify-center items-center w-full">
+                                                                            <input id="name"
+                                                                                   class="block w-[80%]  border-b-2 m-2 text-center bg-inherit"
+                                                                                   name="name"
+                                                                                   placeholder="请填溶氧下限"
+                                                                                   required type="number"/>
+                                                                        </div>
+                                                                    </td>
+                                                                
+                                                                </tr>
+                                                            </div>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!--控制参数-控制-->
+                            <div class="relative  shadow w-[19rem] mt-6     m-2 rounded-2xl  justify-start items-center  border border-gray-300">
+                                <div class="w-full h-14  rounded-t-2xl flex   items-center text-lg font-medium">
+                                    <div class="ml-4">
+                                        控制参数-
+                                        <span class="font-bold underline-offset-2 decoration-solid underline ">死区</span>设置
+                                    </div>
+                                </div>
+                                <!--表格内容-->
+                                <div class="  w-[100%]   top-0    justify-center flex  ">
+                                    <div class="rounded-2xl   w-[calc(100%-1.5rem)] mb-5  justify-center flex     ">
+                                        <div class=" w-full h-[92%] ">
+                                            <div class=" box-border overflow-x-hidden w-full   flex">
+                                                <!--原表格left-->
+                                                <div class="float-left   shadow-radius border-radius  rounded-tl-2xl z-20">
+                                                    <div class="w-[8rem]  overflow-hidden ">
+                                                        <table class="mb-4   bg-[#E8F6ED] py-4 rounded-l-2xl">
+                                                            <tr>
+                                                                <td class="w-full  flex justify-center items-center   ">
+                                                                    <div>控制死区</div>
+                                                                </td>
+                                                                <td class="w-full  flex justify-center items-center   ">
+                                                                    <div>误差上限</div>
+                                                                </td>
+                                                                <td class="w-full  flex justify-center items-center   ">
+                                                                    <div>误差下限</div>
+                                                                </td>
+                                                            
+                                                            </tr>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                                <!--原表格right-->
+                                                <div class="right-div ">
+                                                    <div class="right-div2 flex items-start self-start">
+                                                        <table class="flex items-start w-[10rem]  ">
+                                                            <div class="flex justify-center items-center">
+                                                                <tr class=" justify-center items-center">
+                                                                    <td class=" text-center border-t border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center rounded-tr-2xl">
+                                                                        <div class="flex justify-center items-center w-full">
+                                                                            <input id="name"
+                                                                                   class="block w-[80%]  border-b-2 m-2 text-center bg-inherit"
+                                                                                   name="name"
+                                                                                   placeholder="请填控制死区"
+                                                                                   required type="number"/>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td class=" text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
+                                                                        <div class="flex justify-center items-center w-full">
+                                                                            <input id="name"
+                                                                                   class="block w-[80%]  border-b-2 m-2 text-center bg-inherit"
+                                                                                   name="name"
+                                                                                   placeholder="请填溶氧上限"
+                                                                                   required type="number"/>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td class=" text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
+                                                                        <div class="flex justify-center items-center w-full">
+                                                                            <input id="name"
+                                                                                   class="block w-[80%]  border-b-2 m-2 text-center bg-inherit"
+                                                                                   name="name"
+                                                                                   placeholder="请填溶氧下限"
+                                                                                   required type="number"/>
+                                                                        </div>
+                                                                    </td>
+                                                                
+                                                                </tr>
+                                                            </div>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        
+                        </div>
+                        <!--右侧-->
+                        <div class="relative w-[20rem]   h-[calc(100%-1rem)]     flex-col flex justify-start items-center">
+                            <!--控制参数-->
+                            <div class="relative  shadow w-[19rem]      m-2 rounded-2xl  justify-start items-center  border border-gray-300">
+                                <div class="w-full h-14  rounded-t-2xl flex   items-center text-lg font-medium">
+                                    <div class="ml-4">
+                                        控制参数-
+                                        <span class="font-bold underline-offset-2 decoration-solid underline ">温控</span>设置
+                                    </div>
+                                </div>
+                                <!--表格内容-->
+                                <div class="  w-[100%]   top-0    justify-center flex  ">
+                                    <div class="rounded-2xl   w-[calc(100%-1.5rem)] mb-5  justify-center flex     ">
+                                        <div class=" w-full h-[92%] ">
+                                            <div class=" box-border overflow-x-hidden w-full   flex">
+                                                <!--原表格left-->
+                                                <div class="float-left   shadow-radius border-radius  rounded-tl-2xl z-20">
+                                                    <div class="w-[8rem]  overflow-hidden ">
+                                                        <table class="mb-4   bg-[#E8F6ED] py-4 rounded-l-2xl">
+                                                            <tr>
+                                                                <td class="w-full  flex justify-center items-center   ">
+                                                                    <div>冷水阀开关</div>
+                                                                </td>
+                                                                <td class="w-full  flex justify-center items-center   ">
+                                                                    <div>加热毯开关</div>
+                                                                </td>
+                                                                <td class="w-full  flex justify-center items-center   ">
+                                                                    <div>加热实时功率</div>
+                                                                </td>
+                                                            
+                                                            </tr>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                                <!--原表格right-->
+                                                <div class="right-div ">
+                                                    <div class="right-div2 flex items-start self-start">
+                                                        <table class="flex items-start w-[10rem]  ">
+                                                            <div class="flex justify-center items-center">
+                                                                <tr class=" justify-center items-center">
+                                                                    <td class=" text-center border-t border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center rounded-tr-2xl">
+                                                                        <Menu as="div"
+                                                                              class="dropdown relative inline-block">
+                                                                            <div>
+                                                                                <MenuButton
+                                                                                        class="inline-flex w-[7rem] justify-center gap-x-1.5">
+                                                                                    <summary
+                                                                                            v-if="DO_flag==0||DO_flag==null||DO_flag==undefined"
+                                                                                            class="m-1 btn w-[7rem] text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2] rounded-md">
+                                                                                        停止
+                                                                                    </summary>
+                                                                                    <summary v-if="DO_flag==1"
+                                                                                             class="m-1 btn w-[7rem] text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] rounded-md">
+                                                                                        开启
+                                                                                    </summary>
+                                                                                </MenuButton>
+                                                                            </div>
+                                                                            <MenuItems
+                                                                                    class="p-2 shadow-xl menu dropdown-content z-[1] bg-base-100 rounded-md w-[7rem] border absolute origin-top-left left-0 mt-2">
+                                                                                <MenuItem v-slot="{ active }">
+                                                                                    <button :class="[active ? 'bg-[#E0E0E0] text-[#000000]' : 'text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2]', 'block px-4 py-2 text-sm rounded']">
+                                                                                        停止
+                                                                                    </button>
+                                                                                </MenuItem>
+                                                                                <MenuItem v-slot="{ active }">
+                                                                                    <button :class="[active ? 'bg-[#BAE7C7] text-[#256637]' : 'text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] mt-2', 'block px-4 py-2 text-sm rounded mt-2']">
+                                                                                        开启
+                                                                                    </button>
+                                                                                </MenuItem>
+                                                                            </MenuItems>
+                                                                        </Menu>
 
-              </div>
+                                                                    </td>
+                                                                    <td class=" text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
+                                                                        <div class="flex justify-center items-center w-full">
+                                                                            <input id="name"
+                                                                                   class="block w-[80%]  border-b-2 m-2 text-center bg-inherit"
+                                                                                   name="name"
+                                                                                   placeholder="请填误差上限"
+                                                                                   required type="number"/>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td class=" text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
+                                                                        <div class="flex justify-center items-center w-full">
+                                                                            <input id="name"
+                                                                                   class="block w-[80%]  border-b-2 m-2 text-center bg-inherit"
+                                                                                   name="name"
+                                                                                   placeholder="请填误差下限"
+                                                                                   required type="number"/>
+                                                                        </div>
+                                                                    </td>
+                                                                
+                                                                </tr>
+                                                            </div>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        
+                        
+                        </div>
+                    </div>
+                
+                </div>
+            
             </div>
-
-          </div>
-
+        
+        
         </div>
-
-
-      </div>
-
-
+    
+    
     </div>
 
 
@@ -562,344 +464,65 @@
 <script lang='ts' setup>
 
 // ______________________导入模块_______________________
-import {computed, Ref, ref, watch, onUnmounted, onMounted, reactive} from 'vue'
+import {computed, onMounted, onUnmounted, reactive, ref, Ref, watch} from 'vue'
 import {useProcessPopupMangerState} from "@/store/ProcessPopupMangerState";
 import {sendData} from '@/api/index.js'
 import {useDeviceManage} from '@/store/DeviceManage'
 import {useAppGlobal} from '@/store/AppGlobal'
-import {Menu, MenuButton, MenuItem, MenuItems, Switch} from '@headlessui/vue'
+import {Menu, MenuButton, MenuItem, MenuItems} from '@headlessui/vue'
 
 const DeviceManage = useDeviceManage();
 const ProcessPopupMangerState = useProcessPopupMangerState()
 const AppGlobal = useAppGlobal();
-
-// -------------------localcache-------------------
-const localcache = ref({
-  setNum:{
-    temp_flag:null,
-    target_temp:null,
-  },
-  pidNum:{
-    Temp_KP:null,
-    Temp_KI:null,
-    Temp_KD:null,
-  },
-  alarmNum:{
-    alarm_h_limit:null,
-    alarm_l_limit:null,
-  },
-  controlNum:{
-    dead_zone:null,
-    error_h_limit:null,
-    error_l_limit:null,
-  },
-  temperatureControl:{
-    condensate_water_flag:null,
-    heated_blanket_flag:null,
-    heatpower:null,
-  }
-})
-const temp_flag = localcache.value.setNum.temp_flag;
-const condensate_water_flag = localcache.value.temperatureControl.condensate_water_flag;
-const heated_blanket_flag = localcache.value.temperatureControl.heated_blanket_flag;
-// ______________________表格数据处理_______________________
-watch(() => DeviceManage.deviceList, () => {
-    initTableData()
-}, {deep: true});
-
-interface InputVisible {
-    id: number;
-    control: boolean;
-    cache: number | null;
-}
-
-type DeviceInput = InputVisible[];
-
-const inputVisible = ref<DeviceInput[]>([]); // 用于追踪哪一行显示输入框
-
-// 读取表格数据
-const initTableData = () => {
-
-    if (!DeviceManage || !Array.isArray(DeviceManage.deviceList)) {
-        console.error("Error: DeviceManage.deviceList is not a valid array.");
-        return;
+// -------------数据缓冲-----------------
+const localCache = ref({
+    setNum:{
+        temp_flag:null,
+        target_temp:null,
+    },
+    pidNum:{
+        Temp_KP:null,
+        Temp_KI:null,
+        Temp_KD:null,
+    },
+    alarmNum:{
+        alarm_h_limit:null,
+        alarm_l_limit:null,
+    },
+    controlNum:{
+        dead_zone:null,
+        error_h_limit:null,
+        error_l_limit:null,
+    },
+    temperatureControl:{
+        condensate_water_flag:null,
+        heated_blanket_flag:null,
+        heatpower:null,
     }
-
-    let initheaderData: HeaderItem[] = [
-        {title: '凑数的', props: 'name'}
-    ];
-
-    DeviceManage.deviceList.forEach(device => {
-
-        if (AppGlobal.pageChance != device.id) {
-
-            return;
-        }
-        if (typeof device.name !== 'string' || typeof device.id !== 'number') {
-            console.error("Error: Invalid device entry found in DeviceManage.deviceList.");
-            return;
-        }
-
-        initheaderData.push({title: device.name, props: 'F1'});
-        inputVisible.value.push([])
-
-    });
-
-    headerData.length = 0;  // 清空原始数据
-    initheaderData.forEach(item => headerData.push(item));  // 添加新的数据
-
-    const deviceProperties = [
-        {name: '状态', prop: 'temp_flag'}, // 0: 停止, 1: 自动, 2: 顺控
-        {name: '冷水阀开关', prop: 'condensate_water_flag'},
-        {name: '加热毯开关', prop: 'heated_blanket_flag'},
-        {name: '加热毯功率', prop: 'heatpower'},
-        {name: '测量值', prop: 'timing_temp'},
-        {name: '设定值', prop: 'target_temp'},
-        {name: '比例P', prop: 'Temp_KP'},
-        {name: '积分I', prop: 'Temp_KI'},
-        {name: '微分D', prop: 'Temp_KD'},
-        {name: '报警上限', prop: 'alarm_h_limit'}, //报警上限
-        {name: '报警下限', prop: 'alarm_l_limit'}  //报警下限
-    ]
-
-
-    let resultItems: any[] = []; // 声明结果数组
-    deviceProperties.map((deviceProp, deviceIndex) => {
-        let tableItem = {
-            name: deviceProp.name,
-            prop: deviceProp.prop
-        };
-        initheaderData.forEach((header, index) => {
-
-            if (index === 0) {
-                return;
-            }
-            index--;
-            if (AppGlobal.pageChance === index) {
-                inputVisible.value[index].push({id: deviceIndex, control: false, cache: null});
-
-
-            }
-
-
-            if (DeviceManage.deviceList[index].nowData == null && deviceProp.prop != "alarm_h_limit" && deviceProp.prop != "alarm_l_limit") {
-                tableItem[header.props] = 0;
-
-                return;
-            }
-
-            // 报警上限
-            if (deviceProp.prop == "alarm_h_limit") {
-                if (DeviceManage.deviceList[index]?.deviceSet?.doMaxWarn !== null) {
-                    const doMaxWarn = DeviceManage.deviceList[index]?.deviceSet?.doMaxWarn ?? 0;
-                    tableItem[header.props] = doMaxWarn;
-                } else {
-                    tableItem[header.props] = 0;
-                }
-            }
-            // 报警下限
-            else if (deviceProp.prop == "alarm_l_limit") {
-                if (DeviceManage.deviceList[index]?.deviceSet?.doMinWarn !== null) {
-                    const doMinWarn = DeviceManage.deviceList[index]?.deviceSet?.doMinWarn ?? 0;
-                    tableItem[header.props] = doMinWarn;
-                } else {
-                    tableItem[header.props] = 0;
-                }
-            } else {
-                try {
-                    const value = DeviceManage.deviceList[index].nowData![deviceProp.prop];
-                    if (typeof value === 'number' && !Number.isInteger(value)) {
-                        tableItem[header.props] = parseFloat(value.toFixed(2));
-                    } else {
-                        tableItem[header.props] = value;
-                    }
-                } catch (e) {
-                    console.error(`Error: The property ${deviceProp.prop} is missing or null for device at index ${index}.`);
-                    return;
-                }
-            }
-        });
-
-        resultItems.push(tableItem);
-        return tableItem;
-    });
-
-    tableData.length = 0;  // 清空原始数据
-    resultItems.forEach(item => tableData.push(item));  // 添加新的数据
-
-}
-const keyupEnterInput = (deviceID: number, setIndex: number) => {
-
-    inputVisible.value[deviceID][setIndex].control = false;
-
-    if (setIndex == 0 && inputVisible.value[deviceID][setIndex].cache != null) {
-        if (DeviceManage.deviceList[deviceID] && DeviceManage.deviceList[deviceID]!.nowData) {
-            DeviceManage.deviceList[deviceID]!.nowData!.target_temp = inputVisible.value[deviceID][setIndex].cache || 0;
-        }
-    }
-    if (setIndex == 1 && inputVisible.value[deviceID][setIndex].cache != null) {
-        if (DeviceManage.deviceList[deviceID] && DeviceManage.deviceList[deviceID]!.nowData) {
-            DeviceManage.deviceList[deviceID]!.nowData!.Temp_KP = inputVisible.value[deviceID][setIndex].cache || 0;
-        }
-    }
-    if (setIndex == 2 && inputVisible.value[deviceID][setIndex].cache != null) {
-        if (DeviceManage.deviceList[deviceID] && DeviceManage.deviceList[deviceID]!.nowData) {
-            DeviceManage.deviceList[deviceID]!.nowData!.Temp_KI = inputVisible.value[deviceID][setIndex].cache || 0;
-        }
-    }
-    if (setIndex == 3 && inputVisible.value[deviceID][setIndex].cache != null) {
-        if (DeviceManage.deviceList[deviceID] && DeviceManage.deviceList[deviceID]!.nowData) {
-            DeviceManage.deviceList[deviceID]!.nowData!.Temp_KD = inputVisible.value[deviceID][setIndex].cache || 0;
-        }
-    }
-    if (setIndex == 4 && inputVisible.value[deviceID][setIndex].cache != null) {
-        if (DeviceManage.deviceList[deviceID] && DeviceManage.deviceList[deviceID]!.deviceSet) {
-            DeviceManage.deviceList[deviceID]!.deviceSet!.tempMaxWarn = inputVisible.value[deviceID][setIndex].cache || 0;
-        }
-    }
-    if (setIndex == 5 && inputVisible.value[deviceID][setIndex].cache != null) {
-        if (DeviceManage.deviceList[deviceID] && DeviceManage.deviceList[deviceID]!.deviceSet) {
-            DeviceManage.deviceList[deviceID]!.deviceSet!.tempMinWarn = inputVisible.value[deviceID][setIndex].cache || 0;
-        }
-    }
-    if (setIndex >= 0 && setIndex <= 5) {
-        controlSend('all', deviceID, 0)
-    }
-
-
-}
-
-
-const placeholder = ref([
-    "请输入设定值",
-    "请输入温度P",
-    "请输入温度I",
-    "请输入温度D",
-    "请输报警上限",
-    "请输报警下限",
-
-
-])
-
-const firstCol = computed(() => props.tableData.map(p => {
-    const pArr = Object.keys(p);
-    return p[pArr[0]]
-}))
-
-
-const firstRow = computed(() => {
-    const rows: string[] = [];
-    props.headerData.forEach((f, i) => {
-        if (i !== 0) {
-            rows.push(f.title)
-        }
-    })
-    return rows;
+    
 })
 
 
-const tableBodyRows = computed(() => {
-    let arr: { [key: string]: any }[] = [];
-    props.tableData.forEach((f, index) => {
 
-        let res: { [key: string]: any } = {};
-        for (const key in f) {
-            if (Object.prototype.hasOwnProperty.call(f, key)) {
-                if (key !== props.headerData[0].title) {
-                    res[key] = f[key]
-                }
-            }
-        }
-        arr.push(res)
-    })
-    return arr
-})
-
-const tableBodyCols = computed(() => {
-    let arr: { title: string, props: string }[] = []
-    props.headerData.forEach((f, i) => {
-        if (i !== 0) {
-            arr.push(f)
-        }
-    })
-    return arr;
-})
 
 
 // ______________________表格数据变量_______________________
 
-const headerData: HeaderItem[] = reactive([
-    {title: '姓名', props: 'name'},
-
-
-    // 你可以按需增加其他列
-]);
-
-
-const tableData: any = reactive([
-    {name: '测量值', F1: 25, F2: 26, F3: 27, F4: 28, F5: 29, F6: 30, F7: 31, F8: 32},
-    {name: '设定值', F1: 28, F2: 29, F3: 30, F4: 31, F5: 32, F6: 33, F7: 34, F8: 35},
-    {name: '控制周期', F1: 30, F2: 31, F3: 32, F4: 33, F5: 34, F6: 35, F7: 36, F8: 37},
-    {name: '周期开度', F1: 30, F2: 31, F3: 32, F4: 33, F5: 34, F6: 35, F7: 36, F8: 37},
-    {name: '比例P', F1: 25, F2: 26, F3: 27, F4: 28, F5: 29, F6: 30, F7: 31, F8: 32},
-    {name: '积分I', F1: 28, F2: 29, F3: 30, F4: 31, F5: 32, F6: 33, F7: 34, F8: 35},
-    {name: '微分D', F1: 30, F2: 31, F3: 32, F4: 33, F5: 34, F6: 35, F7: 36, F8: 37},
-    {name: '控制死区', F1: 28, F2: 29, F3: 30, F4: 31, F5: 32, F6: 33, F7: 34, F8: 35},
-    {name: '报警上限', F1: 25, F2: 26, F3: 27, F4: 28, F5: 29, F6: 30, F7: 31, F8: 32},
-    {name: '报警下限', F1: 25, F2: 26, F3: 27, F4: 28, F5: 29, F6: 30, F7: 31, F8: 32},
-]);
-
 const controlSend = ((name, index, content) => {
-    if (name == 'all') {
-        const data = {
-            target_temp: Number(DeviceManage.deviceList[index]!.nowData!.target_temp),
-            Temp_KP: Number(DeviceManage.deviceList[index]!.nowData!.Temp_KP),
-            Temp_KI: Number(DeviceManage.deviceList[index]!.nowData!.Temp_KI),
-            Temp_KD: Number(DeviceManage.deviceList[index]!.nowData!.Temp_KD),
-        }
-        sendData(index, data);
-    }
-    if (name == 'temp_flag') {
-        const data = {
-            temp_flag: content,
-
-        }
-        sendData(index, data);
-    }
-    if (name=='heated_blanket_flag'){
-        const data = {
-            heated_blanket_flag: content,
-
-        }
-        sendData(index, data);
-    }
-    if (name=='condensate_water_flag'){
-        const data = {
-            condensate_water_flag: content,
-
-        }
-        sendData(index, data);
-    }
-})
-const props = {
-    headerData: headerData,
-    tableData: tableData
-};
-
+    // 使用方括号来设置动态属性名
+    const data = {
+        [name]: content
+    };
+    sendData(index, data);
+    
+});
 
 // ______________________功能函数_______________________
 const closePop = () => {
     ProcessPopupMangerState.updateIsShowPop(false)
 }
 
-const tableContainer: Ref<HTMLDivElement | null> = ref(null);
-const firstRowLayer: Ref<HTMLDivElement | null> = ref(null);
-const firstColLayer: Ref<HTMLDivElement | null> = ref(null);
 
-const tableScroll = () => {
-    firstRowLayer.value!.scrollLeft = tableContainer.value!.scrollLeft;
-    firstColLayer.value!.scrollTop = tableContainer.value!.scrollTop;
-}
 
 
 // 当按下键盘时的处理函数，ESC关闭弹窗
@@ -921,7 +544,7 @@ onMounted(() => {
 //   setInterval(() => {
 //     // sendData(0)
 //   }, 10000)
-    initTableData()
+//     initTableData()
 });
 
 // 当组件卸载时移除事件监听器
@@ -936,20 +559,6 @@ interface HeaderItem {
     props: string;
 }
 
-
-const name_translation = {
-    '运行状态': 'None',
-    '运行时间': 'None',
-    '发酵批号': 'None',
-    '温度': 'Temperature',
-    'PH值': 'PHValue',
-    '溶氧': 'DissolvedOxygen',
-    '转速': 'RPM',
-    '酸泵': 'AcidPump',
-    '碱泵': 'LyePump',
-    '补料泵': 'FeedPump',
-    '消泡剂泵': 'DefoamerPump'
-}
 
 </script>
 <style lang="scss" scoped>
