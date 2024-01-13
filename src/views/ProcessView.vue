@@ -2,6 +2,7 @@
     
     
     <div class="h-[calc(100%-1.5rem)] w-[calc(100%-1.5rem)]  ">
+        
         <transition name="fade">
             <div
                     v-show="ProcessPopupMangerState.isShowPop"
@@ -19,16 +20,14 @@
         </div>
         <!--    内容-->
         <div class=" rounded-2xl bg-white w-[100%] h-[92%]  bottom-0  shadow  flex  ">
-            <div class="rounded-2xl  h-[calc(100%-1.5rem)] w-[calc(100%-1.5rem)]  items-center justify-center flex     ">
+            <div class="rounded-2xl  h-[calc(100%)] w-[calc(100%)]  items-center justify-center flex     ">
                 <!--左侧控制栏-->
                 <div class="h-full w-[20%] overflow-hidden p-1 flex-col gap-2.5 relative flex  items-end">
                     <!--溶氧栏-->
-                    
-                    <div class="card min-w-[10vw]  bg-base-100 shadow-lg  border border-zinc-100 cursor-pointer top-[6vh] absolute "
-                            >
-                        <div class="w-full h-[2.5rem] mb-2 font-black  bg-[#FAD6DA] flex items-center justify-center rounded-t-2xl "
+                    <div class="card min-w-[10vw]  bg-base-100 shadow-lg  border border-zinc-100  top-[2vh] absolute "
+                    >
+                        <div class="w-full h-[2.5rem] mb-2 font-black  bg-[#FAD6DA] flex items-center justify-center cursor-pointer rounded-t-2xl "
                              @click="popProcessManager('溶氧')">
-                            
                             <div class="w-full text-center relative">
                                 溶氧
                             </div>
@@ -36,71 +35,52 @@
                         </div>
                         <div class="mx-6 my-3  mt-0 flex-col  ">
                             <div class="w-full   flex h-[3vh] flex items-center justify-start mt-2  gap-1 ">
-                                <div class=" min-w-[5rem]   text-left relative ">设定值:</div>
-                                <span class="min-w-[5rem]   flex text-center items-center justify-center relative">
-<!--                  {{ DataManger.DoData.SetData }}-->
+                                <div class=" w-[5rem]   text-left relative ">设定值:</div>
+                                <span class="w-[5rem]   flex text-center items-center justify-center relative">
                                   <input v-model="DataManger.DoData.SetData"
-                                         class=" w-[80px] border-b-2 text-center pl-5"
-                                         type="number"
-                                         @blur="sendData(AppGlobal.pageChance,DataManger.DoData)"
-                                         min="0" max="100" step="1"
-
-                                         >{{'%'}}
-
-                </span>
-                            </div>
-
-                            <div class="w-full  flex h-[3vh] flex items-center justify-start mt-2 gap-1 ">
-                                <div class=" min-w-[5rem] mr-1 text-left relative">测量值:</div>
-                                <span class="min-w-[5rem]  flex text-center items-center justify-center relative">
-                  {{ DataManger.DoData.MeasureData }}
-                </span>
+                                         class=" w-[4rem] border-b-2 text-right "
+                                         max="100"
+                                         min="0"
+                                         step="0.01" type="number" @blur="sendData(AppGlobal.pageChance,DataManger.DoData)"
+                                  >{{ '%' }}
+                                </span>
                             </div>
                             
-<!--                            <div class="w-full  flex h-[3vh] flex items-center justify-start gap-2 ">-->
-<!--                                <div class=" min-w-[7rem] mr-1 text-left relative">溶氧上限:</div>-->
-<!--                                <span class="min-w-[2rem] flex text-center items-center justify-center relative">-->
-<!--                {{ DataManger.DoData.DOUpperLimit }}-->
-<!--                </span>-->
-<!--                            </div>-->
-<!--                            <div class="w-full  flex h-[3vh] flex items-center justify-start gap-2 ">-->
-<!--                                <div class=" min-w-[7rem] mr-1 text-left relative">溶氧下限:</div>-->
-<!--                                <span class="min-w-[2rem] flex text-center items-center justify-center relative">-->
-<!--                {{ DataManger.DoData.DOLowerLimit }}-->
-<!--                </span>-->
-<!--                            -->
-<!--                            </div>-->
+                            <div class="w-full  flex h-[3vh] flex items-center justify-start mt-2 gap-1 ">
+                                <div class=" w-[5rem] mr-1 text-left relative">测量值:</div>
+                                <span class="w-[5rem]  flex text-center items-center justify-center relative">
+                                  {{ DataManger.DoData.MeasureData }}
+                                </span>
+                            </div>
+                            
+                            <!--                            </div>-->
                             <div class="w-full  flex h-[3vh] flex items-center justify-start mt-2 gap-2 ">
-                                <div class=" min-w-[5rem]   text-left relative">关联转速:</div>
-                                <span class="min-w-[5rem]  flex text-center items-center justify-center relative">
-<!--                                  <div class="h-full flex justify-center items-center  ">-->
+                                <div class=" w-[5rem]   text-left relative">关联转速:</div>
+                                <span class="w-[5rem]  flex text-center items-center justify-center relative">
                                     <Menu as="div" class="dropdown relative inline-block">
                                       <div>
                                         <MenuButton class="inline-flex w-[5rem] justify-center gap-x-1.5 scale-75">
-                                          <summary @click="switchFlag('DoData','oxy_flag')" v-if="DataManger.DoData.oxy_flag==0||DataManger.DoData.oxy_flag==null||DataManger.DoData.oxy_flag==undefined" class="m-1 btn w-[7rem] text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2] rounded-box">关闭</summary>
-                                          <summary @click="switchFlag('DoData','oxy_flag')" v-if="DataManger.DoData.oxy_flag==1" class="m-1 btn w-[7rem] text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] rounded-[1rem]">关联</summary>
+                                          <summary
+                                                  v-if="DataManger.DoData.oxy_flag==0||DataManger.DoData.oxy_flag==null||DataManger.DoData.oxy_flag==undefined"
+                                                  class="m-1 btn btn-sm w-[7rem] text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2] rounded-md"
+                                                  @click="switchFlag('DoData','oxy_flag')">关闭</summary>
+                                          <summary v-if="DataManger.DoData.oxy_flag==1"
+                                                   class="m-1 btn btn-sm w-[7rem] text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] rounded-md"
+                                                   @click="switchFlag('DoData','oxy_flag')">关联</summary>
                                         </MenuButton>
                                       </div>
-<!--                                      <MenuItems class="p-2 shadow-xl menu dropdown-content z-[1] bg-base-100 rounded-box w-[7rem] border absolute origin-top-left left-0 mt-2">-->
-<!--                                        <MenuItem v-slot="{ active }">-->
-<!--                                          <button  :class="[active ? 'bg-[#E0E0E0] text-[#000000]' : 'text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2]', 'block px-4 py-2 text-sm rounded-[0.5rem]']">关联</button>-->
-<!--                                        </MenuItem>-->
-<!--                                        <MenuItem v-slot="{ active }">-->
-<!--                                          <button  :class="[active ? 'bg-[#BAE7C7] text-[#256637]' : 'text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] mt-2', 'block px-4 py-2 text-sm rounded mt-2']">关闭</button>-->
-<!--                                        </MenuItem>-->
-<!--                                      </MenuItems>-->
+                               
                                     </Menu>
-<!--                                  </div>-->
                                 </span>
                             </div>
                         
                         </div>
                     </div>
                     <!--转速栏-->
-                    <div class="card min-w-[10vw] bg-base-100 shadow-lg  border cursor-pointer border-zinc-100  top-[25vh] absolute  "
-                         >
-                        <div @click="popProcessManager('转速')"
-                                class="w-full h-[2.5rem]   mb-2 font-black  bg-[#E1EEFF] flex items-center justify-center rounded-t-2xl ">
+                    <div class="card min-w-[10vw] bg-base-100 shadow-lg  border  border-zinc-100  top-[22vh] absolute  "
+                    >
+                        <div class="w-full h-[2.5rem]   mb-2 font-black  bg-[#E1EEFF] flex items-center justify-center cursor-pointer rounded-t-2xl "
+                             @click="popProcessManager('转速')">
                             <div class="w-full text-center relative ">
                                 转速
                             </div>
@@ -108,47 +88,50 @@
                         </div>
                         <div class="mx-6 my-3  mt-0 flex-col  ">
                             <div class="w-full  flex h-[3vh] flex items-center justify-center mt-2 gap-2 ">
-                                <div class=" min-w-[5rem] ml-4 text-left relative ">设定转速:</div>
-                                <span class="min-w-[5rem] flex text-center items-center justify-center relative">
-<!--                                  {{ DataManger.RPMData.SetSpeed }}-->
-                                  <input v-model="DataManger.RPMData.SetSpeed"
-                                         id="numberInput"
-                                         class=" w-[80px]  border-b-2 text-center pl-7"
-                                         type="number"
+                                <div class=" w-[5rem] text-left relative ">设定转速:</div>
+                                <span class="w-[5rem] flex text-center items-center justify-center relative">
+                                  <input id="numberInput"
+                                         v-model="DataManger.RPMData.SetSpeed"
+                                         class=" w-[4rem]  border-b-2 text-center "
+                                         max="1600"
+                                         min="0"
+                                         step="1" type="number"
                                          @blur="sendData(AppGlobal.pageChance,DataManger.RPMData)"
-                                         min="0" max="1600" step="1"
-                                  >{{'rpm'}}
+                                  >{{ 'rpm' }}
                                 </span>
                             </div>
                             <div class="w-full  flex h-[3vh] flex items-center justify-center mt-2 gap-2 ">
-                                <div class=" min-w-[5rem] mr-1 text-left relative">实时转速:</div>
-                                <span class="min-w-[5rem] flex text-center items-center justify-center relative">
+                                <div class=" w-[5rem] mr-1 text-left relative">实时转速:</div>
+                                <span class="w-[5rem] flex text-center items-center justify-center relative">
                   {{ DataManger.RPMData.NowSpeed }}
                 </span>
                             </div>
                             <div class="w-full  flex h-[3vh] flex items-center justify-center mt-2 gap-2 ">
-                                <div class=" min-w-[5rem] mr-1 text-left relative ">电机开关:</div>
-                                <span class="min-w-[5rem] flex text-center items-center justify-center relative">
+                                <div class=" w-[5rem] mr-1 text-left relative ">电机开关:</div>
+                                <span class="w-[5rem] flex text-center items-center justify-center relative">
                                 <Menu as="div" class="dropdown relative inline-block">
                                       <div>
                                         <MenuButton class="inline-flex w-[5rem] justify-center gap-x-1.5 scale-75">
-                                          <summary @click="switchflag1" v-if="testFlag1==0||testFlag1==null||testFlag1==undefined" class="m-1 btn w-[7rem] text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2] rounded-box">关闭</summary>
-                                          <summary @click="switchflag1" v-if="testFlag1==1" class="m-1 btn w-[7rem] text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] rounded-[1rem]">关联</summary>
+                                          <summary v-if="testFlag1==0||testFlag1==null||testFlag1==undefined"
+                                                   class="m-1 btn btn-sm w-[7rem] text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2] rounded-md"
+                                                   @click="switchflag1">停止</summary>
+                                          <summary v-if="testFlag1==1"
+                                                   class="m-1 btn btn-sm w-[7rem] text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] rounded-md"
+                                                   @click="switchflag1">启动</summary>
                                         </MenuButton>
                                       </div>
                                 </Menu>
                 </span>
                             </div>
-
+                        
                         
                         </div>
                     </div>
                     <!--PH-->
-                    <div
-                            class="card min-w-[10vw] bg-base-100 shadow-lg  border border-zinc-100  cursor-pointer top-[45vh] absolute "
-                            >
-                        <div @click="popProcessManager('PH值')"
-                                class="w-full h-[2.5rem]   mb-2 font-black  bg-[#FCF8DA] flex items-center justify-center rounded-t-2xl ">
+                    <div class="card min-w-[10vw] bg-base-100 shadow-lg  border border-zinc-100   top-[42vh] absolute "
+                    >
+                        <div class="w-full h-[2.5rem]   mb-2 font-black  bg-[#FCF8DA] flex items-center justify-center cursor-pointer rounded-t-2xl "
+                             @click="popProcessManager('PH值')">
                             <div class="w-full text-center relative">
                                 PH值
                             </div>
@@ -156,105 +139,122 @@
                         </div>
                         <div class="mx-6 my-3  mt-0 flex-col  ">
                             <div class="w-full  flex h-[3vh] flex items-center justify-center mt-2 gap-2 ">
-                                <div class=" min-w-[5rem] mr-1 text-left relative ">设定值:</div>
-                                <span class="min-w-[5rem] flex text-center items-center justify-center relative">
+                                <div class=" w-[5rem] mr-1 text-left relative ">设定值:</div>
+                                <span class="w-[5rem] flex text-center items-center justify-center relative">
 <!--                  {{ DataManger.PHData.SetData }}-->
-                                  <input v-model="DataManger.PHData.SetData"
-                                         id="numberInput"
-                                         class=" w-[80px]  border-b-2 text-center pl-4"
-                                         type="number"
+                                  <input id="numberInput"
+                                         v-model="DataManger.PHData.SetData"
+                                         class=" w-[4rem]  border-b-2 text-center pl-4"
+                                         max="14.00"
+                                         min="0.00"
+                                         step="0.01" type="number"
                                          @blur="sendData(AppGlobal.pageChance,DataManger.PHData)"
-                                         min="0.00" max="14.00" step="0.01"
                                   >
                 </span>
                             </div>
                             <div class="w-full  flex h-[3vh] flex items-center justify-center mt-2 gap-2 ">
-                                <div class=" min-w-[5rem] mr-1 text-left relative">测量值:</div>
-                                <span class="min-w-[5rem] flex text-center items-center justify-center relative">
+                                <div class=" w-[5rem] mr-1 text-left relative">测量值:</div>
+                                <span class="w-[5rem] flex text-center items-center justify-center relative">
                    {{ DataManger.PHData.MeasureData }}
                 </span>
                             </div>
-                          <div class="w-full  flex h-[3vh] flex items-center justify-center mt-2 gap-2 ">
-                            <div class=" min-w-[5rem] mr-1 text-left relative">控制状态:</div>
-                            <span class="min-w-[5rem] flex text-center items-center justify-center relative">
+                            <div class="w-full  flex h-[3vh] flex items-center justify-center mt-2 gap-2 ">
+                                <div class=" w-[5rem] mr-1 text-left relative">控制状态:</div>
+                                <span class="w-[5rem] flex text-center items-center justify-center relative">
                                   <Menu as="div" class="dropdown relative inline-block">
                                       <div>
                                         <MenuButton class="inline-flex w-[5rem] justify-center gap-x-1.5 scale-75">
-                                          <summary @click="switchFlag('PHData','PH_flag')" v-if="DataManger.PHData.PH_flag==0||DataManger.PHData.PH_flag==null||DataManger.PHData.PH_flag==undefined" class="m-1 btn w-[7rem] text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2] rounded-box">关闭</summary>
-                                          <summary @click="switchFlag('PHData','PH_flag')" v-if="DataManger.PHData.PH_flag==1" class="m-1 btn w-[7rem] text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] rounded-[1rem]">关联</summary>
+                                          <summary
+                                                  v-if="DataManger.PHData.PH_flag==0||DataManger.PHData.PH_flag==null||DataManger.PHData.PH_flag==undefined"
+                                                  class="m-1 btn btn-sm w-[7rem] text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2] rounded-md"
+                                                  @click="switchFlag('PHData','PH_flag')">手动</summary>
+                                          <summary v-if="DataManger.PHData.PH_flag==1"
+                                                   class="m-1 btn btn-sm w-[7rem] text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] rounded-md"
+                                                   @click="switchFlag('PHData','PH_flag')">自动</summary>
                                         </MenuButton>
                                       </div>
                                   </Menu>
                 </span>
-                          </div>
+                            </div>
                         
                         </div>
                     </div>
                     <!--温度-->
-                    <div class="card min-w-[10vw] bg-base-100 shadow-lg  border border-zinc-100 cursor-pointer top-[65vh] absolute ">
-                        <div @click="popProcessManager('温度')"
-                             class="w-full h-[2.5rem] mb-2 font-black  bg-[#D9F0E4] flex items-center justify-center rounded-t-2xl ">
-<!--                          <div class=" h-full  w-4 flex justify-center items-center rounded mx-1 ">-->
-                            <div class="w-4 h-4 left-20  rounded-full relative" :class="[DataManger.TemperatureData.water_flag? 'bg-blue-600' : 'bg-red-600']"></div>
-<!--                          </div>-->
-                          <div class="w-full text-center relative">
+                    <div class="card min-w-[10vw] bg-base-100 shadow-lg  border border-zinc-100  top-[62vh] absolute ">
+                        <div class="w-full h-[2.5rem] mb-2 font-black  bg-[#D9F0E4] flex items-center justify-center cursor-pointer rounded-t-2xl "
+                             @click="popProcessManager('温度')">
+                            <!--                          <div class=" h-full  w-4 flex justify-center items-center rounded mx-1 ">-->
+                            <div :class="[DataManger.TemperatureData.water_flag? 'bg-blue-600' : 'bg-red-600']"
+                                 class="w-4 h-4 left-20  rounded-full relative"></div>
+                            <!--                          </div>-->
+                            <div class="w-full text-center relative">
                                 温度
-                          </div>
+                            </div>
                         
                         </div>
-                        <div class="mx-6 my-3  mt-0 flex-col  ">
+                        <div class="mx-6 my-2  mt-0 flex-col  ">
                             <div class="w-full  flex h-[3vh] flex items-center justify-center mt-2 gap-2 ">
-                                <div class=" min-w-[5rem] mr-1 text-left relative ">设定值:</div>
-                                <span class="min-w-[5rem]  flex text-center items-center justify-center relative">
-<!--                 {{ DataManger.TemperatureData.SetData }}-->
-                                  <input v-model="DataManger.TemperatureData.SetData"
-                                         id="numberInput"
+                                <div class=" w-[5rem] mr-1 text-left relative ">设定值:</div>
+                                <span class="w-[5rem]  flex text-center items-center justify-center relative">
+                                  <input id="numberInput"
+                                         v-model="DataManger.TemperatureData.SetData"
                                          class=" w-[80px]  border-b-2 text-center pl-8"
-                                         type="number"
+                                         max="150"
+                                         min="0"
+                                         step="0.1" type="number"
                                          @blur="sendData(AppGlobal.pageChance,DataManger.TemperatureData)"
-                                         min="0" max="150" step="0.1"
                                   >
-                                  {{'℃'}}
+                                  {{ '℃' }}
                 </span>
                             </div>
                             <div class="w-full  flex h-[3vh] flex items-center justify-center mt-2 gap-3  ">
-                                <div class=" min-w-[5rem] mr-1 text-left relative">测量值:</div>
-                                <span class="min-w-[5rem] flex text-center items-center justify-center relative">
+                                <div class=" w-[5rem] mr-1 text-left relative">测量值:</div>
+                                <span class="w-[5rem] flex text-center items-center justify-center relative">
                   {{ DataManger.TemperatureData.MeasureData }}
                 </span>
                             </div>
-                          <div class="w-full  flex h-[3vh] flex items-center justify-center mt-2 gap-2 ">
-                            <div class=" min-w-[5rem] mr-1 text-left relative">控制状态:</div>
-                            <span class="min-w-[5rem] flex text-center items-center justify-center relative">
+                            <div class="w-full  flex h-[3vh] flex items-center justify-center mt-2 gap-2 ">
+                                <div class=" w-[5rem] mr-1 text-left relative">控制状态:</div>
+                                <span class="w-[5rem] flex text-center items-center justify-center relative">
                                   <Menu as="div" class="dropdown relative inline-block">
                                       <div>
                                         <MenuButton class="inline-flex w-[5rem] justify-center gap-x-1.5 scale-75">
-                                          <summary @click="switchFlag('TemperatureData','temp_flag')" v-if="DataManger.TemperatureData.temp_flag==0||DataManger.TemperatureData.temp_flag==null||DataManger.TemperatureData.temp_flag==undefined" class="m-1 btn w-[7rem] text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2] rounded-box">手动</summary>
-                                          <summary @click="switchFlag('TemperatureData','temp_flag')" v-if="DataManger.TemperatureData.temp_flag==1" class="m-1 btn w-[7rem] text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] rounded-[1rem]">自动</summary>
+                                          <summary
+                                                  v-if="DataManger.TemperatureData.temp_flag==0||DataManger.TemperatureData.temp_flag==null||DataManger.TemperatureData.temp_flag==undefined"
+                                                  class="m-1 btn btn-sm w-[7rem] text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2] rounded-md"
+                                                  @click="switchFlag('TemperatureData','temp_flag')">手动</summary>
+                                          <summary v-if="DataManger.TemperatureData.temp_flag==1"
+                                                   class="m-1 btn btn-sm w-[7rem] text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] rounded-md"
+                                                   @click="switchFlag('TemperatureData','temp_flag')">自动</summary>
                                         </MenuButton>
                                       </div>
                                   </Menu>
                 </span>
-                          </div>
-                          <div class="w-full  flex h-[3vh] flex items-center justify-center mt-2 gap-2 ">
-                            <div class=" min-w-[5rem] mr-1 text-left relative">温控状态:</div>
-                            <span class="min-w-[5rem] flex text-center items-center justify-center relative">
+                            </div>
+                            <div class="w-full  flex h-[3vh] flex items-center justify-center mt-2 gap-2 ">
+                                <div class=" w-[5rem] mr-1 text-left relative">温控状态:</div>
+                                <span class="w-[5rem] flex text-center items-center justify-center relative">
                                   <Menu as="div" class="dropdown relative inline-block">
                                       <div>
                                         <MenuButton class="inline-flex w-[5rem] justify-center gap-x-1.5 scale-75">
-                                          <summary @click="switchFlag('TemperatureData','water_flag')" v-if="DataManger.TemperatureData.water_flag==0||DataManger.TemperatureData.water_flag==null||DataManger.TemperatureData.water_flag==undefined" class="m-1 btn w-[7rem] text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2] rounded-box">加热</summary>
-                                          <summary @click="switchFlag('TemperatureData','water_flag')" v-if="DataManger.TemperatureData.water_flag==1" class="m-1 btn w-[7rem] text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] rounded-[1rem]">冷却</summary>
+                                          <summary
+                                                  v-if="DataManger.TemperatureData.water_flag==0||DataManger.TemperatureData.water_flag==null||DataManger.TemperatureData.water_flag==undefined"
+                                                  class="m-1 btn btn-sm w-[7rem] text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2] rounded-md"
+                                                  @click="switchFlag('TemperatureData','water_flag')">加热</summary>
+                                          <summary v-if="DataManger.TemperatureData.water_flag==1"
+                                                   class="m-1 btn btn-sm w-[7rem] text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] rounded-md"
+                                                   @click="switchFlag('TemperatureData','water_flag')">冷却</summary>
                                         </MenuButton>
                                       </div>
                                   </Menu>
                 </span>
-                          </div>
+                            </div>
                         
                         </div>
                     </div>
                 </div>
                 <!--中间图片-->
-                <div class="h-full flex items-center justify-center">
+                <div class="h-full   flex items-center justify-center">
                     <div class="  top-[10vh] absolute ">
                         <div class="grid grid-flow-col gap-5 text-center auto-cols-max">
                             <div class="flex flex-col">
@@ -284,7 +284,8 @@
                         </div>
                     
                     </div>
-                    <img class="h-[60vh]" mode="heightFix" src="@/assets/image/JarImage.png">
+                    <img class="h-[70vh]" mode="heightFix" src="@/assets/image/JarImage.png">
+
                 </div>
                 <!--右侧控制栏-->
                 <div class="h-full w-[20%]  p-1 flex-col gap-2.5 relative flex  items-start">
@@ -470,8 +471,8 @@
                     </button>
                     <div class="w-[21rem] h-[4rem]  right-[11rem] relative  rounded-xl text-black flex    top-[68vh]">
                         <div :class="!isAll?'bg-white hover:bg-neutral-50':'bg-[#4EA67D] hover:bg-[#327E5B] text-white'"
-                             @click="popProcessManager('开始发酵')"
                              class=" swap w-[10rem] h-[4rem] mr-4 text-lg  relative  border-2 border-[#327E5B] rounded-xl text-black  flex items-center justify-center "
+                             @click="popProcessManager('开始发酵')"
                         >
                             {{ DeviceManage.deviceList[AppGlobal.pageChance].deviceNum }}
                         </div>
@@ -495,44 +496,47 @@
 
 </template>
 
-<script   setup >
+<script setup>
 import {PopupType, useProcessPopupMangerState} from "@/store/ProcessPopupMangerState";
-import {computed, onMounted, onUnmounted, reactive, ref, watch} from "vue";
+import {onMounted, onUnmounted, reactive, ref, watch} from "vue";
 import ProcessPopupManger from "@/components/ProcessPopupManger.vue";
 import {sendData} from "@/api";
 import {useAppGlobal} from "@/store/AppGlobal";
 import {useDeviceManage} from "@/store/DeviceManage";
 import {toNumber} from "xe-utils";
-import {Menu, MenuButton, MenuItem, MenuItems} from "@headlessui/vue";
-import swal from "sweetalert";
-
-
+import {Menu, MenuButton} from "@headlessui/vue";
+import Swal from 'sweetalert2';
 
 
 // -------------test----------------------
 const testFlag = ref(0);
-const switchflag = () =>{
-  testFlag.value = testFlag.value === 0 ? 1 : 0;
+const switchflag = () => {
+    testFlag.value = testFlag.value === 0 ? 1 : 0;
 }
 const testFlag1 = ref(0);
-const switchflag1 = () =>{
-  if(testFlag1.value === 1){
-  swal("确认关闭电机吗?", {
-    buttons: ["取消", "确认"],
-  })
-      .then((result) => {
-        if (result) {
-          // 用户点击了确认按钮 ("Aww yiss!")
-          testFlag1.value = testFlag1.value === 0 ? 1 : 0;
-        }
-      })}
-  else{
-    testFlag1.value = testFlag1.value === 0 ? 1 : 0;
-  }
+const switchflag1 = () => {
+    if (testFlag1.value === 1) {
+        Swal.fire({
+            icon: 'question', // 由于是确认操作，使用 'question' 图标
+            title: '确认关闭电机吗?', // 设置标题
+            showCancelButton: true, // 显示取消按钮
+            confirmButtonColor: '#3085d6', // 确认按钮颜色
+            cancelButtonColor: '#d33', // 取消按钮颜色
+            confirmButtonText: '确认', // 确认按钮文本
+            cancelButtonText: '取消' // 取消按钮文本
+        }).then((result) => {
+            if (result.value) {
+                // 用户点击了确认按钮
+                testFlag1.value = testFlag1.value === 0 ? 1 : 0;
+            }
+        });
+        
+    } else {
+        testFlag1.value = testFlag1.value === 0 ? 1 : 0;
+    }
+    
+    
 }
-
-
-
 
 
 // -------------test结束----------------------
@@ -585,11 +589,10 @@ const DataManger = reactive({
     
 })
 
-const switchFlag = (prop,flagName) =>{
-  DataManger[prop][flagName] = DataManger[prop][flagName] === 0 ? 1 : 0;
-  sendData(AppGlobal.pageChance,DataManger[prop]);
+const switchFlag = (prop, flagName) => {
+    DataManger[prop][flagName] = DataManger[prop][flagName] === 0 ? 1 : 0;
+    sendData(AppGlobal.pageChance, DataManger[prop]);
 }
-
 
 
 const isAll = ref(false);
@@ -714,15 +717,15 @@ const controlSend = ((name, index, content) => {
 })
 const ProcessPopupMangerState = useProcessPopupMangerState()
 // 弹窗管理
-const popProcessManager = (val,set) => {
+const popProcessManager = (val, set) => {
     if (val === '消泡泵') {
         stateManger.DefoamerPump = !stateManger.DefoamerPump;
     }
-    AppGlobal.FeedSet=set
+    AppGlobal.FeedSet = set
     console.log(name_translation[val], val, 'val______')
     ProcessPopupMangerState.updateIsShowPop(true)
     ProcessPopupMangerState.updatePopupContent(name_translation[val])
-
+    
 }
 watch(() => ProcessPopupMangerState.isShowPop, (newValue, oldValue) => {
     
@@ -811,7 +814,9 @@ onMounted(() => {
     initDataManger()
 
 // 使用 setInterval 定时器每秒更新一次时间差
-    setInterval(()=>{calculateTimeDifference()}, 1000);
+    setInterval(() => {
+        calculateTimeDifference()
+    }, 1000);
     
 })
 onUnmounted(() => {
@@ -822,7 +827,7 @@ onUnmounted(() => {
 
 // 创建一个函数来计算和显示时间差
 function calculateTimeDifference() {
-
+    
     const now = new Date();
     if (!DeviceManage.deviceList || !Array.isArray(DeviceManage.deviceList)) {
         console.error("DeviceManage.deviceList未定义或不是数组。");
@@ -831,10 +836,10 @@ function calculateTimeDifference() {
     if (DeviceManage.deviceList[AppGlobal.pageChance].state <= 1) {
         return
     }
-    if (DeviceManage.deviceList[AppGlobal.pageChance].recordFlag===false) {
+    if (DeviceManage.deviceList[AppGlobal.pageChance].recordFlag === false) {
         return
     }
-
+    
     const timeDiff = now - DeviceManage.deviceList[AppGlobal.pageChance].start_time;
     // 将时间差转换为天、小时、分钟和秒
     const days = Math.floor(timeDiff / (24 * 3600000));
@@ -859,36 +864,36 @@ const countdown = ref({
 });
 // --------------------
 watch(() => DataManger.DoData.SetData, (newValue) => {
-  if(newValue== ''){
-    DataManger.DoData.SetData=0
-  }
-  if (newValue > 150) {
-    DataManger.DoData.SetData = 150; // 将值设为100
-  }
+    if (newValue == '') {
+        DataManger.DoData.SetData = 0
+    }
+    if (newValue > 150) {
+        DataManger.DoData.SetData = 150; // 将值设为100
+    }
 });
 watch(() => DataManger.RPMData.SetSpeed, (newValue) => {
-  if(newValue===''){
-    DataManger.RPMData.SetSpeed=0
-  }
-  if (newValue > 1600) {
-    DataManger.RPMData.SetSpeed = 1600; // 将值设为100
-  }
+    if (newValue === '') {
+        DataManger.RPMData.SetSpeed = 0
+    }
+    if (newValue > 1600) {
+        DataManger.RPMData.SetSpeed = 1600; // 将值设为100
+    }
 });
 watch(() => DataManger.PHData.SetData, (newValue) => {
-  if(newValue===''){
-    DataManger.PHData.SetData=0
-  }
-  if (newValue > 14) {
-    DataManger.PHData.SetData = 14; // 将值设为100
-  }
+    if (newValue === '') {
+        DataManger.PHData.SetData = 0
+    }
+    if (newValue > 14) {
+        DataManger.PHData.SetData = 14; // 将值设为100
+    }
 });
 watch(() => DataManger.TemperatureData.SetData, (newValue) => {
-  if(newValue===''){
-    DataManger.TemperatureData.SetData=0
-  }
-  if (newValue > 150) {
-    DataManger.TemperatureData.SetData = 150; // 将值设为100
-  }
+    if (newValue === '') {
+        DataManger.TemperatureData.SetData = 0
+    }
+    if (newValue > 150) {
+        DataManger.TemperatureData.SetData = 150; // 将值设为100
+    }
 });
 </script>
 

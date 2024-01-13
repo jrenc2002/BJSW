@@ -389,7 +389,7 @@ function checkDevice(feedDeviceID) {
     // 设备是否开机
     const isPower = DeviceManage.deviceList[Math.floor(feedDeviceID / 2)].state <= 0;
     // 总开关是否开启
-    const isSwitch = FeedManger.supplementSystem[Math.floor(feedDeviceID / 2)][feedDeviceID % 2].totalSwitch;
+    const isSwitch = FeedManger.supplementSystem[Math.floor(feedDeviceID / 2)][feedDeviceID % 2]?.totalSwitch!==undefined?FeedManger.supplementSystem[Math.floor(feedDeviceID / 2)][feedDeviceID % 2].totalSwitch:false;
     return isPower && isSwitch;
 }
 

@@ -1,4 +1,5 @@
 <template>
+    <template v-if="localCache">
     <div class="h-[92vh] w-[82vw] overflow-auto relative transition-all duration-300 ease-in-out shadow bg-white rounded-2xl border-2  border-[#4EA67D] flex justify-start items-center">
         <!-- 关闭按钮 -->
         <div class="bg-[#F5F5F5] z-10 absolute right-3 top-3 top-0 w-7 h-7 justify-center items-center flex rounded-2xl hover:bg-[#F8F8F8] cursor-pointer"
@@ -14,13 +15,14 @@
             <!--开关选择-->
             <div class="relative  shadow w-[26rem]   h-[26rem] overflow-auto  m-2 rounded-2xl flex-col flex justify-start items-center">
                 <div class="w-full h-14 bg-[#DAF0E4] rounded-t-2xl flex justify-center items-center">补料总开关
-                    
+
                     <Switch v-model="localCache.totalSwitch"
                             :class="[localCache.totalSwitch ? 'bg-green-600' : 'bg-gray-200', 'relative inline-flex ml-2 h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2']">
                         <span class="sr-only">Use setting</span>
                         <span :class="[localCache.totalSwitch ? 'translate-x-5' : 'translate-x-0', 'pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out']"
                               aria-hidden="true"/>
                     </Switch>
+
                 </div>
                 <!--手动开关-->
                 <div :class="[localCache.supplementSwitch.type===1? 'border-[0.2rem]  border-[#4EA67D]':'border border-[#D6D6D6] hover:border-[#4EA67D] ']"
@@ -1290,7 +1292,7 @@
         </div>
     
     </div>
-
+    </template>
 
 </template>
 
@@ -1399,8 +1401,8 @@ const localCache = ref({
             speedUpperLimit: null, // 速度上限
             speedLowerLimit: null, // 速度下限
         },
-    },
-},);
+    }
+});
 
 
 
