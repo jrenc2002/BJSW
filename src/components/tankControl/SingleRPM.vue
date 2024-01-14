@@ -308,7 +308,7 @@
 
 </template>
 
-<script lang='ts' setup>
+<script lang='js' setup>
 
 // ______________________导入模块_______________________
 import {computed, onMounted, onUnmounted, reactive, ref, Ref, watch} from 'vue'
@@ -360,6 +360,27 @@ const deadZoneControl=()=>{
         }
     }
     
+}
+// 数据同步 监听device
+watch(() => DeviceManage.deviceList[AppGlobal.pageChance]?.nowData, (newVal, oldVal) => {
+    if (newVal !== oldVal) {
+        updateCache();
+    }
+})
+// updateCache函数
+const updateCache = () => {
+    localCache.value.setNum.target_motor_speed = DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.target_motor_speed
+    localCache.value.setNum.target_DO = DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.target_DO
+    
+    localCache.value.alarmNum.rpmMaxWarn = DeviceManage.deviceList[AppGlobal.pageChance]?.deviceSet?.rpmMaxWarn
+    localCache.value.alarmNum.rpmMinWarn = DeviceManage.deviceList[AppGlobal.pageChance]?.deviceSet?.rpmMinWarn
+    
+    localCache.value.controlNum.DO_dead_zone = DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.DO_area_upper_limit-DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.target_DO
+    localCache.value.controlNum.motor_speed_u_limit = DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.motor_speed_u_limit
+    localCache.value.controlNum.motor_speed_l_limit = DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.motor_speed_l_limit
+    localCache.value.controlNum.DO_upper_limit = DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.DO_upper_limit
+    localCache.value.controlNum.DO_lower_limit = DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.DO_lower_limit
+
 }
 
 
@@ -449,10 +470,6 @@ const rpmConfirm = (status) => {
 
 
 /* ______________________静态接口_____________________________ */
-interface HeaderItem {
-    title: string;
-    props: string;
-}
 
 
 </script>

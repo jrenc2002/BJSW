@@ -401,7 +401,7 @@
                                 
                                 <div :class="[stateManger.DefoamerPump?'text-white bg-[#E4DDA4]':'bg-white']"
                                      class=" h-full w-[4.3rem] shadow flex justify-center items-center rounded mx-1 cursor-pointer "
-                                     @click="popProcessManager('补料泵')">
+                                     @click="popProcessManager('消泡泵')">
                                     补料泵1
                                 </div>
                                 <div :class="[stateManger.Defoamer?'text-white bg-[#E4DDA4]':'bg-white']"
@@ -519,9 +519,8 @@ const rpmConfirm = (status) => {
                 confirmButtonColor: '#3085d6', // 确认按钮颜色
                 confirmButtonText: '确认', // 确认按钮文本
             })
-        }
-        else {
-            paramSend('target_motor_speed',AppGlobal.pageChance,localCache.RPMData.SetSpeed)
+        } else {
+            paramSend('target_motor_speed', AppGlobal.pageChance, localCache.RPMData.SetSpeed)
         }
         
     } else if (status === 'off') {
@@ -720,9 +719,7 @@ const ProcessPopupMangerState = useProcessPopupMangerState()
 
 // 弹窗管理
 const popProcessManager = (val, set) => {
-    if (val === '消泡泵') {
-        stateManger.DefoamerPump = !stateManger.DefoamerPump;
-    }
+    
     AppGlobal.FeedSet = set
     console.log(name_translation[val], val, 'val______')
     ProcessPopupMangerState.updateIsShowPop(true)

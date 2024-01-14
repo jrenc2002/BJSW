@@ -443,7 +443,7 @@
 </template>
 
 
-<script lang='ts' setup>
+<script lang='js' setup>
 
 // ______________________导入模块_______________________
 import {computed, onMounted, onUnmounted, reactive, ref, Ref, watch} from 'vue'
@@ -524,7 +524,34 @@ const closePop = () => {
 }
 
 
+// 数据同步 监听device
+watch(() => DeviceManage.deviceList[AppGlobal.pageChance]?.nowData, (newVal, oldVal) => {
+    if (newVal !== oldVal) {
+        updateCache();
+    }
+})
+// updateCache函数
+const updateCache = () => {
+// 更新数据
+    localCache.value.setNum.target_PH = DeviceManage.deviceList[AppGlobal.pageChance]?.nowData.target_PH;
+    localCache.value.setNum.PH_flag = DeviceManage.deviceList[AppGlobal.pageChance]?.nowData.PH_flag;
+    
+    localCache.value.controlNum.PH_dead_zone=DeviceManage.deviceList[AppGlobal.pageChance]?.nowData.PH_area_upper_limit-DeviceManage.deviceList[AppGlobal.pageChance]?.nowData.target_PH;
+    localCache.value.controlNum.PH_area_upper_limit = DeviceManage.deviceList[AppGlobal.pageChance]?.nowData.PH_area_upper_limit;
+    localCache.value.controlNum.PH_area_lower_limit = DeviceManage.deviceList[AppGlobal.pageChance]?.nowData.PH_area_lower_limit;
+    
+    localCache.value.alarmNum.alarm_h_limit = DeviceManage.deviceList[AppGlobal.pageChance]?.deviceSet.alarm_h_limit;
+    localCache.value.alarmNum.alarm_l_limit = DeviceManage.deviceList[AppGlobal.pageChance]?.deviceSet.alarm_l_limit;
+    
+    localCache.value.acidNum.acid_KP = DeviceManage.deviceList[AppGlobal.pageChance]?.nowData.acid_KP;
+    localCache.value.acidNum.acid_KI = DeviceManage.deviceList[AppGlobal.pageChance]?.nowData.acid_KI;
+    localCache.value.acidNum.acid_KD = DeviceManage.deviceList[AppGlobal.pageChance]?.nowData.acid_KD;
+    
+    localCache.value.lyeNum.lye_KP = DeviceManage.deviceList[AppGlobal.pageChance]?.nowData.lye_KP;
+    localCache.value.lyeNum.lye_KI = DeviceManage.deviceList[AppGlobal.pageChance]?.nowData.lye_KI;
+    localCache.value.lyeNum.lye_KD = DeviceManage.deviceList[AppGlobal.pageChance]?.nowData.lye_KD;
 
+}
 
 // 当按下键盘时的处理函数，ESC关闭弹窗
 const handleKeydown = (event) => {
@@ -555,10 +582,6 @@ onUnmounted(() => {
 
 
 /* ______________________静态接口_____________________________ */
-interface HeaderItem {
-    title: string;
-    props: string;
-}
 
 
 </script>

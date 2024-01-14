@@ -381,7 +381,7 @@
 
 </template>
 
-<script lang='ts' setup>
+<script lang='js' setup>
 
 // ______________________导入模块_______________________
 import {computed, onMounted, onUnmounted, reactive, ref, Ref, watch} from 'vue'
@@ -440,7 +440,32 @@ const deadZoneControl=()=>{
     
 }
 
-
+// 数据同步 监听device
+watch(() => DeviceManage.deviceList[AppGlobal.pageChance]?.nowData, (newVal, oldVal) => {
+    if (newVal !== oldVal) {
+        updateCache();
+    }
+})
+// updateCache函数
+const updateCache = () => {
+// 更新数据
+    localCache.value.setNum.DO_flag = DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.DO_flag;
+    localCache.value.setNum.target_DO = DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.target_DO;
+    
+    localCache.value.pidNum.DO_KP = DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.DO_KP;
+    localCache.value.pidNum.DO_KI = DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.DO_KI;
+    localCache.value.pidNum.DO_KD = DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.DO_KD;
+    
+    localCache.value.alarmNum.doMaxWarn = DeviceManage.deviceList[AppGlobal.pageChance]?.deviceSet?.doMaxWarn;
+    localCache.value.alarmNum.doMinWarn = DeviceManage.deviceList[AppGlobal.pageChance]?.deviceSet?.doMinWarn;
+    
+    localCache.value.controlNum.DO_dead_zone = DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.DO_area_upper_limit-DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.target_DO;
+    localCache.value.controlNum.DO_upper_limit = DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.DO_upper_limit;
+    localCache.value.controlNum.DO_lower_limit = DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.DO_lower_limit;
+    localCache.value.controlNum.motor_speed_u_limit = DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.motor_speed_u_limit;
+    localCache.value.controlNum.motor_speed_l_limit = DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.motor_speed_l_limit;
+    
+}
 // ______________________表格数据变量_______________________
 
 const paramSend = ((name, index, content) => {
@@ -488,11 +513,6 @@ onUnmounted(() => {
 });
 
 
-/* ______________________静态接口_____________________________ */
-interface HeaderItem {
-    title: string;
-    props: string;
-}
 
 
 </script>

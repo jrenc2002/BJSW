@@ -406,12 +406,12 @@
                                                                             <MenuItems
                                                                                     class="p-2 shadow-xl menu dropdown-content z-[1] bg-base-100 rounded-md w-[7rem] border absolute origin-top-left left-0 mt-2">
                                                                                 <MenuItem v-slot="{ active }">
-                                                                                    <button @click="paramSend('water_flag',AppGlobal.pageChance,1)" :class="[active ? 'bg-[#E0E0E0] text-[#000000]' : 'text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2]', 'block px-4 py-2 text-sm rounded']">
+                                                                                    <button @click="paramSend('condensate_water_flag',AppGlobal.pageChance,1)" :class="[active ? 'bg-[#E0E0E0] text-[#000000]' : 'text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2]', 'block px-4 py-2 text-sm rounded']">
                                                                                         停止
                                                                                     </button>
                                                                                 </MenuItem>
                                                                                 <MenuItem v-slot="{ active }">
-                                                                                    <button @click="paramSend('water_flag',AppGlobal.pageChance,0)" :class="[active ? 'bg-[#BAE7C7] text-[#256637]' : 'text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] mt-2', 'block px-4 py-2 text-sm rounded mt-2']">
+                                                                                    <button @click="paramSend('condensate_water_flag',AppGlobal.pageChance,0)" :class="[active ? 'bg-[#BAE7C7] text-[#256637]' : 'text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] mt-2', 'block px-4 py-2 text-sm rounded mt-2']">
                                                                                         开启
                                                                                     </button>
                                                                                 </MenuItem>
@@ -491,7 +491,7 @@
 
 </template>
 
-<script lang='ts' setup>
+<script lang='js' setup>
 
 // ______________________导入模块_______________________
 import {computed, onMounted, onUnmounted, reactive, ref, Ref, watch} from 'vue'
@@ -539,8 +539,8 @@ const deadZoneControl=()=>{
     
     if (localCache.value.controlNum.dead_zone!==null&&localCache.value.controlNum.dead_zone!==undefined){
         if (localCache.value.setNum.target_temp!==null&&localCache.value.setNum.target_temp!==undefined){
-            paramSend('PH_area_upper_limit',AppGlobal.pageChance,Number(localCache.value.setNum.target_temp)+Number(localCache.value.controlNum.dead_zone))
-            paramSend('PH_area_lower_limit',AppGlobal.pageChance,Number(localCache.value.setNum.target_temp)-Number(localCache.value.controlNum.dead_zone))
+            paramSend('Temp_area_upper_limit',AppGlobal.pageChance,Number(localCache.value.setNum.target_temp)+Number(localCache.value.controlNum.dead_zone))
+            paramSend('Temp_area_lower_limit',AppGlobal.pageChance,Number(localCache.value.setNum.target_temp)-Number(localCache.value.controlNum.dead_zone))
         }else {
             Swal.fire({
                 icon: 'error', // 由于是确认操作，使用 'question' 图标
@@ -571,8 +571,6 @@ const closePop = () => {
 }
 
 
-
-
 // 当按下键盘时的处理函数，ESC关闭弹窗
 const handleKeydown = (event) => {
     if (event.keyCode === 27) { // 27 是 esc 键的 keyCode
@@ -581,18 +579,39 @@ const handleKeydown = (event) => {
         ProcessPopupMangerState.updateIsShowPop(false)
     }
 };
-// 弹窗管理
+// 数据同步 监听Dicave
+watch(() => DeviceManage.deviceList[AppGlobal.pageChance]?.nowData, (newVal, oldVal) => {
+    if (newVal !== oldVal) {
+        updateCache();
+    }
+})
+// updateCache函数
+const updateCache = () => {
+    localCache.value.setNum.temp_flag=DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.temp_flag
+    localCache.value.setNum.target_temp=DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.target_temp
+    
+    localCache.value.pidNum.temp_KP=DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.temp_KP
+    localCache.value.pidNum.temp_KI=DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.temp_KI
+    localCache.value.pidNum.temp_KD=DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.temp_KD
+    
+    localCache.value.alarmNum.alarm_h_limit=DeviceManage.deviceList[AppGlobal.pageChance]?.deviceSet?.tempMaxWarn
+    localCache.value.alarmNum.alarm_l_limit=DeviceManage.deviceList[AppGlobal.pageChance]?.deviceSet?.tempMinWarn
+    
+    localCache.value.controlNum.dead_zone=DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.Temp_area_upper_limit-DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.target_temp
+    localCache.value.controlNum.Temp_area_upper_limit=DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.Temp_area_upper_limit
+    localCache.value.controlNum.Temp_area_lower_limit=DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.Temp_area_lower_limit
+    
+    localCache.value.temperatureControl.condensate_water_flag=DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.condensate_water_flag
+    localCache.value.temperatureControl.heated_blanket_flag=DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.heated_blanket_flag
+    localCache.value.temperatureControl.heatpower=DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.heatpower
+}
 
 // ______________________生命周期_______________________
 
 // 当组件挂载时添加事件监听器
 onMounted(() => {
     window.addEventListener('keydown', handleKeydown);
-//   循环
-//   setInterval(() => {
-//     // sendData(0)
-//   }, 10000)
-//     initTableData()
+    
 });
 
 // 当组件卸载时移除事件监听器
@@ -600,12 +619,6 @@ onUnmounted(() => {
     window.removeEventListener('keydown', handleKeydown);
 });
 
-
-/* ______________________静态接口_____________________________ */
-interface HeaderItem {
-    title: string;
-    props: string;
-}
 
 
 </script>
