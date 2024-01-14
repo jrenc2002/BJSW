@@ -37,11 +37,12 @@
                             <div class="w-full   flex h-[3vh] flex items-center justify-start mt-2  gap-1 ">
                                 <div class=" w-[5rem]   text-left relative ">设定值:</div>
                                 <span class="w-[5rem]   flex text-center items-center justify-center relative">
-                                  <input v-model="DataManger.DoData.SetData"
+                                  <input v-model="localCache.DoData.SetData"
                                          class=" w-[4rem] border-b-2 text-right "
                                          max="100"
                                          min="0"
-                                         step="0.01" type="number" @blur="sendData(AppGlobal.pageChance,DataManger.DoData)"
+                                         step="0.01" type="number"
+                                         @blur="paramSend('target_DO',AppGlobal.pageChance,localCache.DoData.SetData)"
                                   >{{ '%' }}
                                 </span>
                             </div>
@@ -49,7 +50,7 @@
                             <div class="w-full  flex h-[3vh] flex items-center justify-start mt-2 gap-1 ">
                                 <div class=" w-[5rem] mr-1 text-left relative">测量值:</div>
                                 <span class="w-[5rem]  flex text-center items-center justify-center relative">
-                                  {{ DataManger.DoData.MeasureData }}
+                                  {{ localCache.DoData.MeasureData }} %
                                 </span>
                             </div>
                             
@@ -61,12 +62,12 @@
                                       <div>
                                         <MenuButton class="inline-flex w-[5rem] justify-center gap-x-1.5 scale-75">
                                           <summary
-                                                  v-if="DataManger.DoData.oxy_flag==0||DataManger.DoData.oxy_flag==null||DataManger.DoData.oxy_flag==undefined"
+                                                  v-if="localCache.DoData.oxy_flag!==1"
                                                   class="m-1 btn btn-sm w-[7rem] text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2] rounded-md"
-                                                  @click="switchFlag('DoData','oxy_flag')">关闭</summary>
-                                          <summary v-if="DataManger.DoData.oxy_flag==1"
+                                                  @click="paramSend('oxy_flag',AppGlobal.pageChance,1)">关闭</summary>
+                                          <summary v-if="localCache.DoData.oxy_flag===1"
                                                    class="m-1 btn btn-sm w-[7rem] text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] rounded-md"
-                                                   @click="switchFlag('DoData','oxy_flag')">关联</summary>
+                                                   @click="paramSend('oxy_flag',AppGlobal.pageChance,0)">关联</summary>
                                         </MenuButton>
                                       </div>
                                
@@ -91,19 +92,19 @@
                                 <div class=" w-[5rem] text-left relative ">设定转速:</div>
                                 <span class="w-[5rem] flex text-center items-center justify-center relative">
                                   <input id="numberInput"
-                                         v-model="DataManger.RPMData.SetSpeed"
-                                         class=" w-[4rem]  border-b-2 text-center "
+                                         v-model="localCache.RPMData.SetSpeed"
+                                         class=" w-[4rem]  border-b-2 text-right "
                                          max="1600"
                                          min="0"
                                          step="1" type="number"
-                                         @blur="sendData(AppGlobal.pageChance,DataManger.RPMData)"
+                                         @blur="paramSend('target_motor_speed',AppGlobal.pageChance,localCache.RPMData.SetSpeed)"
                                   >{{ 'rpm' }}
                                 </span>
                             </div>
                             <div class="w-full  flex h-[3vh] flex items-center justify-center mt-2 gap-2 ">
                                 <div class=" w-[5rem] mr-1 text-left relative">实时转速:</div>
                                 <span class="w-[5rem] flex text-center items-center justify-center relative">
-                  {{ DataManger.RPMData.NowSpeed }}
+                  {{ localCache.RPMData.NowSpeed }}
                 </span>
                             </div>
                             <div class="w-full  flex h-[3vh] flex items-center justify-center mt-2 gap-2 ">
@@ -112,12 +113,12 @@
                                 <Menu as="div" class="dropdown relative inline-block">
                                       <div>
                                         <MenuButton class="inline-flex w-[5rem] justify-center gap-x-1.5 scale-75">
-                                          <summary v-if="testFlag1==0||testFlag1==null||testFlag1==undefined"
-                                                   class="m-1 btn btn-sm w-[7rem] text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2] rounded-md"
-                                                   @click="switchflag1">停止</summary>
-                                          <summary v-if="testFlag1==1"
+                                          <summary v-if="localCache.RPMData.NowSpeed>0"
                                                    class="m-1 btn btn-sm w-[7rem] text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] rounded-md"
-                                                   @click="switchflag1">启动</summary>
+                                                   @click="rpmConfirm('off')">启动</summary>
+                                          <summary v-else
+                                                   class="m-1 btn btn-sm w-[7rem] text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2] rounded-md"
+                                                   @click="rpmConfirm('on')">停止</summary>
                                         </MenuButton>
                                       </div>
                                 </Menu>
@@ -141,39 +142,39 @@
                             <div class="w-full  flex h-[3vh] flex items-center justify-center mt-2 gap-2 ">
                                 <div class=" w-[5rem] mr-1 text-left relative ">设定值:</div>
                                 <span class="w-[5rem] flex text-center items-center justify-center relative">
-<!--                  {{ DataManger.PHData.SetData }}-->
                                   <input id="numberInput"
-                                         v-model="DataManger.PHData.SetData"
+                                         v-model="localCache.PHData.SetData"
                                          class=" w-[4rem]  border-b-2 text-center pl-4"
                                          max="14.00"
                                          min="0.00"
                                          step="0.01" type="number"
-                                         @blur="sendData(AppGlobal.pageChance,DataManger.PHData)"
+                                         @blur="paramSend('target_PH',AppGlobal.pageChance,localCache.PHData.SetData)"
                                   >
                 </span>
                             </div>
                             <div class="w-full  flex h-[3vh] flex items-center justify-center mt-2 gap-2 ">
                                 <div class=" w-[5rem] mr-1 text-left relative">测量值:</div>
                                 <span class="w-[5rem] flex text-center items-center justify-center relative">
-                   {{ DataManger.PHData.MeasureData }}
+                   {{ localCache.PHData.MeasureData }}
                 </span>
                             </div>
                             <div class="w-full  flex h-[3vh] flex items-center justify-center mt-2 gap-2 ">
                                 <div class=" w-[5rem] mr-1 text-left relative">控制状态:</div>
                                 <span class="w-[5rem] flex text-center items-center justify-center relative">
-                                  <Menu as="div" class="dropdown relative inline-block">
+                                         <Menu as="div" class="dropdown relative inline-block">
                                       <div>
                                         <MenuButton class="inline-flex w-[5rem] justify-center gap-x-1.5 scale-75">
                                           <summary
-                                                  v-if="DataManger.PHData.PH_flag==0||DataManger.PHData.PH_flag==null||DataManger.PHData.PH_flag==undefined"
+                                                  v-if="localCache.PHData.PH_flag!==1"
                                                   class="m-1 btn btn-sm w-[7rem] text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2] rounded-md"
-                                                  @click="switchFlag('PHData','PH_flag')">手动</summary>
-                                          <summary v-if="DataManger.PHData.PH_flag==1"
+                                                  @click="paramSend('Ph_auto_handle',AppGlobal.pageChance,1)">手动</summary>
+                                          <summary v-if="localCache.PHData.PH_flag===1"
                                                    class="m-1 btn btn-sm w-[7rem] text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] rounded-md"
-                                                   @click="switchFlag('PHData','PH_flag')">自动</summary>
+                                                   @click="paramSend('Ph_auto_handle',AppGlobal.pageChance,0)">自动</summary>
                                         </MenuButton>
                                       </div>
-                                  </Menu>
+                               
+                                    </Menu>
                 </span>
                             </div>
                         
@@ -184,7 +185,7 @@
                         <div class="w-full h-[2.5rem] mb-2 font-black  bg-[#D9F0E4] flex items-center justify-center cursor-pointer rounded-t-2xl "
                              @click="popProcessManager('温度')">
                             <!--                          <div class=" h-full  w-4 flex justify-center items-center rounded mx-1 ">-->
-                            <div :class="[DataManger.TemperatureData.water_flag? 'bg-blue-600' : 'bg-red-600']"
+                            <div :class="[localCache.TemperatureData.water_flag? 'bg-blue-600' : 'bg-red-600']"
                                  class="w-4 h-4 left-20  rounded-full relative"></div>
                             <!--                          </div>-->
                             <div class="w-full text-center relative">
@@ -197,12 +198,12 @@
                                 <div class=" w-[5rem] mr-1 text-left relative ">设定值:</div>
                                 <span class="w-[5rem]  flex text-center items-center justify-center relative">
                                   <input id="numberInput"
-                                         v-model="DataManger.TemperatureData.SetData"
+                                         v-model="localCache.TemperatureData.SetData"
                                          class=" w-[80px]  border-b-2 text-center pl-8"
                                          max="150"
                                          min="0"
                                          step="0.1" type="number"
-                                         @blur="sendData(AppGlobal.pageChance,DataManger.TemperatureData)"
+                                         @blur="paramSend('target_temp',AppGlobal.pageChance,localCache.TemperatureData.SetData)"
                                   >
                                   {{ '℃' }}
                 </span>
@@ -210,7 +211,7 @@
                             <div class="w-full  flex h-[3vh] flex items-center justify-center mt-2 gap-3  ">
                                 <div class=" w-[5rem] mr-1 text-left relative">测量值:</div>
                                 <span class="w-[5rem] flex text-center items-center justify-center relative">
-                  {{ DataManger.TemperatureData.MeasureData }}
+                  {{ localCache.TemperatureData.MeasureData }}
                 </span>
                             </div>
                             <div class="w-full  flex h-[3vh] flex items-center justify-center mt-2 gap-2 ">
@@ -218,14 +219,14 @@
                                 <span class="w-[5rem] flex text-center items-center justify-center relative">
                                   <Menu as="div" class="dropdown relative inline-block">
                                       <div>
-                                        <MenuButton class="inline-flex w-[5rem] justify-center gap-x-1.5 scale-75">
+                                   <MenuButton class="inline-flex w-[5rem] justify-center gap-x-1.5 scale-75">
                                           <summary
-                                                  v-if="DataManger.TemperatureData.temp_flag==0||DataManger.TemperatureData.temp_flag==null||DataManger.TemperatureData.temp_flag==undefined"
+                                                  v-if="localCache.TemperatureData.temp_flag!==1"
                                                   class="m-1 btn btn-sm w-[7rem] text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2] rounded-md"
-                                                  @click="switchFlag('TemperatureData','temp_flag')">手动</summary>
-                                          <summary v-if="DataManger.TemperatureData.temp_flag==1"
+                                                  @click="paramSend('temp_flag',AppGlobal.pageChance,1)">手动</summary>
+                                          <summary v-if="localCache.TemperatureData.temp_flag===1"
                                                    class="m-1 btn btn-sm w-[7rem] text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] rounded-md"
-                                                   @click="switchFlag('TemperatureData','temp_flag')">自动</summary>
+                                                   @click="paramSend('temp_flag',AppGlobal.pageChance,0)">自动</summary>
                                         </MenuButton>
                                       </div>
                                   </Menu>
@@ -234,16 +235,16 @@
                             <div class="w-full  flex h-[3vh] flex items-center justify-center mt-2 gap-2 ">
                                 <div class=" w-[5rem] mr-1 text-left relative">温控状态:</div>
                                 <span class="w-[5rem] flex text-center items-center justify-center relative">
-                                  <Menu as="div" class="dropdown relative inline-block">
+                                       <Menu as="div" class="dropdown relative inline-block">
                                       <div>
-                                        <MenuButton class="inline-flex w-[5rem] justify-center gap-x-1.5 scale-75">
+                                   <MenuButton class="inline-flex w-[5rem] justify-center gap-x-1.5 scale-75">
                                           <summary
-                                                  v-if="DataManger.TemperatureData.water_flag==0||DataManger.TemperatureData.water_flag==null||DataManger.TemperatureData.water_flag==undefined"
+                                                  v-if="localCache.TemperatureData.water_flag!==1"
                                                   class="m-1 btn btn-sm w-[7rem] text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2] rounded-md"
-                                                  @click="switchFlag('TemperatureData','water_flag')">加热</summary>
-                                          <summary v-if="DataManger.TemperatureData.water_flag==1"
+                                                  @click="paramSend('water_flag',AppGlobal.pageChance,1)">停止</summary>
+                                          <summary v-if="localCache.TemperatureData.water_flag===1"
                                                    class="m-1 btn btn-sm w-[7rem] text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] rounded-md"
-                                                   @click="switchFlag('TemperatureData','water_flag')">冷却</summary>
+                                                   @click="paramSend('water_flag',AppGlobal.pageChance,0)">开启</summary>
                                         </MenuButton>
                                       </div>
                                   </Menu>
@@ -285,7 +286,7 @@
                     
                     </div>
                     <img class="h-[70vh]" mode="heightFix" src="@/assets/image/JarImage.png">
-
+                
                 </div>
                 <!--右侧控制栏-->
                 <div class="h-full w-[20%]  p-1 flex-col gap-2.5 relative flex  items-start">
@@ -326,14 +327,14 @@
                             <div class="w-full  flex h-[3vh] flex items-center justify-center gap-2 ">
                                 <div class=" min-w-[7rem] mr-1 text-left relative ">实时速率:</div>
                                 <span class="min-w-[2rem] flex text-center items-center justify-center relative">
-                  {{ DataManger.acidPumpData.RealTimeRate }}
+                  {{ localCache.acidPumpData.RealTimeRate }}
                 </span>
                             </div>
                             
                             <div class="w-full  flex h-[3vh] flex items-center justify-center gap-2 ">
                                 <div class=" min-w-[7rem] mr-1 text-left relative">补料量:</div>
                                 <span class="min-w-[2rem] flex text-center items-center justify-center relative">
-                  {{ DataManger.acidPumpData.FeedAmount }}
+                  {{ localCache.acidPumpData.FeedAmount }}
                 </span>
                             </div>
                         </div>
@@ -377,13 +378,13 @@
                             <div class="w-full  flex h-[3vh] flex items-center justify-center gap-2 ">
                                 <div class=" min-w-[7rem] mr-1 text-left relative ">实时速率:</div>
                                 <span class="min-w-[2rem] flex text-center items-center justify-center relative">
-                  {{ DataManger.lyePumpData.SetData }}
+                  {{ localCache.lyePumpData.SetData }}
                 </span>
                             </div>
                             <div class="w-full  flex h-[3vh] flex items-center justify-center gap-2 ">
                                 <div class=" min-w-[7rem] mr-1 text-left relative">补料量:</div>
                                 <span class="min-w-[2rem] flex text-center items-center justify-center relative">
-                  {{ DataManger.lyePumpData.MeasureData }}
+                  {{ localCache.lyePumpData.MeasureData }}
                 </span>
                             </div>
                         
@@ -417,13 +418,13 @@
                             <div class="w-full  flex h-[3vh] flex items-center justify-center gap-2 ">
                                 <div class=" min-w-[7rem] mr-1 text-left relative ">设定速率:</div>
                                 <span class="min-w-[2rem] flex text-center items-center justify-center relative">
-                  {{ DataManger.defoamerPumpData.SetData }}
+                  {{ localCache.defoamerPumpData.SetData }}
                 </span>
                             </div>
                             <div class="w-full  flex h-[3vh] flex items-center justify-center gap-2 ">
                                 <div class=" min-w-[7rem] mr-1 text-left relative">补料量:</div>
                                 <span class="min-w-[2rem] flex text-center items-center justify-center relative">
-                  {{ DataManger.defoamerPumpData.MeasureData }}
+                  {{ localCache.defoamerPumpData.MeasureData }}
                 </span>
                             </div>
                         </div>
@@ -453,13 +454,13 @@
                             <div class="w-full  flex h-[3vh] flex items-center justify-center gap-2 ">
                                 <div class=" min-w-[7rem] mr-1 text-left relative ">实时速率:</div>
                                 <span class="min-w-[2rem] flex text-center items-center justify-center relative">
-                  {{ DataManger.feedPumpData.SetData }}
+                  {{ localCache.feedPumpData.SetData }}
                 </span>
                             </div>
                             <div class="w-full  flex h-[3vh] flex items-center justify-center gap-2 ">
                                 <div class=" min-w-[7rem] mr-1 text-left relative">补料量:</div>
                                 <span class="min-w-[2rem] flex text-center items-center justify-center relative">
-                  {{ DataManger.feedPumpData.MeasureData }}
+                  {{ localCache.feedPumpData.MeasureData }}
                 </span>
                             </div>
                         
@@ -508,14 +509,22 @@ import {Menu, MenuButton} from "@headlessui/vue";
 import Swal from 'sweetalert2';
 
 
-// -------------test----------------------
-const testFlag = ref(0);
-const switchflag = () => {
-    testFlag.value = testFlag.value === 0 ? 1 : 0;
-}
-const testFlag1 = ref(0);
-const switchflag1 = () => {
-    if (testFlag1.value === 1) {
+const rpmConfirm = (status) => {
+    if (status === 'on') {
+        if (localCache.RPMData.SetSpeed === 0) {
+            Swal.fire({
+                icon: 'error', // 由于是确认操作，使用 'question' 图标
+                title: '请先设置转速不为0', // 设置标题
+                showCancelButton: false, // 显示取消按钮
+                confirmButtonColor: '#3085d6', // 确认按钮颜色
+                confirmButtonText: '确认', // 确认按钮文本
+            })
+        }
+        else {
+            paramSend('target_motor_speed',AppGlobal.pageChance,localCache.RPMData.SetSpeed)
+        }
+        
+    } else if (status === 'off') {
         Swal.fire({
             icon: 'question', // 由于是确认操作，使用 'question' 图标
             title: '确认关闭电机吗?', // 设置标题
@@ -527,35 +536,26 @@ const switchflag1 = () => {
         }).then((result) => {
             if (result.value) {
                 // 用户点击了确认按钮
-                testFlag1.value = testFlag1.value === 0 ? 1 : 0;
+                paramSend('target_motor_speed', AppGlobal.pageChance, 0)
             }
         });
-        
-    } else {
-        testFlag1.value = testFlag1.value === 0 ? 1 : 0;
     }
     
     
 }
 
 
-// -------------test结束----------------------
-
 const AppGlobal = useAppGlobal()
 const DeviceManage = useDeviceManage();
-const DataManger = reactive({
+const localCache = reactive({
     DoData: {
         SetData: 0,
         MeasureData: 0,
-        DOUpperLimit: 0,
-        DOLowerLimit: 0,
         oxy_flag: 0,
     },
     RPMData: {
         SetSpeed: 0,
         NowSpeed: 0,
-        RPMUpperLimit: 0,
-        RPMLowerLimit: 120,
     },
     PHData: {
         SetData: 0,
@@ -565,8 +565,6 @@ const DataManger = reactive({
     TemperatureData: {
         SetData: 0,
         MeasureData: 0,
-        HeatingPower: 0,
-        CondensateStatus: '关闭',
         temp_flag: 0,
         water_flag: 0,
     },
@@ -588,11 +586,6 @@ const DataManger = reactive({
     },
     
 })
-
-const switchFlag = (prop, flagName) => {
-    DataManger[prop][flagName] = DataManger[prop][flagName] === 0 ? 1 : 0;
-    sendData(AppGlobal.pageChance, DataManger[prop]);
-}
 
 
 const isAll = ref(false);
@@ -628,28 +621,28 @@ const initDataManger = () => {
     let currentDevice = DeviceManage.deviceList[AppGlobal.pageChance].nowData;
     let setDevice = DeviceManage.deviceList[AppGlobal.pageChance].deviceSet;
     
-    DataManger.DoData.SetData = formatData(currentDevice.target_DO);
-    DataManger.DoData.MeasureData = formatData(currentDevice.timing_DO);
-    DataManger.DoData.DOUpperLimit = formatData(currentDevice.DO_upper_limit);
-    DataManger.DoData.DOLowerLimit = formatData(currentDevice.DO_lower_limit);
-    DataManger.RPMData.RPMUpperLimit = currentDevice.motor_speed_u_limit;
-    DataManger.RPMData.RPMLowerLimit = currentDevice.motor_speed_l_limit;
-    DataManger.RPMData.NowSpeed = currentDevice.timing_motor_speed;
-    DataManger.RPMData.SetSpeed = currentDevice.target_motor_speed;
-    DataManger.PHData.SetData = formatData(currentDevice.target_PH);
-    DataManger.PHData.MeasureData = formatData(currentDevice.timing_PH);
-    DataManger.TemperatureData.SetData = formatData(currentDevice.target_temp);
-    DataManger.TemperatureData.MeasureData = formatData(currentDevice.timing_temp);
-    DataManger.TemperatureData.HeatingPower = formatData(currentDevice.heatpower);
-    DataManger.TemperatureData.CondensateStatus = currentDevice.water_flag === 0 ? '关闭' : '开启';
-    DataManger.acidPumpData.RealTimeRate = formatData(currentDevice.acid_pump_now_speed);
-    DataManger.acidPumpData.FeedAmount = formatData(setDevice.acidPumpSumStepCount);
-    DataManger.lyePumpData.SetData = formatData(currentDevice.lye_pump_now_speed);
-    DataManger.lyePumpData.MeasureData = formatData(Number(setDevice.lyePumpSumStepCount));
-    DataManger.defoamerPumpData.SetData = formatData(Number(currentDevice.defoam_pump_now_speed));
-    DataManger.defoamerPumpData.MeasureData = formatData(Number(setDevice.defoamerPumpSumStepCount));
-    DataManger.feedPumpData.SetData = formatData(currentDevice.feed_pump_now_speed);
-    DataManger.feedPumpData.MeasureData = formatData(Number(setDevice.feedPumpSumStepCount));
+    localCache.DoData.SetData = formatData(currentDevice.target_DO);
+    localCache.DoData.MeasureData = formatData(currentDevice.timing_DO);
+    localCache.DoData.DOUpperLimit = formatData(currentDevice.DO_upper_limit);
+    localCache.DoData.DOLowerLimit = formatData(currentDevice.DO_lower_limit);
+    localCache.RPMData.RPMUpperLimit = currentDevice.motor_speed_u_limit;
+    localCache.RPMData.RPMLowerLimit = currentDevice.motor_speed_l_limit;
+    localCache.RPMData.NowSpeed = currentDevice.timing_motor_speed;
+    localCache.RPMData.SetSpeed = currentDevice.target_motor_speed;
+    localCache.PHData.SetData = formatData(currentDevice.target_PH);
+    localCache.PHData.MeasureData = formatData(currentDevice.timing_PH);
+    localCache.TemperatureData.SetData = formatData(currentDevice.target_temp);
+    localCache.TemperatureData.MeasureData = formatData(currentDevice.timing_temp);
+    localCache.TemperatureData.HeatingPower = formatData(currentDevice.heatpower);
+    localCache.TemperatureData.CondensateStatus = currentDevice.water_flag === 0 ? '关闭' : '开启';
+    localCache.acidPumpData.RealTimeRate = formatData(currentDevice.acid_pump_now_speed);
+    localCache.acidPumpData.FeedAmount = formatData(setDevice.acidPumpSumStepCount);
+    localCache.lyePumpData.SetData = formatData(currentDevice.lye_pump_now_speed);
+    localCache.lyePumpData.MeasureData = formatData(Number(setDevice.lyePumpSumStepCount));
+    localCache.defoamerPumpData.SetData = formatData(Number(currentDevice.defoam_pump_now_speed));
+    localCache.defoamerPumpData.MeasureData = formatData(Number(setDevice.defoamerPumpSumStepCount));
+    localCache.feedPumpData.SetData = formatData(currentDevice.feed_pump_now_speed);
+    localCache.feedPumpData.MeasureData = formatData(Number(setDevice.feedPumpSumStepCount));
     stateManger.AddFeed = Number(currentDevice.feed_flag) === 1;
     stateManger.DefoamerPump = Number(currentDevice.clean_flag) === 1;
     
@@ -715,7 +708,16 @@ const controlSend = ((name, index, content) => {
     }
     
 })
+const paramSend = ((name, index, content) => {
+    // 使用方括号来设置动态属性名
+    const data = {
+        [name]: content
+    };
+    sendData(index, data);
+    
+});
 const ProcessPopupMangerState = useProcessPopupMangerState()
+
 // 弹窗管理
 const popProcessManager = (val, set) => {
     if (val === '消泡泵') {
@@ -809,6 +811,7 @@ const handleHandControl = ((content) => {
     
 })
 
+
 onMounted(() => {
     window.addEventListener('keydown', handleKeydownEsc);
     initDataManger()
@@ -823,9 +826,7 @@ onUnmounted(() => {
     window.removeEventListener('keydown', handleKeydownEsc);
 });
 
-// 设定一个过去的时间点
 
-// 创建一个函数来计算和显示时间差
 function calculateTimeDifference() {
     
     const now = new Date();
@@ -863,36 +864,36 @@ const countdown = ref({
     seconds: 0
 });
 // --------------------
-watch(() => DataManger.DoData.SetData, (newValue) => {
+watch(() => localCache.DoData.SetData, (newValue) => {
     if (newValue == '') {
-        DataManger.DoData.SetData = 0
+        localCache.DoData.SetData = 0
     }
     if (newValue > 150) {
-        DataManger.DoData.SetData = 150; // 将值设为100
+        localCache.DoData.SetData = 150; // 将值设为100
     }
 });
-watch(() => DataManger.RPMData.SetSpeed, (newValue) => {
+watch(() => localCache.RPMData.SetSpeed, (newValue) => {
     if (newValue === '') {
-        DataManger.RPMData.SetSpeed = 0
+        localCache.RPMData.SetSpeed = 0
     }
     if (newValue > 1600) {
-        DataManger.RPMData.SetSpeed = 1600; // 将值设为100
+        localCache.RPMData.SetSpeed = 1600; // 将值设为100
     }
 });
-watch(() => DataManger.PHData.SetData, (newValue) => {
+watch(() => localCache.PHData.SetData, (newValue) => {
     if (newValue === '') {
-        DataManger.PHData.SetData = 0
+        localCache.PHData.SetData = 0
     }
     if (newValue > 14) {
-        DataManger.PHData.SetData = 14; // 将值设为100
+        localCache.PHData.SetData = 14; // 将值设为100
     }
 });
-watch(() => DataManger.TemperatureData.SetData, (newValue) => {
+watch(() => localCache.TemperatureData.SetData, (newValue) => {
     if (newValue === '') {
-        DataManger.TemperatureData.SetData = 0
+        localCache.TemperatureData.SetData = 0
     }
     if (newValue > 150) {
-        DataManger.TemperatureData.SetData = 150; // 将值设为100
+        localCache.TemperatureData.SetData = 150; // 将值设为100
     }
 });
 </script>

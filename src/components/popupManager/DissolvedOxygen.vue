@@ -194,7 +194,6 @@ const AppGlobal = useAppGlobal();
 watch(() => DeviceManage.deviceList, () => {
   initTableData()
 }, {deep: true});
-// todo 这里有个错行的BUG
 interface InputVisible {
   id: number;
   control: boolean;

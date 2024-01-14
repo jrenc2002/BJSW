@@ -6,119 +6,102 @@ const debug = false;
 
 interface SetData {
     
-    // PH控制部分变量
-    deviceNum: any;
-    timing_PH: number;               // 实时PH值
-    acid_speed: number;              // 酸泵实时送料速率
-    lye_speed: number;               // 碱泵实时送料速率
-    target_PH: number;               // 设定目标PH
-    acid_KP: number;                 // PID参数
-    acid_KI: number;                 // PID参数
-    acid_KD: number;                 // PID参数
-    lye_KP: number;                  // PID参数
-    lye_KI: number;                  // PID参数
-    lye_KD: number;                  // PID参m数
-    acid_ml: number;                 // 酸泵目前送料量
-    lye_ml: number;                  // 碱泵目前送料量
-    PH_upper_limit: number;          // PH上限值
-    PH_lower_limit: number;          // PH下限值
-    PH_flag: number;                 // PH控制开启/停止标志位
-    Ph_auto_handle: number;          // PH控制自动/手动控制标志位
+    /*PH控制部分变量*/
+    timing_PH: number;   //实时PH值
+    acid_speed: number;  //酸泵实时送料速率
+    lye_speed: number;   //碱泵实时送料速率
+    target_PH: number;   //设定目标PH
+    acid_KP: number;     //酸泵KP
+    acid_KI: number;     //酸泵KI
+    acid_KD: number;     //酸泵KD
+    lye_KP: number;      //碱泵KP
+    lye_KI: number;      //碱泵KI
+    lye_KD: number;      //碱泵KD
+    PH_upper_limit: number;  //PH上限值
+    PH_lower_limit: number;  //PH下限值
+    PH_area_upper_limit: number;  //PH死区上限值
+    PH_area_lower_limit: number;  //PH死区下限值
     
+    PH_flag: number;       							//PH控制开启/停止标志位
+    PH_calibration_status: number;  		//PH校准状态 0 -> 1 正在第一个校准中 2 酸校准完成 3 第二个校准中 4第二个校准完成 下位机发
+    PH_calibration_progress: number;    //PH校准进度 0 -> 1 第一个校准 2 进行第二个校准
+    acid_pump_step_count: number;   		//在校准模式时，酸泵发送给上位机的总步数，用来上位机计算每步加酸量
+    acid_pump_calibration_flag: number; //酸泵标定开始标志位 0 1
+    acid_pump_sum_step_count: number;  	//整个PH控制过程酸泵总步数
+    acid_pump_now_speed: number;       	//酸泵当前速度-泵速==0为关闭
+    acid_pump_now_ml: number;           //酸泵当前补料量
+    acid_pump_now_set_speed: number;    //酸泵当前设定速度-上位机设定的
+    lye_pump_step_count: number;    		//在校准模式时，碱泵发送给上位机的总步数，用来上位机计算每步加碱量
+    lye_pump_calibration_flag: number;  //碱泵标定开始标志位 0 1
+    lye_pump_sum_step_count: number; 		//整个PH控制过程碱泵总步数
+    lye_pump_now_speed: number;         //碱泵当前速度-泵速==0为关闭
+    lye_pump_now_ml: number;            //碱泵当前补料量
+    lye_pump_now_set_speed: number;     //碱泵当前设定速度-上位机设定的
     
-    PH_calibration_status: number;           // PH校准状态
-    PH_calibration_progress: number;         // PH校准进度
-    acid_pump_step_count: number;            // 酸泵发送步数
-    acid_pump_calibration_flag: number;      // 酸泵标定开始标志位
-    lye_pump_step_count: number;             // 碱泵发送步数
-    lye_pump_calibration_flag: number;       // 碱泵标定开始标志位
-    // 温控部分变量
-    timing_temp: number;                 // 实时温度值
-    heatpower: number;                   // 加热毯实时功率
-    target_temp: number;                 // 设定目标温度值
-    Temp_KP: number;                     // 温控KP
-    Temp_KI: number;                     // 温控KI
-    Temp_KD: number;                     // 温控KD
-    water_flag: number;                  // 冷凝水通断标志位
-    temp_flag: number;                   // 温控开启/停止标志位
+    /*温控部分变量*/
+    timing_temp: number;          //实时温度值
+    heatpower: number;						//加热毯实时功率
+    target_temp: number;					//设定目标温度值
+    Temp_KP: number;       				//温控KP
+    Temp_KI: number;      				//温控KI
+    Temp_KD: number;       				//温控KD
+    Temp_area_upper_limit: number;  //温度死区上限值
+    Temp_area_lower_limit: number;  //温度死区下限值
     
-    // 氧含量控制部分变量
-    timing_DO: number;                   // 实时DO值
-    oxy_ratio: number;                   // 氧气通度
-    target_DO: number;                   // 设定目标DO值
+    temp_flag: number;							//温控开启/停止标志位
+    condensate_water_flag: number;  //冷凝水开关
+    heated_blanket_flag: number;    //加热毯开关
     
-    DO_KP: number;                       // 氧含量KP
-    DO_KI: number;                       // 氧含量KI
-    DO_KD: number;                       // 氧含量KD
-    DO_flag: number;                     // 氧含量控制开启标志位
-    target_motor_speed: number;          // 手动设定电机转速
-    timing_motor_speed: number;          // 电机实时转速
-    motor_speed_l_limit: number;         // 电机转速下限
-    motor_speed_u_limit: number;         // 电机转速上限
-    oxy_flag: number;                    // 通氧关联氧含量开启/关闭标志位
+    /*氧含量控制部分变量*/
+    timing_DO: number;          	//实时DO值
+    target_DO: number;						//设定目标DO值
+    DO_KP: number;       					//氧含量KP
+    DO_KI: number;      					//氧含量KI
+    DO_KD: number;       					//氧含量KD
+    zero_po_value: number;  		//零点值
+    saturation_value: number;  		//饱和值
+    oxygen_percentage: number; 		//溶氧百分值
+    DO_upper_limit: number;				//DO上限值
+    DO_lower_limit: number;				//DO下限值
+    DO_area_upper_limit: number;	//DO死区上限值
+    DO_area_lower_limit: number;	//DO死区下限值
     
-    // 新增的氧含量控制部分变量
-    DO_zero_calibration_flag: number;            // 溶氧校准标志位
-    DO_saturation_calibration_flag: number;      // 溶氧校准标志位
-    zero_point_value: number;                    // 零点值
-    saturation_value: number;                    // 饱和值
-    oxygen_percentage: number;                   // 需要显示的是百分比
-    DO_upper_limit: number;                      // DO上限值
-    DO_lower_limit: number;                      // DO下限值
+    DO_flag: number;								//氧含量控制开启标志位
+    target_motor_speed: number;			//手动设定电机转速
+    timing_motor_speed: number;			//电机实时转速
+    motor_speed_l_limit: number;		//电机转速下限
+    motor_speed_u_limit: number;		//电机转速上限
+    DO_zero_calibration_flag: number;   			//溶氧校准标志位 0没开始 1 开始
+    DO_saturation_calibration_flag: number;   //溶氧校准标志位 0没开始 1 开始
     
-    // 消泡控制部分
-    clean_speed: number;                 // 消泡泵设定送料速率
-    clean_ml: number;                    // 消泡泵目前送料量
-    clean_single_time: number;           // 消泡单次泵入时间
-    clean_flag: number;                  // 消泡开启/停止标志位
+    /*消泡控制部分*/
+    clean_flag: number;											//消泡开启/停止标志位
+    defoam_pump_step_count: number; 				//校准模式时，消泡泵发送总步数，上位机计算每步泵送量
+    defoam_pump_calibration_flag: number;   //消泡泵标定开始标志位
+    defoam_pump_sum_step_count: number;  		//整个消泡过程，消泡泵发送总步数
+    defoam_pump_now_speed: number;					//消泡泵当前速度-泵速==0为关闭
+    defoam_pump_now_set_speed: number;      //消泡泵设定速度
     
-    // 新增的消泡控制部分变量
-    accumulated_defoam_value: number;            // 累计消泡值
-    defoam_pump_step_count: number;              // 消泡泵发送步数
-    defoam_pump_calibration_flag: number;        // 消泡泵标定开始标志位
-    acid_pump_sum_step_count: number;            // 酸泵总步数
-    lye_pump_sum_step_count: number;             // 碱泵总步数
-    defoam_pump_sum_step_count: number;          // 消泡泵总步数
-    feed_pump_sum_step_count: number;           // 补料泵总步数
-    // ——————————————实时速来——————————————
-    feed_pump_now_speed: number;                // 补料泵当前速度-泵速==0为关闭
-    acid_pump_now_speed: number;                // 酸泵当前速度-泵速==0为关闭
-    lye_pump_now_speed: number;                 // 碱泵当前速度-泵速==0为关闭
+    /*补料控制部分*/
+    feed_DO_upper_limit: number;					//补料溶氧上限
+    feed_DO_lower_limit: number;					//补料溶氧下限
+    accumulated_feed_value: number;    		//累计补料值（未使用）
     
-    lye_pump_now_set_speed: number;             // 碱泵当前设定速度-我设定的
-    acid_pump_now_set_speed: number;            // 酸泵当前设定速度-我设定的
-    feed_pump_now_set_speed: number;            // 补料泵当前设定速度-我设定的
-    defoam_pump_now_speed: number;              // 消泡泵当前速度-泵速==0为关闭
-    defoam_pump_now_set_speed: number;           // 消泡泵设定速度
+    feed_flag: number;											//补料开启/停止标志位
+    feed_pump_step_count: number; 					//补料泵发送步数
+    feed_pump_calibration_flag: number; 		//补料泵标定开始标志位
+    feed_pump_sum_step_count: number;  			//补料泵发送步数
+    feed_pump_now_speed: number;            //补料泵当前速度-泵速==0为关闭
+    feed_pump_now_ml: number;               //补料泵当前补料量
+    feed_pump_now_set_speed: number;        //补料泵当前设定速度-上位机设定的
     
+    feed_opening_degree: number;	//手动补料开度
+    feed_period: number;					//手动补料周期
     
-    // 补料控制部分
-    feed_speed: number;                  // 补料泵设定补料速率
-    feed_ml: number;                     // 补料泵目前补料量
-    feed_DO_cu_limit: number;            // 补料关联氧含量上限值
-    feed_DO_cl_limit: number;            // 补料关联氧含量下限值
-    feed_DO_connect_flag: number;        // 补料关联氧含量标志位
-    feed_flag: number;                   // 补料开启/停止标志位
-    feed_motor_connect_flag: number;     // 补料关联转速标志位
-    feed_DO_motor_connect_flag: number;  // 补料双关联转速、氧含量标志位
-    feed_motor_flag: number;             // 补料泵开启标志位
-    feed_motor_cu_limit: number;         // 补料关联转速上限值
-    feed_motor_cl_limit: number;         // 补料关联转速下限值
-    
-    
-    feed_pump_step_count: number;        // 补料泵发送步数
-    feed_pump_calibration_flag: number;  // 补料泵标定开始标志位
-    condensate_water_flag: number;          // 冷凝水开关
-    heated_blanket_flag: number;           // 加热毯开关
-    // 系统控制变量
-    start_flag: number;          // 发酵开始标志位
-    year: number;                // 年
-    mounth: number;              // 月
-    day: number;                 // 日
-    hour: number;                // 时
-    minute: number;              // 分
-    second: number;              // 秒
-    communicate_flag: number;    // 通讯开始标志位
+    /*系统控制变量*/
+    start_flag: number;     								//发酵开始标志位
+    communicate_flag: number;   						//通讯连接成功标志位
+    deviceNum:any;
 }
 
 interface deviceSet {
@@ -322,12 +305,6 @@ export const useDeviceManage = defineStore('DeviceManage', {
             const currentDate = new Date();
             
             if (newDeviceData) {  // 确保 nowData 不为 null
-                newDeviceData.year = currentDate.getFullYear();     //年
-                newDeviceData.mounth = currentDate.getMonth() + 1;  //月 (注意: getMonth() 返回的月份是从0开始的，所以需要+1)
-                newDeviceData.day = currentDate.getDate();          //日
-                newDeviceData.hour = currentDate.getHours();        //时
-                newDeviceData.minute = currentDate.getMinutes();    //分
-                newDeviceData.second = currentDate.getSeconds();    //秒
                 /*——————————————————————————————对状态的处理———————————————————————————————————*/
                 // 四种状态：未连接0，已连接1，运行中2，报警3
                 // 未连接-未连接不会进行数据处理，在这里进行数据处理的只有已连接和报警两个选项
@@ -358,11 +335,11 @@ export const useDeviceManage = defineStore('DeviceManage', {
                             }
                         }
                     ).catch((error) => {
-               
+                        
                         Swal.fire({
                             icon: 'error', //error\warning\info\question
                             title: '添加批次',
-                            text: '添加批次内容至数据库报错,报错为:'+error,
+                            text: '添加批次内容至数据库报错,报错为:' + error,
                             showCancelButton: true,
                             confirmButtonColor: '#3085d6',
                             cancelButtonColor: '#d33',
@@ -417,10 +394,9 @@ export const useDeviceManage = defineStore('DeviceManage', {
                         timing_motor_speed: newDeviceData.timing_motor_speed,
                         relative_time: relativeTime,
                         absolute_time: currentDate,
-                        acid_ml: newDeviceData.acid_ml,
-                        lye_ml: newDeviceData.lye_ml,
-                        clean_ml: newDeviceData.clean_ml,
-                        feed_ml: newDeviceData.feed_ml,
+                        acid_ml: newDeviceData.acid_pump_now_ml,
+                        lye_ml: newDeviceData.lye_pump_now_ml,
+                        feed_ml: newDeviceData.feed_pump_now_ml,
                         defoamerPumpSpeed: this.deviceList[index].deviceSet!.defoamerPumpSpeed,
                         feedPumpSpeed: this.deviceList[index].deviceSet!.feedPumpSpeed,
                         fermentation_flag: newDeviceData.start_flag,

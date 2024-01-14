@@ -68,11 +68,11 @@
                                                                                     <MenuButton
                                                                                             class="inline-flex w-[7rem] justify-center gap-x-1.5">
                                                                                         <summary
-                                                                                                v-if="DO_flag==0||DO_flag==null||DO_flag==undefined"
+                                                                                                v-if="localCache.setNum.PH_flag!==1"
                                                                                                 class="m-1 btn w-[7rem] text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2] rounded-md">
                                                                                             停止
                                                                                         </summary>
-                                                                                        <summary v-if="DO_flag==1"
+                                                                                        <summary v-if="localCache.setNum.PH_flag===1"
                                                                                                  class="m-1 btn w-[7rem] text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] rounded-md">
                                                                                             开启
                                                                                         </summary>
@@ -81,12 +81,12 @@
                                                                                 <MenuItems
                                                                                         class="p-2 shadow-xl menu dropdown-content z-[1] bg-base-100 rounded-md w-[7rem] border absolute origin-top-left left-0 mt-2">
                                                                                     <MenuItem v-slot="{ active }">
-                                                                                        <button :class="[active ? 'bg-[#E0E0E0] text-[#000000]' : 'text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2]', 'block px-4 py-2 text-sm rounded']">
+                                                                                        <button @click="paramSend('PH_flag',AppGlobal.pageChance,1)" :class="[active ? 'bg-[#E0E0E0] text-[#000000]' : 'text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2]', 'block px-4 py-2 text-sm rounded']">
                                                                                             停止
                                                                                         </button>
                                                                                     </MenuItem>
                                                                                     <MenuItem v-slot="{ active }">
-                                                                                        <button :class="[active ? 'bg-[#BAE7C7] text-[#256637]' : 'text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] mt-2', 'block px-4 py-2 text-sm rounded mt-2']">
+                                                                                        <button @click="paramSend('PH_flag',AppGlobal.pageChance,0)" :class="[active ? 'bg-[#BAE7C7] text-[#256637]' : 'text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] mt-2', 'block px-4 py-2 text-sm rounded mt-2']">
                                                                                             开启
                                                                                         </button>
                                                                                     </MenuItem>
@@ -96,14 +96,15 @@
                                                                         </div>
                                                                     </td>
                                                                     <td class=" text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
-                                                                        0
+                                                                        {{DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.timing_PH!==undefined?DeviceManage.deviceData[AppGlobal.pageChance]?.nowData?.timing_PH:0}}
                                                                     </td>
                                                                     <td class=" text-center  border-b border-r rounded-br-2xl  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
                                                                         <div class="flex justify-center items-center w-full">
-                                                                            <input id="name" v-model="targetDO"
+                                                                            <input id="name" v-model="localCache.setNum.target_PH"
+                                                                                   @blur="paramSend('target_PH',AppGlobal.pageChance,localCache.setNum.target_PH)"
                                                                                    class="block w-[80%]  border-b-2 m-2 text-center bg-inherit"
                                                                                    name="name"
-                                                                                   placeholder="请填溶氧设定值"
+                                                                                   placeholder="PH设定值"
                                                                                    required type="number"/>
                                                                         </div>
                                                                     </td>
@@ -136,10 +137,10 @@
                                                         <table class="   bg-[#E8F6ED] py-4 rounded-l-2xl">
                                                             <tr>
                                                                 <td class="w-full  flex justify-center items-center   ">
-                                                                    <div>溶氧报警上限</div>
+                                                                    <div>PH报警上限</div>
                                                                 </td>
                                                                 <td class="w-full  flex justify-center items-center   ">
-                                                                    <div>溶氧报警下限</div>
+                                                                    <div>PH报警下限</div>
                                                                 </td>
                                                             </tr>
                                                         </table>
@@ -154,10 +155,11 @@
                                                                     <td class=" text-center border-t border-b border-r rounded-tr-2xl  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
                                                                         <div class="flex justify-center items-center w-full">
                                                                             
-                                                                            <input id="name"
+                                                                            <input id="name" v-model="localCache.alarmNum.alarm_h_limit"
+                                                                                   @blur="DeviceManage.deviceList[AppGlobal.pageChance].deviceSet.phMaxWarn=localCache.alarmNum.alarm_h_limit"
                                                                                    class="block w-[80%]  border-b-2 m-2 text-center bg-inherit"
                                                                                    name="name"
-                                                                                   placeholder="请输报警上限"
+                                                                                   placeholder="报警上限"
                                                                                    required type="number"/>
                                                                         </div>
                                                                     </td>
@@ -165,10 +167,11 @@
                                                                 <tr class="flex justify-center items-center">
                                                                     <td class=" text-center  border-b border-r  rounded-br-2xl hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
                                                                         <div class="flex justify-center items-center w-full">
-                                                                            <input id="name"
+                                                                            <input id="name" v-model="localCache.alarmNum.alarm_l_limit"
+                                                                                   @blur="DeviceManage.deviceList[AppGlobal.pageChance].deviceSet.phMinWarn=localCache.alarmNum.alarm_l_limit"
                                                                                    class="block w-[80%]  border-b-2 m-2 text-center bg-inherit"
                                                                                    name="name"
-                                                                                   placeholder="请输报警下限"
+                                                                                   placeholder="报警下限"
                                                                                    required type="number"/>
                                                                         </div>
                                                                     </td>
@@ -226,28 +229,28 @@
                                                                 <tr class=" justify-center items-center">
                                                                     <td class=" text-center border-t border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center rounded-tr-2xl">
                                                                         <div class="flex justify-center items-center w-full">
-                                                                            <input id="name"
+                                                                            <input id="name" v-model="localCache.acidNum.acid_KP"
+                                                                                   @blur="paramSend('acid_KP',AppGlobal.pageChance,localCache.acidNum.acid_KP)"
                                                                                    class="block w-[80%]  border-b-2 m-2 text-center bg-inherit"
-                                                                                   name="name"
-                                                                                   placeholder="请填控制死区"
+                                                                                   name="name" placeholder="酸泵比例P"
                                                                                    required type="number"/>
                                                                         </div>
                                                                     </td>
                                                                     <td class=" text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
                                                                         <div class="flex justify-center items-center w-full">
-                                                                            <input id="name"
+                                                                            <input id="name" v-model="localCache.acidNum.acid_KI"
+                                                                                   @blur="paramSend('acid_KI',AppGlobal.pageChance,localCache.acidNum.acid_KI)"
                                                                                    class="block w-[80%]  border-b-2 m-2 text-center bg-inherit"
-                                                                                   name="name"
-                                                                                   placeholder="请填溶氧上限"
+                                                                                   name="name" placeholder="酸泵积分I"
                                                                                    required type="number"/>
                                                                         </div>
                                                                     </td>
-                                                                    <td class=" text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
+                                                                    <td class=" text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center rounded-br-2xl">
                                                                         <div class="flex justify-center items-center w-full">
-                                                                            <input id="name"
+                                                                            <input id="name" v-model="localCache.acidNum.acid_KD"
+                                                                                   @blur="paramSend('acid_KD',AppGlobal.pageChance,localCache.acidNum.acid_KD)"
                                                                                    class="block w-[80%]  border-b-2 m-2 text-center bg-inherit"
-                                                                                   name="name"
-                                                                                   placeholder="请填溶氧下限"
+                                                                                   name="name" placeholder="酸泵微分D"
                                                                                    required type="number"/>
                                                                         </div>
                                                                     </td>
@@ -303,28 +306,28 @@
                                                                 <tr class=" justify-center items-center">
                                                                     <td class=" text-center border-t border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center rounded-tr-2xl">
                                                                         <div class="flex justify-center items-center w-full">
-                                                                            <input id="name"
+                                                                            <input id="name" v-model="localCache.lyeNum.lye_KP"
+                                                                                   @blur="paramSend('lye_KP',AppGlobal.pageChance,localCache.lyeNum.lye_KP)"
                                                                                    class="block w-[80%]  border-b-2 m-2 text-center bg-inherit"
-                                                                                   name="name"
-                                                                                   placeholder="请填控制死区"
+                                                                                   name="name" placeholder="碱泵比例P"
                                                                                    required type="number"/>
                                                                         </div>
                                                                     </td>
                                                                     <td class=" text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
                                                                         <div class="flex justify-center items-center w-full">
-                                                                            <input id="name"
+                                                                            <input id="name" v-model="localCache.lyeNum.lye_KI"
+                                                                                   @blur="paramSend('lye_KI',AppGlobal.pageChance,localCache.lyeNum.lye_KI)"
                                                                                    class="block w-[80%]  border-b-2 m-2 text-center bg-inherit"
-                                                                                   name="name"
-                                                                                   placeholder="请填溶氧上限"
+                                                                                   name="name" placeholder="碱泵积分I"
                                                                                    required type="number"/>
                                                                         </div>
                                                                     </td>
-                                                                    <td class=" text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
+                                                                    <td class=" text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center rounded-br-2xl">
                                                                         <div class="flex justify-center items-center w-full">
-                                                                            <input id="name"
+                                                                            <input id="name" v-model="localCache.lyeNum.lye_KD"
+                                                                                   @blur="paramSend('lye_KD',AppGlobal.pageChance,localCache.lyeNum.lye_KD)"
                                                                                    class="block w-[80%]  border-b-2 m-2 text-center bg-inherit"
-                                                                                   name="name"
-                                                                                   placeholder="请填溶氧下限"
+                                                                                   name="name" placeholder="碱泵微分D"
                                                                                    required type="number"/>
                                                                         </div>
                                                                     </td>
@@ -382,7 +385,8 @@
                                                                 <tr class=" justify-center items-center">
                                                                     <td class=" text-center border-t border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center rounded-tr-2xl">
                                                                         <div class="flex justify-center items-center w-full">
-                                                                            <input id="name"
+                                                                            <input id="name" v-model="localCache.controlNum.PH_dead_zone"
+                                                                                   @blur="deadZoneControl()"
                                                                                    class="block w-[80%]  border-b-2 m-2 text-center bg-inherit"
                                                                                    name="name"
                                                                                    placeholder="请填控制死区"
@@ -391,19 +395,21 @@
                                                                     </td>
                                                                     <td class=" text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
                                                                         <div class="flex justify-center items-center w-full">
-                                                                            <input id="name"
+                                                                            <input id="name" v-model="localCache.controlNum.PH_area_upper_limit"
+                                                                                   @blur="paramSend('PH_area_upper_limit',AppGlobal.pageChance,localCache.controlNum.PH_area_upper_limit)"
                                                                                    class="block w-[80%]  border-b-2 m-2 text-center bg-inherit"
                                                                                    name="name"
-                                                                                   placeholder="请填误差上限"
+                                                                                   placeholder="误差上限"
                                                                                    required type="number"/>
                                                                         </div>
                                                                     </td>
                                                                     <td class=" text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
                                                                         <div class="flex justify-center items-center w-full">
-                                                                            <input id="name"
+                                                                            <input id="name" v-model="localCache.controlNum.PH_area_lower_limit"
+                                                                                   @blur="paramSend('PH_area_lower_limit',AppGlobal.pageChance,localCache.controlNum.PH_area_lower_limit)"
                                                                                    class="block w-[80%]  border-b-2 m-2 text-center bg-inherit"
                                                                                    name="name"
-                                                                                   placeholder="请填误差下限"
+                                                                                   placeholder="误差下限"
                                                                                    required type="number"/>
                                                                         </div>
                                                                     </td>
@@ -446,6 +452,7 @@ import {sendData} from '@/api/index.js'
 import {useDeviceManage} from '@/store/DeviceManage'
 import {useAppGlobal} from '@/store/AppGlobal'
 import {Menu, MenuButton, MenuItem, MenuItems} from '@headlessui/vue'
+import Swal from "sweetalert2";
 
 const DeviceManage = useDeviceManage();
 const ProcessPopupMangerState = useProcessPopupMangerState()
@@ -457,8 +464,9 @@ const localCache = ref({
         PH_flag: null,
     },
     controlNum: {
-        PH_upper_limit: null,
-        PH_lower_limit: null,
+        PH_dead_zone:null,
+        PH_area_upper_limit: null,
+        PH_area_lower_limit: null,
     },
     alarmNum: {
         alarm_h_limit: null,
@@ -478,12 +486,29 @@ const localCache = ref({
 })
 
 
+const deadZoneControl=()=>{
+    
+    if (localCache.value.controlNum.PH_dead_zone!==null&&localCache.value.controlNum.PH_dead_zone!==undefined){
+        if (localCache.value.setNum.target_PH!==null&&localCache.value.setNum.target_PH!==undefined){
+            paramSend('PH_area_upper_limit',AppGlobal.pageChance,Number(localCache.value.setNum.target_PH)+Number(localCache.value.controlNum.PH_dead_zone))
+            paramSend('PH_area_lower_limit',AppGlobal.pageChance,Number(localCache.value.setNum.target_PH)-Number(localCache.value.controlNum.PH_dead_zone))
+        }else {
+            Swal.fire({
+                icon: 'error', // 由于是确认操作，使用 'question' 图标
+                title: '请先设置目标溶氧值不为空', // 设置标题
+                showCancelButton: false, // 显示取消按钮
+                confirmButtonColor: '#3085d6', // 确认按钮颜色
+                confirmButtonText: '确认', // 确认按钮文本
+            })
+        }
+    }
+    
+}
 
 
 
 // ______________________表格数据变量_______________________
-
-const controlSend = ((name, index, content) => {
+const paramSend = ((name, index, content) => {
     // 使用方括号来设置动态属性名
     const data = {
         [name]: content
@@ -491,6 +516,7 @@ const controlSend = ((name, index, content) => {
     sendData(index, data);
     
 });
+
 
 // ______________________功能函数_______________________
 const closePop = () => {

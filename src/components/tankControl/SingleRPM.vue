@@ -62,19 +62,33 @@
                                                                 <tr class=" justify-center items-center">
                                                                     <td class=" text-center border-t border-b border-r rounded-tr-2xl hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
                                                                         <div class="h-full flex justify-center items-center  ">
+
                                                                             <Menu as="div" class="dropdown relative inline-block">
                                                                                 <div>
-                                                                                    <MenuButton class="inline-flex w-[7rem] justify-center gap-x-1.5">
-                                                                                        <summary v-if="DO_flag==0||DO_flag==null||DO_flag==undefined" class="m-1 btn w-[7rem] text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2] rounded-md">停止</summary>
-                                                                                        <summary v-if="DO_flag==1" class="m-1 btn w-[7rem] text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] rounded-md">开启</summary>
+                                                                                    <MenuButton
+                                                                                            class="inline-flex w-[7rem] justify-center gap-x-1.5">
+                                                                                        <summary
+                                                                                                v-if="DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.timing_motor_speed >0"
+                                                                                                class="m-1 btn w-[7rem] text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] rounded-md">
+                                                                                            开启
+                                                                                        </summary>
+                                                                                        <summary v-else
+                                                                                                 class="m-1 btn w-[7rem] text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2] rounded-md">
+                                                                                            停止
+                                                                                        </summary>
                                                                                     </MenuButton>
                                                                                 </div>
-                                                                                <MenuItems class="p-2 shadow-xl menu dropdown-content z-[1] bg-base-100 rounded-md w-[7rem] border absolute origin-top-left left-0 mt-2">
+                                                                                <MenuItems
+                                                                                        class="p-2 shadow-xl menu dropdown-content z-[1] bg-base-100 rounded-md w-[7rem] border absolute origin-top-left left-0 mt-2">
                                                                                     <MenuItem v-slot="{ active }">
-                                                                                        <button  :class="[active ? 'bg-[#E0E0E0] text-[#000000]' : 'text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2]', 'block px-4 py-2 text-sm rounded']">停止</button>
+                                                                                        <button @click="rpmConfirm('on')" :class="[active ? 'bg-[#E0E0E0] text-[#000000]' : 'text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2]', 'block px-4 py-2 text-sm rounded']">
+                                                                                            停止
+                                                                                        </button>
                                                                                     </MenuItem>
                                                                                     <MenuItem v-slot="{ active }">
-                                                                                        <button  :class="[active ? 'bg-[#BAE7C7] text-[#256637]' : 'text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] mt-2', 'block px-4 py-2 text-sm rounded mt-2']">开启</button>
+                                                                                        <button @click="rpmConfirm('off')" :class="[active ? 'bg-[#BAE7C7] text-[#256637]' : 'text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] mt-2', 'block px-4 py-2 text-sm rounded mt-2']">
+                                                                                            开启
+                                                                                        </button>
                                                                                     </MenuItem>
                                                                                 </MenuItems>
                                                                             </Menu>
@@ -86,7 +100,7 @@
                                                                     <td class=" text-center  border-b border-r rounded-br-2xl  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
                                                                         <div class="flex justify-center items-center w-full">
                                                                             <input id="name" v-model="localCache.controlNum.target_motor_speed"
-                                                                                   @blur="controlSend('target_motor_speed',AppGlobal.pageChance,localCache.controlNum.target_motor_speed)"
+                                                                                   @blur="paramSend('target_motor_speed',AppGlobal.pageChance,localCache.controlNum.target_motor_speed)"
                                                                                    class="block w-[80%]  border-b-2 m-2 text-center bg-inherit"
                                                                                    name="name"
                                                                                    placeholder="请填设定值"
@@ -219,12 +233,12 @@
                                                                 <tr class=" justify-center items-center">
                                                                     <td class=" text-center border-t border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center rounded-tr-2xl">
                                                                         <div class="flex justify-center items-center w-full">
-                                                                            <input id="name"
+                                                                            <input id="name" v-model="localCache.controlNum.DO_dead_zone"
+                                                                                   @blur="deadZoneControl()"
                                                                                    class="block w-[80%]  border-b-2 m-2 text-center bg-inherit"
                                                                                    name="name"
                                                                                    placeholder="请填控制死区"
                                                                                    required type="number"/>
-<!--                                                                            todo 死区变量设置-->
                                                                         </div>
                                                                     </td>
                                                                     <td class=" text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
@@ -232,7 +246,7 @@
                                                                             <input id="name"
                                                                                    class="block w-[80%]  border-b-2 m-2 text-center bg-inherit"
                                                                                    name="name"  v-model="localCache.controlNum.DO_upper_limit"
-                                                                                   @blur="controlSend('DO_upper_limit',AppGlobal.pageChance,localCache.controlNum.DO_upper_limit)"
+                                                                                   @blur="paramSend('DO_upper_limit',AppGlobal.pageChance,localCache.controlNum.DO_upper_limit)"
                                                                                    placeholder="请填溶氧上限"
                                                                                    required type="number"/>
                                                                         </div>
@@ -242,7 +256,7 @@
                                                                             <input id="name"
                                                                                    class="block w-[80%]  border-b-2 m-2 text-center bg-inherit"
                                                                                    name="name"   v-model="localCache.controlNum.DO_lower_limit"
-                                                                                   @blur="controlSend('DO_lower_limit',AppGlobal.pageChance,localCache.controlNum.DO_lower_limit)"
+                                                                                   @blur="paramSend('DO_lower_limit',AppGlobal.pageChance,localCache.controlNum.DO_lower_limit)"
                                                                                    placeholder="请填溶氧下限"
                                                                                    required type="number"/>
                                                                         </div>
@@ -252,7 +266,7 @@
                                                                             <input id="name"
                                                                                    class="block w-[80%]  border-b-2 m-2 text-center bg-inherit"
                                                                                    name="name"   v-model="localCache.controlNum.motor_speed_u_limit"
-                                                                                   @blur="controlSend('motor_speed_u_limit',AppGlobal.pageChance,localCache.controlNum.motor_speed_u_limit)"
+                                                                                   @blur="paramSend('motor_speed_u_limit',AppGlobal.pageChance,localCache.controlNum.motor_speed_u_limit)"
                                                                                    placeholder="请填转速上限"
                                                                                    required type="number"/>
                                                                         </div>
@@ -262,7 +276,7 @@
                                                                             <input id="name"
                                                                                    class="block w-[80%]  border-b-2 m-2 text-center bg-inherit"
                                                                                    name="name" v-model="localCache.controlNum.motor_speed_l_limit"
-                                                                                   @blur="controlSend('motor_speed_l_limit',AppGlobal.pageChance,localCache.controlNum.motor_speed_l_limit)"
+                                                                                   @blur="paramSend('motor_speed_l_limit',AppGlobal.pageChance,localCache.controlNum.motor_speed_l_limit)"
                                                                                    placeholder="请填转速下限"
                                                                                    required type="number"/>
                                                                         </div>
@@ -303,6 +317,7 @@ import {sendData} from '@/api/index.js'
 import {useDeviceManage} from '@/store/DeviceManage'
 import {useAppGlobal} from '@/store/AppGlobal'
 import {Menu, MenuButton, MenuItem, MenuItems} from '@headlessui/vue'
+import Swal from "sweetalert2";
 
 const DeviceManage = useDeviceManage();
 const ProcessPopupMangerState = useProcessPopupMangerState()
@@ -311,13 +326,14 @@ const AppGlobal = useAppGlobal();
 const localCache = ref({
     setNum:{
         target_motor_speed:null,
-        
+        target_DO:null,
     },
     alarmNum:{
         rpmMaxWarn:null,
         rpmMinWarn:null,
     },
     controlNum:{
+        DO_dead_zone: null,
         motor_speed_u_limit:null,
         motor_speed_l_limit:null,
         DO_upper_limit: null,
@@ -327,12 +343,30 @@ const localCache = ref({
 });
 
 
+const deadZoneControl=()=>{
+    
+    if (localCache.value.controlNum.DO_dead_zone!==null&&localCache.value.controlNum.DO_dead_zone!==undefined){
+        if (localCache.value.setNum.target_DO!==null&&localCache.value.setNum.target_DO!==undefined){
+            paramSend('DO_area_upper_limit',AppGlobal.pageChance,Number(localCache.value.setNum.target_DO)+Number(localCache.value.controlNum.DO_dead_zone))
+            paramSend('DO_area_lower_limit',AppGlobal.pageChance,Number(localCache.value.setNum.target_DO)-Number(localCache.value.controlNum.DO_dead_zone))
+        }else {
+            Swal.fire({
+                icon: 'error', // 由于是确认操作，使用 'question' 图标
+                title: '请先设置目标溶氧值不为空', // 设置标题
+                showCancelButton: false, // 显示取消按钮
+                confirmButtonColor: '#3085d6', // 确认按钮颜色
+                confirmButtonText: '确认', // 确认按钮文本
+            })
+        }
+    }
+    
+}
 
 
 
 // ______________________表格数据变量_______________________
 
-const controlSend = ((name, index, content) => {
+const paramSend = ((name, index, content) => {
         // 使用方括号来设置动态属性名
         const data = {
             [name]: content
@@ -375,6 +409,43 @@ onMounted(() => {
 onUnmounted(() => {
     window.removeEventListener('keydown', handleKeydown);
 });
+const rpmConfirm = (status) => {
+    if (status === 'on') {
+        if (localCache.value.setNum.target_motor_speed === 0) {
+            Swal.fire({
+                icon: 'error', // 由于是确认操作，使用 'question' 图标
+                title: '请先设置转速不为0', // 设置标题
+                showCancelButton: false, // 显示取消按钮
+                confirmButtonColor: '#3085d6', // 确认按钮颜色
+                confirmButtonText: '确认', // 确认按钮文本
+            })
+        }
+        else {
+            paramSend('target_motor_speed',AppGlobal.pageChance,localCache.value.setNum.target_motor_speed)
+        }
+        
+        
+        
+    } else if (status === 'off') {
+        Swal.fire({
+            icon: 'question', // 由于是确认操作，使用 'question' 图标
+            title: '确认关闭电机吗?', // 设置标题
+            showCancelButton: true, // 显示取消按钮
+            confirmButtonColor: '#3085d6', // 确认按钮颜色
+            cancelButtonColor: '#d33', // 取消按钮颜色
+            confirmButtonText: '确认', // 确认按钮文本
+            cancelButtonText: '取消' // 取消按钮文本
+        }).then((result) => {
+            if (result.value) {
+                // 用户点击了确认按钮
+                paramSend('target_motor_speed', AppGlobal.pageChance, 0)
+            }
+        });
+    }
+    
+    
+}
+
 
 
 /* ______________________静态接口_____________________________ */
