@@ -236,8 +236,8 @@ const initTableData = () => {
             }
             
             else if (deviceProp.prop == "defoamer_pump") {
-                if (DeviceManage.deviceList[index]?.deviceSet?.feedPumpSpeed !== null) {
-                    const feedPumpSpeed = DeviceManage.deviceList[index]?.deviceSet?.feedPumpSpeed ?? 0;
+                if (DeviceManage.deviceList[index]?.nowData?.feedPumpSpeed !== null) {
+                    const feedPumpSpeed = DeviceManage.deviceList[index]?.nowData?.feedPumpSpeed ?? 0;
                     const feed0_pump_sum_step_count = DeviceManage.deviceList[index]?.nowData?.feed0_pump_sum_step_count ?? 0;
                     tableItem[header.props] = feedPumpSpeed * feed0_pump_sum_step_count;
                     
@@ -346,9 +346,7 @@ const controlSend = ((name, index, content) => {
     if (name=='feed0_flag'){
         DeviceManage.deviceList[index]!.nowData!.DO_flag=content
     }
-    if (name=='feed0_pump_now_set_speed'){
-        DeviceManage.deviceList[index]!.nowData!.motor_speed_autoflag=content
-    }
+
     
     
     

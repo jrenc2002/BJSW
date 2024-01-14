@@ -475,7 +475,7 @@
                              class=" swap w-[10rem] h-[4rem] mr-4 text-lg  relative  border-2 border-[#327E5B] rounded-xl text-black  flex items-center justify-center "
                              @click="popProcessManager('开始发酵')"
                         >
-                            {{ DeviceManage.deviceList[AppGlobal.pageChance].deviceNum }}
+                            {{ DeviceManage.deviceList[AppGlobal.pageChance]?.batch_name===null? DeviceManage.deviceList[AppGlobal.pageChance]?.batch_name:'批号未定义' }}
                         </div>
                         <button class="w-[10rem] h-[4rem]  text-lg  relative bg-[#E0E0E0] rounded-xl text-black hover:bg-[#CBCBCB]  "
                                 @click="controlSend('end_running',AppGlobal.pageChance,1)">

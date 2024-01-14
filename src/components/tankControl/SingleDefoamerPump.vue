@@ -232,8 +232,8 @@ const initTableData = () => {
                 
                 return;
             } else if (deviceProp.prop == "defoamer_pump") {
-                if (DeviceManage.deviceList[index]?.deviceSet?.feedPumpSpeed !== null) {
-                    const defoamerPumpSpeed = DeviceManage.deviceList[index]?.deviceSet?.defoamerPumpSpeed ?? 0;
+                if (DeviceManage.deviceList[index]?.nowData?.feedPumpSpeed !== null) {
+                    const defoamerPumpSpeed = DeviceManage.deviceList[index]?.nowData?.feed0PumpSpeed ?? 0;
                     const feed0_pump_sum_step_count = DeviceManage.deviceList[index]?.nowData?.feed0_pump_sum_step_count ?? 0;
                     tableItem[header.props] = defoamerPumpSpeed * feed0_pump_sum_step_count;
                     

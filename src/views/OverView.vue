@@ -279,8 +279,8 @@ const initTableData = () => {
             else if (
                 deviceProp.prop == "acid_pump"
             ) {
-                if (DeviceManage.deviceList[index]?.deviceSet?.acidPumpSpeed !== null && DeviceManage.deviceList[index]?.deviceSet !== null) {
-                    const acidPumpSpeed = DeviceManage.deviceList[index]?.deviceSet?.acidPumpSpeed ?? 0;
+                if (DeviceManage.deviceList[index]?.nowData?.acidPumpSpeed !== null && DeviceManage.deviceList[index]?.deviceSet !== null) {
+                    const acidPumpSpeed = DeviceManage.deviceList[index]?.nowData?.acidPumpSpeed ?? 0;
                     const acid_pump_sum_step_count = DeviceManage.deviceList[index]?.nowData?.acid_pump_sum_step_count ?? 0;
                     tableItem[header.props] = acidPumpSpeed * acid_pump_sum_step_count;
                     
@@ -294,8 +294,8 @@ const initTableData = () => {
             }
             // 碱泵
             else if (deviceProp.prop == "lye_pump") {
-                if (DeviceManage.deviceList[index]?.deviceSet?.lyePumpSpeed !== null) {
-                    const lyePumpSpeed = DeviceManage.deviceList[index]?.deviceSet?.lyePumpSpeed ?? 0;
+                if (DeviceManage.deviceList[index]?.nowData?.lyePumpSpeed !== null) {
+                    const lyePumpSpeed = DeviceManage.deviceList[index]?.nowData?.lyePumpSpeed ?? 0;
                     const lye_pump_sum_step_count = DeviceManage.deviceList[index]?.nowData?.lye_pump_sum_step_count ?? 0;
                     tableItem[header.props] = lyePumpSpeed * lye_pump_sum_step_count;
                     let device = DeviceManage?.deviceList?.[index];
@@ -309,8 +309,8 @@ const initTableData = () => {
             }
             // 食物泵
             else if (deviceProp.prop == "feed_pump") {
-                if (DeviceManage.deviceList[index]?.deviceSet?.feedPumpSpeed !== null) {
-                    const feedPumpSpeed = DeviceManage.deviceList[index]?.deviceSet?.feedPumpSpeed ?? 0;
+                if (DeviceManage.deviceList[index]?.nowData?.feedPumpSpeed !== null) {
+                    const feedPumpSpeed = DeviceManage.deviceList[index]?.nowData?.feedPumpSpeed ?? 0;
                     const feed_pump_sum_step_count = DeviceManage.deviceList[index]?.nowData?.feed_pump_sum_step_count ?? 0;
                     tableItem[header.props] = feedPumpSpeed * feed_pump_sum_step_count;
                     let device = DeviceManage?.deviceList?.[index];
@@ -324,8 +324,8 @@ const initTableData = () => {
             }
             // 消泡泵
             else if (deviceProp.prop == "defoamer_pump") {
-                if (DeviceManage.deviceList[index]?.deviceSet?.defoamerPumpSpeed !== null) {
-                    const defoamerPumpSpeed = DeviceManage.deviceList[index]?.deviceSet?.defoamerPumpSpeed ?? 0;
+                if (DeviceManage.deviceList[index]?.nowData?.feed0PumpSpeed !== null) {
+                    const defoamerPumpSpeed = DeviceManage.deviceList[index]?.nowData?.feed0PumpSpeed ?? 0;
                     const feed0_pump_sum_step_count = DeviceManage.deviceList[index]?.nowData?.feed0_pump_sum_step_count ?? 0;
                     tableItem[header.props] = defoamerPumpSpeed * feed0_pump_sum_step_count;
                     

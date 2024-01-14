@@ -217,8 +217,8 @@ const initTableData = () => {
             }
             
             else if (deviceProp.prop == "acid_pump") {
-                if (DeviceManage.deviceList[index]?.deviceSet?.acidPumpSpeed !== null) {
-                    const acidPumpSpeed = DeviceManage.deviceList[index]?.deviceSet?.acidPumpSpeed ?? 0;
+                if (DeviceManage.deviceList[index]?.nowData?.acidPumpSpeed !== null) {
+                    const acidPumpSpeed = DeviceManage.deviceList[index]?.nowData?.acidPumpSpeed ?? 0;
                     const acid_pump_sum_step_count = DeviceManage.deviceList[index]?.nowData?.acid_pump_sum_step_count ?? 0;
                     tableItem[header.props] = acidPumpSpeed * acid_pump_sum_step_count;
                     

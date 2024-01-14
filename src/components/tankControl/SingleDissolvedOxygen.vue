@@ -43,7 +43,7 @@
                                                         <table class="mb-4   bg-[#E8F6ED] py-4 rounded-l-2xl">
                                                             <tr>
                                                                 <td class="w-full  flex justify-center items-center   ">
-                                                                    <div>状态</div>
+                                                                    <div>关联状态</div>
                                                                 </td>
                                                                 <td class="w-full  flex justify-center items-center   ">
                                                                     <div>测量值</div>

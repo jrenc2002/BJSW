@@ -29,13 +29,12 @@ interface SetData {
     acid_pump_calibration_flag: number; //酸泵标定开始标志位 0 1
     acid_pump_sum_step_count: number;  	//整个PH控制过程酸泵总步数
     acid_pump_now_speed: number;       	//酸泵当前速度-泵速==0为关闭
-    acid_pump_now_ml: number;           //酸泵当前补料量
     acid_pump_now_set_speed: number;    //酸泵当前设定速度-上位机设定的
     lye_pump_step_count: number;    		//在校准模式时，碱泵发送给上位机的总步数，用来上位机计算每步加碱量
     lye_pump_calibration_flag: number;  //碱泵标定开始标志位 0 1
     lye_pump_sum_step_count: number; 		//整个PH控制过程碱泵总步数
     lye_pump_now_speed: number;         //碱泵当前速度-泵速==0为关闭
-    lye_pump_now_ml: number;            //碱泵当前补料量
+    
     lye_pump_now_set_speed: number;     //碱泵当前设定速度-上位机设定的
     
     /*温控部分变量*/
@@ -85,13 +84,14 @@ interface SetData {
     feed0_pump_calibration_flag: number; 		//补料泵标定开始标志位
     feed0_pump_sum_step_count: number;  			//补料泵发送步数
     feed0_pump_now_speed: number;            //补料泵当前速度-泵速==0为关闭
-    feed0_pump_now_ml: number;               //补料泵当前补料量
+                 //补料泵当前补料量
     feed0_pump_now_set_speed: number;        //补料泵当前设定速度-上位机设定的
     
     feed0_opening_degree: number;	//手动补料开度
     feed0_period: number;					//手动补料周期
-    feed0_way : number;
-    
+    feed0_way : number;             //补料方式
+    feed0_ml_h: number;             //补料速度，ml/h
+
     /*补料控制部分*/
     feed_DO_upper_limit: number;					//补料溶氧上限
     feed_DO_lower_limit: number;					//补料溶氧下限
@@ -102,18 +102,32 @@ interface SetData {
     feed_pump_calibration_flag: number; 		//补料泵标定开始标志位
     feed_pump_sum_step_count: number;  			//补料泵发送步数
     feed_pump_now_speed: number;            //补料泵当前速度-泵速==0为关闭
-    feed_pump_now_ml: number;               //补料泵当前补料量
+              //补料泵当前补料量
     feed_pump_now_set_speed: number;        //补料泵当前设定速度-上位机设定的 单位：步
     
     feed_opening_degree: number;	//手动补料开度
     feed_period: number;					//手动补料周期
-    feed_way : number;
+    feed_way : number;          //补料方式
+    feed_ml_h: number;   //补料速度，ml/h
     
+    /** 酸泵单步速度 */
+    acidPumpSpeed: number;
+    
+    /** 碱泵单步速度 */
+    lyePumpSpeed: number;  // 单步速度：毫升/步
+    
+    /** 消泡泵单步速度 */
+    feed0PumpSpeed: number;
+    
+    /** 补料泵单步速度 */
+    feedPumpSpeed: number;
+    
+
     
     /*系统控制变量*/
     start_flag: number;     								//发酵开始标志位
     communicate_flag: number;   						//通讯连接成功标志位
-    deviceNum:any;
+    decive_id:any;
 }
 
 interface deviceSet {
@@ -135,30 +149,21 @@ interface deviceSet {
     /** DO报警下限 */
     doMinWarn: number;
     
-    /** 酸泵单步速度 */
-    acidPumpSpeed: number;
+
     
-    /** 碱泵单步速度 */
-    lyePumpSpeed: number;  // 单步速度：毫升/步
-    
-    /** 补料泵单步速度 */
-    feedPumpSpeed: number;
     rpmMaxWarn: number;
     rpmMinWarn: number;
-    
-    /** 消泡泵单步速度 */
-    defoamerPumpSpeed: number;
+
     
     
     tempState: number,
     phState: number,
     doState: number,
-    acidPumpSumStepCount: number,
+    acidPumpSumStepCount: number,//补料良
     lyePumpSumStepCount: number,
-    feedPumpSumStepCount: number,
     defoamerPumpSumStepCount: number,
-    
-    
+    feedPumpSumStepCount: number,
+
     
 }
 
@@ -177,34 +182,13 @@ interface Device {
     deviceSet: deviceSet | null
     batch_cycle: number;
     recordFlag: boolean;
-    recordFeedMode: recordFeedMode;
     
 }
 
-interface FeedFullSpeed {
-    feedSpeed: number;
-    feedDate: number;
-}
 
-interface FeedLine {
-    feedSpeed: number;
-    DOTopLimit: number;
-    DOBottomLimit: number;
-}
 
-interface FeedDutyCycle {
-    feedSpeed: number;
-    checkCycle: number;
-    feedQuantity: number;
-    DO: number;
-}
 
-interface recordFeedMode {
-    FullSpeed: FeedFullSpeed;
-    Line: FeedLine;
-    DutyCycle: FeedDutyCycle;
-    
-}
+
 
 // TODO:设备管理要重构
 // 1.内容数据表项不全仍然缺乏
@@ -218,26 +202,9 @@ const state = (): {
     return {
         deviceList: [
             {
-                id: 0, name: '设备A', deviceNum: "CCC-022", ip: '192.168.1.3', port: 2000, batch_cycle: 0,
-                state: 0, nowData: null, deviceSocket: null, start_time: null, batch_name: null, recordFlag: false,
-                alarm: false, recordFeedMode: {
-                    FullSpeed: {
-                        feedSpeed: -1,
-                        feedDate: -1
-                    },
-                    Line: {
-                        feedSpeed: -1,
-                        DOTopLimit: -1,
-                        DOBottomLimit: -1
-                        
-                    },
-                    DutyCycle: {
-                        feedSpeed: -1,
-                        checkCycle: -1,
-                        feedQuantity: -1,
-                        DO: -1
-                    }
-                }, deviceSet: {
+                id: 0, name: '设备A', deviceNum: "CCC-022", batch_name: null, ip: '192.168.1.3', port: 2000, batch_cycle: 0,
+                state: 0, nowData: null, deviceSocket: null, start_time: null, recordFlag: false,
+                alarm: false, deviceSet: {
                     tempState: 0,
                     phState: 0,
                     doState: 0,
@@ -249,10 +216,6 @@ const state = (): {
                     doMinWarn: 0,
                     rpmMaxWarn: 0,
                     rpmMinWarn: 0,
-                    acidPumpSpeed: 0,
-                    lyePumpSpeed: 0,
-                    feedPumpSpeed: 0,
-                    defoamerPumpSpeed: 0,
                     acidPumpSumStepCount: 0,
                     lyePumpSumStepCount: 0,
                     feedPumpSumStepCount: 0,
@@ -276,31 +239,12 @@ export const useDeviceManage = defineStore('DeviceManage', {
             const newDevice: Device = {
                 id: newId,
                 name: nameDevice,
-                deviceNum: `BAB-${newId}`,
+                deviceNum:'',
                 batch_cycle: 0,
                 ip: ip,
                 port: port,
                 state: 0,
                 recordFlag: false,
-                recordFeedMode: {
-                    FullSpeed: {
-                        feedSpeed: -1,
-                        feedDate: -1
-                    },
-                    Line: {
-                        feedSpeed: -1,
-                        DOTopLimit: -1,
-                        DOBottomLimit: -1
-                        
-                    },
-                    DutyCycle: {
-                        feedSpeed: -1,
-                        checkCycle: -1,
-                        feedQuantity: -1,
-                        DO: -1
-                    }
-                }
-                ,
                 nowData: null,
                 deviceSocket: null,
                 start_time: null,
@@ -328,6 +272,12 @@ export const useDeviceManage = defineStore('DeviceManage', {
                 // 未连接-未连接不会进行数据处理，在这里进行数据处理的只有已连接和报警两个选项
                 // 已连接-已连接的设备如果没有修改通讯标志进行修改
                 
+                // deviceNum赋值
+                if (newDeviceData.decive_id&&this.deviceList[index].deviceNum!==newDeviceData.decive_id) {
+                    this.deviceList[index].deviceNum = newDeviceData.decive_id;
+                }
+                
+                
                 if (newDeviceData.communicate_flag === 0) {
                     const data = {
                         communicate_flag: 1,
@@ -339,12 +289,12 @@ export const useDeviceManage = defineStore('DeviceManage', {
                     this.deviceList[index].state = 2
                     // 如果没有这个批次数据存入批次数据
                     
-                    const batchdata = {
+                    const batchData = {
                         batch_name: this.deviceList[index].batch_name,
-                        can_number: newDeviceData.deviceNum,
+                        can_number: newDeviceData.decive_id,
                         start_time: currentDate,
                     };
-                    window.Electron.ipcRenderer.invoke('add-fermentation-batch', batchdata).then(
+                    window.Electron.ipcRenderer.invoke('add-fermentation-batch', batchData).then(
                         (res) => {
                             if (res) { // 确保res是有效的
                                 console.log('已存储数据.');
@@ -400,24 +350,29 @@ export const useDeviceManage = defineStore('DeviceManage', {
                         currentDeviceSet.doState = 0;
                     }
                 }
+                // 存数据库
                 if (this.deviceList[index].start_time !== null) {
                     // 获取相对时间单位为h
                     const relativeTime = (currentDate.getTime() - this.deviceList[index].start_time.getTime()) / 1000 / 60 / 60;
                     // 数据存入到数据库
                     // todo 数据同步存入数据库
                     const fermentationData = {
-                        can_number: newDeviceData.deviceNum,
+                        
+                        
+                        can_number: newDeviceData.decive_id,
+                        batch_id:this.deviceList[index].batch_name,
                         timing_temp: newDeviceData.timing_temp,
                         timing_PH: newDeviceData.timing_PH,
                         timing_DO: newDeviceData.timing_DO,
                         timing_motor_speed: newDeviceData.timing_motor_speed,
                         relative_time: relativeTime,
                         absolute_time: currentDate,
-                        acid_ml: newDeviceData.acid_pump_now_ml,
-                        lye_ml: newDeviceData.lye_pump_now_ml,
-                        feed_ml: newDeviceData.feed_pump_now_ml,
-                        defoamerPumpSpeed: this.deviceList[index].deviceSet!.defoamerPumpSpeed,
-                        feedPumpSpeed: this.deviceList[index].deviceSet!.feedPumpSpeed,
+                        acid_ml: this.deviceList[index]?.deviceSet?.acidPumpSumStepCount,
+                        lye_ml: this.deviceList[index].deviceSet?.lyePumpSumStepCount,
+                        clean_ml: this.deviceList[index].deviceSet?.defoamerPumpSumStepCount,
+                        feed_ml: this.deviceList[index].deviceSet?.feedPumpSumStepCount,
+                        defoamerPumpSpeed: newDeviceData.feed0PumpSpeed,
+                        feedPumpSpeed: newDeviceData.feedPumpSpeed,
                         fermentation_flag: newDeviceData.start_flag,
                         
                         

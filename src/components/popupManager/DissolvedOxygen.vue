@@ -232,7 +232,6 @@ const initTableData = () => {
 
   const deviceProperties = [
       {name: '状态', prop: 'DO_flag'}, // 0: 停止, 1: 自动
-    {name: '溶氧关联转速', prop: 'motor_speed_autoflag'},
     {name: '测量值', prop: 'timing_DO'},
     {name: '设定值', prop: 'target_DO'},
       {name: '比例P', prop: 'DO_KP'},
@@ -445,9 +444,7 @@ const controlSend = ((name, index, content) => {
     if (name=='DO_flag'){
         DeviceManage.deviceList[index]!.nowData!.DO_flag=content
     }
-    if (name=='motor_speed_autoflag'){
-        DeviceManage.deviceList[index]!.nowData!.motor_speed_autoflag=content
-    }
+
     if (name == 'all') {
         const data = {
             DO_KP: Number(DeviceManage.deviceList[index]!.nowData!.DO_KP),
