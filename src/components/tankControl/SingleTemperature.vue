@@ -96,7 +96,7 @@
                                                                         </div>
                                                                     </td>
                                                                     <td class=" text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
-                                                                        {{DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.timing_temp!==undefined?DeviceManage.deviceData[AppGlobal.pageChance]?.nowData?.timing_temp:0}}
+                                                                        {{DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.timing_temp!==undefined?DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.timing_temp:0}}
                                                                     </td>
                                                                     <td class=" text-center  border-b border-r rounded-br-2xl  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
                                                                         <div class="flex justify-center items-center w-full">
@@ -419,7 +419,7 @@
                                                                         </Menu>
 
                                                                     </td>
-                                                                    <td class=" text-center border-t border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center rounded-tr-2xl">
+                                                                    <td class=" text-center border-t border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center ">
                                                                         <Menu as="div"
                                                                               class="dropdown relative inline-block">
                                                                             <div>
@@ -451,7 +451,7 @@
                                                                             </MenuItems>
                                                                         </Menu>
                                                                     </td>
-                                                                    <td class=" text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
+                                                                    <td class=" text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center  rounded-br-2xl">
                                                                         <div class="flex justify-center items-center w-full">
                                                                             <input id="name" v-model="localCache.temperatureControl.heatpower"
                                                                                    class="block w-[80%]    m-2 text-center text-black"

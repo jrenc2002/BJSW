@@ -14,10 +14,8 @@ export enum PopupType {
     DissolvedOxygen = 3,
     // 转速值
     RPM = 4,
-    FeedPump = 5,
-    BeginFermentation=6,
-    DefoamerPump=7,
-    FeedSetting=8,
+    BeginFermentation=5,
+    FeedSetting=6,
 
 
 }

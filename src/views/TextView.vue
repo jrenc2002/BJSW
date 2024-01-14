@@ -48,7 +48,7 @@ const controlSend = (() => {
          * 3. 补料量
          * 4. 溶氧
          */
-        // defoam_pump_now_set_speed: 1,
+        // feed0_pump_now_set_speed: 1,
         
     }
     

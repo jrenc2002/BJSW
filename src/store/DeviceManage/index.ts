@@ -74,13 +74,23 @@ interface SetData {
     DO_zero_calibration_flag: number;   			//溶氧校准标志位 0没开始 1 开始
     DO_saturation_calibration_flag: number;   //溶氧校准标志位 0没开始 1 开始
     
-    /*消泡控制部分*/
-    clean_flag: number;											//消泡开启/停止标志位
-    defoam_pump_step_count: number; 				//校准模式时，消泡泵发送总步数，上位机计算每步泵送量
-    defoam_pump_calibration_flag: number;   //消泡泵标定开始标志位
-    defoam_pump_sum_step_count: number;  		//整个消泡过程，消泡泵发送总步数
-    defoam_pump_now_speed: number;					//消泡泵当前速度-泵速==0为关闭
-    defoam_pump_now_set_speed: number;      //消泡泵设定速度
+
+    /*补料0控制部分*/
+    feed0_DO_upper_limit: number;					//补料溶氧上限
+    feed0_DO_lower_limit: number;					//补料溶氧下限
+    accumulated_feed0_value: number;    		//累计补料值（未使用）
+    
+    feed0_flag: number;											//补料开启/停止标志位
+    feed0_pump_step_count: number; 					//补料泵发送步数
+    feed0_pump_calibration_flag: number; 		//补料泵标定开始标志位
+    feed0_pump_sum_step_count: number;  			//补料泵发送步数
+    feed0_pump_now_speed: number;            //补料泵当前速度-泵速==0为关闭
+    feed0_pump_now_ml: number;               //补料泵当前补料量
+    feed0_pump_now_set_speed: number;        //补料泵当前设定速度-上位机设定的
+    
+    feed0_opening_degree: number;	//手动补料开度
+    feed0_period: number;					//手动补料周期
+    feed0_way : number;
     
     /*补料控制部分*/
     feed_DO_upper_limit: number;					//补料溶氧上限
@@ -93,10 +103,12 @@ interface SetData {
     feed_pump_sum_step_count: number;  			//补料泵发送步数
     feed_pump_now_speed: number;            //补料泵当前速度-泵速==0为关闭
     feed_pump_now_ml: number;               //补料泵当前补料量
-    feed_pump_now_set_speed: number;        //补料泵当前设定速度-上位机设定的
+    feed_pump_now_set_speed: number;        //补料泵当前设定速度-上位机设定的 单位：步
     
     feed_opening_degree: number;	//手动补料开度
     feed_period: number;					//手动补料周期
+    feed_way : number;
+    
     
     /*系统控制变量*/
     start_flag: number;     								//发酵开始标志位
@@ -127,7 +139,7 @@ interface deviceSet {
     acidPumpSpeed: number;
     
     /** 碱泵单步速度 */
-    lyePumpSpeed: number;
+    lyePumpSpeed: number;  // 单步速度：毫升/步
     
     /** 补料泵单步速度 */
     feedPumpSpeed: number;
@@ -136,6 +148,8 @@ interface deviceSet {
     
     /** 消泡泵单步速度 */
     defoamerPumpSpeed: number;
+    
+    
     tempState: number,
     phState: number,
     doState: number,
@@ -143,6 +157,9 @@ interface deviceSet {
     lyePumpSumStepCount: number,
     feedPumpSumStepCount: number,
     defoamerPumpSumStepCount: number,
+    
+    
+    
 }
 
 interface Device {
@@ -193,6 +210,7 @@ interface recordFeedMode {
 // 1.内容数据表项不全仍然缺乏
 // 2.各个部分的状态灯
 // 3.报警数据
+// 4.完成数据库的数据存入
 
 const state = (): {
     deviceList: Device[];
@@ -386,6 +404,7 @@ export const useDeviceManage = defineStore('DeviceManage', {
                     // 获取相对时间单位为h
                     const relativeTime = (currentDate.getTime() - this.deviceList[index].start_time.getTime()) / 1000 / 60 / 60;
                     // 数据存入到数据库
+                    // todo 数据同步存入数据库
                     const fermentationData = {
                         can_number: newDeviceData.deviceNum,
                         timing_temp: newDeviceData.timing_temp,

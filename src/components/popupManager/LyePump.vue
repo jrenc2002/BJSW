@@ -76,8 +76,8 @@
 <!--                                                        <summary v-if="body[col.props]==0||body[col.props]==null||body[col.props]==undefined" class="m-1 btn w-[7rem] ">停止</summary>-->
 <!--                                                        <summary v-if="body[col.props]==1" class="m-1 btn w-[7rem] text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3]">自动</summary>-->
 <!--                                                        <ul class="p-2 shadow-xl menu dropdown-content z-[1] bg-base-100 rounded-box w-[7rem] broder">-->
-<!--                                                            <li class="text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2] rounded" @click="controlSend('clean_flag',i,0)"><a>手动</a></li>-->
-<!--                                                            <li class="text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] mt-2 rounded" @click="controlSend('clean_flag',i,1)"><a>自动</a></li>-->
+<!--                                                            <li class="text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2] rounded" @click="controlSend('feed0_flag',i,0)"><a>手动</a></li>-->
+<!--                                                            <li class="text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] mt-2 rounded" @click="controlSend('feed0_flag',i,1)"><a>自动</a></li>-->
 <!--                                                        </ul>-->
 <!--                                                    </details>-->
 
@@ -91,10 +91,10 @@
 
                                                     <MenuItems class="p-2 shadow-xl menu dropdown-content z-30 bg-base-100 rounded-box w-[7rem] border absolute origin-top-left left-0">
                                                       <MenuItem v-slot="{ active }">
-                                                        <button :class="[active ? 'bg-[#E0E0E0] text-[#000000]' : 'text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2]', 'block px-4 py-2 text-sm rounded']" @click="controlSend('clean_flag', i, 0)">手动</button>
+                                                        <button :class="[active ? 'bg-[#E0E0E0] text-[#000000]' : 'text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2]', 'block px-4 py-2 text-sm rounded']" @click="controlSend('feed0_flag', i, 0)">手动</button>
                                                       </MenuItem>
                                                       <MenuItem v-slot="{ active }">
-                                                        <button :class="[active ? 'bg-[#BAE7C7] text-[#256637] mt-2' : 'text-[#256637] bg-[#BAE7C7] hover-bg-[#A9CDB3] mt-2', 'block px-4 py-2 text-sm rounded']" @click="controlSend('clean_flag', i, 1)">自动</button>
+                                                        <button :class="[active ? 'bg-[#BAE7C7] text-[#256637] mt-2' : 'text-[#256637] bg-[#BAE7C7] hover-bg-[#A9CDB3] mt-2', 'block px-4 py-2 text-sm rounded']" @click="controlSend('feed0_flag', i, 1)">自动</button>
                                                       </MenuItem>
                                                     </MenuItems>
                                                   </Menu>
@@ -201,9 +201,9 @@ const initTableData = () => {
     initheaderData.forEach(item => headerData.push(item));  // 添加新的数据
     
     const deviceProperties = [
-        {name: '状态', prop: 'clean_flag'},
+        {name: '状态', prop: 'feed0_flag'},
         {name: '累计补料量', prop: 'defoamer_pump'},  // 这里选择了补料关联氧含量标志位，因为它看起来是一个功能关联标志
-        {name: '补料速度', prop: 'defoam_pump_now_set_speed'}  ]
+        {name: '补料速度', prop: 'feed0_pump_now_set_speed'}  ]
     
     
     
@@ -238,8 +238,8 @@ const initTableData = () => {
             else if (deviceProp.prop == "defoamer_pump") {
                 if (DeviceManage.deviceList[index]?.deviceSet?.feedPumpSpeed !== null) {
                     const feedPumpSpeed = DeviceManage.deviceList[index]?.deviceSet?.feedPumpSpeed ?? 0;
-                    const defoam_pump_sum_step_count = DeviceManage.deviceList[index]?.nowData?.defoam_pump_sum_step_count ?? 0;
-                    tableItem[header.props] = feedPumpSpeed * defoam_pump_sum_step_count;
+                    const feed0_pump_sum_step_count = DeviceManage.deviceList[index]?.nowData?.feed0_pump_sum_step_count ?? 0;
+                    tableItem[header.props] = feedPumpSpeed * feed0_pump_sum_step_count;
                     
                 } else {
                     tableItem[header.props] = 0;
@@ -335,18 +335,18 @@ const keyupEnterInput = (deviceID: number, setIndex: number) => {
     
     if (setIndex == 0 && inputVisible.value[deviceID][setIndex].cache != null) {
         if (DeviceManage.deviceList[deviceID] && DeviceManage.deviceList[deviceID]!.nowData) {
-            DeviceManage.deviceList[deviceID]!.nowData!.defoam_pump_now_set_speed = inputVisible.value[deviceID][setIndex].cache || 0;
+            DeviceManage.deviceList[deviceID]!.nowData!.feed0_pump_now_set_speed = inputVisible.value[deviceID][setIndex].cache || 0;
         }
     }
-    controlSend('defoam_pump_now_set_speed',deviceID,inputVisible.value[deviceID][setIndex].cache)
+    controlSend('feed0_pump_now_set_speed',deviceID,inputVisible.value[deviceID][setIndex].cache)
     
     
 }
 const controlSend = ((name, index, content) => {
-    if (name=='clean_flag'){
+    if (name=='feed0_flag'){
         DeviceManage.deviceList[index]!.nowData!.DO_flag=content
     }
-    if (name=='defoam_pump_now_set_speed'){
+    if (name=='feed0_pump_now_set_speed'){
         DeviceManage.deviceList[index]!.nowData!.motor_speed_autoflag=content
     }
     

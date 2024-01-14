@@ -13,14 +13,8 @@
     <div v-show="props.popcontent === PopupType.RPM" ref="popupCreateTaskCard">
       <ProcessRPM></ProcessRPM>
     </div>
-    <div v-show="props.popcontent === PopupType.FeedPump" ref="popupCreateTaskCard">
-      <ProcessFeedPump></ProcessFeedPump>
-    </div>
       <div v-show="props.popcontent === PopupType.BeginFermentation" ref="popupCreateTaskCard">
           <ProcessBeginFermentation></ProcessBeginFermentation>
-      </div>
-      <div v-show="props.popcontent === PopupType.DefoamerPump" ref="popupCreateTaskCard">
-          <ProcessDefoamerPump></ProcessDefoamerPump>
       </div>
       <div v-show="props.popcontent === PopupType.FeedSetting" ref="popupCreateTaskCard">
           <ProcessFeedSetting></ProcessFeedSetting>
@@ -39,9 +33,7 @@ import ProcessTemperatureControl from "@/components/tankControl/SingleTemperatur
 import ProcessPHValue from "@/components/tankControl/SinglePHValue.vue";
 import ProcessDissolvedOxygen from "@/components/tankControl/SingleDissolvedOxygen.vue";
 import ProcessRPM from "@/components/tankControl/SingleRPM.vue"
-import ProcessFeedPump from "@/components/tankControl/SingleFeedPump.vue"
 import ProcessBeginFermentation from "@/components/tankControl/SingleBegin.vue"
-import ProcessDefoamerPump from "@/components/tankControl/SingleDefoamerPump.vue"
 import ProcessFeedSetting from "@/components/tankControl/SingleFeedSet.vue"
 const props = defineProps({
   popcontent: {

@@ -96,7 +96,7 @@
                                                                         </div>
                                                                     </td>
                                                                     <td class=" text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
-                                                                        {{DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.timing_DO!==undefined?DeviceManage.deviceData[AppGlobal.pageChance]?.nowData?.timing_DO:0}}
+                                                                        {{DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.timing_DO!==undefined?DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.timing_DO:0}}
                                                                     </td>
                                                                     <td class=" text-center  border-b border-r rounded-br-2xl  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
                                                                         <div class="flex justify-center items-center w-full">

@@ -326,12 +326,12 @@ const initTableData = () => {
             else if (deviceProp.prop == "defoamer_pump") {
                 if (DeviceManage.deviceList[index]?.deviceSet?.defoamerPumpSpeed !== null) {
                     const defoamerPumpSpeed = DeviceManage.deviceList[index]?.deviceSet?.defoamerPumpSpeed ?? 0;
-                    const defoam_pump_sum_step_count = DeviceManage.deviceList[index]?.nowData?.defoam_pump_sum_step_count ?? 0;
-                    tableItem[header.props] = defoamerPumpSpeed * defoam_pump_sum_step_count;
+                    const feed0_pump_sum_step_count = DeviceManage.deviceList[index]?.nowData?.feed0_pump_sum_step_count ?? 0;
+                    tableItem[header.props] = defoamerPumpSpeed * feed0_pump_sum_step_count;
                     
                     let device = DeviceManage?.deviceList?.[index];
                     if (device && device.deviceSet) {
-                        device.deviceSet.defoamerPumpSumStepCount = defoamerPumpSpeed * defoam_pump_sum_step_count;
+                        device.deviceSet.defoamerPumpSumStepCount = defoamerPumpSpeed * feed0_pump_sum_step_count;
                     }
                 } else {
                     tableItem[header.props] = 0;

@@ -477,7 +477,7 @@
               </div>
               <!--是否开始-->
               <button
-                  v-if="DeviceManage.deviceList[AppGlobal.pageChance].nowData==null||(DeviceManage.deviceList[AppGlobal.pageChance].nowData!=null&&DeviceManage.deviceList[AppGlobal.pageChance].nowData.defoam_pump_calibration_flag==0)"
+                  v-if="DeviceManage.deviceList[AppGlobal.pageChance].nowData==null||(DeviceManage.deviceList[AppGlobal.pageChance].nowData!=null&&DeviceManage.deviceList[AppGlobal.pageChance].nowData.feed0_pump_calibration_flag==0)"
                   :class="[!CalibrationPumpSet.defoamerPumpKind?'bg-[#DAF0E4] hover:bg-[#C3DBCE]':'bg-[#FAF3B7]']"
                   class="w-[74px] h-full  relative flex items-center justify-center  rounded-[5px] shadow backdrop-blur-sm"
                   @click="CalibrationPumpSet.defoamerPumpKind=!CalibrationPumpSet.defoamerPumpKind;CalibrationPumpSet.defoamerTime=null;CalibrationPumpSet.defoamerVolume=null;">
@@ -492,7 +492,7 @@
 
               </button>
               <button
-                  v-if="DeviceManage.deviceList[AppGlobal.pageChance].nowData!=null&&DeviceManage.deviceList[AppGlobal.pageChance].nowData.defoam_pump_calibration_flag==1"
+                  v-if="DeviceManage.deviceList[AppGlobal.pageChance].nowData!=null&&DeviceManage.deviceList[AppGlobal.pageChance].nowData.feed0_pump_calibration_flag==1"
                   :class="[!CalibrationPumpSet.defoamerPumpKind?'bg-[#DAF0E4] hover:bg-[#C3DBCE]':'bg-[#FAF3B7]']"
                   class="w-[74px] h-full  relative flex items-center justify-center  rounded-[5px] shadow backdrop-blur-sm"
               >
@@ -525,7 +525,7 @@
                   placeholder="体积/ml"/>
 
               <!--对号-->
-              <div v-if="DeviceManage.deviceList[AppGlobal.pageChance].nowData==null||(DeviceManage.deviceList[AppGlobal.pageChance].nowData!==null&&DeviceManage.deviceList[AppGlobal.pageChance].nowData.defoam_pump_calibration_flag ==0)
+              <div v-if="DeviceManage.deviceList[AppGlobal.pageChance].nowData==null||(DeviceManage.deviceList[AppGlobal.pageChance].nowData!==null&&DeviceManage.deviceList[AppGlobal.pageChance].nowData.feed0_pump_calibration_flag ==0)
               &&CalibrationPumpSet.isDefoamerFinish==false"
                    class="w-[3rem] h-full  relative bg-[#83BA9B] rounded-[18px] hover:bg-[#668F78] cursor-pointer"
                    @click="DefoamPumpCalibrate('Begin')">
@@ -534,7 +534,7 @@
                 </svg>
               </div>
               <div
-                  v-if="(CalibrationPumpSet.defoamerPumpKind&&DeviceManage.deviceList[AppGlobal.pageChance].nowData!==null&&DeviceManage.deviceList[AppGlobal.pageChance].nowData.defoam_pump_calibration_flag ==1)"
+                  v-if="(CalibrationPumpSet.defoamerPumpKind&&DeviceManage.deviceList[AppGlobal.pageChance].nowData!==null&&DeviceManage.deviceList[AppGlobal.pageChance].nowData.feed0_pump_calibration_flag ==1)"
                   class="w-[3rem] h-full  relative bg-[#83BA9B] rounded-[18px] hover:bg-[#668F78] cursor-pointer"
                   @click="DefoamPumpCalibrate('Next')">
                 <svg fill="none" height="30" viewBox="0 0 50 30" width="50" xmlns="http://www.w3.org/2000/svg">
@@ -542,8 +542,8 @@
                 </svg>
               </div>
               <!--完成命令-在定体积完成时Flag=1，定时间为Flag=0-->
-              <div v-if="(!CalibrationPumpSet.defoamerPumpKind&&DeviceManage.deviceList[AppGlobal.pageChance].nowData!==null&&DeviceManage.deviceList[AppGlobal.pageChance].nowData.defoam_pump_calibration_flag ==1)
-              ||(CalibrationPumpSet.defoamerPumpKind&&DeviceManage.deviceList[AppGlobal.pageChance].nowData!==null&&DeviceManage.deviceList[AppGlobal.pageChance].nowData.defoam_pump_calibration_flag ==0&&CalibrationPumpSet.isDefoamerFinish==true)"
+              <div v-if="(!CalibrationPumpSet.defoamerPumpKind&&DeviceManage.deviceList[AppGlobal.pageChance].nowData!==null&&DeviceManage.deviceList[AppGlobal.pageChance].nowData.feed0_pump_calibration_flag ==1)
+              ||(CalibrationPumpSet.defoamerPumpKind&&DeviceManage.deviceList[AppGlobal.pageChance].nowData!==null&&DeviceManage.deviceList[AppGlobal.pageChance].nowData.feed0_pump_calibration_flag ==0&&CalibrationPumpSet.isDefoamerFinish==true)"
                    class="w-[3rem] h-full  relative bg-[#83BA9B] rounded-[18px] hover:bg-[#668F78] cursor-pointer"
                    @click="DefoamPumpCalibrate('Finish')">
                 <svg fill="none" height="30" viewBox="0 0 50 30" width="50" xmlns="http://www.w3.org/2000/svg">
@@ -635,7 +635,7 @@ const SendToHandle = (() => {
       DO_saturation_calibration_flag: DeviceManage.deviceList[AppGlobal.pageChance].nowData.DO_saturation_calibration_flag,
       PH_calibration_progress: DeviceManage.deviceList[AppGlobal.pageChance].nowData.PH_calibration_progress,
       feed_pump_calibration_flag: DeviceManage.deviceList[AppGlobal.pageChance].nowData.feed_pump_calibration_flag,
-      defoam_pump_calibration_flag: DeviceManage.deviceList[AppGlobal.pageChance].nowData.defoam_pump_calibration_flag,
+      feed0_pump_calibration_flag: DeviceManage.deviceList[AppGlobal.pageChance].nowData.feed0_pump_calibration_flag,
       lye_pump_calibration_flag: DeviceManage.deviceList[AppGlobal.pageChance].nowData.lye_pump_calibration_flag,
       acid_pump_calibration_flag: DeviceManage.deviceList[AppGlobal.pageChance].nowData.acid_pump_calibration_flag,
     }
@@ -1219,7 +1219,7 @@ const DefoamPumpCalibrate = ((data) => {
         DeviceManage.deviceList[AppGlobal.pageChance].deviceSet
     ) {
 
-      DeviceManage.deviceList[AppGlobal.pageChance].nowData.defoam_pump_calibration_flag = 1;
+      DeviceManage.deviceList[AppGlobal.pageChance].nowData.feed0_pump_calibration_flag = 1;
       SendToHandle();
       //重置信息
       message.value.proceed = '消泡泵校准';  // 使用 message.value 来访问或修改 ref 的值
@@ -1241,9 +1241,9 @@ const DefoamPumpCalibrate = ((data) => {
         DeviceManage.deviceList[AppGlobal.pageChance].deviceSet
     ) {
 
-      DeviceManage.deviceList[AppGlobal.pageChance].nowData.defoam_pump_calibration_flag = 0;
+      DeviceManage.deviceList[AppGlobal.pageChance].nowData.feed0_pump_calibration_flag = 0;
       SendToHandle();
-      let SpeedValue = CalibrationPumpSet.defoamerVolume / DeviceManage.deviceList[AppGlobal.pageChance].nowData.defoam_pump_step_count;
+      let SpeedValue = CalibrationPumpSet.defoamerVolume / DeviceManage.deviceList[AppGlobal.pageChance].nowData.feed0_pump_step_count;
       DeviceManage.deviceList[AppGlobal.pageChance].deviceSet.defoamerPumpSpeed = parseFloat(SpeedValue.toFixed(2));
       console.log('消泡泵速度', DeviceManage.deviceList[AppGlobal.pageChance].deviceSet.defoamerPumpSpeed)
       message.value.content = '消泡泵校准完成，泵速已保存';  // 使用 message.value 来访问或修改 ref 的值
@@ -1270,7 +1270,7 @@ const DefoamPumpCalibrate = ((data) => {
         message.value.proceed = '消泡泵校准';  // 使用 message.value 来访问或修改 ref 的值
         message.value.content = '请输入时间!';  // 使用 message.value 来访问或修改 ref 的值
       } else {
-        DeviceManage.deviceList[AppGlobal.pageChance].nowData.defoam_pump_calibration_flag = 1;
+        DeviceManage.deviceList[AppGlobal.pageChance].nowData.feed0_pump_calibration_flag = 1;
         SendToHandle();
 
         message.value.proceed = '消泡泵校准';  // 使用 message.value 来访问或修改 ref 的值
@@ -1293,7 +1293,7 @@ const DefoamPumpCalibrate = ((data) => {
         DeviceManage.deviceList[AppGlobal.pageChance].deviceSet
     ) {
 
-      DeviceManage.deviceList[AppGlobal.pageChance].nowData.defoam_pump_calibration_flag = 0;
+      DeviceManage.deviceList[AppGlobal.pageChance].nowData.feed0_pump_calibration_flag = 0;
       SendToHandle();
       CalibrationPumpSet.isDefoamerFinish = true
       message.value.content = '请输入体积';  // 使用 message.value 来访问或修改 ref 的值
@@ -1315,7 +1315,7 @@ const DefoamPumpCalibrate = ((data) => {
         DeviceManage.deviceList[AppGlobal.pageChance].deviceSet
     ) {
 
-      let SpeedValue = CalibrationPumpSet.defoamerVolume / DeviceManage.deviceList[AppGlobal.pageChance].nowData.defoam_pump_step_count;
+      let SpeedValue = CalibrationPumpSet.defoamerVolume / DeviceManage.deviceList[AppGlobal.pageChance].nowData.feed0_pump_step_count;
       DeviceManage.deviceList[AppGlobal.pageChance].deviceSet.defoamerPumpSpeed = parseFloat(SpeedValue.toFixed(2));
 
       if (DeviceManage.deviceList[AppGlobal.pageChance].deviceSet.defoamerPumpSpeed == 0) {

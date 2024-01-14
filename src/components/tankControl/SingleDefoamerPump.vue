@@ -94,10 +94,10 @@
                                                         
                                                         <ul class="p-2 shadow-xl menu dropdown-content z-[1] bg-base-100 rounded-md w-[7rem] broder">
                                                             <li class="text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2] rounded"
-                                                                @click="controlSend('clean_flag',i,0)"><a>手动</a>
+                                                                @click="controlSend('feed0_flag',i,0)"><a>手动</a>
                                                             </li>
                                                             <li class="text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] mt-2 rounded"
-                                                                @click="controlSend('clean_flag',i,1)"><a>自动</a></li>
+                                                                @click="controlSend('feed0_flag',i,1)"><a>自动</a></li>
                                                         </ul>
                                                     </details>
                                                 </td>
@@ -203,9 +203,9 @@ const initTableData = () => {
     initheaderData.forEach(item => headerData.push(item));  // 添加新的数据
     
     const deviceProperties = [
-        {name: '状态', prop: 'clean_flag'},
+        {name: '状态', prop: 'feed0_flag'},
         {name: '累计补料量', prop: 'defoamer_pump'},  // 这里选择了补料关联氧含量标志位，因为它看起来是一个功能关联标志
-        {name: '补料速度', prop: 'defoam_pump_now_set_speed'}
+        {name: '补料速度', prop: 'feed0_pump_now_set_speed'}
     ]
     
     
@@ -234,8 +234,8 @@ const initTableData = () => {
             } else if (deviceProp.prop == "defoamer_pump") {
                 if (DeviceManage.deviceList[index]?.deviceSet?.feedPumpSpeed !== null) {
                     const defoamerPumpSpeed = DeviceManage.deviceList[index]?.deviceSet?.defoamerPumpSpeed ?? 0;
-                    const defoam_pump_sum_step_count = DeviceManage.deviceList[index]?.nowData?.defoam_pump_sum_step_count ?? 0;
-                    tableItem[header.props] = defoamerPumpSpeed * defoam_pump_sum_step_count;
+                    const feed0_pump_sum_step_count = DeviceManage.deviceList[index]?.nowData?.feed0_pump_sum_step_count ?? 0;
+                    tableItem[header.props] = defoamerPumpSpeed * feed0_pump_sum_step_count;
                     
                 } else {
                     tableItem[header.props] = 0;
@@ -277,27 +277,27 @@ const keyupEnterInput = (deviceID: number, setIndex: number) => {
     if (setIndex == 0 && inputVisible.value[deviceID][setIndex].cache != null) {
         if (DeviceManage.deviceList[deviceID] && DeviceManage.deviceList[deviceID]!.nowData) {
             console.log('------')
-            DeviceManage.deviceList[deviceID]!.nowData!.defoam_pump_now_set_speed = inputVisible.value[deviceID][setIndex].cache || 0;
+            DeviceManage.deviceList[deviceID]!.nowData!.feed0_pump_now_set_speed = inputVisible.value[deviceID][setIndex].cache || 0;
         }
     }
-    controlSend('defoam_pump_now_set_speed', deviceID, Number(inputVisible.value[deviceID][setIndex].cache))
+    controlSend('feed0_pump_now_set_speed', deviceID, Number(inputVisible.value[deviceID][setIndex].cache))
     
     
 }
 
 const controlSend = ((name, index, content) => {
-    if (name == 'clean_flag') {
-        DeviceManage.deviceList[index]!.nowData!.clean_flag = content
+    if (name == 'feed0_flag') {
+        DeviceManage.deviceList[index]!.nowData!.feed0_flag = content
         const data = {
-            clean_flag: content
+            feed0_flag: content
             
         }
         sendData(index, data);
     }
-    if (name == 'defoam_pump_now_set_speed') {
-        DeviceManage.deviceList[index]!.nowData!.defoam_pump_now_set_speed = content
+    if (name == 'feed0_pump_now_set_speed') {
+        DeviceManage.deviceList[index]!.nowData!.feed0_pump_now_set_speed = content
         const data = {
-            defoam_pump_now_set_speed: content
+            feed0_pump_now_set_speed: content
             
         }
         sendData(index, data);

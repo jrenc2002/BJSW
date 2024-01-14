@@ -400,8 +400,8 @@
                                 </div>
                                 
                                 <div :class="[stateManger.DefoamerPump?'text-white bg-[#E4DDA4]':'bg-white']"
-                                     class=" h-full w-[4.3rem] shadow flex justify-center items-center rounded mx-1 cursor-pointer "
-                                     @click="popProcessManager('消泡泵')">
+                                     class=" h-full w-[4.3rem]  flex justify-center items-center rounded mx-1 border-gray-300 border "
+                                     >
                                     补料泵1
                                 </div>
                                 <div :class="[stateManger.Defoamer?'text-white bg-[#E4DDA4]':'bg-white']"
@@ -438,8 +438,8 @@
                                 </div>
                                 
                                 <div :class="[stateManger.FeedPump?'text-white bg-[#9AD1B5]':'bg-white']"
-                                     class=" h-full w-[4.3rem] shadow flex justify-center items-center rounded mx-1 cursor-pointer "
-                                     @click="popProcessManager('补料泵')">
+                                     class=" h-full w-[4.3rem]  flex justify-center items-center rounded mx-1 border-gray-300 border "
+                                     >
                                     补料泵2
                                 </div>
                                 <div :class="[stateManger.AddFeed?'text-white bg-[#9AD1B5]':'bg-white']"
@@ -638,12 +638,12 @@ const initDataManger = () => {
     localCache.acidPumpData.FeedAmount = formatData(setDevice.acidPumpSumStepCount);
     localCache.lyePumpData.SetData = formatData(currentDevice.lye_pump_now_speed);
     localCache.lyePumpData.MeasureData = formatData(Number(setDevice.lyePumpSumStepCount));
-    localCache.defoamerPumpData.SetData = formatData(Number(currentDevice.defoam_pump_now_speed));
+    localCache.defoamerPumpData.SetData = formatData(Number(currentDevice.feed0_pump_now_speed));
     localCache.defoamerPumpData.MeasureData = formatData(Number(setDevice.defoamerPumpSumStepCount));
     localCache.feedPumpData.SetData = formatData(currentDevice.feed_pump_now_speed);
     localCache.feedPumpData.MeasureData = formatData(Number(setDevice.feedPumpSumStepCount));
     stateManger.AddFeed = Number(currentDevice.feed_flag) === 1;
-    stateManger.DefoamerPump = Number(currentDevice.clean_flag) === 1;
+    stateManger.DefoamerPump = Number(currentDevice.feed0_flag) === 1;
     
 }
 let lastClickTime = 0;
@@ -748,8 +748,6 @@ const name_translation = {
     'PH值': 'PHValue',
     '转速': 'RPM',
     '溶氧': 'DissolvedOxygen',
-    '补料泵': 'FeedPump',
-    '消泡泵': 'DefoamerPump',
     '开始发酵': 'BeginFermentation',
     '补料设置': 'FeedSetting',
 }

@@ -319,7 +319,7 @@ const keyupEnterInput = (deviceID: number, setIndex: number) => {
             DeviceManage.deviceList[deviceID]!.nowData!.acid_pump_now_set_speed = inputVisible.value[deviceID][setIndex].cache || 0;
         }
     }
-    controlSend('defoam_pump_now_set_speed',deviceID,inputVisible.value[deviceID][setIndex].cache)
+    controlSend('feed0_pump_now_set_speed',deviceID,inputVisible.value[deviceID][setIndex].cache)
     
     
 }
