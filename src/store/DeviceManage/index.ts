@@ -1,5 +1,4 @@
 import {defineStore} from "pinia";
-
 import Swal from 'sweetalert2';
 // 给开发人员使用的debug
 const debug = false;
@@ -73,7 +72,7 @@ interface SetData {
     DO_zero_calibration_flag: number;   			//溶氧校准标志位 0没开始 1 开始
     DO_saturation_calibration_flag: number;   //溶氧校准标志位 0没开始 1 开始
     
-
+    
     /*补料0控制部分*/
     feed0_DO_upper_limit: number;					//补料溶氧上限
     feed0_DO_lower_limit: number;					//补料溶氧下限
@@ -84,14 +83,13 @@ interface SetData {
     feed0_pump_calibration_flag: number; 		//补料泵标定开始标志位
     feed0_pump_sum_step_count: number;  			//补料泵发送步数
     feed0_pump_now_speed: number;            //补料泵当前速度-泵速==0为关闭
-                 //补料泵当前补料量
     feed0_pump_now_set_speed: number;        //补料泵当前设定速度-上位机设定的
     
     feed0_opening_degree: number;	//手动补料开度
     feed0_period: number;					//手动补料周期
-    feed0_way : number;             //补料方式
+    feed0_way: number;             //补料方式
     feed0_ml_h: number;             //补料速度，ml/h
-
+    
     /*补料控制部分*/
     feed_DO_upper_limit: number;					//补料溶氧上限
     feed_DO_lower_limit: number;					//补料溶氧下限
@@ -102,12 +100,12 @@ interface SetData {
     feed_pump_calibration_flag: number; 		//补料泵标定开始标志位
     feed_pump_sum_step_count: number;  			//补料泵发送步数
     feed_pump_now_speed: number;            //补料泵当前速度-泵速==0为关闭
-              //补料泵当前补料量
+    //补料泵当前补料量
     feed_pump_now_set_speed: number;        //补料泵当前设定速度-上位机设定的 单位：步
     
     feed_opening_degree: number;	//手动补料开度
     feed_period: number;					//手动补料周期
-    feed_way : number;          //补料方式
+    feed_way: number;          //补料方式
     feed_ml_h: number;   //补料速度，ml/h
     
     /** 酸泵单步速度 */
@@ -122,12 +120,11 @@ interface SetData {
     /** 补料泵单步速度 */
     feedPumpSpeed: number;
     
-
     
     /*系统控制变量*/
     start_flag: number;     								//发酵开始标志位
     communicate_flag: number;   						//通讯连接成功标志位
-    decive_id:any;
+    decive_id: any;
 }
 
 interface deviceSet {
@@ -149,11 +146,9 @@ interface deviceSet {
     /** DO报警下限 */
     doMinWarn: number;
     
-
     
     rpmMaxWarn: number;
     rpmMinWarn: number;
-
     
     
     tempState: number,
@@ -163,7 +158,7 @@ interface deviceSet {
     lyePumpSumStepCount: number,
     defoamerPumpSumStepCount: number,
     feedPumpSumStepCount: number,
-
+    
     
 }
 
@@ -186,10 +181,6 @@ interface Device {
 }
 
 
-
-
-
-
 // TODO:设备管理要重构
 // 1.内容数据表项不全仍然缺乏
 // 2.各个部分的状态灯
@@ -198,13 +189,25 @@ interface Device {
 
 const state = (): {
     deviceList: Device[];
+    supplementSystem: any[];
 } => {
     return {
         deviceList: [
             {
-                id: 0, name: '设备A', deviceNum: "CCC-022", batch_name: null, ip: '192.168.1.3', port: 2000, batch_cycle: 0,
-                state: 0, nowData: null, deviceSocket: null, start_time: null, recordFlag: false,
-                alarm: false, deviceSet: {
+                id: 0,
+                name: '设备A',
+                deviceNum: "CCC-022",
+                batch_name: null,
+                ip: '192.168.1.3',
+                port: 2000,
+                batch_cycle: 0,
+                state: 0,
+                nowData: null,
+                deviceSocket: null,
+                start_time: null,
+                recordFlag: false,
+                alarm: false,
+                deviceSet: {
                     tempState: 0,
                     phState: 0,
                     doState: 0,
@@ -223,6 +226,184 @@ const state = (): {
                 }
             },
         
+        ],
+        supplementSystem: [
+            [
+                {
+                    id: 0,
+                    time: {
+                        t0_time: new Date(), // t0时间
+                        t0_time_diff: 0, // t0时间差
+                        
+                    },
+                    totalSwitch: false, // 补料总开关，布尔值对应总的开启关闭
+                    supplementSwitch: { // 补料开关
+                        type: 0, // 0未选择，1，2，3对应三种类型
+                        manual: false, // 手动补料是否开启
+                        trigger: { // 触发补料
+                            dissolvedOxygen: { // 溶氧
+                                upperLimit: null, // 溶氧上限
+                                lowerLimit: null, // 溶氧下限
+                                selected: false, // 是否选择
+                            },
+                            pH: { // PH
+                                upperLimit: null, // PH上限
+                                lowerLimit: null, // PH下限
+                                selected: false, // 是否选择
+                            },
+                            speed: { // 转速
+                                upperLimit: null, // 转速上限
+                                lowerLimit: null, // 转速下限
+                                selected: false, // 是否选择
+                            },
+                            logic: 0, // 且或补料逻辑，1代表或，2代表且
+                            t0: false, // t0选择按钮是否开启
+                        },
+                        related: { // 关联开关，结构同trigger
+                            dissolvedOxygen: { // 溶氧
+                                upperLimit: null, // 溶氧上限
+                                lowerLimit: null, // 溶氧下限
+                                selected: false, // 是否选择
+                            },
+                            pH: { // PH
+                                upperLimit: null, // PH上限
+                                lowerLimit: null, // PH下限
+                                selected: false, // 是否选择
+                            },
+                            speed: { // 转速
+                                upperLimit: null, // 转速上限
+                                lowerLimit: null, // 转速下限
+                                selected: false, // 是否选择
+                            },
+                            logic: 0, // 且或补料逻辑，0代表或，1代表且
+                        },
+                    },
+                    
+                    supplementMethod: { // 补料方式
+                        type: 0, // 补料方式选择，持续补料为1，占空比补料为2
+                        dutyCycle: { // 占空比补料内容设置
+                            opening: null, // 补料开度
+                            detectionPeriod: null, // 检测周期
+                        },
+                    },
+                    
+                    controlMethod: { // 控制方式
+                        type: 0, // 控制方式选择，单次补料1，恒速补料2，分段补料3，线性补料4，指数补料5
+                        single: { // 单次补料内容设置
+                            amount: null, // 补料量
+                            cycle: null, // 冷却周期
+                            speed: null, // 补料速度
+                        },
+                        constant: { // 恒速补料内容设置
+                            speed: null, // 补料速度
+                        },
+                        segmented: { // 分段补料内容设置
+                            sequenceControl: [ // 数组顺控表
+                                // { id: null, supplementSpeed: null, segmentTime: null, totalSegmentTime: null }, ...
+                            ],
+                        },
+                        linear: { // 线性补料内容设置
+                            offset: null, // 偏移量
+                            slope: null, // 斜率
+                            speedUpperLimit: null, // 速度上限
+                            speedLowerLimit: null, // 速度下限
+                        },
+                        exponential: { // 指数补料内容设置
+                            offset: null, // 偏移量
+                            exponent: null, // 指数量
+                            speedUpperLimit: null, // 速度上限
+                            speedLowerLimit: null, // 速度下限
+                        },
+                    },
+                },
+                {
+                    id: 1,
+                    time: {
+                        t0_time: new Date(), // t0时间
+                        t0_time_diff: 0, // t0时间差
+                        
+                    },
+                    totalSwitch: false, // 补料总开关，布尔值对应总的开启关闭
+                    supplementSwitch: { // 补料开关
+                        type: 0, // 0未选择，1，2，3对应三种类型
+                        manual: false, // 手动补料是否开启
+                        trigger: { // 触发补料
+                            dissolvedOxygen: { // 溶氧
+                                upperLimit: null, // 溶氧上限
+                                lowerLimit: null, // 溶氧下限
+                                selected: false, // 是否选择
+                            },
+                            pH: { // PH
+                                upperLimit: null, // PH上限
+                                lowerLimit: null, // PH下限
+                                selected: false, // 是否选择
+                            },
+                            speed: { // 转速
+                                upperLimit: null, // 转速上限
+                                lowerLimit: null, // 转速下限
+                                selected: false, // 是否选择
+                            },
+                            logic: 0, // 且或补料逻辑，1代表或，2代表且
+                            t0: false, // t0选择按钮是否开启
+                        },
+                        related: { // 关联开关，结构同trigger
+                            dissolvedOxygen: { // 溶氧
+                                upperLimit: null, // 溶氧上限
+                                lowerLimit: null, // 溶氧下限
+                                selected: false, // 是否选择
+                            },
+                            pH: { // PH
+                                upperLimit: null, // PH上限
+                                lowerLimit: null, // PH下限
+                                selected: false, // 是否选择
+                            },
+                            speed: { // 转速
+                                upperLimit: null, // 转速上限
+                                lowerLimit: null, // 转速下限
+                                selected: false, // 是否选择
+                            },
+                            logic: 0, // 且或补料逻辑，0代表或，1代表且
+                        },
+                    },
+                    
+                    supplementMethod: { // 补料方式
+                        type: 0, // 补料方式选择，持续补料为1，占空比补料为2
+                        dutyCycle: { // 占空比补料内容设置
+                            opening: null, // 补料开度
+                            detectionPeriod: null, // 检测周期
+                        },
+                    },
+                    
+                    controlMethod: { // 控制方式
+                        type: 0, // 控制方式选择，单次补料1，恒速补料2，分段补料3，线性补料4，指数补料5
+                        single: { // 单次补料内容设置
+                            amount: null, // 补料量
+                            cycle: null, // 冷却周期
+                            speed: null, // 补料速度
+                        },
+                        constant: { // 恒速补料内容设置
+                            speed: null, // 补料速度
+                        },
+                        segmented: { // 分段补料内容设置
+                            sequenceControl: [ // 数组顺控表
+                                // { id: null, supplementSpeed: null, segmentTime: null, totalSegmentTime: null }, ...
+                            ],
+                        },
+                        linear: { // 线性补料内容设置
+                            offset: null, // 偏移量
+                            slope: null, // 斜率
+                            speedUpperLimit: null, // 速度上限
+                            speedLowerLimit: null, // 速度下限
+                        },
+                        exponential: { // 指数补料内容设置
+                            offset: null, // 偏移量
+                            exponent: null, // 指数量
+                            speedUpperLimit: null, // 速度上限
+                            speedLowerLimit: null, // 速度下限
+                        },
+                    },
+                }]
+        
         ]
     }
 }
@@ -239,7 +420,7 @@ export const useDeviceManage = defineStore('DeviceManage', {
             const newDevice: Device = {
                 id: newId,
                 name: nameDevice,
-                deviceNum:'',
+                deviceNum: '',
                 batch_cycle: 0,
                 ip: ip,
                 port: port,
@@ -254,6 +435,184 @@ export const useDeviceManage = defineStore('DeviceManage', {
             };
             
             this.deviceList.push(newDevice);
+            // 增加supplementSystem
+            const newSupplementSystem = [
+                {
+                    id: 0,
+                    time: {
+                        t0_time: new Date(), // t0时间
+                        t0_time_diff: 0, // t0时间差
+                        
+                    },
+                    totalSwitch: false, // 补料总开关，布尔值对应总的开启关闭
+                    supplementSwitch: { // 补料开关
+                        type: 0, // 0未选择，1，2，3对应三种类型
+                        manual: false, // 手动补料是否开启
+                        trigger: { // 触发补料
+                            dissolvedOxygen: { // 溶氧
+                                upperLimit: null, // 溶氧上限
+                                lowerLimit: null, // 溶氧下限
+                                selected: false, // 是否选择
+                            },
+                            pH: { // PH
+                                upperLimit: null, // PH上限
+                                lowerLimit: null, // PH下限
+                                selected: false, // 是否选择
+                            },
+                            speed: { // 转速
+                                upperLimit: null, // 转速上限
+                                lowerLimit: null, // 转速下限
+                                selected: false, // 是否选择
+                            },
+                            logic: 0, // 且或补料逻辑，1代表或，2代表且
+                            t0: false, // t0选择按钮是否开启
+                        },
+                        related: { // 关联开关，结构同trigger
+                            dissolvedOxygen: { // 溶氧
+                                upperLimit: null, // 溶氧上限
+                                lowerLimit: null, // 溶氧下限
+                                selected: false, // 是否选择
+                            },
+                            pH: { // PH
+                                upperLimit: null, // PH上限
+                                lowerLimit: null, // PH下限
+                                selected: false, // 是否选择
+                            },
+                            speed: { // 转速
+                                upperLimit: null, // 转速上限
+                                lowerLimit: null, // 转速下限
+                                selected: false, // 是否选择
+                            },
+                            logic: 0, // 且或补料逻辑，0代表或，1代表且
+                        },
+                    },
+                    
+                    supplementMethod: { // 补料方式
+                        type: 0, // 补料方式选择，持续补料为1，占空比补料为2
+                        dutyCycle: { // 占空比补料内容设置
+                            opening: null, // 补料开度
+                            detectionPeriod: null, // 检测周期
+                        },
+                    },
+                    
+                    controlMethod: { // 控制方式
+                        type: 0, // 控制方式选择，单次补料1，恒速补料2，分段补料3，线性补料4，指数补料5
+                        single: { // 单次补料内容设置
+                            amount: null, // 补料量
+                            cycle: null, // 冷却周期
+                            speed: null, // 补料速度
+                        },
+                        constant: { // 恒速补料内容设置
+                            speed: null, // 补料速度
+                        },
+                        segmented: { // 分段补料内容设置
+                            sequenceControl: [ // 数组顺控表
+                                // { id: null, supplementSpeed: null, segmentTime: null, totalSegmentTime: null }, ...
+                            ],
+                        },
+                        linear: { // 线性补料内容设置
+                            offset: null, // 偏移量
+                            slope: null, // 斜率
+                            speedUpperLimit: null, // 速度上限
+                            speedLowerLimit: null, // 速度下限
+                        },
+                        exponential: { // 指数补料内容设置
+                            offset: null, // 偏移量
+                            exponent: null, // 指数量
+                            speedUpperLimit: null, // 速度上限
+                            speedLowerLimit: null, // 速度下限
+                        },
+                    },
+                },
+                {
+                    id: 1,
+                    time: {
+                        t0_time: new Date(), // t0时间
+                        t0_time_diff: 0, // t0时间差
+                        
+                    },
+                    totalSwitch: false, // 补料总开关，布尔值对应总的开启关闭
+                    supplementSwitch: { // 补料开关
+                        type: 0, // 0未选择，1，2，3对应三种类型
+                        manual: false, // 手动补料是否开启
+                        trigger: { // 触发补料
+                            dissolvedOxygen: { // 溶氧
+                                upperLimit: null, // 溶氧上限
+                                lowerLimit: null, // 溶氧下限
+                                selected: false, // 是否选择
+                            },
+                            pH: { // PH
+                                upperLimit: null, // PH上限
+                                lowerLimit: null, // PH下限
+                                selected: false, // 是否选择
+                            },
+                            speed: { // 转速
+                                upperLimit: null, // 转速上限
+                                lowerLimit: null, // 转速下限
+                                selected: false, // 是否选择
+                            },
+                            logic: 0, // 且或补料逻辑，1代表或，2代表且
+                            t0: false, // t0选择按钮是否开启
+                        },
+                        related: { // 关联开关，结构同trigger
+                            dissolvedOxygen: { // 溶氧
+                                upperLimit: null, // 溶氧上限
+                                lowerLimit: null, // 溶氧下限
+                                selected: false, // 是否选择
+                            },
+                            pH: { // PH
+                                upperLimit: null, // PH上限
+                                lowerLimit: null, // PH下限
+                                selected: false, // 是否选择
+                            },
+                            speed: { // 转速
+                                upperLimit: null, // 转速上限
+                                lowerLimit: null, // 转速下限
+                                selected: false, // 是否选择
+                            },
+                            logic: 0, // 且或补料逻辑，0代表或，1代表且
+                        },
+                    },
+                    
+                    supplementMethod: { // 补料方式
+                        type: 0, // 补料方式选择，持续补料为1，占空比补料为2
+                        dutyCycle: { // 占空比补料内容设置
+                            opening: null, // 补料开度
+                            detectionPeriod: null, // 检测周期
+                        },
+                    },
+                    
+                    controlMethod: { // 控制方式
+                        type: 0, // 控制方式选择，单次补料1，恒速补料2，分段补料3，线性补料4，指数补料5
+                        single: { // 单次补料内容设置
+                            amount: null, // 补料量
+                            cycle: null, // 冷却周期
+                            speed: null, // 补料速度
+                        },
+                        constant: { // 恒速补料内容设置
+                            speed: null, // 补料速度
+                        },
+                        segmented: { // 分段补料内容设置
+                            sequenceControl: [ // 数组顺控表
+                                // { id: null, supplementSpeed: null, segmentTime: null, totalSegmentTime: null }, ...
+                            ],
+                        },
+                        linear: { // 线性补料内容设置
+                            offset: null, // 偏移量
+                            slope: null, // 斜率
+                            speedUpperLimit: null, // 速度上限
+                            speedLowerLimit: null, // 速度下限
+                        },
+                        exponential: { // 指数补料内容设置
+                            offset: null, // 偏移量
+                            exponent: null, // 指数量
+                            speedUpperLimit: null, // 速度上限
+                            speedLowerLimit: null, // 速度下限
+                        },
+                    },
+                }]
+            this.supplementSystem.push(newSupplementSystem)
+            
             return newId;
         },
         // 更新设备数据
@@ -273,7 +632,7 @@ export const useDeviceManage = defineStore('DeviceManage', {
                 // 已连接-已连接的设备如果没有修改通讯标志进行修改
                 
                 // deviceNum赋值
-                if (newDeviceData.decive_id&&this.deviceList[index].deviceNum!==newDeviceData.decive_id) {
+                if (newDeviceData.decive_id && this.deviceList[index].deviceNum !== newDeviceData.decive_id) {
                     this.deviceList[index].deviceNum = newDeviceData.decive_id;
                 }
                 
@@ -360,7 +719,7 @@ export const useDeviceManage = defineStore('DeviceManage', {
                         
                         
                         can_number: newDeviceData.decive_id,
-                        batch_id:this.deviceList[index].batch_name,
+                        batch_id: this.deviceList[index].batch_name,
                         timing_temp: newDeviceData.timing_temp,
                         timing_PH: newDeviceData.timing_PH,
                         timing_DO: newDeviceData.timing_DO,

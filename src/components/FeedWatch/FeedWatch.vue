@@ -3,25 +3,20 @@
 </template>
 
 <script setup>
-// todo 新建supplementSystem的代码
 import {onMounted} from "vue";
-import {useFeedManger} from "@/store/FeedManger";
 import {useDeviceManage} from "@/store/DeviceManage";
 import Swal from 'sweetalert2';
 import {sendData} from "@/api";
 
 const debug = true;
 const DeviceManage = useDeviceManage();
-const FeedManger = useFeedManger();
 // 创建定时器群组
 const timerGroup = new Map();
-// 定时时间
+// 补料逻辑检验的定时时间
 const interval = 3000;
 onMounted(() => {
-    
-    
     // 遍历数组创建监听器
-    FeedManger.supplementSystem.forEach((feedDevice) => {
+    DeviceManage.supplementSystem.forEach((feedDevice,deviceIndex) => {
         feedDevice.forEach((feedSet) => {
             let isSupplementing = false;
             let coolingTimer = null;
@@ -113,14 +108,14 @@ onMounted(() => {
                 if (!feedSet.supplementSwitch.manual) {
                     return;
                 }
-                
+                let feedMethod;
                 // 补料方式的逻辑判断
                 if (feedSet.supplementMethod.type === 1) {
                     // 持续补料
-                    controlSend('持续补料', feedSet)
+                    feedMethod='持续补料';
                 } else if (feedSet.supplementMethod.type === 2) {
                     // 占空比补料
-                    controlSend('占空比补料', feedSet)
+                    feedMethod='占空比补料';
                 } else {
                     Swal.fire({
                         icon: 'warning', //error\warning\info\question
@@ -134,6 +129,9 @@ onMounted(() => {
                         cancelButtonText: '取消',
                     });
                     return;
+                }
+                if (debug){
+                    console.log('补料方式：'+feedMethod);
                 }
                 // ————————————————— 控制方式的逻辑判断 —————————————————————————
                 if (feedSet.controlMethod.type === 1) {
@@ -152,14 +150,14 @@ onMounted(() => {
                         const supplementDuration = feedSet.controlMethod.single.amount / feedSet.controlMethod.single.speed;
                         
                         // 发送开始补料的指令
-                        controlSend('补料速度', feedSet, feedSet.controlMethod.single.speed);
+                        controlSend(feedMethod,deviceIndex, feedSet, feedSet.controlMethod.single.speed);
                         
                         // setTimeout嵌套就是连续定时器，因为他是先定时然后再回调的。
                         // 设置补料定时器
                         supplementTimer = setTimeout(() => {
                             // 补料完成
-                            controlSend('补料速度', feedSet, 0);
-                            
+                            controlSend(feedMethod,deviceIndex, feedSet, 0);
+    
                             // 标记补料结束
                             feedSet.isSupplementing = false;
                             
@@ -179,8 +177,8 @@ onMounted(() => {
                     
                 } else if (feedSet.controlMethod.type === 2) {
                     // 恒速补料
-                    controlSend('补料速度', feedSet, feedSet.controlMethod.constant.speed);
-                    
+                    controlSend(feedMethod,deviceIndex, feedSet, feedSet.controlMethod.constant.speed);
+  
                 } else if (feedSet.controlMethod.type === 3) {
                     checkTimeDiff(feedSet);
                     // 分段补料
@@ -217,10 +215,10 @@ onMounted(() => {
                             confirmButton: false,
                             cancelButtonText: '取消',
                         });
-                        controlSend('补料速度', feedSet, 0);
+                        controlSend(feedMethod,deviceIndex, feedSet, 0);
                         return;
                     } else {
-                        controlSend('补料速度', feedSet, currentSupplementSpeed);
+                        controlSend(feedMethod,deviceIndex, feedSet, currentSupplementSpeed);
                     }
                     
                 } else if (feedSet.controlMethod.type === 4) {
@@ -279,7 +277,8 @@ onMounted(() => {
                         });
                         return;
                     }
-                    controlSend('补料速度', feedSet,currentSupplementSpeed)
+    
+                    controlSend(feedMethod,deviceIndex, feedSet, currentSupplementSpeed);
                     
                 } else if (feedSet.controlMethod.type === 5) {
                     checkTimeDiff(feedSet);
@@ -337,8 +336,7 @@ onMounted(() => {
                         });
                         return;
                     }
-                    controlSend('补料速度', feedSet,currentSupplementSpeed)
-    
+                    controlSend(feedMethod,deviceIndex, feedSet, currentSupplementSpeed);
                 } else {
                     Swal.fire({
                         icon: 'warning', //error\warning\info\question
@@ -361,26 +359,55 @@ onMounted(() => {
     
     
 })
-const controlSend = ((name, feedSet, content) => {
-    if (name === '持续补料') {
-        console.log('持续补料');
-    } else if (name === '占空比补料') {
-        //一个设备有两个补料泵，需要有两个占空比补料；
-        const index = feedSet.id;
-        const data = {
-            start_flag: 1,
-            
+/*
+* @name: controlSend 控制发送函数
+* @param: name:补料方式，index:设备编号，feedSet:补料数据，content:补料速度
+* @return: null
+* @description: 根据补料方式发送不同的数据
+* */
+const controlSend = ((name, deviceIndex,feedSet, content) => {
+    if (debug){
+        console.log('补料方式：'+name,'补料速度：'+content,'设备编号：'+deviceIndex+'-'+feedSet.id,'补料数据：'+feedSet);
+    }
+    //
+    if (feedSet.id ===  0) {
+        // 泵1
+        if (name === '持续补料') {
+            const data = {
+                feed0_way:0,
+                feed0_ml_h: content,
+            }
+            sendData(deviceIndex, data);
+        } else if (name === '占空比补料') {
+            const data = {
+                feed0_way:1,
+                feed0_ml_h: content,
+                feed0_period: feedSet.supplementMethod.dutyCycle.detectionPeriod,
+                feed0_opening_degree: feedSet.supplementMethod.dutyCycle.opening,
+            }
+            sendData(deviceIndex, data);
         }
-        sendData(index, data);
-    } else if (name === '补料速度') {
-        //一个设备有两个补料泵，需要有两个占空比补料；
-        const index = feedSet.id;
-        const data = {
-            speed: Number(content),
+    } else if (feedSet.id ===  1) {
+        // 泵2
+        if (name === '持续补料') {
+            const data = {
+                feed_way:0,
+                feed_ml_h: content,
+            }
+            sendData(deviceIndex, data);
+        } else if (name === '占空比补料') {
+            const data = {
+                feed_way:1,
+                feed_ml_h: content,
+                feed_period: feedSet.supplementMethod.dutyCycle.detectionPeriod,
+                feed_opening_degree: feedSet.supplementMethod.dutyCycle.opening,
+            }
+            sendData(deviceIndex, data);
         }
-        sendData(index, data);
     }
     
+
+
     
 })
 
@@ -389,7 +416,7 @@ function checkDevice(feedDeviceID) {
     // 设备是否开机
     const isPower = DeviceManage.deviceList[Math.floor(feedDeviceID / 2)].state <= 0;
     // 总开关是否开启
-    const isSwitch = FeedManger.supplementSystem[Math.floor(feedDeviceID / 2)][feedDeviceID % 2]?.totalSwitch!==undefined?FeedManger.supplementSystem[Math.floor(feedDeviceID / 2)][feedDeviceID % 2].totalSwitch:false;
+    const isSwitch = DeviceManage.supplementSystem[Math.floor(feedDeviceID / 2)][feedDeviceID % 2]?.totalSwitch!==undefined?DeviceManage.supplementSystem[Math.floor(feedDeviceID / 2)][feedDeviceID % 2].totalSwitch:false;
     return isPower && isSwitch;
 }
 

@@ -71,6 +71,7 @@ export const addDevice = (ip, port, name) => {
 	}
 	
 	const index = DeviceManage.addDevice(ip, port, name);
+	
 	if (index === undefined || index < 0) {
 		console.error(`添加设备失败: ${ip}:${port}`);
 		return;

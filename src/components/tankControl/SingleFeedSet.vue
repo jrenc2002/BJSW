@@ -310,8 +310,6 @@
     
                             <div class="py-1" >
                                 <div :class="[localCache.supplementSwitch.related.dissolvedOxygen.selected ? 'bg-gray-100 text-gray-900' : 'text-gray-700', 'group flex items-center text-sm cursor-pointer  py-1']">
-            
-            
                                     <input id="name" v-model="localCache.supplementSwitch.related.dissolvedOxygen.upperLimit"
                                            class="block w-[2rem]  h-[100%] bg-transparent " name="name"
                                            placeholder="上限"
@@ -1307,12 +1305,11 @@ import {useDeviceManage} from '@/store/DeviceManage'
 import {useAppGlobal} from '@/store/AppGlobal'
 import {Menu, MenuButton, MenuItem, MenuItems, Switch} from '@headlessui/vue'
 import {ArrowPathIcon, BeakerIcon, ChevronDownIcon, EyeDropperIcon,} from '@heroicons/vue/20/solid'
-import {useFeedManger} from "@/store/FeedManger";
+
 
 const DeviceManage = useDeviceManage();
 const ProcessPopupMangerState = useProcessPopupMangerState()
 const AppGlobal = useAppGlobal();
-const FeedManger = useFeedManger();
 
 
 
@@ -1433,14 +1430,14 @@ const postFeedSet = (kind, index) => {
         }
     }
     // 本地缓存提交全局
-    FeedManger.supplementSystem[AppGlobal.pageChance][AppGlobal.FeedSet]=localCache.value
+    DeviceManage.supplementSystem[AppGlobal.pageChance][AppGlobal.FeedSet]=localCache.value
     // 从全局读取数据存入本地，做二次确认
-    localCache.value=FeedManger.supplementSystem[AppGlobal.pageChance][AppGlobal.FeedSet]
+    localCache.value=DeviceManage.supplementSystem[AppGlobal.pageChance][AppGlobal.FeedSet]
     
 }
 onMounted(()=>{
     // 同步补料设置数据
-    localCache.value=FeedManger.supplementSystem[AppGlobal.pageChance][AppGlobal.FeedSet]
+    localCache.value=DeviceManage.supplementSystem[AppGlobal.pageChance][AppGlobal.FeedSet]
 })
 // ______________________顺控_______________________
 const formData = reactive({
@@ -1482,9 +1479,9 @@ const submitForm = () => {
     // 这里可以添加提交表单的逻辑
     localCache.value.controlMethod.segmented.sequenceControl=formData.items
     // 本地缓存提交全局
-    FeedManger.supplementSystem[AppGlobal.pageChance][AppGlobal.FeedSet]=localCache.value
+    DeviceManage.supplementSystem[AppGlobal.pageChance][AppGlobal.FeedSet]=localCache.value
     // 从全局读取数据存入本地，做二次确认
-    localCache.value=FeedManger.supplementSystem[AppGlobal.pageChance][AppGlobal.FeedSet]
+    localCache.value=DeviceManage.supplementSystem[AppGlobal.pageChance][AppGlobal.FeedSet]
  
 };
 // ______________________功能函数_______________________

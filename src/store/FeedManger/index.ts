@@ -195,5 +195,9 @@ const state = () => {
  */
 export const useFeedManger = defineStore('FeedManger', {
     state,
-    actions: {},
+    actions: {
+
+    
+    
+    },
 });
