@@ -2,7 +2,7 @@ import {defineStore} from "pinia";
 import {useRoute} from "vue-router";
 
 // 给开发人员使用的debug
-const debug = false;
+const debug = true;
 const route = useRoute()
 const state = () => {
     return {
@@ -12,8 +12,8 @@ const state = () => {
         isDrawerState: true,
         // 触摸项-就是鼠标触摸到的选项
         selectedDeviceIndex:-1,
-        // 补料泵选择
-        FeedSet:0,
+        // 通讯心跳定时器
+        BeatTimer:3000,
 
 
 

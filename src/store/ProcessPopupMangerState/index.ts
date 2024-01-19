@@ -15,7 +15,8 @@ export enum PopupType {
     // 转速值
     RPM = 4,
     BeginFermentation=5,
-    FeedSetting=6,
+    Feed0Setting=6,
+    FeedSetting=7,
 
 
 }

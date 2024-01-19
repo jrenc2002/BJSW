@@ -95,7 +95,7 @@
                                                                         </div>
                                                                     </td>
                                                                     <td class=" text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
-                                                                       {{DeviceManage.deviceList[AppGlobal.selectedDeviceIndex]?.nowData.timing_motor_speed!==undefined?DeviceManage.deviceList[AppGlobal.selectedDeviceIndex].nowData.timing_motor_speed:0}}
+                                                                       {{DeviceManage.deviceList[AppGlobal.selectedDeviceIndex]?.nowData?.timing_motor_speed!==undefined?DeviceManage.deviceList[AppGlobal.selectedDeviceIndex].nowData.timing_motor_speed:0}}
                                                                     </td>
                                                                     <td class=" text-center  border-b border-r rounded-br-2xl  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
                                                                         <div class="flex justify-center items-center w-full">

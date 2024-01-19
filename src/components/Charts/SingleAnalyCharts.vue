@@ -9,6 +9,7 @@ import {ECharts, EChartsOption, init} from 'echarts';
 import {useChartsData} from "@/store/ChartsData";
 import {useAppGlobal} from "@/store/AppGlobal";
 // todo 曲线刷新功能，为了保证内存只有监听到路由为曲线对比时才会定时渲染；
+const debug = true;
 
 const AppGlobal = useAppGlobal();
 const ChartsData= useChartsData()
@@ -32,6 +33,10 @@ const updateChart = () => {
     // 检查返回的结果是否是 undefined
     if (currentOption) {
          currentDataZoom = currentOption.dataZoom;
+    }
+    if (debug){
+        console.log('【曲线对比】曲线数据项-下游',dataSeries)
+        console.log('【曲线对比】曲线数据类型-下游',dataLegend)
     }
     
     const option: EChartsOption = {
@@ -123,12 +128,12 @@ watch(() => AppGlobal.isDrawerState, (newData, oldValue) => {
 watch(() => ChartsData.dataSeries, () => {
     setTimeout(() => {
         updateChart();
-    }, 100);
+    }, 400);
 }, {deep: true});
 watch(() => ChartsData.dataLegend, () => {
     setTimeout(() => {
         updateChart();
-    }, 100);
+    }, 400);
 }, {deep: true});
 /* ——————————————————————————生命周期配置—————————————————————————— */
 onMounted(() => {

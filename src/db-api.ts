@@ -112,8 +112,7 @@ export function createInitDB(): any {
 
     // 获取发酵批次的所有数据
     ipcMain.handle('get-data-by-batch', (event, batchId) => {
-        console.log("查询批次数据, 批次ID:", batchId);
-        
+
         // 确保数据库连接
         if (!db) {
             console.error('数据库连接失败');
@@ -198,35 +197,36 @@ export function createInitDB(): any {
         }
     });
 
-    // 获取图表所需数据
-    ipcMain.handle('get-recent-fermentation-data', async (event, canNumber, fieldName, dataCount) => {
-        try {
-            return new Promise((resolve, reject) => {
-                // 构建查询语句，获取最近的指定数量的数据
-                const query = `
+
+    // 获取最近数据
+    ipcMain.handle('get-recent-fermentation-data', (event, canNumber, fieldName, dataCount) => {
+        
+        // 确保数据库连接
+        if (!db) {
+            console.error('数据库连接失败');
+            return Promise.reject("数据库连接失败");
+        }
+        
+        return new Promise((resolve, reject) => {
+            const query = `
                 SELECT ${fieldName}, absolute_time
                 FROM fermentation_data
                 WHERE can_number = ?
-                ORDER BY datetime(absolute_time) DESC
+                ORDER BY absolute_time DESC
                 LIMIT ?
             `;
-                
-                // 执行查询语句
-                db.all(query, [canNumber, dataCount], (err, rows) => {
-                    if (err) {
-                        console.error("查询发酵数据时出错:", err);
-                        reject(err);
-                    } else {
-                        
-                        // 返回查询到的数据
-                        resolve(rows);
-                    }
-                });
+            db.prepare(query).all([canNumber, dataCount], (err, rows) => {
+                if (err) {
+                    console.error('查询批次数据时出现错误:', err);
+                    reject("查询失败");
+                } else {
+                    resolve(rows);
+                }
             });
-        } catch (error) {
-            console.error("查询发酵数据过程中出现异常:", error);
-            throw error; // 或者返回一个特定的错误消息或对象
-        }
+        }).catch(error => {
+            console.error("Unexpected error in get-data-by-batch:", error);
+            throw error;  // 或者返回一个特定的错误消息或对象，这取决于您如何处理这些错误
+        });
     });
     
     

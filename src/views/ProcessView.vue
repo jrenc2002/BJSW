@@ -406,7 +406,7 @@
                                 </div>
                                 <div :class="[stateManger.Defoamer?'text-white bg-[#E4DDA4]':'bg-white']"
                                      class=" h-full w-[4.3rem] shadow flex justify-center items-center rounded mx-2 cursor-pointer "
-                                     @click="popProcessManager('补料设置',0)">
+                                     @click="popProcessManager('补料设置0')">
                                     设置
                                 </div>
                             </div>
@@ -444,7 +444,7 @@
                                 </div>
                                 <div :class="[stateManger.AddFeed?'text-white bg-[#9AD1B5]':'bg-white']"
                                      class=" h-full w-[4.3rem] shadow flex justify-center items-center rounded mx-2 cursor-pointer "
-                                     @click="popProcessManager('补料设置',1)">
+                                     @click="popProcessManager('补料设置')">
                                     设置
                                 </div>
                             </div>
@@ -717,9 +717,8 @@ const paramSend = ((name, index, content) => {
 const ProcessPopupMangerState = useProcessPopupMangerState()
 
 // 弹窗管理
-const popProcessManager = (val, set) => {
+const popProcessManager = (val ) => {
     
-    AppGlobal.FeedSet = set
     ProcessPopupMangerState.updateIsShowPop(true)
     ProcessPopupMangerState.updatePopupContent(name_translation[val])
     
@@ -747,6 +746,7 @@ const name_translation = {
     '转速': 'RPM',
     '溶氧': 'DissolvedOxygen',
     '开始发酵': 'BeginFermentation',
+    '补料设置0': 'Feed0Setting',
     '补料设置': 'FeedSetting',
 }
 const stateManger = reactive({

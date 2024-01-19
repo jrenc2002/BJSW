@@ -4,40 +4,40 @@
             曲线对比
         </div>
         <div class="rounded-2xl  w-[100%] h-[93%]  bottom-0    ">
-
+            
             <div class="bg-[#DAF0E4] h-[calc(100%)]">
                 <div class="h-[100%]  bg-white border-8 border-[#A8CDB8] rounded-xl relative flex">
                     <div class="w-[10rem] h-full  border-r-2 border-[#EBEBEB] overflow-auto">
-                 
-                            <div v-for="item in ChartsData.paramSelected" :key="item.name"
-                                 class="w-full h-[10%]   flex justify-center items-center">
-                                <div :class="[item.selected?'bg-[#DAF0E4] text-black':'text-gray-500']"
-                                     class="w-full mx-4 rounded-xl text-center  h-14 flex items-center justify-center cursor-pointer"
-                                     @click="item.selected=!item.selected">
-                                    {{ item.name }}
-                                </div>
+                        
+                        <div v-for="item in ChartsData.paramSelected" :key="item.name"
+                             class="w-full h-[10%]   flex justify-center items-center">
+                            <div :class="[item.selected?'bg-[#DAF0E4] text-black':'text-gray-500']"
+                                 class="w-full mx-4 rounded-xl text-center  h-14 flex items-center justify-center cursor-pointer"
+                                 @click="item.selected=!item.selected">
+                                {{ item.name }}
                             </div>
-                       
+                        </div>
+                    
                     </div>
                     <div class="w-[10rem] h-full  border-r-2 border-[#EBEBEB] overflow-auto">
-                       
-                            <div v-for="item in ChartsData.deviceSelected" :key="item.name"
-                                 class="w-full h-[10%]   flex justify-center items-center">
-                                <div :class="[item.selected?'bg-[#DAF0E4] text-black':'text-gray-500']"
-                                     class="w-full mx-4 rounded-xl text-center  h-14 flex items-center justify-center cursor-pointer"
-                                     @click="item.selected=!item.selected">
-                                    {{ item.name }}
-                                </div>
+                        
+                        <div v-for="item in ChartsData.deviceSelected" :key="item.name"
+                             class="w-full h-[10%]   flex justify-center items-center">
+                            <div :class="[item.selected?'bg-[#DAF0E4] text-black':'text-gray-500']"
+                                 class="w-full mx-4 rounded-xl text-center  h-14 flex items-center justify-center cursor-pointer"
+                                 @click="item.selected=!item.selected">
+                                {{ item.name }}
                             </div>
-                       
+                        </div>
+                    
                     </div>
                     <div class="h-full w-[calc(100%-20rem)] flex justify-center items-center "
                     >
                         <!--单罐-->
-                        <SingleAnalyCharts  id="1" ref="SingleTank" :data="data"
+                        <SingleAnalyCharts id="1" ref="SingleTank" :data="data"
                                            class=" w-full relative left-0 "
                         ></SingleAnalyCharts>
-   
+                    
                     </div>
                 
                 
@@ -52,7 +52,7 @@
 </template>
 
 <script lang="js" setup>
-import {onMounted, onUnmounted, ref, watch} from "vue";
+import {onMounted, ref, watch} from "vue";
 import SingleAnalyCharts from "@/components/Charts/SingleAnalyCharts.vue";
 import {useDeviceManage} from '@/store/DeviceManage'
 import {useChartsData} from "@/store/ChartsData";
@@ -61,35 +61,10 @@ import {useAppGlobal} from "@/store/AppGlobal";
 // TODO:单罐曲线:左边选择各个罐，组件数据传入子组件，子组件上面选择各项参数
 // TODO:单参数曲线:左边选择各个参数，组件数据传入子组件，子组件上面选择各项罐
 const DeviceManage = useDeviceManage()
-const ChartsData= useChartsData()
+const ChartsData = useChartsData()
 const SingleTank = ref(null);
 const AppGlobal = useAppGlobal();
-
-/* ——————————————————————————时间数据配置—————————————————————————— */
-// 时间单位
-let oneDay = 24 * 3600 * 1000;
-// 初始时间原点
-let base1 = +new Date();
-let base2 = +new Date();
-let base3 = +new Date();
-// data数据
-let data1 = [[base1, Math.random() * 300]];
-for (let i = 1; i < 100; i++) {
-    let now = new Date((base1 += oneDay));
-    data1.push([+now, Math.round((Math.random() - 0.5) * 20 + data1[i - 1][1]),1]);
-}
-// data2数据
-let data2 = [[base2, Math.random() * 300]];
-for (let i = 1; i < 100; i++) {
-    let now = new Date((base2 += oneDay));
-    data2.push([+now, Math.round((Math.random() - 0.5) * 20 + data2[i - 1][1]),3]);
-}
-let data3 = [[base3, Math.random() * 300]];
-for (let i = 1; i < 100; i++) {
-    let now = new Date((base3 += oneDay));
-    data3.push([+now, Math.round((Math.random() - 0.5) * 20 + data3[i - 1][1]),2]);
-}
-let data = [data1, data2, data3]
+const debug = false
 
 
 /* ——————————————————————————定时器时间函数配置—————————————————————————— */
@@ -103,13 +78,12 @@ watch(() => ChartsData.deviceSelected, () => {
     updateChartData()
 }, {deep: true});
 
-function convertToEchartsData(resData,fieldName) {
+function convertToEchartsData(resData, fieldName) {
     
-    console.log(resData)
     let echartsData = [];
     resData.forEach(item => {
         // 将时间字符串转换为Date对象，然后转换为时间戳
-        let date = new Date(item.absolute_time);
+        let date = new Date(Number(item.absolute_time));
         let timestamp = date.getTime();
         
         // 将时间戳和lye_ml的值作为一个数组添加到echartsData中
@@ -117,6 +91,7 @@ function convertToEchartsData(resData,fieldName) {
     });
     return echartsData;
 }
+
 function updateChartData() {
     let series = [];
     let legend = [];
@@ -128,10 +103,17 @@ function updateChartData() {
                     
                     // 生成参数对应的数据，输入设备索引和参数索引获取相应的值，获取五万条数据
                     let ChartsData;
-                    window.Electron.ipcRenderer.invoke('get-recent-fermentation-data',device.deviceNum,param.fieldName,10000).then(
+                    if (debug) {
+                        console.log('【曲线】get-recent-fermentation-data', device.deviceNum, param.fieldName, 10000);
+                    }
+                    window.Electron.ipcRenderer.invoke('get-recent-fermentation-data', device.deviceNum, param.fieldName, 10000).then(
                         (res) => {
                             if (res) { // 确保res是有效的
-                                ChartsData = convertToEchartsData(res,param.fieldName);
+                                if (debug) {
+                                    console.log('【曲线】get-recent-fermentation-data', device.deviceNum, param.fieldName, 10000);
+                                    console.log('【曲线】请求批次内容数据成功，返回结果为:', res);
+                                }
+                                ChartsData = convertToEchartsData(res, param.fieldName);
                                 
                                 // 如果参数也被选中，生成对应的系列
                                 series.push({
@@ -139,35 +121,103 @@ function updateChartData() {
                                     type: 'line',
                                     smooth: true,
                                     symbol: 'none',
-                                    data:ChartsData  // 这里根据设备和参数索引从 allData 获取数据
+                                    data: ChartsData  // 这里根据设备和参数索引从 allData 获取数据
                                 });
                                 legend.push(device.name + '-' + param.name);
-                                console.log(series)
-                     
+                                
+                                
                             } else {
                                 console.error('请求批次内容数据没请求到.');
                             }
                         }).catch((error) => {
                         console.error('请求批次内容数据没请求到,报错为:', error);
                     });
-    
-        
+                    
+                    
                 }
             });
         }
     });
     ChartsData.dataSeries = series;
     ChartsData.dataLegend = legend;
-    console.log(series)
-    
+    if (debug) {
+        console.log('【曲线对比】曲线数据项-上游', ChartsData.dataSeries)
+        console.log('【曲线对比】曲线数据类型-上游', ChartsData.dataLegend)
+    }
     return series;
-    
-    
 }
 
 
+function updateRecentChartData() {
+    let series = ChartsData.dataSeries || [];
+    let legend = ChartsData.dataLegend || [];
+    ChartsData.deviceSelected.forEach((device) => {
+        if (device.selected) {
+            ChartsData.paramSelected.forEach((param) => {
+                if (param.selected) {
+                    window.Electron.ipcRenderer.invoke('get-recent-fermentation-data', device.deviceNum, param.fieldName, 10).then(
+                        (res) => {
+                            if (debug) {
+                                console.log('【曲线对比】',res)
+                            }
+                            if (res) {
+                                let newData = convertToEchartsData(res, param.fieldName);
+                                
+                                // 寻找现有数据系列
+                                let existingSeries = series.find(s => s.name === device.name + '-' + param.name);
+        
+                          
+                                if (existingSeries) {
+                                    // 合并数据，并确保数据不超过10000条
+                                    existingSeries.data = mergeChartData(existingSeries.data, newData);
+                                }
+                            } else {
+                                console.error('请求批次内容数据没请求到.');
+                            }
+                        }).catch((error) => {
+                        console.error('请求批次内容数据没请求到,报错为:', error);
+                    });
+                }
+            });
+        }
+    });
+    ChartsData.dataSeries = series;
+    ChartsData.dataLegend = legend;
+    return series;
+}
 
-/* ——————————————————————————设备选择器—————————————————————————— */
+function mergeChartData(existingData, newData) {
+    const maxSize = 10000;
+    // 去除与最新100条数据重复的数据
+    const filteredExistingData = existingData.filter(existingItem => !newData.some(newItem => newItem[0] === existingItem[0]));
+    const combinedData = filteredExistingData.concat(newData);
+    
+    // 根据数据量调整数据
+    if (combinedData.length > maxSize) {
+        // 如果数据超过10000条，则移除最早的数据以保持总量为10000
+        return combinedData.slice(combinedData.length - maxSize);
+    }
+    return combinedData;
+}
+
+/*
+* 关于曲线的实时更新他有两种解决方法
+* 1. 系统开销大较但简单
+* 将读到的数据存入数据库，取数据从数据库中全部读取出来
+* 2. 较为复杂
+* 将读到的数据存入数据库，取数据用watch去socket里取
+* 可能会造成数据不统一的问题？会吗，不会吧。那就这个。√
+* 然后这个也是上下游，上游更新数据，下游更新图表。
+* 3. 结合
+* 读到的数据存入数据库，取数据从数据库取出100个然后
+* */
+
+// 定时器，将DeviceManage.deviceList[AppGlobal.pageChance].nowdata的数据更新到ChartsData.dataSeries里
+setInterval(() => {
+    if (ChartsData.dataSeries.length > 0) {
+        updateRecentChartData();
+    }
+}, 1000);
 
 function initToDeviceSelect() {
     
@@ -178,9 +228,10 @@ function initToDeviceSelect() {
     }));
 }
 
-watch(() => DeviceManage.deviceList, () => {
+watch(() => DeviceManage.deviceList.length, () => {
     initToDeviceSelect()
-}, {deep: true});
+});
+
 
 /* ——————————————————————————生命周期—————————————————————————— */
 onMounted(() => {
