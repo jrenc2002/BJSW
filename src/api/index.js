@@ -1,5 +1,6 @@
 import {useDeviceManage} from '@/store/DeviceManage'
 
+import Swal from 'sweetalert2';
 const DeviceManage = useDeviceManage();
 
 /* API-与下位机通讯: 连接设备
@@ -268,15 +269,25 @@ function onDataReceived(data) {
 		try {
 			const jsonData = JSON.parse(completeData);
 			// TODO: 使用jsonData
+			
 			return jsonData
 		} catch (error) {
-			console.log("JSON解析错误", error);
-			console.log("错误数据:", completeData);
+			Swal.fire({
+				icon: 'warning', //error\warning\info\question
+				title: '通讯警告',
+				text: '通讯报错，请检查设备连接',
+				showCancelButton: true,
+				confirmButtonColor: '#3085d6',
+				cancelButtonColor: '#d33',
+				confirmButtonText: '确认',
+				confirmButton: false,
+				cancelButtonText: '取消',
+			});
 			// TODO: 错误处理
 			return -1
 		}
 	}
-
+	// 传输一半
 	return -2
 }
 

@@ -35,7 +35,7 @@
                                     {{ item.can_number }}
                                 </p>
                                 <p class="text-[#1A3A8D]">
-                                    {{ item.start_time }}
+                                    {{ timestampToString(item.start_time) }}
                                 </p>
                             
                             </view>
@@ -459,6 +459,13 @@ const toggle = () => {
     isExpanded.value = !isExpanded.value;
 };
 
+function timestampToString(timestamp) {
+    // 将时间戳转换为毫秒
+    let date = new Date(timestamp);
+    // 使用toLocaleString将日期和时间转换为字符串格式
+    let dateString = date.toLocaleString();
+    return dateString;
+}
 </script>
 <style>
 

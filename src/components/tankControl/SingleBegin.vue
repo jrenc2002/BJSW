@@ -89,7 +89,9 @@ const controlSend = ((name, index) => {
             }
             const data = {
                 start_flag: 1,
-                
+                lyePumpSpeed: 0.00001,
+                feed0PumpSpeed: 0.00001,
+                feedPumpSpeed:0.00001
             }
             sendData(index, data);
             ProcessPopupMangerState.updateIsShowPop(false)

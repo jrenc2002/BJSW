@@ -260,15 +260,28 @@ const initTableData = () => {
             }
             // 运行时间的处理
             else if (deviceProp.prop == "running_time") {
-                const diffMilliseconds = new Date().getTime() - DeviceManage.deviceList[index].start_time.getTime(); // 获取时间差（毫秒）
-                const totalSeconds = Math.floor(diffMilliseconds / 1000); // 转换为秒
-                const hours = Math.floor(totalSeconds / 3600); // 获取小时数
-                const minutes = Math.floor((totalSeconds % 3600) / 60); // 获取剩余的分钟数
-                tableItem[header.props] = `${hours}h${minutes}m`;
+                // 检验start_time是否存在
+                if (DeviceManage.deviceList[index].start_time) {
+                    const diffMilliseconds = new Date().getTime() - DeviceManage.deviceList[index].start_time.getTime(); // 获取时间差（毫秒）
+                    const hours = Number((diffMilliseconds / 1000 / 3600).toFixed(2)); // 获取小时数b
+                    tableItem[header.props] = `${hours}h`;
+                }
+                else {
+               
+                    tableItem[header.props] = `--`;
+                }
+        
+ 
             }
             // 批次名
             else if (deviceProp.prop == "batchnum") {
-                tableItem[header.props] = DeviceManage.deviceList[index].batch_name;
+                if (DeviceManage.deviceList[index].batch_name== null||DeviceManage.deviceList[index].batch_name== undefined) {
+    
+                    tableItem[header.props] = `--`;
+                }
+                else {
+                    tableItem[header.props] = DeviceManage.deviceList[index].batch_name;
+                }
             }
             // 批次名
             else if (deviceProp.prop == "start_flag") {

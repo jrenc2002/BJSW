@@ -81,7 +81,7 @@ interface SetData {
     feed0_flag: number;											//补料开启/停止标志位
     feed0_pump_step_count: number; 					//补料泵发送步数
     feed0_pump_calibration_flag: number; 		//补料泵标定开始标志位
-    feed0_pump_sum_step_count: number;  			//补料泵发送步数
+    feed0_pump_sum_step_count: number;  			//补料泵发送步数ump
     feed0_pump_now_speed: number;            //补料泵当前速度-泵速==0为关闭
     feed0_pump_now_set_speed: number;        //补料泵当前设定速度-上位机设定的
     
@@ -617,7 +617,10 @@ export const useDeviceManage = defineStore('DeviceManage', {
         },
         // 更新设备数据
         updateDeviceListData(index: number, newDeviceData: (SetData | number)) {
-            console.log('newDeviceData', newDeviceData)
+        
+             console.log('11111111111读取到传入数据---------------', newDeviceData)
+            
+           
             if (typeof newDeviceData === 'number') {
                 if (newDeviceData === -1) console.log("Error")
                 return;
@@ -714,10 +717,7 @@ export const useDeviceManage = defineStore('DeviceManage', {
                     // 获取相对时间单位为h
                     const relativeTime = (currentDate.getTime() - this.deviceList[index].start_time.getTime()) / 1000 / 60 / 60;
                     // 数据存入到数据库
-                    // todo 数据同步存入数据库
                     const fermentationData = {
-                        
-                        
                         can_number: newDeviceData.decive_id,
                         batch_id: this.deviceList[index].batch_name,
                         timing_temp: newDeviceData.timing_temp,
@@ -733,13 +733,12 @@ export const useDeviceManage = defineStore('DeviceManage', {
                         defoamerPumpSpeed: newDeviceData.feed0PumpSpeed,
                         feedPumpSpeed: newDeviceData.feedPumpSpeed,
                         fermentation_flag: newDeviceData.start_flag,
-                        
-                        
                     };
+    
+                    console.log('将要存储数据',fermentationData);
                     window.Electron.ipcRenderer.invoke('add-fermentation-data', fermentationData).then(
                         (res) => {
                             if (res) { // 确保res是有效的
-                                
                                 console.log('已存储数据.');
                             } else {
                                 console.error('请求批次内容数据没请求到.');

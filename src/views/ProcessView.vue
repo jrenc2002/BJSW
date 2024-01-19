@@ -720,7 +720,6 @@ const ProcessPopupMangerState = useProcessPopupMangerState()
 const popProcessManager = (val, set) => {
     
     AppGlobal.FeedSet = set
-    console.log(name_translation[val], val, 'val______')
     ProcessPopupMangerState.updateIsShowPop(true)
     ProcessPopupMangerState.updatePopupContent(name_translation[val])
     
@@ -842,7 +841,6 @@ function calculateTimeDifference() {
     const hours = Math.floor((timeDiff % (24 * 3600000)) / 3600000);
     const minutes = Math.floor((timeDiff % 3600000) / 60000);
     const seconds = Math.floor((timeDiff % 60000) / 1000);
-    console.log(days, hours, minutes, seconds)
     countdown.value = {
         days,
         hours,

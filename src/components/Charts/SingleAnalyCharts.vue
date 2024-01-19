@@ -34,9 +34,6 @@ const updateChart = () => {
          currentDataZoom = currentOption.dataZoom;
     }
     
-
-    
-    console.log(dataSeries,'dataSeries')
     const option: EChartsOption = {
         tooltip: {
             trigger: 'axis',

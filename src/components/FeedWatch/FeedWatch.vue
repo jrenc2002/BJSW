@@ -24,16 +24,31 @@ onMounted(() => {
             
             // 创建定时器
             const timer = setInterval(() => {
-                
+                if (debug){
+                    console.log('------------------计时器仍在进行---------------')
+                }
                 // 前置检验未通过会跳过
                 if (!checkDevice(feedSet.id)) {
                     return;
+                }
+                if (debug){
+                    console.log('------------------前置检验通过---------------')
+                }
+                if (debug){
+                    console.log('feedSet.supplementSwitch.type',feedSet.supplementSwitch.type)
                 }
                 // 补料开关逻辑判断
                 if (feedSet.supplementSwitch.type === 0) {
                     // 等于0的时候就跳过，因为补料与否都无所谓
                     return;
-                } else if (feedSet.supplementSwitch.type === 2) {
+                }
+                else if (feedSet.supplementSwitch.type === 1){
+                    // 是否进行手动补料，如果为false就不补，跳过
+                    if (!feedSet.supplementSwitch.manual) {
+                        return;
+                    }
+                }
+                else if (feedSet.supplementSwitch.type === 2) {
                     // 触发补料，设立一个监控器，监控溶氧，ph，转速，且关系如果在这个范围内执行补料并销毁
                     const currentValues = DeviceManage.deviceList[Math.floor(feedSet.id / 2)].nowData;
                     let triggers = {
@@ -73,7 +88,8 @@ onMounted(() => {
                         feedSet.time.t0_time_diff = parseFloat(hours.toFixed(2));
                         // todo 分段补料的t0存储
                     }
-                } else if (feedSet.supplementSwitch.type === 3) {
+                }
+                else if (feedSet.supplementSwitch.type === 3) {
                     // 触发补料，设立一个监控器，监控溶氧，ph，转速，且关系如果在这个范围内执行补料并销毁
                     const currentValues = DeviceManage.deviceList[Math.floor(feedSet.id / 2)].nowData;
                     let related = {
@@ -102,12 +118,11 @@ onMounted(() => {
                     
                     
                 }
-                
-                // ————————————————— 补料方式的逻辑判断 —————————————————————————
-                // 是否进行补料，如果为false就不补，跳过
-                if (!feedSet.supplementSwitch.manual) {
-                    return;
+                if (debug){
+                    console.log('------------------补料开启---------------')
                 }
+                // ————————————————— 补料方式的逻辑判断 —————————————————————————
+      
                 let feedMethod;
                 // 补料方式的逻辑判断
                 if (feedSet.supplementMethod.type === 1) {
@@ -175,7 +190,8 @@ onMounted(() => {
                         }, supplementDuration * 1000); // 将补料时间转换为毫秒
                     }
                     
-                } else if (feedSet.controlMethod.type === 2) {
+                }
+                else if (feedSet.controlMethod.type === 2) {
                     // 恒速补料
                     controlSend(feedMethod,deviceIndex, feedSet, feedSet.controlMethod.constant.speed);
   
@@ -374,16 +390,20 @@ const controlSend = ((name, deviceIndex,feedSet, content) => {
         // 泵1
         if (name === '持续补料') {
             const data = {
-                feed0_way:0,
+                feed0_way:1,
                 feed0_ml_h: content,
+                feed0_flag:content>0?1:0
+               
             }
             sendData(deviceIndex, data);
         } else if (name === '占空比补料') {
             const data = {
-                feed0_way:1,
+                feed0_way:2,
                 feed0_ml_h: content,
                 feed0_period: feedSet.supplementMethod.dutyCycle.detectionPeriod,
                 feed0_opening_degree: feedSet.supplementMethod.dutyCycle.opening,
+                feed0_flag:content>0?1:0
+                
             }
             sendData(deviceIndex, data);
         }
@@ -391,16 +411,18 @@ const controlSend = ((name, deviceIndex,feedSet, content) => {
         // 泵2
         if (name === '持续补料') {
             const data = {
-                feed_way:0,
+                feed_way:1,
                 feed_ml_h: content,
+                feed_flag:content>0?1:0
             }
             sendData(deviceIndex, data);
         } else if (name === '占空比补料') {
             const data = {
-                feed_way:1,
+                feed_way:2,
                 feed_ml_h: content,
                 feed_period: feedSet.supplementMethod.dutyCycle.detectionPeriod,
                 feed_opening_degree: feedSet.supplementMethod.dutyCycle.opening,
+                feed_flag:content>0?1:0
             }
             sendData(deviceIndex, data);
         }
@@ -414,9 +436,10 @@ const controlSend = ((name, deviceIndex,feedSet, content) => {
 // 设备前置检验
 function checkDevice(feedDeviceID) {
     // 设备是否开机
-    const isPower = DeviceManage.deviceList[Math.floor(feedDeviceID / 2)].state <= 0;
+    const isPower = DeviceManage.deviceList[Math.floor(feedDeviceID / 2)].state > 0;
     // 总开关是否开启
     const isSwitch = DeviceManage.supplementSystem[Math.floor(feedDeviceID / 2)][feedDeviceID % 2]?.totalSwitch!==undefined?DeviceManage.supplementSystem[Math.floor(feedDeviceID / 2)][feedDeviceID % 2].totalSwitch:false;
+    console.log('isPower',isPower,'isSwitch',isSwitch)
     return isPower && isSwitch;
 }
 
