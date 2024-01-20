@@ -64,7 +64,7 @@ const DeviceManage = useDeviceManage()
 const ChartsData = useChartsData()
 const SingleTank = ref(null);
 const AppGlobal = useAppGlobal();
-const debug = false
+const debug = true
 
 
 /* ——————————————————————————定时器时间函数配置—————————————————————————— */
@@ -114,7 +114,6 @@ function updateChartData() {
                                     console.log('【曲线】请求批次内容数据成功，返回结果为:', res);
                                 }
                                 ChartsData = convertToEchartsData(res, param.fieldName);
-                                
                                 // 如果参数也被选中，生成对应的系列
                                 series.push({
                                     name: device.name + '-' + param.name, // 系列名称为“设备名称 - 参数名称”
@@ -124,7 +123,8 @@ function updateChartData() {
                                     data: ChartsData  // 这里根据设备和参数索引从 allData 获取数据
                                 });
                                 legend.push(device.name + '-' + param.name);
-                                
+                                console.log('【曲线对比】series', series)
+                                updateRecentChartData();
                                 
                             } else {
                                 console.error('请求批次内容数据没请求到.');
@@ -144,6 +144,12 @@ function updateChartData() {
         console.log('【曲线对比】曲线数据项-上游', ChartsData.dataSeries)
         console.log('【曲线对比】曲线数据类型-上游', ChartsData.dataLegend)
     }
+    // // 定时器，将DeviceManage.deviceList[AppGlobal.pageChance].nowdata的数据更新到ChartsData.dataSeries里
+    // setInterval(() => {
+    //     if (ChartsData.dataSeries.length > 0) {
+    //         updateRecentChartData();
+    //     }
+    // }, 1000);
     return series;
 }
 
@@ -158,16 +164,21 @@ function updateRecentChartData() {
                     window.Electron.ipcRenderer.invoke('get-recent-fermentation-data', device.deviceNum, param.fieldName, 10).then(
                         (res) => {
                             if (debug) {
-                                console.log('【曲线对比】',res)
+                                console.log('【曲线对比】res10 ChartsData.dataSeries',res,ChartsData.dataSeries)
                             }
                             if (res) {
                                 let newData = convertToEchartsData(res, param.fieldName);
-                                
+                                if (debug) {
+                                    console.log('【曲线对比】newData',newData)
+                                }
                                 // 寻找现有数据系列
                                 let existingSeries = series.find(s => s.name === device.name + '-' + param.name);
-        
+                                if (debug) {
+                                    console.log('【曲线对比】existingSeries',existingSeries)
+                                }
                           
                                 if (existingSeries) {
+                                 
                                     // 合并数据，并确保数据不超过10000条
                                     existingSeries.data = mergeChartData(existingSeries.data, newData);
                                 }
@@ -187,17 +198,32 @@ function updateRecentChartData() {
 }
 
 function mergeChartData(existingData, newData) {
+
     const maxSize = 10000;
-    // 去除与最新100条数据重复的数据
-    const filteredExistingData = existingData.filter(existingItem => !newData.some(newItem => newItem[0] === existingItem[0]));
-    const combinedData = filteredExistingData.concat(newData);
-    
-    // 根据数据量调整数据
-    if (combinedData.length > maxSize) {
-        // 如果数据超过10000条，则移除最早的数据以保持总量为10000
-        return combinedData.slice(combinedData.length - maxSize);
+    // 去除与最新10条数据重复的数据
+    newData.forEach(itemB => {
+        // 检查 existingData 数组的前 10 个元素是否包含 itemB 时间戳
+        let exists = existingData.slice(0, 10).some(existingItem => existingItem[0] === itemB[0]);
+
+        // 如果不存在，将 itemB 添加到 existingData 的开头
+        if (!exists) {
+            existingData.unshift(itemB);
+        }
+    });
+
+    if (debug) {
+        console.log('【曲线对比】filteredExistingData existingData.length',existingData,existingData.length)
     }
-    return combinedData;
+
+    // 根据数据量调整数据
+    if (existingData.length > maxSize) {
+        // 如果数据超过10000条，则移除最早的数据以保持总量为10000
+        return existingData.slice(0,maxSize);
+    }
+    if (debug) {
+        console.log('【曲线对比】更新数据',existingData,)
+    }
+    return existingData;
 }
 
 /*
@@ -212,12 +238,7 @@ function mergeChartData(existingData, newData) {
 * 读到的数据存入数据库，取数据从数据库取出100个然后
 * */
 
-// 定时器，将DeviceManage.deviceList[AppGlobal.pageChance].nowdata的数据更新到ChartsData.dataSeries里
-setInterval(() => {
-    if (ChartsData.dataSeries.length > 0) {
-        updateRecentChartData();
-    }
-}, 1000);
+
 
 function initToDeviceSelect() {
     
