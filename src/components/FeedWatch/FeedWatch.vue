@@ -86,7 +86,9 @@ onMounted(() => {
                         
                         // t0存储
                         feedSet.time.t0_time_diff = parseFloat(hours.toFixed(2));
-                        // todo 分段补料的t0存储
+                        if (debug){
+                            console.log('【t0捕捉】t0_time', feedSet.time.t0_time, 't0_time_diff', feedSet.time.t0_time_diff)
+                        }
                     }
                 } else if (feedSet.supplementSwitch.type === 3) {
                     // 触发补料，设立一个监控器，监控溶氧，ph，转速，且关系如果在这个范围内执行补料并销毁
@@ -134,7 +136,7 @@ onMounted(() => {
                     Swal.fire({
                         icon: 'warning', //error\warning\info\question
                         title: '补料警告',
-                        text: Math.floor(feedSet.id / 2) + '号设备补料已启动但未选择补料方式。',
+                        text: Math.floor(feedSet.id / 2) + '号设备 '+'补料泵'+(feedSet.id+1)+'补料已启动但未选择补料方式。',
                         showCancelButton: true,
                         confirmButtonColor: '#3085d6',
                         cancelButtonColor: '#d33',
@@ -159,9 +161,8 @@ onMounted(() => {
                         isSupplementing = true;
                         
                         // 计算补料时间（秒）
-                        // TODO 记得增加校准变量;
-                        // TODO 补料速度时间单位统一,这个的单位得是s
-                        const supplementDuration = feedSet.controlMethod.single.amount / feedSet.controlMethod.single.speed;
+  
+                        const supplementDuration = feedSet.controlMethod.single.amount / feedSet.controlMethod.single.speed * 3600
                         
                         // 发送开始补料的指令
                         controlSend(feedMethod, deviceIndex, feedSet, feedSet.controlMethod.single.speed);
@@ -196,18 +197,32 @@ onMounted(() => {
                 } else if (feedSet.controlMethod.type === 3) {
                     checkTimeDiff(feedSet);
                     // 分段补料
-                    
                     // 计算当前时间和t0的时间差（以小时为单位）
                     const calculateTimeDiff = (t0) => {
                         let currentTime = new Date();
                         let diff = currentTime.getTime() - t0; // t0需要是时间戳
+                        if (debug){
+                            console.log('【分段补料】diff ',diff, t0,parseFloat((diff / (1000 * 60 * 60)).toFixed(2)))
+                        }
                         return parseFloat((diff / (1000 * 60 * 60)).toFixed(2)); // 将毫秒转换为小时
                     }
+                
                     const getSupplementSpeed = (t0, projects) => {
                         let timeDiff = calculateTimeDiff(t0);
+                        if (debug){
+                            console.log('【分段补料】计算当前时间差', timeDiff)
+                        }
+                        if (debug){
+                            console.log('【分段补料】计算当前项目的速度', projects)}
                         for (let project of projects) {
                             // 检查时间差是否在当前项目的时间段内
-                            if (timeDiff >= project.totalSegmentTime && timeDiff < project.totalSegmentTime + project.segmentTime) {
+                            if (debug){
+                                console.log('【分段补料】计算当前项目的速度',timeDiff,  project.totalSegmentTime, project.segmentTime,projects)
+                            }
+                            if (timeDiff >= (project.totalSegmentTime- project.segmentTime) && timeDiff < project.totalSegmentTime ) {
+                                if (debug){
+                                    console.log('【分段补料】计算当前项目的速度', project.supplementSpeed)
+                                }
                                 return project.supplementSpeed;
                             }
                         }
@@ -216,19 +231,12 @@ onMounted(() => {
                     }
                     // 使用函数
                     let currentSupplementSpeed = getSupplementSpeed(feedSet.time.t0_time, feedSet.controlMethod.segmented.sequenceControl);
+                    if (debug){
+                        console.log('【分段补料】计算应该的补料速度', currentSupplementSpeed)
+                    }
                     if (currentSupplementSpeed === null) {
                         // 如果没有找到匹配的项目，可以返回一个默认值或错误
-                        Swal.fire({
-                            icon: 'warning', //error\warning\info\question
-                            title: '补料提示',
-                            text: Math.floor(feedSet.id / 2) + '号设备分段补料已执行完毕。',
-                            showCancelButton: true,
-                            confirmButtonColor: '#3085d6',
-                            cancelButtonColor: '#d33',
-                            confirmButtonText: '确认',
-                            confirmButton: false,
-                            cancelButtonText: '取消',
-                        });
+                        console.log(Math.floor(feedSet.id / 2) + '号设备 '+'补料泵'+(feedSet.id+1)+'分段补料已执行完毕。')
                         controlSend(feedMethod, deviceIndex, feedSet, 0);
                         return;
                     } else {
@@ -243,7 +251,7 @@ onMounted(() => {
                         Swal.fire({
                             icon: 'warning', //error\warning\info\question
                             title: '补料提示',
-                            text: Math.floor(feedSet.id / 2) + '号设备线性补料数据未全部填写。',
+                            text: Math.floor(feedSet.id / 2) + '号设备 '+'补料泵'+(feedSet.id+1)+'线性补料数据未全部填写。',
                             showCancelButton: true,
                             confirmButtonColor: '#3085d6',
                             cancelButtonColor: '#d33',
@@ -281,7 +289,7 @@ onMounted(() => {
                         Swal.fire({
                             icon: 'warning', //error\warning\info\question
                             title: '补料提示',
-                            text: Math.floor(feedSet.id / 2) + '号设备线性补料数据计算错误。',
+                            text: Math.floor(feedSet.id / 2) + '号设备 '+'补料泵'+(feedSet.id+1)+'线性补料数据计算错误。',
                             showCancelButton: true,
                             confirmButtonColor: '#3085d6',
                             cancelButtonColor: '#d33',
@@ -302,7 +310,7 @@ onMounted(() => {
                         Swal.fire({
                             icon: 'warning', //error\warning\info\question
                             title: '补料提示',
-                            text: Math.floor(feedSet.id / 2) + '号设备指数补料数据未全部填写。',
+                            text: Math.floor(feedSet.id / 2) + '号设备 '+'补料泵'+(feedSet.id+1)+'指数补料数据未全部填写。',
                             showCancelButton: true,
                             confirmButtonColor: '#3085d6',
                             cancelButtonColor: '#d33',
@@ -340,7 +348,7 @@ onMounted(() => {
                         Swal.fire({
                             icon: 'warning', //error\warning\info\question
                             title: '补料提示',
-                            text: Math.floor(feedSet.id / 2) + '号设备指数补料数据计算错误。',
+                            text: Math.floor(feedSet.id / 2) + '号设备 '+'补料泵'+(feedSet.id+1)+'指数补料数据计算错误。',
                             showCancelButton: true,
                             confirmButtonColor: '#3085d6',
                             cancelButtonColor: '#d33',
@@ -355,7 +363,7 @@ onMounted(() => {
                     Swal.fire({
                         icon: 'warning', //error\warning\info\question
                         title: '补料警告',
-                        text: Math.floor(feedSet.id / 2) + '号设备补料已启动但未选择控制方式。',
+                        text: Math.floor(feedSet.id / 2) + '号设备 '+'补料泵'+(feedSet.id+1)+'补料已启动但未选择控制方式。',
                         showCancelButton: true,
                         confirmButtonColor: '#3085d6',
                         cancelButtonColor: '#d33',
@@ -432,7 +440,7 @@ const controlSend = ((name, deviceIndex, feedSet, content) => {
 // 设备前置检验
 function checkDevice(feedDeviceID) {
     // 设备是否开机
-    const isPower = DeviceManage.deviceList[Math.floor(feedDeviceID / 2)].state > 0;
+    const isPower = DeviceManage.deviceList[Math.floor(feedDeviceID / 2)].state > 1;
     // 总开关是否开启
     const isSwitch = DeviceManage.supplementSystem[Math.floor(feedDeviceID / 2)][feedDeviceID % 2]?.totalSwitch !== undefined ? DeviceManage.supplementSystem[Math.floor(feedDeviceID / 2)][feedDeviceID % 2].totalSwitch : false;
 
@@ -446,11 +454,11 @@ function checkDevice(feedDeviceID) {
 function checkTimeDiff(feedSet) {
     //  time_diff验证-两种情况，一种是t0捕捉开启是那我会自动获取t0时间，那同时我也会自动计算time_diff;另一种情况是t0捕捉关闭，那我就需要手动输入t0时间和time_diff，但这个时候我只有time_diff没有time，所以我需要进行一个数据统一，让time_diff转换成time。t0_time等于start_time+time_diff,time_diff是单位h的数字，所以要乘以3600000
     // 设备是否开机
-    if (feedSet.time.t0_time_diff === null || feedSet.time.t0_time_diff === undefined || feedSet.time.t0_time_diff === -1) {
+    if (feedSet.time.t0_time_diff === null || feedSet.time.t0_time_diff === undefined || feedSet.time.t0_time_diff < 0) {
         Swal.fire({
             icon: 'warning', //error\warning\info\question
             title: '补料警告',
-            text: Math.floor(feedSet.id / 2) + '号设备补料已启动但补料时间差为' + feedSet.time.t0_time_diff,
+            text: Math.floor(feedSet.id / 2) + '号设备 '+'补料泵'+(feedSet.id+1)+'补料已启动但未成功设置补料时间差。',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',

@@ -556,7 +556,7 @@
                                     补料开度
                                 </div>
                                 <input id="name" v-model="localCache.supplementMethod.dutyCycle.opening"
-                                       class="block w-[80%]  border-b-2 m-2" name="name" placeholder="请填补料开度"
+                                       class="block w-[80%]  border-b-2 m-2" name="name" placeholder="补料开度"
                                        required type="number"/>
                             
                             </div>
@@ -713,7 +713,7 @@
                                     </div>
                                     <input id="name" v-model="localCache.controlMethod.constant.speed"
                                            class="block w-[80%]  border-b-2 m-2 h-8" name="name"
-                                           placeholder="请填补料速度" required
+                                           placeholder="补料速度" required
                                            type="number"/>
                                 
                                 </div>
@@ -930,7 +930,7 @@
                                     </div>
                                     <input id="name" v-model="localCache.controlMethod.linear.offset"
                                            class="block w-[80%]  border-b-2  m-2" name="name"
-                                           placeholder="请填检测周期" required
+                                           placeholder="补料偏移" required
                                            type="number"/>
                                 
                                 </div>
@@ -958,7 +958,7 @@
                                     </div>
                                     <input id="name" v-model="localCache.controlMethod.linear.slope"
                                            class="block w-[80%]  border-b-2  m-2" name="name"
-                                           placeholder="请填补料量" required
+                                           placeholder="补料系数" required
                                            type="number"/>
                                 
                                 </div>
@@ -968,7 +968,7 @@
                                     </div>
                                     <input id="name" v-model="localCache.controlMethod.linear.speedUpperLimit"
                                            class="block w-[80%]  border-b-2  m-2" name="name"
-                                           placeholder="请填溶氧值" required
+                                           placeholder="速度上限" required
                                            type="number"/>
                                 
                                 </div>
@@ -978,7 +978,7 @@
                                     </div>
                                     <input id="name" v-model="localCache.controlMethod.linear.speedLowerLimit"
                                            class="block w-[80%]  border-b-2  m-2" name="name"
-                                           placeholder="请填溶氧值" required
+                                           placeholder="速度下限" required
                                            type="number"/>
                                 
                                 </div>
@@ -1106,7 +1106,42 @@
                                             </g>
                                         </svg>
                                     </kbd>
-                                
+                                </div>
+                                <div class="h-10  flex justify-center items-center mt-1">
+                                    <div class="w-24 justify-start items-center flex">
+                                        <kbd class="kbd kbd-md">
+                                            <svg aria-hidden="true" height="1.791ex" style=""
+                                                 viewBox="0 -626 764.6 791.6" width="1.73ex"
+                                                 xmlns="http://www.w3.org/2000/svg"
+                                                 xmlns:xlink="http://www.w3.org/1999/xlink">
+                                                <defs>
+                                                    <path id="MJX-194-TEX-I-1D461"
+                                                          d="M26 385Q19 392 19 395Q19 399 22 411T27 425Q29 430 36 430T87 431H140L159 511Q162 522 166 540T173 566T179 586T187 603T197 615T211 624T229 626Q247 625 254 615T261 596Q261 589 252 549T232 470L222 433Q222 431 272 431H323Q330 424 330 420Q330 398 317 385H210L174 240Q135 80 135 68Q135 26 162 26Q197 26 230 60T283 144Q285 150 288 151T303 153H307Q322 153 322 145Q322 142 319 133Q314 117 301 95T267 48T216 6T155 -11Q125 -11 98 4T59 56Q57 64 57 83V101L92 241Q127 382 128 383Q128 385 77 385H26Z"></path>
+                                                    <path id="MJX-194-TEX-N-30"
+                                                          d="M96 585Q152 666 249 666Q297 666 345 640T423 548Q460 465 460 320Q460 165 417 83Q397 41 362 16T301 -15T250 -22Q224 -22 198 -16T137 16T82 83Q39 165 39 320Q39 494 96 585ZM321 597Q291 629 250 629Q208 629 178 597Q153 571 145 525T137 333Q137 175 145 125T181 46Q209 16 250 16Q290 16 318 46Q347 76 354 130T362 333Q362 478 354 524T321 597Z"></path>
+                                                </defs>
+                                                <g fill="currentColor" stroke="currentColor" stroke-width="0"
+                                                   transform="matrix(1 0 0 -1 0 0)">
+                                                    <g data-mml-node="math">
+                                                        <g data-mml-node="msub">
+                                                            <g data-mml-node="mi">
+                                                                <use xlink:href="#MJX-194-TEX-I-1D461"></use>
+                                                            </g>
+                                                            <g data-mml-node="mn"
+                                                               transform="translate(361, -150) scale(0.707)">
+                                                                <use xlink:href="#MJX-194-TEX-N-30"></use>
+                                                            </g>
+                                                        </g>
+                                                    </g>
+                                                </g>
+                                            </svg>
+                                        </kbd>
+                                    </div>
+                                    <input id="name" v-model="localCache.time.t0_time_diff"
+                                           class="block w-[80%]  border-b-2  m-2" name="name"
+                                           placeholder="时间初始值" required
+                                           type="number"/>
+    
                                 </div>
                                 <div class="h-10  flex justify-center items-center mt-1 ">
                                     <div class="w-24 justify-start items-center flex">
@@ -1141,43 +1176,7 @@
                                     </div>
                                     <input id="name" v-model="localCache.controlMethod.exponential.offset"
                                            class="block w-[80%]  border-b-2 m-2" name="name"
-                                           placeholder="请填补料速度" required
-                                           type="number"/>
-                                
-                                </div>
-                                <div class="h-10  flex justify-center items-center mt-1">
-                                    <div class="w-24 justify-start items-center flex">
-                                        <kbd class="kbd kbd-md">
-                                            <svg aria-hidden="true" height="1.791ex" style=""
-                                                 viewBox="0 -626 764.6 791.6" width="1.73ex"
-                                                 xmlns="http://www.w3.org/2000/svg"
-                                                 xmlns:xlink="http://www.w3.org/1999/xlink">
-                                                <defs>
-                                                    <path id="MJX-194-TEX-I-1D461"
-                                                          d="M26 385Q19 392 19 395Q19 399 22 411T27 425Q29 430 36 430T87 431H140L159 511Q162 522 166 540T173 566T179 586T187 603T197 615T211 624T229 626Q247 625 254 615T261 596Q261 589 252 549T232 470L222 433Q222 431 272 431H323Q330 424 330 420Q330 398 317 385H210L174 240Q135 80 135 68Q135 26 162 26Q197 26 230 60T283 144Q285 150 288 151T303 153H307Q322 153 322 145Q322 142 319 133Q314 117 301 95T267 48T216 6T155 -11Q125 -11 98 4T59 56Q57 64 57 83V101L92 241Q127 382 128 383Q128 385 77 385H26Z"></path>
-                                                    <path id="MJX-194-TEX-N-30"
-                                                          d="M96 585Q152 666 249 666Q297 666 345 640T423 548Q460 465 460 320Q460 165 417 83Q397 41 362 16T301 -15T250 -22Q224 -22 198 -16T137 16T82 83Q39 165 39 320Q39 494 96 585ZM321 597Q291 629 250 629Q208 629 178 597Q153 571 145 525T137 333Q137 175 145 125T181 46Q209 16 250 16Q290 16 318 46Q347 76 354 130T362 333Q362 478 354 524T321 597Z"></path>
-                                                </defs>
-                                                <g fill="currentColor" stroke="currentColor" stroke-width="0"
-                                                   transform="matrix(1 0 0 -1 0 0)">
-                                                    <g data-mml-node="math">
-                                                        <g data-mml-node="msub">
-                                                            <g data-mml-node="mi">
-                                                                <use xlink:href="#MJX-194-TEX-I-1D461"></use>
-                                                            </g>
-                                                            <g data-mml-node="mn"
-                                                               transform="translate(361, -150) scale(0.707)">
-                                                                <use xlink:href="#MJX-194-TEX-N-30"></use>
-                                                            </g>
-                                                        </g>
-                                                    </g>
-                                                </g>
-                                            </svg>
-                                        </kbd>
-                                    </div>
-                                    <input id="name" v-model="localCache.time.t0_time_diff"
-                                           class="block w-[80%]  border-b-2  m-2" name="name"
-                                           placeholder="请填检测周期" required
+                                           placeholder="补料偏移" required
                                            type="number"/>
                                 
                                 </div>
@@ -1205,7 +1204,7 @@
                                     </div>
                                     <input id="name" v-model="localCache.controlMethod.exponential.exponent"
                                            class="block w-[80%]  border-b-2  m-2" name="name"
-                                           placeholder="请填补料量" required
+                                           placeholder="补料指数" required
                                            type="number"/>
                                 
                                 </div>
@@ -1215,7 +1214,7 @@
                                     </div>
                                     <input id="name" v-model="localCache.controlMethod.exponential.speedUpperLimit"
                                            class="block w-[80%]  border-b-2  m-2" name="name"
-                                           placeholder="请填溶氧值" required
+                                           placeholder="速度上限" required
                                            type="number"/>
                                 
                                 </div>
@@ -1225,7 +1224,7 @@
                                     </div>
                                     <input id="name" v-model="localCache.controlMethod.exponential.speedLowerLimit"
                                            class="block w-[80%]  border-b-2  m-2" name="name"
-                                           placeholder="请填溶氧值" required
+                                           placeholder="速度下限" required
                                            type="number"/>
                                 
                                 </div>
@@ -1259,11 +1258,12 @@
                             <form @submit.prevent="submitForm">
                                 <div v-for="(item, index) in formData.items" :key="item.id"
                                      class="flex m-2 border-2 p-4 border-[#83BA9B] rounded-lg">
-                                    <input v-model="item.id" class="w-1/5 text-center " placeholder="序号" type="text">
-                                    <input v-model="item.supplementSpeed" class="w-1/5 text-center"  type="number">
-                                    <input v-model="item.segmentTime" class="w-1/5 text-center"  type="number">
-                                    <input v-model="item.totalSegmentTime" class="w-1/5 text-center" disabled  type="text">
-                                    <button class="w-1/5 text-center" type="button" @click="removeItem(index)" >删除</button>
+                                    <input v-model="item.id" @blur="updateForm()" class="w-1/5 text-center " placeholder="序号" type="text">
+                                    <input v-model="item.supplementSpeed" @blur="updateForm()" class="w-1/5 text-center" type="number">
+                                    <input v-model="item.segmentTime" @blur="updateForm()" class="w-1/5 text-center" type="number">
+                                    <div  class="w-1/5 text-center bg-gray-100" disabled>{{item.totalSegmentTime}}h</div>
+                                    <button class="w-1/5 text-center" type="button" @click="removeItem(index)">删除
+                                    </button>
                                 </div>
                             </form>
                             <button class="flex ml-2 w-[96%] hover:bg-green-50 border-2 p-4 border-[#83BA9B] rounded-lg justify-center items-center"
@@ -1276,12 +1276,44 @@
                             </button>
                         </div>
                         
-                        <div class="flex  w-full h-12 absolute bottom-2">
-                            <div class="absolute left-2 w-28 h-12 justify-center items-center flex">发酵时间</div>
-                            <button class=" bg-[#83BA9B] hover:bg-green-800 text-white rounded-xl w-28 h-12 absolute right-2"
-                                    type="submit" @click="submitForm()">
-                                保存数据
-                            </button>
+                        <div class="flex  w-full h-12 absolute bottom-2 justify-center items-center flex ">
+                            <div class="absolute bg-[#83BA9B] text-white rounded-md w-32 h-10  p-2 left-6 justify-center items-center flex">发酵时间 {{ fermentationTime }}</div>
+                            <div class="absolute   rounded-md w-36 h-10   right-6 justify-center items-center flex">
+                                <div class="w-10 justify-start items-center flex">
+                                    <kbd class="kbd kbd-md">
+                                        <svg aria-hidden="true" height="1.791ex" style=""
+                                             viewBox="0 -626 764.6 791.6" width="1.73ex"
+                                             xmlns="http://www.w3.org/2000/svg"
+                                             xmlns:xlink="http://www.w3.org/1999/xlink">
+                                            <defs>
+                                                <path id="MJX-44-TEX-I-1D461"
+                                                      d="M26 385Q19 392 19 395Q19 399 22 411T27 425Q29 430 36 430T87 431H140L159 511Q162 522 166 540T173 566T179 586T187 603T197 615T211 624T229 626Q247 625 254 615T261 596Q261 589 252 549T232 470L222 433Q222 431 272 431H323Q330 424 330 420Q330 398 317 385H210L174 240Q135 80 135 68Q135 26 162 26Q197 26 230 60T283 144Q285 150 288 151T303 153H307Q322 153 322 145Q322 142 319 133Q314 117 301 95T267 48T216 6T155 -11Q125 -11 98 4T59 56Q57 64 57 83V101L92 241Q127 382 128 383Q128 385 77 385H26Z"></path>
+                                                <path id="MJX-44-TEX-N-30"
+                                                      d="M96 585Q152 666 249 666Q297 666 345 640T423 548Q460 465 460 320Q460 165 417 83Q397 41 362 16T301 -15T250 -22Q224 -22 198 -16T137 16T82 83Q39 165 39 320Q39 494 96 585ZM321 597Q291 629 250 629Q208 629 178 597Q153 571 145 525T137 333Q137 175 145 125T181 46Q209 16 250 16Q290 16 318 46Q347 76 354 130T362 333Q362 478 354 524T321 597Z"></path>
+                                            </defs>
+                                            <g fill="currentColor" stroke="currentColor" stroke-width="0"
+                                               transform="matrix(1 0 0 -1 0 0)">
+                                                <g data-mml-node="math">
+                                                    <g data-mml-node="msub">
+                                                        <g data-mml-node="mi">
+                                                            <use xlink:href="#MJX-44-TEX-I-1D461"></use>
+                                                        </g>
+                                                        <g data-mml-node="mn"
+                                                           transform="translate(361, -150) scale(0.707)">
+                                                            <use xlink:href="#MJX-44-TEX-N-30"></use>
+                                                        </g>
+                                                    </g>
+                                                </g>
+                                            </g>
+                                        </svg>
+                                    </kbd>
+                                </div>
+                                <input id="name" v-model="localCache.time.t0_time_diff"
+                                       class="block w-[6rem]  border-b-2 m-2" name="name"
+                                       placeholder="时间初始值" required
+                                       type="number"/>
+                            </div>
+
                         </div>
                     
                     </div>
@@ -1297,10 +1329,9 @@
 
 <script lang='js' setup>
 
-// todo 2. 作用域同步目前是使用的onMounted去同步，但补料泵1切换补料泵2不会触发，可以用监听或者其他生命阶段去实现双补料泵的数据作用域隔断。
 
 // ______________________导入模块_______________________
-import {onMounted, reactive, ref} from 'vue'
+import {computed, onMounted, reactive, ref} from 'vue'
 import {useProcessPopupMangerState} from "@/store/ProcessPopupMangerState";
 import {useDeviceManage} from '@/store/DeviceManage'
 import {useAppGlobal} from '@/store/AppGlobal'
@@ -1319,7 +1350,7 @@ const localCache = ref({
     totalSwitch: false, // 补料总开关，布尔值对应总的开启关闭
     time:{
         t0_time: new Date(), // t0时间
-        t0_time_diff: 0, // t0时间差
+        t0_time_diff: null, // t0时间差
         
     },
     supplementSwitch: { // 补料开关
@@ -1402,7 +1433,19 @@ const localCache = ref({
     }
 });
 
-
+// 发酵时间的视图层
+const fermentationTime=ref('0.00h')
+setInterval(() => {
+    if (DeviceManage.deviceList[AppGlobal.pageChance]?.start_time === null||
+        DeviceManage.deviceList[AppGlobal.pageChance]?.start_time === undefined ) return '0h'
+    // 把当前时间给到t0
+    const nowDate = new Date().getTime();
+    // 把t0和发酵开始时间差给到具体值
+    let diff = nowDate - new Date(DeviceManage.deviceList[AppGlobal.pageChance].start_time).getTime();
+    // 将差值转换为小时
+    let hours =Math.floor((diff / 3600000) * 100) / 100;
+    fermentationTime.value = hours + 'h'
+}, 2000)
 
 const postFeedSet = (kind, index) => {
     // 补料开关选择
@@ -1443,9 +1486,7 @@ onMounted(()=>{
 // ______________________顺控_______________________
 const formData = reactive({
     items: [
-        // 更多的项目可以根据需要添加
-        { id: 1, supplementSpeed: 23, segmentTime: 10, totalSegmentTime: 0 },
-        { id: 2, supplementSpeed: 23, segmentTime: 10, totalSegmentTime: 10 },
+
     ]
 });
 
@@ -1469,20 +1510,24 @@ const updateTotalSegmentTime = () => {
     // 计算 totalSegmentTime
     formData.items.forEach((item, index) => {
         let total = 0;
-        for (let i = 0; i < index; i++) {
+        for (let i = 0; i < index+1; i++) {
             
             total += formData.items[i].segmentTime;
         }
-        item.totalSegmentTime = total+'h';
+        item.totalSegmentTime = total;
     });
+};
+const updateForm= () => {
+    updateTotalSegmentTime();
+    submitForm();
 };
 const submitForm = () => {
     // 这里可以添加提交表单的逻辑
-    localCache.value.controlMethod.segmented.sequenceControl=formData.items
+    localCache.value.controlMethod.segmented.sequenceControl = formData.items
     // 本地缓存提交全局
-    DeviceManage.supplementSystem[AppGlobal.pageChance][0]=localCache.value
+    DeviceManage.supplementSystem[AppGlobal.pageChance][0] = localCache.value
     // 从全局读取数据存入本地，做二次确认
-    localCache.value=DeviceManage.supplementSystem[AppGlobal.pageChance][0]
+    localCache.value = DeviceManage.supplementSystem[AppGlobal.pageChance][0]
     
 };
 // ______________________功能函数_______________________

@@ -1,7 +1,7 @@
 import {defineStore} from "pinia";
 import Swal from 'sweetalert2';
 // 给开发人员使用的debug
-const debug = true;
+const debug = false;
 
 interface SetData {
     
@@ -435,10 +435,10 @@ export const useDeviceManage = defineStore('DeviceManage', {
             };
             
             this.deviceList.push(newDevice);
-            // 增加supplementSystem
+            // 增加supplementSystem ID 0,1,2,3,4...累加
             const newSupplementSystem = [
                 {
-                    id: 0,
+                    id: newId,
                     time: {
                         t0_time: new Date(), // t0时间
                         t0_time_diff: 0, // t0时间差
@@ -525,7 +525,7 @@ export const useDeviceManage = defineStore('DeviceManage', {
                     },
                 },
                 {
-                    id: 1,
+                    id:newId+1,
                     time: {
                         t0_time: new Date(), // t0时间
                         t0_time_diff: 0, // t0时间差

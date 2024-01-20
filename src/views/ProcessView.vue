@@ -626,7 +626,6 @@ const initDataManger = () => {
     localCache.RPMData.RPMUpperLimit = currentDevice.motor_speed_u_limit;
     localCache.RPMData.RPMLowerLimit = currentDevice.motor_speed_l_limit;
     localCache.RPMData.NowSpeed = currentDevice.timing_motor_speed;
-    console.log(localCache.RPMData.NowSpeed,currentDevice.timing_motor_speed,'---------',DeviceManage.deviceList[AppGlobal.pageChance].nowData)
     localCache.RPMData.SetSpeed = currentDevice.target_motor_speed;
     localCache.PHData.SetData = formatData(currentDevice.target_PH);
     localCache.PHData.MeasureData = formatData(currentDevice.timing_PH);
