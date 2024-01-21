@@ -15,7 +15,7 @@ const state = () => {
                 fieldName: 'timing_temp'
             },
             {
-                name: '酸碱',
+                name: 'PH',
                 selected: false,
                 fieldName: 'timing_PH'
             },

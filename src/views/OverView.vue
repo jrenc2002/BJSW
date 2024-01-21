@@ -194,6 +194,8 @@ const DeviceManage = useDeviceManage();
 const PopupMangerState = usePopupMangerState()
 const AppGlobal = useAppGlobal();
 
+// todo 统一单位
+
 // ______________________表格数据处理_______________________
 watch(() => DeviceManage.deviceList, () => {
     

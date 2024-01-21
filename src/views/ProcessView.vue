@@ -98,13 +98,13 @@
                                          min="0"
                                          step="1" type="number"
                                          @blur="paramSend('target_motor_speed',AppGlobal.pageChance,localCache.RPMData.SetSpeed)"
-                                  >{{ 'rpm' }}
+                                  >{{ 'r/min' }}
                                 </span>
                             </div>
                             <div class="w-full  flex h-[3vh] flex items-center justify-center mt-2 gap-2 ">
                                 <div class=" w-[5rem] mr-1 text-left relative">实时转速:</div>
                                 <span class="w-[5rem] flex text-center items-center justify-center relative">
-                  {{ localCache.RPMData.NowSpeed }}
+                  {{ localCache.RPMData.NowSpeed }} r/min
                 </span>
                             </div>
                             <div class="w-full  flex h-[3vh] flex items-center justify-center mt-2 gap-2 ">
@@ -184,11 +184,12 @@
                     <div class="card min-w-[10vw] bg-base-100 shadow-lg  border border-zinc-100  top-[62vh] absolute ">
                         <div class="w-full h-[2.5rem] mb-2 font-black  bg-[#D9F0E4] flex items-center justify-center cursor-pointer rounded-t-2xl "
                              @click="popProcessManager('温度')">
-                            <!--                          <div class=" h-full  w-4 flex justify-center items-center rounded mx-1 ">-->
-                            <div :class="[localCache.TemperatureData.water_flag? 'bg-blue-600' : 'bg-red-600']"
-                                 class="w-4 h-4 left-20  rounded-full relative"></div>
-                            <!--                          </div>-->
-                            <div class="w-full text-center relative">
+    
+                            
+                            <div class="w-[5rem] text-center relative flex items-center justify-center gap-2">
+                                <div :class="[(localCache.TemperatureData.heatpower>0 &&!localCache.TemperatureData.water_flag )? 'bg-red-600' :(localCache.TemperatureData.water_flag)?'bg-blue-600':'bg-gray-300' ]"
+                                     class="w-3 h-3    rounded-full relative"></div>
+    
                                 温度
                             </div>
                         
@@ -293,7 +294,7 @@
                     <!--酸泵-->
                     <transition name="fade">
                         <div v-if="stateManger.AcidPump" class=" w-[10rem] p-3 flex-col flex justify-start items-center
-           bg-base-100 shadow-lg min-h-[6rem] rounded-xl  border border-[#874C53] top-[4vh] absolute left-[-12rem]  ">
+                                 bg-base-100 shadow-lg min-h-[6rem] rounded-xl  border border-[#874C53] top-[4vh] absolute left-[-12rem]  ">
                             <div>
                                 <label class="block text font-medium leading-4 text-gray-900 mt-2">补料速度</label>
                                 <div class="mt-2">
@@ -308,7 +309,7 @@
                             
                             <div class="w-full text-center relative  h-[70%] flex items-center justify-center">
                                 <div class=" h-full w-3 flex justify-center items-center rounded mx-1 ">
-                                    <div class="w-2 h-2 bg-green-600 rounded-full"></div>
+                                    <div class="w-2 h-2  rounded-full" :class="[  localCache.acidPumpData.SetData ===0?'bg-gray-300':'bg-green-600']"></div>
                                 </div>
                                 <div :class="[stateManger.AcidPump?'text-white bg-[#E1A1A9]':'bg-white']"
                                      class=" h-full w-[4.3rem] shadow flex justify-center items-center rounded mx-1 cursor-pointer "
@@ -327,14 +328,14 @@
                             <div class="w-full  flex h-[3vh] flex items-center justify-center gap-2 ">
                                 <div class=" min-w-[7rem] mr-1 text-left relative ">实时速率:</div>
                                 <span class="min-w-[2rem] flex text-center items-center justify-center relative">
-                  {{ localCache.acidPumpData.RealTimeRate }}
+                  {{ localCache.acidPumpData.SetData }} ml/h
                 </span>
                             </div>
                             
                             <div class="w-full  flex h-[3vh] flex items-center justify-center gap-2 ">
                                 <div class=" min-w-[7rem] mr-1 text-left relative">补料量:</div>
                                 <span class="min-w-[2rem] flex text-center items-center justify-center relative">
-                  {{ localCache.acidPumpData.FeedAmount }}
+                  {{ localCache.acidPumpData.FeedAmount }} ml
                 </span>
                             </div>
                         </div>
@@ -358,7 +359,8 @@
                         <div class="w-full h-[3rem]   mb-2   bg-[#E1EEFF] flex items-center justify-center rounded-t-2xl ">
                             <div class="w-full text-center relative  h-[70%] flex items-center justify-center">
                                 <div class=" h-full w-3 flex justify-center items-center rounded mx-1 ">
-                                    <div class="w-2 h-2 bg-green-600 rounded-full"></div>
+    
+                                    <div class="w-2 h-2  rounded-full" :class="[  localCache.lyePumpData.SetData ===0?'bg-gray-300':'bg-green-600']"></div>
                                 </div>
                                 
                                 <div :class="[stateManger.LyePump?'text-white bg-[#A8C2E4]':'bg-white']"
@@ -378,13 +380,13 @@
                             <div class="w-full  flex h-[3vh] flex items-center justify-center gap-2 ">
                                 <div class=" min-w-[7rem] mr-1 text-left relative ">实时速率:</div>
                                 <span class="min-w-[2rem] flex text-center items-center justify-center relative">
-                  {{ localCache.lyePumpData.SetData }}
+                  {{ localCache.lyePumpData.SetData }} ml/h
                 </span>
                             </div>
                             <div class="w-full  flex h-[3vh] flex items-center justify-center gap-2 ">
                                 <div class=" min-w-[7rem] mr-1 text-left relative">补料量:</div>
                                 <span class="min-w-[2rem] flex text-center items-center justify-center relative">
-                  {{ localCache.lyePumpData.MeasureData }}
+                  {{ localCache.lyePumpData.MeasureData }} ml
                 </span>
                             </div>
                         
@@ -396,7 +398,7 @@
                         <div class="w-full h-[3rem]   mb-2   bg-[#FCF8DA] flex items-center justify-center rounded-t-2xl ">
                             <div class="w-full text-center relative  h-[70%] flex items-center justify-center">
                                 <div class=" h-full w-3 flex justify-center items-center rounded mx-1 ">
-                                    <div class="w-2 h-2 bg-green-600 rounded-full"></div>
+                                    <div class="w-2 h-2  rounded-full" :class="[  localCache.defoamerPumpData.SetData ===0?'bg-gray-300':'bg-green-600']"></div>
                                 </div>
                                 
                                 <div :class="[stateManger.DefoamerPump?'text-white bg-[#E4DDA4]':'bg-white']"
@@ -418,13 +420,13 @@
                             <div class="w-full  flex h-[3vh] flex items-center justify-center gap-2 ">
                                 <div class=" min-w-[7rem] mr-1 text-left relative ">设定速率:</div>
                                 <span class="min-w-[2rem] flex text-center items-center justify-center relative">
-                  {{ localCache.defoamerPumpData.SetData }}
+                  {{ localCache.defoamerPumpData.SetData }} ml/h
                 </span>
                             </div>
                             <div class="w-full  flex h-[3vh] flex items-center justify-center gap-2 ">
                                 <div class=" min-w-[7rem] mr-1 text-left relative">补料量:</div>
                                 <span class="min-w-[2rem] flex text-center items-center justify-center relative">
-                  {{ localCache.defoamerPumpData.MeasureData }}
+                  {{ localCache.defoamerPumpData.MeasureData }} ml
                 </span>
                             </div>
                         </div>
@@ -434,7 +436,7 @@
                         <div class="w-full h-[3rem]   mb-2   bg-[#D9F0E4] flex items-center justify-center rounded-t-2xl ">
                             <div class="w-full text-center relative  h-[70%] flex items-center justify-center">
                                 <div class=" h-full w-3 flex justify-center items-center rounded mx-1 ">
-                                    <div class="w-2 h-2 bg-green-600 rounded-full"></div>
+                                    <div class="w-2 h-2  rounded-full" :class="[  localCache.feedPumpData.SetData ===0?'bg-gray-300':'bg-green-600']"></div>
                                 </div>
                                 
                                 <div :class="[stateManger.FeedPump?'text-white bg-[#9AD1B5]':'bg-white']"
@@ -454,13 +456,13 @@
                             <div class="w-full  flex h-[3vh] flex items-center justify-center gap-2 ">
                                 <div class=" min-w-[7rem] mr-1 text-left relative ">实时速率:</div>
                                 <span class="min-w-[2rem] flex text-center items-center justify-center relative">
-                  {{ localCache.feedPumpData.SetData }}
+                  {{ localCache.feedPumpData.SetData }} ml/h
                 </span>
                             </div>
                             <div class="w-full  flex h-[3vh] flex items-center justify-center gap-2 ">
                                 <div class=" min-w-[7rem] mr-1 text-left relative">补料量:</div>
                                 <span class="min-w-[2rem] flex text-center items-center justify-center relative">
-                  {{ localCache.feedPumpData.MeasureData }}
+                  {{ localCache.feedPumpData.MeasureData }} ml
                 </span>
                             </div>
                         
@@ -565,9 +567,10 @@ const localCache = reactive({
         MeasureData: 0,
         temp_flag: 0,
         water_flag: 0,
+        heatpower:0
     },
     acidPumpData: {
-        RealTimeRate: 0,
+        SetData: 0,
         FeedAmount: 0,
     },
     lyePumpData: {
@@ -633,7 +636,7 @@ const initDataManger = () => {
     localCache.TemperatureData.MeasureData = formatData(currentDevice.timing_temp);
     localCache.TemperatureData.HeatingPower = formatData(currentDevice.heatpower);
     localCache.TemperatureData.CondensateStatus = currentDevice.water_flag === 0 ? '关闭' : '开启';
-    localCache.acidPumpData.RealTimeRate = formatData(currentDevice.acid_pump_now_speed);
+    localCache.acidPumpData.SetData = formatData(currentDevice.acid_pump_now_speed);
     localCache.acidPumpData.FeedAmount = formatData(setDevice.acidPumpSumStepCount);
     localCache.lyePumpData.SetData = formatData(currentDevice.lye_pump_now_speed);
     localCache.lyePumpData.MeasureData = formatData(Number(setDevice.lyePumpSumStepCount));

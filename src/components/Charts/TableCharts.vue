@@ -86,7 +86,7 @@ onUnmounted(() => {
 
 const tableDataSeries=ref();
 const tableDatadLegend=ref(
-    ['实时溶氧','实时酸碱','实时温度','实时转速','酸泵补料量','碱泵补料量','补料泵一补料量','补料泵二补料量','实时泵一速度','实时泵二速度']
+    ['实时溶氧','实时PH','实时温度','实时转速','酸泵补料量','碱泵补料量','补料泵一补料量','补料泵二补料量','实时泵一速度','实时泵二速度']
 );
 
 const updateChart = () => {
@@ -117,8 +117,24 @@ const updateChart = () => {
                     let date = new Date(params[0].axisValue);
                     result += `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}<br>`;
                 }
-                params.forEach(param => {
-                    result += `${param.seriesName}: ${param.value[1].toFixed(2)}<br>`;
+                const unit={
+                    '温度':'℃',
+                    '酸泵补料量':' ml',
+                    '碱泵补料量':' ml',
+                    '转速':' r/min',
+                    '补料二补料量':' ml',
+                    '补料一补料量':' ml',
+                    'PH':' ',
+                    '溶氧':' %',
+                    '补料二流速':' ml/h',
+                    '补料一流速':' ml/h',
+                }
+    
+                params.forEach((param,index) => {
+                    // 帮我分割出-字符串
+                    const str = param.seriesName.split('-')
+        
+                    result += `${param.seriesName}: ${param.value[1].toFixed(2)}${unit[str[1]]} <br>`;
                 });
                 return result;
             }
@@ -204,7 +220,7 @@ watch(() => props.data, (newData, oldValue) => {
             ])
         },
         {
-            name: "实时酸碱",
+            name: "实时PH",
             type: "line",
             smooth: true,
             symbol: "none",
