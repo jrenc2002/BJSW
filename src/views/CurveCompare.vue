@@ -61,7 +61,7 @@ const DeviceManage = useDeviceManage()
 const ChartsData = useChartsData()
 const SingleTank = ref(null);
 const AppGlobal = useAppGlobal();
-const debug = true
+const debug = false
 
 
 /* ——————————————————————————定时器时间函数配置—————————————————————————— */

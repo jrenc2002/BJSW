@@ -53,6 +53,7 @@ export function createInitDB(): any {
                 data_id INTEGER PRIMARY KEY,
                 can_number TEXT NOT NULL,
                 batch_id INTEGER,
+                batch_name TEXT,
                 timing_temp REAL,
                 timing_PH REAL,
                 timing_DO REAL,
@@ -229,6 +230,34 @@ export function createInitDB(): any {
         });
     });
     
+    // 查询批次id
+    ipcMain.handle('get-batch-id', (event, batchName, canNumber,startTime) => {
+        
+        // 确保数据库连接
+        if (!db) {
+            console.error('数据库连接失败');
+            return Promise.reject("数据库连接失败");
+        }
+        
+        return new Promise((resolve, reject) => {
+            const query = `
+                SELECT id
+                FROM fermentation_batch
+                WHERE batch_name = ? AND can_number = ? AND start_time = ?
+            `;
+            db.prepare(query).get([batchName, canNumber,startTime], (err, row) => {
+                if (err) {
+                    console.error('查询批次id时出现错误:', err);
+                    reject("查询失败");
+                } else {
+                    resolve(row);
+                }
+            });
+        }).catch(error => {
+            console.error("Unexpected error in get-batch-id:", error);
+            throw error;  // 或者返回一个特定的错误消息或对象，这取决于您如何处理这些错误
+        });
+    });
     
 }
 

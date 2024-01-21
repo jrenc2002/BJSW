@@ -47,9 +47,7 @@ const props = defineProps({
   }
 })
 
-onMounted(() => {
- console.log(props.popcontent, "11111111_____________________")
-})
+
 
 
 </script>

@@ -5,7 +5,8 @@
                     v-show="isShowCharts"
                     class="rounded-2xl absolute bg-white bg-opacity-50 h-[calc(100%-2rem)] w-[calc(100%-2rem)]  z-30 backdrop-blur-sm items-center justify-center flex"
             >
-                <TableCharts v-model:data="tableData" v-model:switch="isShowCharts" v-model:name="batchName"  class="w-full h-full z-40 "></TableCharts>
+                <TableCharts v-model:data="tableData" v-model:name="batchName" v-model:switch="isShowCharts"
+                             class="w-full h-full z-40 "></TableCharts>
             </div>
         </transition>
         <div class="w-full p-5 h-[4.2rem] flex items-center text-xl text-zinc-900 font-medium">
@@ -162,12 +163,15 @@
                                 </button>
                                 <!--查看图表-->
                                 <button @click="showCharts">
-                                    <svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <rect width="25" height="25" rx="12.5" fill="#E9E9E9"/>
-                                        <path d="M7.25 7.25V17.75H17.75" stroke="#333333" stroke-linecap="round" stroke-linejoin="round"/>
-                                        <path d="M9.5835 15.4167L11.9168 10.75L14.8335 13.375L17.7502 7.25" stroke="#333333" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <svg fill="none" height="25" viewBox="0 0 25 25" width="25"
+                                         xmlns="http://www.w3.org/2000/svg">
+                                        <rect fill="#E9E9E9" height="25" rx="12.5" width="25"/>
+                                        <path d="M7.25 7.25V17.75H17.75" stroke="#333333" stroke-linecap="round"
+                                              stroke-linejoin="round"/>
+                                        <path d="M9.5835 15.4167L11.9168 10.75L14.8335 13.375L17.7502 7.25"
+                                              stroke="#333333" stroke-linecap="round" stroke-linejoin="round"/>
                                     </svg>
-
+                                
                                 </button>
                             
                             
@@ -176,10 +180,21 @@
                         
                         <!--自定义空数据模板-->
                         <template #empty>
-              <span style="color: red;">
-                <img src="https://pic2.zhimg.com/50/v2-f7031359103859e1ed38559715ef5f3f_hd.gif">
-                <p>没有更多数据了！</p>
-              </span>
+                            <div class="flex flex-col justify-start items-center h-32">
+                                <div class="spinner">
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                    <div></div>
+                                </div>
+                            <div class="font-bold text-green-500 text-[1.5rem] h-16 flex flex-col justify-center items-center pt-5">
+                            <p>暂未查询到数据</p>
+                          </div>
+                            
+                            </div>
+                 
                         </template>
                     
                     </vxe-grid>
@@ -202,6 +217,7 @@ import {useAppGlobal} from '@/store/AppGlobal'
 import {useDeviceManage} from '@/store/DeviceManage'
 import {useProcessPopupMangerState} from "@/store/ProcessPopupMangerState";
 import TableCharts from "@/components/Charts/TableCharts.vue";
+const debug = true
 
 const AppGlobal = useAppGlobal()
 const DeviceManage = useDeviceManage()
@@ -221,10 +237,10 @@ const gridEvent: VxeGridListeners<any> = {
 }
 const xGrid = ref<VxeGridInstance<any>>()
 
-const batchName=ref('')
+const batchName = ref('')
 
 // 表格数据
-const tableData=ref<any[]>([])
+const tableData = ref<any[]>([])
 // 表格配置项
 const gridOptions = reactive<VxeGridProps<any>>({
     showOverflow: true,
@@ -375,19 +391,22 @@ const noMore = computed(() => {
 const disabled = computed(() => {
     return batchloading.value || noMore.value
 })
-const isShowCharts=ref(false)
+const isShowCharts = ref(false)
 const showCharts = () => {
-    isShowCharts.value=true
-
+    isShowCharts.value = true
+    
     
 }
 // 关闭页面
 const closePop = () => {
-    isShowCharts.value=false
+    isShowCharts.value = false
 }
 // 选择批次ID
 const selectedBatch = ref(null);
 const selectBatch = (batch) => {
+    if (debug){
+        console.log('【批次比较】选择的批次ID',batch)
+    }
     selectedBatch.value = batch;
     // 在这里，您可以执行其他所需的操作，例如更新其他 UI 元素、调用 API 等
 };
@@ -405,10 +424,18 @@ const updateBatchData = () => {
     if (deviceNum) {
         window.Electron.ipcRenderer.invoke('get-batches-by-can', deviceNum).then(
             (res) => {
-                if (res) { // 确保res是有效的
+                if (res) {
+                    // 将res中的批次名为null的数据删除
+                    res = res.filter((item) => {
+                        return item.batch_name !== null;
+                    });
+                    
+                    if (debug){
+                        console.log('【批次比较】读取的批次数据',res)
+                    }
                     batchData.value = res;
-                    selectedBatch.value=res[0].id
-                    batchName.value='设备罐号'+res[0].can_number+' - 批次号'+res[0].batch_name
+                    selectedBatch.value = res[0].id
+                    batchName.value = '设备罐号' + res[0].can_number + ' - 批次号' + res[0].batch_name
                 } else {
                     console.error('请求批次内容数据没请求到.');
                 }
@@ -431,9 +458,17 @@ const updateBatchContentData = () => {
     window.Electron.ipcRenderer.invoke('get-data-by-batch', selectedBatch.value).then(
         (res) => {
             if (res) { // 确保res是有效的
+                if (debug){
+                    console.log('【批次比较】读取批次数据',selectedBatch.value,res)
+                }
+                // 进行数据处理relative_time保留三位小数，absolute_time从时间戳化为实际时间
+                res.forEach((item) => {
+                    item.relative_time = item.relative_time.toFixed(4);
+                    item.absolute_time = timestampToString(item.absolute_time);
+                });
+                
                 gridOptions.data = res;
-                tableData.value=res;
-                console.log(res);
+                tableData.value = res;
             } else {
                 console.error('请求批次内容数据没请求到.');
             }
@@ -461,7 +496,7 @@ const toggle = () => {
 
 function timestampToString(timestamp) {
     // 将时间戳转换为毫秒
-    let date = new Date(timestamp);
+    let date = new Date(Number(timestamp));
     // 使用toLocaleString将日期和时间转换为字符串格式
     let dateString = date.toLocaleString();
     return dateString;
@@ -489,5 +524,61 @@ function timestampToString(timestamp) {
     transform-origin: right top;
     transform: scale(0.5);
     opacity: 0;
+}
+.spinner {
+    width: 44px;
+    height: 44px;
+    animation: spinner-y0fdc1 2s infinite ease;
+    transform-style: preserve-3d;
+}
+
+.spinner > div {
+    background-color: rgba(34, 255, 0, 0.2);
+    height: 100%;
+    position: absolute;
+    width: 100%;
+    border: 2px solid #55c483;
+}
+
+.spinner div:nth-of-type(1) {
+    transform: translateZ(-22px) rotateY(180deg);
+}
+
+.spinner div:nth-of-type(2) {
+    transform: rotateY(-270deg) translateX(50%);
+    transform-origin: top right;
+}
+
+.spinner div:nth-of-type(3) {
+    transform: rotateY(270deg) translateX(-50%);
+    transform-origin: center left;
+}
+
+.spinner div:nth-of-type(4) {
+    transform: rotateX(90deg) translateY(-50%);
+    transform-origin: top center;
+}
+
+.spinner div:nth-of-type(5) {
+    transform: rotateX(-90deg) translateY(50%);
+    transform-origin: bottom center;
+}
+
+.spinner div:nth-of-type(6) {
+    transform: translateZ(22px);
+}
+
+@keyframes spinner-y0fdc1 {
+    0% {
+        transform: rotate(45deg) rotateX(-25deg) rotateY(25deg);
+    }
+
+    50% {
+        transform: rotate(45deg) rotateX(-385deg) rotateY(25deg);
+    }
+
+    100% {
+        transform: rotate(45deg) rotateX(-385deg) rotateY(385deg);
+    }
 }
 </style>

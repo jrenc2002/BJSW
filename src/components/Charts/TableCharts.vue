@@ -21,7 +21,7 @@
         </div>
         <!--    表格栏-->
         <div class="  w-[100%] h-[94%]  bottom-0   items-center justify-center flex  ">
-            <div :id="1" ref="chartDiv" :style="{ width: '98%', height: '100%' }"></div>
+            <div :id="1" ref="chartDiv" :style="{ width: '98%', height: '98%' }"></div>
         
         </div>
     

@@ -177,6 +177,7 @@ interface Device {
     deviceSet: deviceSet | null
     batch_cycle: number;
     recordFlag: boolean;
+    batch_id: number | null;
     
 }
 
@@ -203,6 +204,7 @@ const state = (): {
                 batch_cycle: 0,
                 state: 0,
                 nowData: null,
+                batch_id: null,
                 deviceSocket: null,
                 start_time: null,
                 recordFlag: false,
@@ -423,6 +425,7 @@ export const useDeviceManage = defineStore('DeviceManage', {
                 deviceNum: '',
                 batch_cycle: 0,
                 ip: ip,
+                batch_id: null,
                 port: port,
                 state: 0,
                 recordFlag: false,
@@ -674,9 +677,10 @@ export const useDeviceManage = defineStore('DeviceManage', {
                         (res) => {
                             if (res) { // 确保res是有效的
                                 if (debug){
-                                    console.log('【更新数据】已存储数据', batchData)
-                                    
+                                    console.log('【更新数据】已存储批次数据', batchData,res)
+                       
                                 }
+                                this.deviceList[index].batch_id = res;
                             } else {
                                 console.error('请求批次内容数据没请求到.');
                             }
@@ -747,10 +751,30 @@ export const useDeviceManage = defineStore('DeviceManage', {
                 // 批次数据 or 罐号数据
                 // 获取相对时间单位为h
                 const relativeTime = this.deviceList[index].start_time!==null?((currentDate.getTime() - this.deviceList[index].start_time.getTime()) / 1000 / 60 / 60):0;
+                if (this.deviceList[index].batch_id===null){
+                    // 查询数据库获取batch_id
+                    window.Electron.ipcRenderer.invoke('get-batch-id', this.deviceList[index].batch_name,newDeviceData.decive_id,currentDate).then(
+                        (res) => {
+                            if (res) { // 确保res是有效的
+                                if (debug){
+                                    console.log('【更新数据】已获取批次数据', res)
+                                }
+            
+                                this.deviceList[index].batch_id = res;
+                            } else {
+                                console.error('请求批次内容数据没请求到.');
+                            }
+                        }
+                    ).catch((error) => {
+                        console.error('请求批次内容数据报错,报错为:', error);
+                    });
+                    
+                }
                 // 数据存入到数据库
                 const fermentationData = {
                     can_number: newDeviceData.decive_id,
-                    batch_id: this.deviceList[index].batch_name,
+                    batch_id: this.deviceList[index].batch_id,
+                    batch_name: this.deviceList[index].batch_name,
                     timing_temp: newDeviceData.timing_temp,
                     timing_PH: newDeviceData.timing_PH,
                     timing_DO: newDeviceData.timing_DO,
@@ -772,16 +796,9 @@ export const useDeviceManage = defineStore('DeviceManage', {
                             if (debug) {
                                 console.log('【更新数据】已存储数据', fermentationData);
                             }
-                            // 确保添加数据操作完成后再读取数据
-                            return window.Electron.ipcRenderer.invoke('get-recent-fermentation-data', newDeviceData.decive_id, 'timing_PH', 10000);
+                            
                         } else {
                             throw new Error('添加数据失败');
-                        }
-                    }
-                ).then(
-                    (res) => {
-                        if (res && debug) {
-                            console.log('【更新数据】请求批次内容数据成功，返回结果为:', res);
                         }
                     }
                 ).catch((error) => {
