@@ -158,7 +158,17 @@ interface deviceSet {
     lyePumpSumStepCount: number,
     defoamerPumpSumStepCount: number,
     feedPumpSumStepCount: number,
+    /** 酸泵单步速度 */
+    acidPumpSpeed: number;
     
+    /** 碱泵单步速度 */
+    lyePumpSpeed: number;  // 单步速度：毫升/步
+    
+    /** 消泡泵单步速度 */
+    defoamerPumpSpeed: number;
+    
+    /** 补料泵单步速度 */
+    feedPumpSpeed: number;
     
 }
 
@@ -225,6 +235,14 @@ const state = (): {
                     lyePumpSumStepCount: 0,
                     feedPumpSumStepCount: 0,
                     defoamerPumpSumStepCount: 0,
+                    /** 酸泵单步速度 */
+                    acidPumpSpeed: 0,
+                    /** 碱泵单步速度 */
+                    lyePumpSpeed: 0, // 单步速度：毫升/步
+                    /** 消泡泵单步速度 */
+                    defoamerPumpSpeed: 0,
+                    /** 补料泵单步速度 */
+                    feedPumpSpeed: 0
                 }
             },
         

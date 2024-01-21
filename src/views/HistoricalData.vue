@@ -10,7 +10,7 @@
             </div>
         </transition>
         <div class="w-full p-5 h-[4.2rem] flex items-center text-xl text-zinc-900 font-medium">
-            批次比较
+            批次数据
         </div>
         <div class="w-full px-3 pb-3 h-[calc(100%-4.2rem)] flex items-center gap-3 ">
             <div class=" h-full w-[28rem] bg-white  rounded-lg shadow ">

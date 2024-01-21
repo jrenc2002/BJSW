@@ -205,6 +205,8 @@ import OverDataIcon from '@/assets/image/OverDataIcon.png'
 import OverDataIcon1 from '@/assets/image/OverDataIcon1.png'
 import ProcessView from '@/assets/image/ProcessView.png'
 import ProcessView1 from '@/assets/image/ProcessView1.png'
+import CanDataIcon from '@/assets/image/CanDataIcon.png'
+import CanDataIcon1 from '@/assets/image/CanDataIcon1.png'
 import {useAppGlobal} from '@/store/AppGlobal'
 import {useDeviceManage} from '@/store/DeviceManage'
 import {addDevice} from '@/api/index.js'
@@ -237,11 +239,17 @@ const navigation = computed(() => [
     current: route.path === '/curvecompare'
   },
   {
-    name: '历史数据',
+    name: '批次数据',
     href: '/historicaldata',
     icon: route.path === '/historicaldata' ? HistoryDataIcon1 : HistoryDataIcon,
     current: route.path === '/historicaldata'
   },
+    {
+        name: '罐号数据',
+        href: '/candata',
+        icon: route.path === '/candata' ? CanDataIcon1 : CanDataIcon,
+        current: route.path === '/candata'
+    },
   {
     name: '批次校准',
     href: '/calibratebatch',

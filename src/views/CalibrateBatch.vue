@@ -638,6 +638,10 @@ const SendToHandle = (() => {
       feed0_pump_calibration_flag: DeviceManage.deviceList[AppGlobal.pageChance].nowData.feed0_pump_calibration_flag,
       lye_pump_calibration_flag: DeviceManage.deviceList[AppGlobal.pageChance].nowData.lye_pump_calibration_flag,
       acid_pump_calibration_flag: DeviceManage.deviceList[AppGlobal.pageChance].nowData.acid_pump_calibration_flag,
+      acidPumpSpeed: DeviceManage.deviceList[AppGlobal.pageChance].deviceSet.acidPumpSpeed,
+      lyePumpSpeed: DeviceManage.deviceList[AppGlobal.pageChance].deviceSet.lyePumpSpeed,
+      feedPumpSpeed: DeviceManage.deviceList[AppGlobal.pageChance].deviceSet.feedPumpSpeed,
+      feed0PumpSpeed: DeviceManage.deviceList[AppGlobal.pageChance].deviceSet.defoamerPumpSpeed,
     }
     sendData(AppGlobal.pageChance, data);
 

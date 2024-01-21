@@ -258,6 +258,64 @@ export function createInitDB(): any {
             throw error;  // 或者返回一个特定的错误消息或对象，这取决于您如何处理这些错误
         });
     });
+
+    // 查询所有罐号
+    ipcMain.handle('get-can-number', () => {
+        
+        // 确保数据库连接
+        if (!db) {
+            console.error('数据库连接失败');
+            return Promise.reject("数据库连接失败");
+        }
+        
+        return new Promise((resolve, reject) => {
+            const query = `
+                SELECT DISTINCT can_number
+                FROM fermentation_batch
+            `;
+            db.prepare(query).all([], (err, rows) => {
+                if (err) {
+                    console.error('查询罐号时出现错误:', err);
+                    reject("查询失败");
+                } else {
+                    resolve(rows);
+                }
+            });
+        }).catch(error => {
+            console.error("Unexpected error in get-can-number:", error);
+            throw error;  // 或者返回一个特定的错误消息或对象，这取决于您如何处理这些错误
+        });
+    });
+    
+    // 查询罐号的时间范围内的数据
+    ipcMain.handle('get-data-by-can-and-time', (event, canNumber, startTime, endTime) => {
+        
+        // 确保数据库连接
+        if (!db) {
+            console.error('数据库连接失败');
+            return Promise.reject("数据库连接失败");
+        }
+        
+        return new Promise((resolve, reject) => {
+            const query = `
+                SELECT *
+                FROM fermentation_data
+                WHERE can_number = ? AND absolute_time >= ? AND absolute_time <= ?
+                ORDER BY absolute_time ASC
+            `;
+            db.prepare(query).all([canNumber, startTime, endTime], (err, rows) => {
+                if (err) {
+                    console.error('查询罐号数据时出现错误:', err);
+                    reject("查询失败");
+                } else {
+                    resolve(rows);
+                }
+            });
+        }).catch(error => {
+            console.error("Unexpected error in get-data-by-can-and-time:", error);
+            throw error;  // 或者返回一个特定的错误消息或对象，这取决于您如何处理这些错误
+        });
+    });
     
 }
 

@@ -45,10 +45,19 @@ const routes: Array<RouteRecordRaw> = [
                 path: '/historicaldata',
                 name: 'HistoricalData',
                 meta: {
-                    title: '历史数据',
+                    title: '批次数据',
                     permiss: '1',
                 },
                 component: () => import(/* webpackChunkName: "login" */ '../views/HistoricalData.vue'),
+            },
+            {
+                path: '/candata',
+                name: 'CanData',
+                meta: {
+                    title: '罐号数据',
+                    permiss: '1',
+                },
+                component: () => import(/* webpackChunkName: "login" */ '../views/CanData.vue'),
             },
             {
                 path: '/calibratebatch',
