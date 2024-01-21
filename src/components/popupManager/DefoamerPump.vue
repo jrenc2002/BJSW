@@ -109,7 +109,7 @@
                                       v-model="inputVisible[i][index-2].cache"
                                       :placeholder="placeholder[index-2]"
                                       class="w-[8.2rem]  h-full text-center break-all whitespace-normal "
-                                      type="text"
+                                      type="number"
                                       @keyup.enter="keyupEnterInput(i,index-2)"
                               />
         

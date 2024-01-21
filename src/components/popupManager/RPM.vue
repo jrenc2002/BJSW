@@ -82,12 +82,7 @@
                                             <template v-for="(col, i) in tableBodyCols" :key="col.props + i">
                                                 <td v-if="index==0"
                                                     class="w-[8.2rem] text-center border-r border-b flex justify-center items-center">
-<!--                                                    <details class="dropdown ">-->
-<!--                                                        <summary v-if="body[col.props]==0||body[col.props]==null||body[col.props]==undefined" class="m-1 btn w-[7rem] ">停止</summary>-->
-<!--                                                        <summary v-if="body[col.props]>0"-->
-<!--                                                                 class="m-1 btn w-[7rem] text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3]">开启-->
-<!--                                                        </summary>-->
-<!--                                                    </details>-->
+
                                                   <Menu as="div" class="dropdown relative inline-block">
                                                     <div>
                                                       <MenuButton class="inline-flex w-[7rem] justify-center gap-x-1.5">
@@ -116,7 +111,7 @@
                                                             v-model="inputVisible[i][index-2].cache"
                                                             :placeholder="placeholder[index-2]"
                                                             class="w-[8.2rem]  h-full text-center break-all whitespace-normal "
-                                                            type="text"
+                                                            type="number"
                                                             @keyup.enter="keyupEnterInput(i,index-2)"
                                                     />
 

@@ -91,13 +91,13 @@
                                                             v-model="inputVisible[i][index-2].cache"
                                                             :placeholder="placeholder[index-2]"
                                                             class="w-[8.2rem]  h-full text-center break-all whitespace-normal "
-                                                            type="text"
+                                                            type="number"
                                                             @keyup.enter="keyupEnterInput(i,index-2)"
                                                     />
                                                     
                                                     <span v-else
                                                           class="w-[8.2rem] leading-5 text-center whitespace-normal break-all flex justify-center items-center">
-                    {{ body[col.props] }}</span>
+                                                {{ body[col.props] }}</span>
                                                 </td>
                                                 <td v-else
                                                     class="w-[8.2rem] text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">

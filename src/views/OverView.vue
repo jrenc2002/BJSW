@@ -97,23 +97,31 @@
                                                 <template v-for="(col, i) in tableBodyCols" :key="col.props + i">
                                                     <td v-if="index==0"
                                                         class="w-[8.2rem] flex justify-center items-center text-center  border-b border-r   cursor-pointer">
-                                                        <details class="dropdown ">
-                                                            <summary v-if="body[col.props]===0"
-                                                                     class="m-1 btn w-[7rem] hover:bg-[#FAFAFA]">未连接
-                                                            </summary>
-                                                            <summary v-if="body[col.props]===1"
-                                                                     class="m-1 btn w-[7rem] text-[#0E699C] bg-[#7DBCF6] hover:bg-[#7DBCF6]">
-                                                                已连接
-                                                            </summary>
-                                                            <summary v-if="body[col.props]===2"
-                                                                     class="m-1 btn w-[7rem] text-[#256637] bg-[#BAE7C7] hover:bg-[#BAE7C7]">
-                                                                运行中
-                                                            </summary>
-                                                            <summary v-if="body[col.props]===3"
-                                                                     class="m-1 btn w-[7rem] text-[#E21212] bg-[#FAB7B7] hover:bg-[#FAB7B7]">
-                                                                报警
-                                                            </summary>
-                                                        </details>
+                                               
+                                                        <Menu as="div" class="dropdown relative inline-block">
+                                                            <div>
+                                                                <MenuButton class="inline-flex w-[7rem] justify-center gap-x-1.5">
+                                                          
+                                                                    <summary v-if="body[col.props]===1"
+                                                                             class="m-1 btn w-[7rem] text-[#0E699C] bg-[#7DBCF6] hover:bg-[#7DBCF6]">
+                                                                        已连接
+                                                                    </summary>
+                                                                    <summary v-else-if="body[col.props]===2"
+                                                                             class="m-1 btn w-[7rem] text-[#256637] bg-[#BAE7C7] hover:bg-[#BAE7C7]">
+                                                                        运行中
+                                                                    </summary>
+                                                                    <summary v-else-if="body[col.props]===3"
+                                                                             class="m-1 btn w-[7rem] text-[#E21212] bg-[#FAB7B7] hover:bg-[#FAB7B7]">
+                                                                        报警
+                                                                    </summary>
+                                                                    <summary v-else
+                                                                             class="m-1 btn w-[7rem] hover:bg-[#FAFAFA]">未连接
+                                                                    </summary>
+                                                                </MenuButton>
+                                                            </div>
+        
+                                                     
+                                                        </Menu>
                                                     </td>
                                                     <td v-else-if="index==2"
                                                         class="w-[8.2rem] text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center"
@@ -125,11 +133,12 @@
                                                                 placeholder="输入发酵批号"
                                                                 type="text"
                                                                 @keyup.enter="inputVisible[i].status = false"
+                                                                
                                                         />
                                                         
                                                         <span v-else
                                                               class="w-[8.2rem] leading-5 text-center whitespace-normal break-all flex justify-center items-center">
-                    {{ body[col.props] }}</span>
+                                {{ body[col.props] }}</span>
                                                     </td>
                                                     
                                                     <td v-else
@@ -180,7 +189,7 @@ import PopupManger from "@/components/PopupManger.vue";
 import {PopupType, usePopupMangerState} from "@/store/PopupMangerState";
 import {useDeviceManage} from '@/store/DeviceManage'
 import {useAppGlobal} from '@/store/AppGlobal'
-
+const debug=true
 const DeviceManage = useDeviceManage();
 const PopupMangerState = usePopupMangerState()
 const AppGlobal = useAppGlobal();
@@ -249,7 +258,7 @@ const initTableData = () => {
             index--;
             // 在设备未连接的时候做数据处理
             if (DeviceManage.deviceList[index].nowData == null) {
-                tableItem[header.props] = 0;
+                tableItem[header.props] = `--`;
                 
                 return;
             }
@@ -261,20 +270,23 @@ const initTableData = () => {
             // 运行时间的处理
             else if (deviceProp.prop == "running_time") {
                 // 检验start_time是否存在
+                if (debug){
+                    console.log(DeviceManage.deviceList[index].start_time)
+                }
                 if (DeviceManage.deviceList[index].start_time) {
                     const diffMilliseconds = new Date().getTime() - DeviceManage.deviceList[index].start_time.getTime(); // 获取时间差（毫秒）
                     const hours = Number((diffMilliseconds / 1000 / 3600).toFixed(2)); // 获取小时数b
                     tableItem[header.props] = `${hours}h`;
                 }
                 else {
-               
                     tableItem[header.props] = `--`;
                 }
         
  
             }
-            // 批次名
+  
             else if (deviceProp.prop == "batchnum") {
+             
                 if (DeviceManage.deviceList[index].batch_name== null||DeviceManage.deviceList[index].batch_name== undefined) {
     
                     tableItem[header.props] = `--`;
@@ -486,6 +498,7 @@ onMounted(() => {
     
     initTableData()
 });
+
 
 // 当组件卸载时移除事件监听器
 onUnmounted(() => {
