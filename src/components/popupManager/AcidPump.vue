@@ -73,10 +73,11 @@
                                             <template v-for="(col, i) in tableBodyCols" :key="col.props + i">
                                                 <td v-if="index==0" class="w-[8.2rem] text-center border-r border-b flex justify-center items-center text-center ">
                                                     <details class="dropdown ">
-                                                        <summary v-if="body[col.props]==0||body[col.props]==null||body[col.props]==undefined" class="m-1 btn w-[7rem] ">停止</summary>
                                                         <summary v-if="body[col.props]>0"
                                                                  class="m-1 btn w-[7rem] text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3]">开启
                                                         </summary>
+    
+                                                        <summary v-else class="m-1 btn w-[7rem] ">停止</summary>
                                                         
                                                         
                                                     
@@ -92,7 +93,7 @@
                                                             :placeholder="placeholder[index-2]"
                                                             class="w-[8.2rem]  h-full text-center break-all whitespace-normal "
                                                             type="number"
-                                                            @keyup.enter="keyupEnterInput(i,index-2)"
+                                                            @blur="keyupEnterInput(i,index-2)"
                                                     />
                                                     
                                                     <span v-else
@@ -183,8 +184,8 @@ const initTableData = () => {
     
     const deviceProperties = [
         {name: '状态', prop: 'acid_pump_now_speed'},
-        {name: '累计补料量', prop: 'acid_pump'},  // 这里选择了补料关联氧含量标志位，因为它看起来是一个功能关联标志
-        {name: '补料速度', prop: 'acid_pump_now_set_speed'}  ]
+        {name: '累计补料量 c', prop: 'acid_pump'},  // 这里选择了补料关联氧含量标志位，因为它看起来是一个功能关联标志
+        {name: '补料速度 ml/h', prop: 'acid_pump_now_set_speed'}  ]
     
     
     
@@ -206,7 +207,7 @@ const initTableData = () => {
                 
             }
             if (DeviceManage.deviceList[index].nowData == null) {
-                tableItem[header.props] = 0;
+                tableItem[header.props] = '--';
                 
                 return;
             }
@@ -223,7 +224,7 @@ const initTableData = () => {
                     tableItem[header.props] = acidPumpSpeed * acid_pump_sum_step_count;
                     
                 } else {
-                    tableItem[header.props] = 0;
+                    tableItem[header.props] = '--';
                 }
                 
             }
@@ -333,17 +334,7 @@ const controlSend = ((name, index, content) => {
     
 })
 const tableData: any = reactive([
-    {name: '状态', F1: 1, F2: 1, F3: 2, F4: 1, F5: 0, F6: 1, F7: 2, F8: 1},
-    {name: '测量值', F1: 25, F2: 26, F3: 27, F4: 28, F5: 29, F6: 30, F7: 31, F8: 32},
-    {name: '设定值', F1: 28, F2: 29, F3: 30, F4: 31, F5: 32, F6: 33, F7: 34, F8: 35},
-    {name: '控制周期', F1: 30, F2: 31, F3: 32, F4: 33, F5: 34, F6: 35, F7: 36, F8: 37},
-    {name: '周期开度', F1: 30, F2: 31, F3: 32, F4: 33, F5: 34, F6: 35, F7: 36, F8: 37},
-    {name: '比例P', F1: 25, F2: 26, F3: 27, F4: 28, F5: 29, F6: 30, F7: 31, F8: 32},
-    {name: '积分I', F1: 28, F2: 29, F3: 30, F4: 31, F5: 32, F6: 33, F7: 34, F8: 35},
-    {name: '微分D', F1: 30, F2: 31, F3: 32, F4: 33, F5: 34, F6: 35, F7: 36, F8: 37},
-    {name: '控制死区', F1: 28, F2: 29, F3: 30, F4: 31, F5: 32, F6: 33, F7: 34, F8: 35},
-    {name: '报警上限', F1: 25, F2: 26, F3: 27, F4: 28, F5: 29, F6: 30, F7: 31, F8: 32},
-    {name: '报警下限', F1: 25, F2: 26, F3: 27, F4: 28, F5: 29, F6: 30, F7: 31, F8: 32},
+
 ]);
 
 

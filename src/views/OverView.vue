@@ -132,7 +132,7 @@
                                                                 class="w-[8.2rem]  h-full text-center break-all whitespace-normal "
                                                                 placeholder="输入发酵批号"
                                                                 type="text"
-                                                                @keyup.enter="inputVisible[i].status = false"
+                                                                @blur="inputVisible[i].status = false"
                                                                 
                                                         />
                                                         
@@ -315,7 +315,7 @@ const initTableData = () => {
                         device.deviceSet.acidPumpSumStepCount = acidPumpSpeed * acid_pump_sum_step_count;
                     }
                 } else {
-                    tableItem[header.props] = 0;
+                    tableItem[header.props] = '--';
                 }
             }
             // 碱泵
@@ -329,7 +329,7 @@ const initTableData = () => {
                         device.deviceSet.lyePumpSumStepCount = lyePumpSpeed * lye_pump_sum_step_count;
                     }
                 } else {
-                    tableItem[header.props] = 0;
+                    tableItem[header.props] = '--';
                 }
                 
             }
@@ -344,7 +344,7 @@ const initTableData = () => {
                         device.deviceSet.feedPumpSumStepCount = feedPumpSpeed * feed_pump_sum_step_count;
                     }
                 } else {
-                    tableItem[header.props] = 0;
+                    tableItem[header.props] = '--';
                 }
                 
             }
@@ -360,7 +360,7 @@ const initTableData = () => {
                         device.deviceSet.defoamerPumpSumStepCount = defoamerPumpSpeed * feed0_pump_sum_step_count;
                     }
                 } else {
-                    tableItem[header.props] = 0;
+                    tableItem[header.props] = '--';
                 }
                 
             }

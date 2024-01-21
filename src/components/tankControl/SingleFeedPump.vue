@@ -105,7 +105,7 @@
                                                             :placeholder="placeholder[index-2]"
                                                             class="w-[8.2rem]  h-full text-center break-all whitespace-normal "
                                                             type="text"
-                                                            @keyup.enter="keyupEnterInput(i,index-2)"
+                                                            @blur="keyupEnterInput(i,index-2)"
                                                     />
                                                     
                                                     <span v-else
@@ -227,7 +227,7 @@ const initTableData = () => {
             
             
             if (DeviceManage.deviceList[index].nowData == null) {
-                tableItem[header.props] = 0;
+                tableItem[header.props] = '--';
                 
                 return;
             }
@@ -239,7 +239,7 @@ const initTableData = () => {
                     tableItem[header.props] = feedPumpSpeed * feed_pump_sum_step_count;
                     
                 } else {
-                    tableItem[header.props] = 0;
+                    tableItem[header.props] = '--';
                 }
                 
             } else {

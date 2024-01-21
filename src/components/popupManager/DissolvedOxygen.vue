@@ -81,24 +81,15 @@
                     <tr v-for="(body,index) in tableBodyRows" :key="index" class="flex justify-center items-center">
                         <template v-for="(col, i) in tableBodyCols" :key="col.props + i">
                             <td v-if="index==0" class="w-[8.2rem] text-center border-r border-b flex justify-center items-center">
-<!--                              原按钮 ul下拉框-->
-<!--                                <details class="dropdown ">-->
-<!--                                    <summary v-if="body[col.props]==0||body[col.props]==null||body[col.props]==undefined" class="m-1 btn w-[7rem] ">停止</summary>-->
-<!--                                    <summary v-if="body[col.props]==1" class="m-1 btn w-[7rem] text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3]">开启</summary>-->
-<!--                                    <ul class="p-2 shadow-xl menu dropdown-content z-[1] bg-base-100 rounded-box w-[7rem] broder">-->
-<!--                                        <li class="text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2] rounded"-->
-<!--                                            @click="controlSend('DO_flag',i,0)"><a>停止</a></li>-->
-<!--                                        <li class="text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] mt-2 rounded"-->
-<!--                                            @click="controlSend('DO_flag',i,1)"><a>开启</a></li>-->
-<!--                                    </ul>-->
-<!--                                </details>-->
+
 
 
                               <Menu as="div" class="dropdown relative inline-block">
                                 <div>
                                   <MenuButton class="inline-flex w-[7rem] justify-center gap-x-1.5">
-                                    <summary v-if="body[col.props] == 0 || body[col.props] == null || body[col.props] == undefined" class="m-1 btn w-[7rem] text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2] rounded">停止</summary>
                                     <summary v-if="body[col.props] == 1" class="m-1 btn w-[7rem] text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] rounded mt-2">开启</summary>
+    
+                                      <summary v-else class="m-1 btn w-[7rem] text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2] rounded">停止</summary>
                                   </MenuButton>
                                 </div>
 
@@ -113,25 +104,7 @@
                               </Menu>
 
                             </td>
-                            <!--                                                <td v-else-if="index==1"-->
-                            <!--                                                    class="w-[8.2rem] text-center border-r border-b flex justify-center items-center">-->
-                            <!--                                                    <details class="dropdown ">-->
-                            <!--                                                        <summary v-if="body[col.props]==0||body[col.props]==null||body[col.props]==undefined" class="m-1 btn w-[7rem] ">停止</summary>-->
-                            <!--                                                        <summary v-if="body[col.props]==1"-->
-                            <!--                                                                 class="m-1 btn w-[7rem] text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3]">开启-->
-                            <!--                                                        </summary>-->
-                            <!--                -->
-                            <!--                -->
-                            <!--                                                        <ul class="p-2 shadow-xl menu dropdown-content z-[1] bg-base-100 rounded-box w-[7rem] broder">-->
-                            <!--                                                            <li class="text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2] rounded"-->
-                            <!--                                                                @click="controlSend('DO_flag',i,0)"><a>停止</a>-->
-                            <!--                                                            </li>-->
-                            <!--                                                            <li class="text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] mt-2 rounded"-->
-                            <!--                                                                @click="controlSend('DO_flag',i,1)"><a>开启</a></li>-->
-                            <!--                -->
-                            <!--                                                        </ul>-->
-                            <!--                                                    </details>-->
-                            <!--                                                </td>-->
+               
                             <td v-else-if="index>=2&&index<=10"
                                 class="w-[8.2rem] text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center"
                                 @dblclick="inputVisible[i][index-2].control = !inputVisible[i][index-2].control">
@@ -141,7 +114,7 @@
                                         :placeholder="placeholder[index-2]"
                                         class="w-[8.2rem]  h-full text-center break-all whitespace-normal "
                                         type="number"
-                                        @keyup.enter="keyupEnterInput(i,index-2)"
+                                        @blur="keyupEnterInput(i,index-2)"
                                 />
             
                                 <span v-else
@@ -232,15 +205,15 @@ const initTableData = () => {
 
   const deviceProperties = [
       {name: '状态', prop: 'DO_flag'}, // 0: 停止, 1: 自动
-    {name: '测量值', prop: 'timing_DO'},
-    {name: '设定值', prop: 'target_DO'},
+    {name: '测量值-%', prop: 'timing_DO'},
+    {name: '设定值-%', prop: 'target_DO'},
       {name: '比例P', prop: 'DO_KP'},
       {name: '积分I', prop: 'DO_KI'},
       {name: '微分D', prop: 'DO_KD'},
-    {name: 'DO误差上限', prop: 'DO_upper_limit'},
-    {name: 'DO误差下限', prop: 'DO_lower_limit'},
-    {name: 'DO报警上限', prop: 'alarm_h_limit'},
-    {name: 'DO报警下限', prop: 'alarm_l_limit'},
+    {name: 'DO误差上限-%', prop: 'DO_upper_limit'},
+    {name: 'DO误差下限-%', prop: 'DO_lower_limit'},
+    {name: 'DO报警上限-%', prop: 'alarm_h_limit'},
+    {name: 'DO报警下限-%', prop: 'alarm_l_limit'},
   ]
 
 
@@ -265,7 +238,7 @@ const initTableData = () => {
 
 
       if (DeviceManage.deviceList[index].nowData == null && deviceProp.prop != "alarm_h_limit" && deviceProp.prop != "alarm_l_limit") {
-        tableItem[header.props] = 0;
+        tableItem[header.props] = '--';
 
         return;
       }
@@ -276,7 +249,7 @@ const initTableData = () => {
           const doMaxWarn = DeviceManage.deviceList[index]?.deviceSet?.doMaxWarn ?? 0;
           tableItem[header.props] = doMaxWarn;
         } else {
-          tableItem[header.props] = 0;
+          tableItem[header.props] = '--';
         }
       }
       // 报警下限
@@ -285,7 +258,7 @@ const initTableData = () => {
           const doMinWarn = DeviceManage.deviceList[index]?.deviceSet?.doMinWarn ?? 0;
           tableItem[header.props] = doMinWarn;
         } else {
-          tableItem[header.props] = 0;
+          tableItem[header.props] = '--';
         }
       }
       else {

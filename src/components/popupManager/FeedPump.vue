@@ -75,8 +75,9 @@
                                                   <Menu as="div" class="dropdown relative inline-block">
                                                     <div>
                                                       <MenuButton class="inline-flex w-[7rem] justify-center gap-x-1.5">
-                                                        <summary v-if="body[col.props] == 0 || body[col.props] == null || body[col.props] == undefined" class="m-1 btn w-[7rem] text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2] rounded">手动</summary>
                                                         <summary v-if="body[col.props] == 1" class="m-1 btn w-[7rem] text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] rounded mt-2">自动</summary>
+    
+                                                          <summary v-else class="m-1 btn w-[7rem] text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2] rounded">手动</summary>
                                                       </MenuButton>
                                                     </div>
 
@@ -108,7 +109,7 @@
                                                             :placeholder="placeholder[index-2]"
                                                             class="w-[8.2rem]  h-full text-center break-all whitespace-normal "
                                                             type="number"
-                                                            @keyup.enter="keyupEnterInput(i,index-2)"
+                                                            @blur="keyupEnterInput(i,index-2)"
                                                     />
                     
                                                     <span v-else
@@ -200,8 +201,8 @@ const initTableData = () => {
     
     const deviceProperties = [
         {name: '补料模式', prop: 'feed_flag'},
-        {name: '累计补料量', prop: 'feed_pump'},  // 这里选择了补料关联氧含量标志位，因为它看起来是一个功能关联标志
-        {name: '补料速度', prop: 'feed_pump_now_set_speed'},
+        {name: '累计补料量 ml', prop: 'feed_pump'},  // 这里选择了补料关联氧含量标志位，因为它看起来是一个功能关联标志
+        {name: '补料速度 ml/h', prop: 'feed_pump_now_set_speed'},
         
         
     
@@ -226,7 +227,7 @@ const initTableData = () => {
                 
             }
             if (DeviceManage.deviceList[index].nowData == null) {
-                tableItem[header.props] = 0;
+                tableItem[header.props] = '--';
                 
                 return;
             }
@@ -243,7 +244,7 @@ const initTableData = () => {
                     tableItem[header.props] = feedPumpSpeed * feed_pump_sum_step_count;
         
                 } else {
-                    tableItem[header.props] = 0;
+                    tableItem[header.props] = '--';
                 }
     
             }

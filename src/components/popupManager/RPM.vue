@@ -86,8 +86,8 @@
                                                   <Menu as="div" class="dropdown relative inline-block">
                                                     <div>
                                                       <MenuButton class="inline-flex w-[7rem] justify-center gap-x-1.5">
-                                                        <summary v-if="body[col.props] == 0 || body[col.props] == null || body[col.props] == undefined" class="m-1 btn w-[7rem] text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2] rounded">停止</summary>
                                                         <summary v-if="body[col.props] > 0" class="m-1 btn w-[7rem] text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] rounded">开启</summary>
+                                                          <summary v-else class="m-1 btn w-[7rem] text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2] rounded">停止</summary>
                                                       </MenuButton>
                                                     </div>
 
@@ -112,7 +112,7 @@
                                                             :placeholder="placeholder[index-2]"
                                                             class="w-[8.2rem]  h-full text-center break-all whitespace-normal "
                                                             type="number"
-                                                            @keyup.enter="keyupEnterInput(i,index-2)"
+                                                            @blur="keyupEnterInput(i,index-2)"
                                                     />
 
                                                     <span v-else
@@ -235,7 +235,7 @@ const initTableData = () => {
             index--;
 
             if (DeviceManage.deviceList[index].nowData == null && deviceProp.prop != "alarm_h_limit" && deviceProp.prop != "alarm_l_limit") {
-                tableItem[header.props] = 0;
+                tableItem[header.props] = '--';
 
                 return;
             }
@@ -246,7 +246,7 @@ const initTableData = () => {
                     const rpmMaxWarn = DeviceManage.deviceList[index]?.deviceSet?.rpmMaxWarn ?? 0;
                     tableItem[header.props] = rpmMaxWarn;
                 } else {
-                    tableItem[header.props] = 0;
+                    tableItem[header.props] = '--';
                 }
             }
             // 报警下限
@@ -255,7 +255,7 @@ const initTableData = () => {
                     const rpmMinWarn = DeviceManage.deviceList[index]?.deviceSet?.rpmMinWarn ?? 0;
                     tableItem[header.props] = rpmMinWarn;
                 } else {
-                    tableItem[header.props] = 0;
+                    tableItem[header.props] = '--';
                 }
             }  else {
                 try {
@@ -383,7 +383,7 @@ const headerData: HeaderItem[] = reactive([
 
 const tableData: any = reactive([
     {name: '测量值', F1: 25, F2: 26, F3: 27, F4: 28, F5: 29, F6: 30, F7: 31, F8: 32},
-    {name: '设定值', F1: 28, F2: 29, F3: 30, F4: 31, F5: 32, F6: 33, F7: 34, F8: 35},
+    {name: '设定值 r/min', F1: 28, F2: 29, F3: 30, F4: 31, F5: 32, F6: 33, F7: 34, F8: 35},
     {name: '控制周期', F1: 30, F2: 31, F3: 32, F4: 33, F5: 34, F6: 35, F7: 36, F8: 37},
     {name: '周期开度', F1: 30, F2: 31, F3: 32, F4: 33, F5: 34, F6: 35, F7: 36, F8: 37},
     {name: '比例P', F1: 25, F2: 26, F3: 27, F4: 28, F5: 29, F6: 30, F7: 31, F8: 32},

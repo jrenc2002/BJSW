@@ -111,7 +111,7 @@
                                                             :placeholder="placeholder[index-2]"
                                                             class="w-[8.2rem]  h-full text-center break-all whitespace-normal "
                                                             type="text"
-                                                            @keyup.enter="keyupEnterInput(i,index-2)"
+                                                            @blur="keyupEnterInput(i,index-2)"
                                                     />
                                                     
                                                     <span v-else class="w-[8.2rem] leading-5 text-center whitespace-normal break-all flex justify-center items-center">
@@ -228,7 +228,7 @@ const initTableData = () => {
             
             
             if (DeviceManage.deviceList[index].nowData == null) {
-                tableItem[header.props] = 0;
+                tableItem[header.props] = '--';
                 
                 return;
             } else if (deviceProp.prop == "defoamer_pump") {
@@ -238,7 +238,7 @@ const initTableData = () => {
                     tableItem[header.props] = defoamerPumpSpeed * feed0_pump_sum_step_count;
                     
                 } else {
-                    tableItem[header.props] = 0;
+                    tableItem[header.props] = '--';
                 }
                 
             } else {

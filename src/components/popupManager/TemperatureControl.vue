@@ -91,8 +91,9 @@
                                                   <Menu as="div" class="dropdown relative inline-block">
                                                     <div>
                                                       <MenuButton class="inline-flex w-[7rem] justify-center gap-x-1.5">
-                                                        <summary v-if="body[col.props] == 0 || body[col.props] == null || body[col.props] == undefined" class="m-1 btn w-[7rem] text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2] rounded">手动</summary>
                                                         <summary v-if="body[col.props] == 1" class="m-1 btn w-[7rem] text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] rounded">自动</summary>
+    
+                                                          <summary v-else class="m-1 btn w-[7rem] text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2] rounded">手动</summary>
                                                       </MenuButton>
                                                     </div>
 
@@ -162,7 +163,7 @@
                                                             :placeholder="placeholder[index-5]"
                                                             class="w-[8.2rem]  h-full text-center break-all whitespace-normal "
                                                             type="number"
-                                                            @keyup.enter="keyupEnterInput(i,index-5)"
+                                                            @blur="keyupEnterInput(i,index-5)"
                                                     />
 
                                                     <span v-else
@@ -288,7 +289,7 @@ const initTableData = () => {
             index--;
 
             if (DeviceManage.deviceList[index].nowData == null && deviceProp.prop != "alarm_h_limit" && deviceProp.prop != "alarm_l_limit") {
-                tableItem[header.props] = 0;
+                tableItem[header.props] = '--';
 
                 return;
             }
@@ -299,7 +300,7 @@ const initTableData = () => {
                     const tempMaxWarn = DeviceManage.deviceList[index]?.deviceSet?.tempMaxWarn ?? 0;
                     tableItem[header.props] = tempMaxWarn;
                 } else {
-                    tableItem[header.props] = 0;
+                    tableItem[header.props] = '--';
                 }
             }
             // 报警下限
@@ -308,7 +309,7 @@ const initTableData = () => {
                     const tempMinWarn = DeviceManage.deviceList[index]?.deviceSet?.tempMinWarn ?? 0;
                     tableItem[header.props] = tempMinWarn;
                 } else {
-                    tableItem[header.props] = 0;
+                    tableItem[header.props] = '--';
                 }
             } else {
                 try {
