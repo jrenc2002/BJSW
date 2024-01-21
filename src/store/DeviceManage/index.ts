@@ -637,7 +637,7 @@ export const useDeviceManage = defineStore('DeviceManage', {
             return newId;
         },
         // 更新设备数据
-        updateDeviceListData(index: number, newDeviceData: (SetData | number)) {
+        async updateDeviceListData(index: number, newDeviceData: (SetData | number)) {
         
             if (debug){
                 if (newDeviceData!=-2){
@@ -691,16 +691,17 @@ export const useDeviceManage = defineStore('DeviceManage', {
                         start_time: currentDate,
                     };
                   
-                    window.Electron.ipcRenderer.invoke('add-fermentation-batch', batchData).then(
+                   await window.Electron.ipcRenderer.invoke('add-fermentation-batch', batchData).then(
                         (res) => {
                             if (res) { // 确保res是有效的
                                 if (debug){
                                     console.log('【更新数据】已存储批次数据', batchData,res)
                        
                                 }
+                                
                                 this.deviceList[index].batch_id = res;
                             } else {
-                                console.error('请求批次内容数据没请求到.');
+                                console.error('存储批次数据失败.');
                             }
                         }
                     ).catch((error) => {
@@ -721,10 +722,17 @@ export const useDeviceManage = defineStore('DeviceManage', {
                     
                     
                 }
-                // 报警
+    
+                if (debug){
+                    console.log('【更新数据】设备报警进入',this.deviceList[index].deviceSet,index,this.deviceList[index].state,newDeviceData.communicate_flag,newDeviceData.start_flag)
+                }
                 if (this.deviceList && this.deviceList[index] && this.deviceList[index].deviceSet != null && this.deviceList[index].state === 2) {
                     // 使用类型断言
+                 
                     const currentDeviceSet = this.deviceList[index].deviceSet as deviceSet;
+                    if (debug){
+                        console.log('【更新数据】设备报警状态', newDeviceData.timing_temp, newDeviceData.timing_PH, newDeviceData.timing_DO,currentDeviceSet)
+                    }
                     let isAlarmFlag = false;
                     if (!(newDeviceData.timing_temp >= currentDeviceSet.tempMinWarn &&
                         newDeviceData.timing_temp <= currentDeviceSet.tempMaxWarn)) {
@@ -766,10 +774,11 @@ export const useDeviceManage = defineStore('DeviceManage', {
                 if (debug){
                     console.log('【更新数据】start_time为', this.deviceList[index].start_time)
                 }
-                // 批次数据 or 罐号数据
+
                 // 获取相对时间单位为h
                 const relativeTime = this.deviceList[index].start_time!==null?((currentDate.getTime() - this.deviceList[index].start_time.getTime()) / 1000 / 60 / 60):0;
-                if (this.deviceList[index].batch_id===null){
+                
+                if (this.deviceList[index].batch_id===null&&this.deviceList[index].batch_name!==null){
                     // 查询数据库获取batch_id
                     window.Electron.ipcRenderer.invoke('get-batch-id', this.deviceList[index].batch_name,newDeviceData.decive_id,currentDate).then(
                         (res) => {

@@ -116,7 +116,7 @@ export const addDevice = (ip, port, name) => {
 export const deleteDevice = (index) => {
 	if (index >= 0 && index < DeviceManage.deviceList.length) {
 		// 关闭与设备的连接
-		const device = DeviceManage.deviceList[index].deviceSocket;
+		const device = DeviceManage.deviceList[index]?.deviceSocket;
 		if (device) {
 			device.close();
 		}
@@ -147,7 +147,7 @@ export const closeDevice = (index) => {
 	const data = {
 		communicate_flag: 0,
 	};
-	DeviceManage.deviceList[index].deviceSocket.send(JSON.stringify(data));
+	DeviceManage.deviceList[index]?.deviceSocket?.send(JSON.stringify(data));
 	// 检查设备状态是否为 true
 	if (!device.state) {
 		console.warn(`设备 ${index} 已经关闭`);
@@ -236,7 +236,7 @@ export const sendData = (index, data) => {
 				});
 				// 发送当前分组的数据
 				console.log("发送数据", chunkData);
-				DeviceManage.deviceList[index].deviceSocket.send(JSON.stringify(chunkData));
+				DeviceManage.deviceList[index]?.deviceSocket.send(JSON.stringify(chunkData));
 				chunkIndex++;
 			} else {
 				clearInterval(intervalId);  // 当所有分组都已发送时，清除间隔

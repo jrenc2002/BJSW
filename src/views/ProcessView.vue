@@ -211,7 +211,7 @@
                             <div class="w-full  flex h-[3vh] flex items-center justify-center mt-2 gap-3  ">
                                 <div class=" w-[5rem] mr-1 text-left relative">测量值:</div>
                                 <span class="w-[5rem] flex text-center items-center justify-center relative">
-                  {{ localCache.TemperatureData.MeasureData }}
+                  {{ localCache.TemperatureData.MeasureData }}{{ ' ℃' }}
                 </span>
                             </div>
                             <div class="w-full  flex h-[3vh] flex items-center justify-center mt-2 gap-2 ">

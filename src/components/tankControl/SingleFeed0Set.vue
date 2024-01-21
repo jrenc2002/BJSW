@@ -612,11 +612,11 @@
                                 <div class="w-24 justify-start items-center flex">
                                     实际流速
                                 </div>
-                                <!--todo 绑定实际流速-->
-                                <input id="name" v-model="DeviceManage.deviceList[AppGlobal.pageChance]" class="block w-[80%]  border-b-2  m-2"
-                                       disabled name="name" placeholder="实际流速"
-                                       required type="number"/>
-                            
+                                <div  class="block w-[80%]  border-b-2  m-2 text-gray-400 ">
+                                    {{!isNumber( DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.feed_ml_h*DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.feed_period/DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.feed_opening_degree)? DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.feed_ml_h*DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.feed_period/DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.feed_opening_degree+'ml/h':"实际流速"}}
+                                </div>
+
+
                             </div>
                         </div>
                     </div>
@@ -1337,6 +1337,7 @@ import {useDeviceManage} from '@/store/DeviceManage'
 import {useAppGlobal} from '@/store/AppGlobal'
 import {Menu, MenuButton, MenuItem, MenuItems, Switch} from '@headlessui/vue'
 import {ArrowPathIcon, BeakerIcon, ChevronDownIcon, EyeDropperIcon,} from '@heroicons/vue/20/solid'
+import {isNumber} from "util";
 
 
 const DeviceManage = useDeviceManage();

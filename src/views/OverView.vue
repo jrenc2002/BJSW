@@ -230,8 +230,8 @@ const initTableData = () => {
         {name: '溶氧', prop: 'timing_DO'},
         {name: '酸泵', prop: 'acid_pump'},
         {name: '碱泵', prop: 'lye_pump'},
-        {name: '补料泵', prop: 'feed_pump'},
-        {name: '消泡剂泵', prop: 'defoamer_pump'}
+        {name: '补料泵1', prop: 'defoamer_pump'},
+        {name: '补料泵2', prop: 'feed_pump'}
     ];
     
     let resultItems: any[] = []; // 声明结果数组
@@ -510,8 +510,8 @@ const name_translation = {
     '转速': 'RPM',
     '酸泵': 'AcidPump',
     '碱泵': 'LyePump',
-    '补料泵': 'FeedPump',
-    '消泡剂泵': 'DefoamerPump'
+    '补料泵1': 'DefoamerPump',
+    '补料泵2': 'FeedPump',
 }
 
 </script>
