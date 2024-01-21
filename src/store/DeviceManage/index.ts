@@ -1,7 +1,7 @@
 import {defineStore} from "pinia";
 import Swal from 'sweetalert2';
 // 给开发人员使用的debug
-const debug = false;
+const debug = true;
 
 interface SetData {
     

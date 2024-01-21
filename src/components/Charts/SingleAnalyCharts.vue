@@ -8,6 +8,7 @@ import {defineProps, onMounted, ref, onUnmounted, watch} from 'vue';
 import {ECharts, EChartsOption, init} from 'echarts';
 import {useChartsData} from "@/store/ChartsData";
 import {useAppGlobal} from "@/store/AppGlobal";
+import {useRoute} from "vue-router";
 // todo 曲线刷新功能，为了保证内存只有监听到路由为曲线对比时才会定时渲染；
 const debug = true;
 
@@ -125,11 +126,47 @@ watch(() => AppGlobal.isDrawerState, (newData, oldValue) => {
 }, 100);
 
 })
-watch(() => ChartsData.dataSeries, () => {
-    setTimeout(() => {
-        updateChart();
-    }, 400);
-}, {deep: true});
+
+
+const route = useRoute();
+const updateTimer = ref<any>(null);
+// 创建定时器的函数
+function startTimer(){
+    updateTimer.value = setInterval(() => {
+        // 这里放置定时器的逻辑
+
+        if (ChartsData.dataSeries.length > 0) {
+            if (chartEch !== null){
+                if (debug){
+                    console.log('【曲线更新】曲线数据项-下游', ChartsData.dataSeries);
+                }
+                const dataSeries = ChartsData.dataSeries;
+                chartEch.setOption({
+                    series: dataSeries
+                });
+            }
+        }
+    }, AppGlobal.BeatTimer);
+}
+// 销毁定时器的函数
+const stopTimer = () => {
+    if (updateTimer.value) {
+        clearInterval(updateTimer.value);
+        updateTimer.value = null;
+    }
+};
+watch(route, (to, from) => {
+    // 当路由发生变化时执行的操作
+    if (to.path === '/curvecompare') {
+        // 当进入目标路由时执行的操作
+        startTimer();
+    } else {
+        // 当离开目标路由时执行的操作
+        stopTimer()
+    }
+});
+
+
 watch(() => ChartsData.dataLegend, () => {
     setTimeout(() => {
         updateChart();

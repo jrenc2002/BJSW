@@ -9,7 +9,7 @@ import Swal from 'sweetalert2';
 import {sendData} from "@/api";
 import {useAppGlobal} from "@/store/AppGlobal";
 
-const debug = true;
+const debug = false;
 const DeviceManage = useDeviceManage();
 // 创建定时器群组
 const timerGroup = new Map();

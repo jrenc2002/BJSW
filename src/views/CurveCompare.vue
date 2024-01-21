@@ -57,9 +57,6 @@ import SingleAnalyCharts from "@/components/Charts/SingleAnalyCharts.vue";
 import {useDeviceManage} from '@/store/DeviceManage'
 import {useChartsData} from "@/store/ChartsData";
 import {useAppGlobal} from "@/store/AppGlobal";
-// TODO:完善曲线功能
-// TODO:单罐曲线:左边选择各个罐，组件数据传入子组件，子组件上面选择各项参数
-// TODO:单参数曲线:左边选择各个参数，组件数据传入子组件，子组件上面选择各项罐
 const DeviceManage = useDeviceManage()
 const ChartsData = useChartsData()
 const SingleTank = ref(null);
@@ -103,16 +100,10 @@ function updateChartData() {
                     
                     // 生成参数对应的数据，输入设备索引和参数索引获取相应的值，获取五万条数据
                     let ChartsData;
-                    if (debug) {
-                        console.log('【曲线】get-recent-fermentation-data', device.deviceNum, param.fieldName, 10000);
-                    }
                     window.Electron.ipcRenderer.invoke('get-recent-fermentation-data', device.deviceNum, param.fieldName, 10000).then(
                         (res) => {
                             if (res) { // 确保res是有效的
-                                if (debug) {
-                                    console.log('【曲线】get-recent-fermentation-data', device.deviceNum, param.fieldName, 10000);
-                                    console.log('【曲线】请求批次内容数据成功，返回结果为:', res);
-                                }
+                         
                                 ChartsData = convertToEchartsData(res, param.fieldName);
                                 // 如果参数也被选中，生成对应的系列
                                 series.push({
@@ -123,9 +114,7 @@ function updateChartData() {
                                     data: ChartsData  // 这里根据设备和参数索引从 allData 获取数据
                                 });
                                 legend.push(device.name + '-' + param.name);
-                                console.log('【曲线对比】series', series)
-                                updateRecentChartData();
-                                
+                              
                             } else {
                                 console.error('请求批次内容数据没请求到.');
                             }
@@ -144,12 +133,12 @@ function updateChartData() {
         console.log('【曲线对比】曲线数据项-上游', ChartsData.dataSeries)
         console.log('【曲线对比】曲线数据类型-上游', ChartsData.dataLegend)
     }
-    // // 定时器，将DeviceManage.deviceList[AppGlobal.pageChance].nowdata的数据更新到ChartsData.dataSeries里
-    // setInterval(() => {
-    //     if (ChartsData.dataSeries.length > 0) {
-    //         updateRecentChartData();
-    //     }
-    // }, 1000);
+    // 定时器，将DeviceManage.deviceList[AppGlobal.pageChance].nowdata的数据更新到ChartsData.dataSeries里
+    setInterval(() => {
+        if (ChartsData.dataSeries.length > 0) {
+            updateRecentChartData();
+        }
+    }, AppGlobal.BeatTimer);
     return series;
 }
 
@@ -163,19 +152,13 @@ function updateRecentChartData() {
                 if (param.selected) {
                     window.Electron.ipcRenderer.invoke('get-recent-fermentation-data', device.deviceNum, param.fieldName, 10).then(
                         (res) => {
-                            if (debug) {
-                                console.log('【曲线对比】res10 ChartsData.dataSeries',res,ChartsData.dataSeries)
-                            }
+                        
                             if (res) {
                                 let newData = convertToEchartsData(res, param.fieldName);
-                                if (debug) {
-                                    console.log('【曲线对比】newData',newData)
-                                }
+                                
                                 // 寻找现有数据系列
                                 let existingSeries = series.find(s => s.name === device.name + '-' + param.name);
-                                if (debug) {
-                                    console.log('【曲线对比】existingSeries',existingSeries)
-                                }
+                            
                           
                                 if (existingSeries) {
                                  
@@ -194,6 +177,8 @@ function updateRecentChartData() {
     });
     ChartsData.dataSeries = series;
     ChartsData.dataLegend = legend;
+    console.log('【曲线更新】曲线数据项-上游', ChartsData.dataSeries)
+    console.log('【曲线更新】曲线数据类型-上游', ChartsData.dataLegend)
     return series;
 }
 
@@ -211,18 +196,12 @@ function mergeChartData(existingData, newData) {
         }
     });
 
-    if (debug) {
-        console.log('【曲线对比】filteredExistingData existingData.length',existingData,existingData.length)
-    }
-
     // 根据数据量调整数据
     if (existingData.length > maxSize) {
         // 如果数据超过10000条，则移除最早的数据以保持总量为10000
         return existingData.slice(0,maxSize);
     }
-    if (debug) {
-        console.log('【曲线对比】更新数据',existingData,)
-    }
+    
     return existingData;
 }
 
