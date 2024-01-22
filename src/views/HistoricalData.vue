@@ -22,7 +22,7 @@
                             infinite-scroll-distance="200"
                             infinite-scroll-immediate="true"
                     >
-                        <li v-for="(item,index) in batchData" :key="index" @click="selectBatch(item.id)">
+                        <li v-for="(item,index) in showBatchData" :key="index" @click="selectBatch(item.id)">
                             
                             <view :class="[item.id=== selectedBatch? 'border-2 border-[#83BA9B] shadow ' : '']"
                                   class="flex bg-[#DAF0E4]  cursor-pointer p-3 m-2 rounded-md  justify-center items-center gap-8
@@ -65,15 +65,28 @@
                                 <div class="w-[100%] h-9 flex items-center justify-center">
                                     批号查询
                                 </div>
-                                <div class="w-[220px] h-[23px] px-1 justify-start items-center gap-[9px] inline-flex">
-                                    <div class=" h-5 text-center text-black text-[13px] font-normal leading-tight tracking-tight">
+                                <div class="w-full h-[23px] px-1 justify-start items-center gap-[9px] inline-flex">
+                                    <div class=" h-5 text-center w-[2rem] text-black text-[1rem] font-normal leading-tight tracking-tight">
                                         批号
                                     </div>
-                                    <input class=" bg-white rounded-[3px] border border-black border-opacity-50"/>
+                                    <input class=" bg-white rounded-[3px] border border-black border-opacity-50"
+                                           type="text" blur="" placeholder="请输入批号" v-model="filterName"
+                                    />
                                 </div>
                                 <div class="w-[96%] h-px m-2 bg-zinc-300"></div>
                                 <div class="w-[100%] h-9 flex items-center justify-center">
-                                    时间查询
+                                    批次时间查询
+                                </div>
+                                <div class="w-[100%]  flex items-center justify-center ">
+                                  
+                                    <el-date-picker
+                                            class="w-[90%]"
+                                            v-model="timeFilter"
+                                            type="datetimerange"
+                                            range-separator="To"
+                                            start-placeholder="Start date"
+                                            end-placeholder="End date"
+                                    />
                                 </div>
                             
                             </div>
@@ -352,7 +365,6 @@ const exportDataEvent: VxeButtonEvents.Click = () => {
 }
 // 全表搜索
 const list = ref<any[]>([])
-const filterName = ref('')
 const searchEvent = () => {
     const filterVal = String(filterName.value).trim().toLowerCase()
     if (filterVal) {
@@ -411,7 +423,8 @@ const selectBatch = (batch) => {
     // 在这里，您可以执行其他所需的操作，例如更新其他 UI 元素、调用 API 等
 };
 
-
+const filterName = ref('')
+const timeFilter=ref([])
 // 查询批次列表数据
 const updateBatchData = () => {
     // 检查DeviceManage、deviceList和AppGlobal是否存在
@@ -434,6 +447,7 @@ const updateBatchData = () => {
                         console.log('【批次比较】读取的批次数据',res)
                     }
                     batchData.value = res;
+                    showBatchData.value = res;
                     selectedBatch.value = res[0].id
                     batchName.value = '设备罐号' + res[0].can_number + ' - 批次号' + res[0].batch_name
                 } else {
@@ -447,7 +461,7 @@ const updateBatchData = () => {
         console.error('未找到该罐号的数据.');
     }
 }
-
+const showBatchData= ref()
 // 查询批次内容数据
 const updateBatchContentData = () => {
     if (!selectedBatch.value) {
@@ -478,6 +492,32 @@ const updateBatchContentData = () => {
     });
 }
 
+// 监听timeFilter变化和
+watch(() => timeFilter.value, () => {
+    batchFilter()
+});
+watch(() => filterName.value, () => {
+    batchFilter()
+});
+// 批号筛选
+const batchFilter = () => {
+
+        // 将批次数据进行字符串匹配，匹配到字符就存入showBatchData，匹配不到不存入
+    let restName = batchData.value.filter(item => item.batch_name.includes(filterName.value))
+    showBatchData.value = restName
+    
+    if (timeFilter.value?.length!==2){
+        return
+    }
+    let rest = restName.filter(item => item.start_time>=new Date(timeFilter.value[0]).getTime()&&item.start_time<=new Date(timeFilter.value[1]).getTime())
+    showBatchData.value = rest
+    
+    
+   
+ 
+
+}
+
 
 // 监控数据变化
 watch(() => AppGlobal.pageChance, () => {
@@ -501,6 +541,8 @@ function timestampToString(timestamp) {
     let dateString = date.toLocaleString();
     return dateString;
 }
+
+
 </script>
 <style>
 

@@ -223,13 +223,13 @@ const state = (): {
                     tempState: 0,
                     phState: 0,
                     doState: 0,
-                    tempMaxWarn: 0,
+                    tempMaxWarn: 100,
                     tempMinWarn: 0,
-                    phMaxWarn: 0,
+                    phMaxWarn: 14,
                     phMinWarn: 0,
-                    doMaxWarn: 0,
+                    doMaxWarn: 100,
                     doMinWarn: 0,
-                    rpmMaxWarn: 0,
+                    rpmMaxWarn: 1600,
                     rpmMinWarn: 0,
                     acidPumpSumStepCount: 0,
                     lyePumpSumStepCount: 0,
@@ -452,7 +452,31 @@ export const useDeviceManage = defineStore('DeviceManage', {
                 start_time: null,
                 batch_name: null,
                 alarm: false,
-                deviceSet: null
+                deviceSet: {
+                    tempState: 0,
+                    phState: 0,
+                    doState: 0,
+                    tempMaxWarn: 100,
+                    tempMinWarn: 0,
+                    phMaxWarn: 14,
+                    phMinWarn: 0,
+                    doMaxWarn: 100,
+                    doMinWarn: 0,
+                    rpmMaxWarn: 1600,
+                    rpmMinWarn: 0,
+                    acidPumpSumStepCount: 0,
+                    lyePumpSumStepCount: 0,
+                    feedPumpSumStepCount: 0,
+                    defoamerPumpSumStepCount: 0,
+                    /** 酸泵单步速度 */
+                    acidPumpSpeed: 0,
+                    /** 碱泵单步速度 */
+                    lyePumpSpeed: 0, // 单步速度：毫升/步
+                    /** 消泡泵单步速度 */
+                    defoamerPumpSpeed: 0,
+                    /** 补料泵单步速度 */
+                    feedPumpSpeed: 0
+                }
             };
             
             this.deviceList.push(newDevice);

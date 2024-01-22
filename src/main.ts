@@ -9,7 +9,8 @@ import VXETable from 'vxe-table'
 import 'vxe-table/lib/style.css'
 // import 'element-plus/dist/index.css';
 import infiniteScroll from 'vue-infinite-scroll'
-
+import ElementPlus from 'element-plus'
+import 'element-plus/dist/index.css'
 import { Empty } from 'vant';
 import 'vant/lib/index.css';
 
@@ -20,8 +21,7 @@ app.use(Empty)
 app.use(VXETable);
 app.use(infiniteScroll);
 // 注册elementplus图标
-
-
+app.use(ElementPlus)
 // // 自定义权限指令
 // app.directive('permiss', {
 //     mounted(el, binding) {

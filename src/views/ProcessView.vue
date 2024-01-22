@@ -187,7 +187,7 @@
     
                             
                             <div class="w-[5rem] text-center relative flex items-center justify-center gap-2">
-                                <div :class="[(localCache.TemperatureData.heatpower>0 &&!localCache.TemperatureData.water_flag )? 'bg-red-600' :(localCache.TemperatureData.water_flag)?'bg-blue-600':'bg-gray-300' ]"
+                                <div :class="[(localCache.TemperatureData.heatpower>0 &&!localCache.TemperatureData.water_flag )? 'bg-red-600' :(localCache.TemperatureData.water_flag)?'bg-blue-600':'bg-[#E0E0E0]' ]"
                                      class="w-3 h-3    rounded-full relative"></div>
     
                                 温度
@@ -309,7 +309,7 @@
                             
                             <div class="w-full text-center relative  h-[70%] flex items-center justify-center">
                                 <div class=" h-full w-3 flex justify-center items-center rounded mx-1 ">
-                                    <div class="w-2 h-2  rounded-full" :class="[  localCache.acidPumpData.SetData ===0?'bg-gray-300':'bg-green-600']"></div>
+                                    <div class="w-2 h-2  rounded-full" :class="[  localCache.acidPumpData.SetData ===0?'bg-[#E0E0E0]':'bg-green-600']"></div>
                                 </div>
                                 <div :class="[stateManger.AcidPump?'text-white bg-[#E1A1A9]':'bg-white']"
                                      class=" h-full w-[4.3rem] shadow flex justify-center items-center rounded mx-1 cursor-pointer "
@@ -360,7 +360,7 @@
                             <div class="w-full text-center relative  h-[70%] flex items-center justify-center">
                                 <div class=" h-full w-3 flex justify-center items-center rounded mx-1 ">
     
-                                    <div class="w-2 h-2  rounded-full" :class="[  localCache.lyePumpData.SetData ===0?'bg-gray-300':'bg-green-600']"></div>
+                                    <div class="w-2 h-2  rounded-full" :class="[  localCache.lyePumpData.SetData ===0?'bg-[#E0E0E0]':'bg-green-600']"></div>
                                 </div>
                                 
                                 <div :class="[stateManger.LyePump?'text-white bg-[#A8C2E4]':'bg-white']"
@@ -398,7 +398,7 @@
                         <div class="w-full h-[3rem]   mb-2   bg-[#FCF8DA] flex items-center justify-center rounded-t-2xl ">
                             <div class="w-full text-center relative  h-[70%] flex items-center justify-center">
                                 <div class=" h-full w-3 flex justify-center items-center rounded mx-1 ">
-                                    <div class="w-2 h-2  rounded-full" :class="[  localCache.defoamerPumpData.SetData ===0?'bg-gray-300':'bg-green-600']"></div>
+                                    <div class="w-2 h-2  rounded-full" :class="[  localCache.defoamerPumpData.SetData ===0?'bg-[#E0E0E0]':'bg-green-600']"></div>
                                 </div>
                                 
                                 <div :class="[stateManger.DefoamerPump?'text-white bg-[#E4DDA4]':'bg-white']"
@@ -436,7 +436,7 @@
                         <div class="w-full h-[3rem]   mb-2   bg-[#D9F0E4] flex items-center justify-center rounded-t-2xl ">
                             <div class="w-full text-center relative  h-[70%] flex items-center justify-center">
                                 <div class=" h-full w-3 flex justify-center items-center rounded mx-1 ">
-                                    <div class="w-2 h-2  rounded-full" :class="[  localCache.feedPumpData.SetData ===0?'bg-gray-300':'bg-green-600']"></div>
+                                    <div class="w-2 h-2  rounded-full" :class="[  localCache.feedPumpData.SetData ===0?'bg-[#E0E0E0]':'bg-green-600']"></div>
                                 </div>
                                 
                                 <div :class="[stateManger.FeedPump?'text-white bg-[#9AD1B5]':'bg-white']"
