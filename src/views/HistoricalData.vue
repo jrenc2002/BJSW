@@ -86,19 +86,7 @@
                                             end-placeholder="End date"
                                     />
                                 </div>
-                                <div class="w-[100%] h-9 flex items-center justify-center">
-                                    数据时间筛选
-                                </div>
-                                <div class="w-[100%]  flex items-center justify-center ">
-                                    <el-date-picker
-                                            class="w-[90%]"
-                                            v-model="timeDataFilter"
-                                            type="datetimerange"
-                                            range-separator="To"
-                                            start-placeholder="Start date"
-                                            end-placeholder="End date"
-                                    />
-                                </div>
+            
                             
                             
                             </div>
@@ -144,8 +132,17 @@
                                         </div>
                                     </div>
                                 </div>
-                        
-                                
+    
+                                <div class="w-[30%]  flex items-center justify-center ">
+                                    <el-date-picker
+                                            class="w-[90%]"
+                                            v-model="timeDataFilter"
+                                            type="datetimerange"
+                                            range-separator="To"
+                                            start-placeholder="Start date"
+                                            end-placeholder="End date"
+                                    />
+                                </div>
                                 <!--最大化表格-->
                                 
                                 <button @click="zoomEvent">

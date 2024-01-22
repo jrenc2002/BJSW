@@ -5,15 +5,16 @@
                     v-show="isShowCharts"
                     class="rounded-2xl absolute bg-white bg-opacity-50 h-[calc(100%-2rem)] w-[calc(100%-2rem)]  z-30 backdrop-blur-sm items-center justify-center flex"
             >
-                <TableCharts v-model:data="tableData" v-model:name="batchName" v-model:switch="isShowCharts"
+                <TableCharts v-model:data="gridOptions.data" v-model:name="batchName" v-model:switch="isShowCharts"
                              class="w-full h-full z-40 "></TableCharts>
             </div>
         </transition>
         <div class="w-full p-5 h-[4.2rem] flex items-center text-xl text-zinc-900 font-medium">
             罐号数据
+        
         </div>
         <div class="w-full px-3 pb-3 h-[calc(100%-4.2rem)] flex items-center gap-3 ">
-            <div class=" h-full w-[28rem] bg-white  rounded-lg shadow ">
+            <div class=" h-full w-[10rem] bg-white  rounded-lg shadow ">
                 <div class="infinite-list-wrapper w-[100%] h-[100%]" style="overflow:auto;">
                     <ul
                             v-infinite-scroll="load"
@@ -22,83 +23,30 @@
                             infinite-scroll-distance="200"
                             infinite-scroll-immediate="true"
                     >
-                        <li v-for="(item,index) in batchData" :key="index" @click="selectBatch(item.id)">
-                            
-                            <view :class="[item.id=== selectedBatch? 'border-2 border-[#83BA9B] shadow ' : '']"
+                        <li v-for="(item,index) in showCanData" :key="index" @click="selectCan(item.id)">
+                    
+                            <view :class="[item.can_number=== selectedCan? 'border-2 border-[#83BA9B] shadow ' : '']"
                                   class="flex bg-[#DAF0E4]  cursor-pointer p-3 m-2 rounded-md  justify-center items-center gap-8
               text-[15px]"
                             >
-                                
-                                <p class="text-[#295C3F]">
-                                    {{ item.batch_name }}
-                                </p>
+                        
                                 <p class="text-[#79930F]">
                                     {{ item.can_number }}
                                 </p>
-                                <p class="text-[#1A3A8D]">
-                                    {{ timestampToString(item.start_time) }}
-                                </p>
-                            
-                            </view>
-                        
-                        </li>
                     
+                            </view>
+                
+                        </li>
+            
                     </ul>
                     <p v-if="batchloading">加载中...</p>
                     <p v-if="noMore">无更多数据</p>
-                
+        
                 </div>
-                
-                <div>
-                    
-                    <Transition name="fade">
-                        <div v-if="isExpanded" class="
-              w-[25.7rem] h-[232px] border-[2px] border-[#83BA9B] rounded-[14px] fixed bottom-4 m-3 bg-white">
-                            <div class="absolute right-0 p-2 cursor-pointer" @click="toggle">
-                                <svg fill="none" height="18" viewBox="0 0 15 15" width="18"
-                                     xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M12 4.7L11.3 4L8 7.3L4.7 4L4 4.7L7.3 8L4 11.3L4.7 12L8 8.7L11.3 12L12 11.3L8.7 8L12 4.7Z"
-                                          fill="#828282"/>
-                                </svg>
-                            </div>
-                            <div class="flex-col items-center justify-center">
-                                <div class="w-[100%] h-9 flex items-center justify-center">
-                                    批号查询
-                                </div>
-                                <div class="w-[220px] h-[23px] px-1 justify-start items-center gap-[9px] inline-flex">
-                                    <div class=" h-5 text-center text-black text-[13px] font-normal leading-tight tracking-tight">
-                                        批号
-                                    </div>
-                                    <input class=" bg-white rounded-[3px] border border-black border-opacity-50"/>
-                                </div>
-                                <div class="w-[96%] h-px m-2 bg-zinc-300"></div>
-                                <div class="w-[100%] h-9 flex items-center justify-center">
-                                    时间查询
-                                </div>
-                            
-                            </div>
-                        
-                        
-                        </div>
-                        <div v-else class=" transition hover:bg-[#83BA9B] hover:text-white  hover:stroke-white duration-150  cursor-pointer
-           w-[100px] h-10 px-4 py-5 bg-white rounded-[14px] border-[2px] border-[#83BA9B] justify-start
-           items-center gap-2 inline-flex fixed bottom-4 m-3 " @click="toggle">
-                            <div class="w-4 h-4 relative ">
-                                <svg fill="none" height="16" viewBox="0 0 16 16" width="16"
-                                     xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M14.5 13.7931L10.7239 10.017C11.6313 8.9277 12.0838 7.5305 11.9872 6.11608C11.8907 4.70165 11.2525 3.37891 10.2055 2.423C9.15855 1.4671 7.78335 0.951637 6.366 0.983845C4.94865 1.01605 3.59828 1.59345 2.59581 2.59593C1.59333 3.5984 1.01593 4.94877 0.983723 6.36612C0.951515 7.78347 1.46698 9.15867 2.42288 10.2057C3.37879 11.2526 4.70153 11.8908 6.11596 11.9873C7.53038 12.0839 8.92758 11.6314 10.0169 10.7241L13.7929 14.5001L14.5 13.7931ZM2 6.50012C2 5.6101 2.26392 4.74007 2.75838 4.00005C3.25285 3.26003 3.95565 2.68325 4.77792 2.34266C5.60019 2.00207 6.50499 1.91295 7.3779 2.08658C8.25082 2.26022 9.05264 2.6888 9.68198 3.31814C10.3113 3.94747 10.7399 4.7493 10.9135 5.62221C11.0872 6.49513 10.998 7.39993 10.6575 8.22219C10.3169 9.04446 9.74008 9.74726 9.00006 10.2417C8.26004 10.7362 7.39001 11.0001 6.5 11.0001C5.30693 10.9988 4.1631 10.5243 3.31948 9.68064C2.47585 8.83701 2.00132 7.69319 2 6.50012Z"
-                                          fill="#53575A"/>
-                                </svg>
-                            </div>
-                            <div class="grow shrink basis-0  text-sm font-normal leading-tight tracking-tight">搜索
-                            </div>
-                        </div>
-                    
-                    </Transition>
-                </div>
+             
             </div>
-            <div class=" h-full  bg-white   rounded-lg shadow flex-col w-[calc(100%-28rem)] ">
-                
+            <div class=" h-full  bg-white   rounded-lg shadow flex-col w-[calc(100%-10rem)] ">
+   
                 <!--表格栏-->
                 <div class="w-full h-[calc(100%)] relative">
                     
@@ -119,13 +67,19 @@
                                         </div>
                                     </div>
                                 </div>
-                                <p>
-                                    <vxe-input v-model="filterName" placeholder="试试全表搜索" type="search"
-                                               @keyup="searchEvent"></vxe-input>
-                                </p>
+                                
                                 
                                 <!--最大化表格-->
-                                
+                                <div class="w-[20%]  flex items-center justify-center ">
+                                    <el-date-picker
+                                            class="w-[90%]"
+                                            v-model="timeDataFilter"
+                                            type="datetimerange"
+                                            range-separator="To"
+                                            start-placeholder="Start date"
+                                            end-placeholder="End date"
+                                    />
+                                </div>
                                 <button @click="zoomEvent">
                                     <svg fill="none" height="26" viewBox="0 0 26 26" width="26"
                                          xmlns="http://www.w3.org/2000/svg">
@@ -217,12 +171,13 @@ import {useAppGlobal} from '@/store/AppGlobal'
 import {useDeviceManage} from '@/store/DeviceManage'
 import {useProcessPopupMangerState} from "@/store/ProcessPopupMangerState";
 import TableCharts from "@/components/Charts/TableCharts.vue";
+import XEUtils from 'xe-utils'
 const debug = true
 
 const AppGlobal = useAppGlobal()
 const DeviceManage = useDeviceManage()
 // 批次数据
-const batchData = ref()
+const canData = ref()
 const ProcessPopupMangerState = useProcessPopupMangerState()
 const gridEvent: VxeGridListeners<any> = {
     proxyQuery() {
@@ -306,7 +261,8 @@ const gridOptions = reactive<VxeGridProps<any>>({
     },
     columns: [
         
-        {field: 'absolute_time', title: '绝对时间', minWidth: 160, fixed: 'left'},
+        {title: '绝对时间', fixed: 'left',  minWidth: 160, field: 'absolute_time'},
+        
         {field: 'timing_temp', title: '实时温度', minWidth: 160},
         {field: 'timing_PH', title: '实时PH值', minWidth: 160},
         {field: 'timing_DO', title: '实时溶氧值', minWidth: 160},
@@ -350,28 +306,9 @@ const exportDataEvent: VxeButtonEvents.Click = () => {
         $table.exportData({type: 'csv'})
     }
 }
-// 全表搜索
-const list = ref<any[]>([])
-const filterName = ref('')
-const searchEvent = () => {
-    const filterVal = String(filterName.value).trim().toLowerCase()
-    if (filterVal) {
-        const filterRE = new RegExp(filterVal, 'gi')
-        const searchProps = ['name', 'role', 'age', 'address']
-        const rest = gridOptions.data?.filter(item => searchProps.some(key => String(item[key]).toLowerCase().indexOf(filterVal) > -1))
-        gridOptions.data = rest?.map(row => {
-            const item = Object.assign({}, row)
-            searchProps.forEach(key => {
-                item[key] = String(item[key]).replace(filterRE, match => `<span class="keyword-lighten">${match}</span>`)
-            })
-            console.log(item)
-            return item
-        })
-    }
-}
+
 onMounted(() => {
-    searchEvent()
-    updateBatchData()
+    updateCanData()
     updateBatchContentData()
 })
 
@@ -381,12 +318,12 @@ const batchloading = ref(false)
 const load = () => {
     batchloading.value = true
     setTimeout(() => {
-        batchData.value += 2
+        canData.value += 2
         batchloading.value = false
     }, 3000)
 }
 const noMore = computed(() => {
-    return batchData.value >= 20
+    return canData.value >= 20
 })
 const disabled = computed(() => {
     return batchloading.value || noMore.value
@@ -394,47 +331,44 @@ const disabled = computed(() => {
 const isShowCharts = ref(false)
 const showCharts = () => {
     isShowCharts.value = true
-    
-    
 }
+
+
 // 关闭页面
 const closePop = () => {
     isShowCharts.value = false
 }
 // 选择批次ID
-const selectedBatch = ref(null);
-const selectBatch = (batch) => {
+const selectedCan = ref(null);
+const selectCan = (can) => {
     if (debug){
-        console.log('【批次比较】选择的批次ID',batch)
+        console.log('【罐号比较】选择的罐号ID',can)
     }
-    selectedBatch.value = batch;
+    selectedCan.value = can;
     // 在这里，您可以执行其他所需的操作，例如更新其他 UI 元素、调用 API 等
 };
 
-
-// 查询批次列表数据
-const updateBatchData = () => {
+const filterName = ref('')
+const timeDataFilter=ref([])
+// 查询罐号列表数据
+const updateCanData = () => {
     // 检查DeviceManage、deviceList和AppGlobal是否存在
     if (!DeviceManage || !DeviceManage.deviceList || typeof AppGlobal.pageChance === 'undefined') {
         console.error('设备管理器有问题.');
         return;
     }
     
-    let deviceNum = DeviceManage.deviceList[AppGlobal.pageChance]?.deviceNum;
-    if (deviceNum) {
-        window.Electron.ipcRenderer.invoke('get-batches-by-can', deviceNum).then(
+        window.Electron.ipcRenderer.invoke('get-can-number').then(
             (res) => {
                 if (res) {
-                    // 将res中的批次名为null的数据删除
-                    res = res.filter((item) => {
-                        return item.batch_name !== null;
-                    });
+              
                     
                     if (debug){
-                        console.log('【批次比较】读取的批次数据',res)
+                        console.log('【罐号比较】读取的批次数据',res)
                     }
-                    batchData.value = res;
-                    selectedBatch.value = res[0].id
+                    canData.value = res;
+                    showCanData.value = res;
+                    selectedCan.value = res[0].can_number
                     batchName.value = '设备罐号' + res[0].can_number + ' - 批次号' + res[0].batch_name
                 } else {
                     console.error('请求批次内容数据没请求到.');
@@ -443,31 +377,35 @@ const updateBatchData = () => {
         ).catch((error) => {
             console.error('请求批次内容数据没请求到,报错为:', error);
         });
-    } else {
-        console.error('未找到该罐号的数据.');
-    }
+ 
 }
-
+const showCanData= ref()
 // 查询批次内容数据
 const updateBatchContentData = () => {
-    if (!selectedBatch.value) {
-        console.error('未选择批次数据.');
+    if (!selectedCan.value) {
+        console.log('未选择罐号数据.');
         return;
     }
-    
-    window.Electron.ipcRenderer.invoke('get-data-by-batch', selectedBatch.value).then(
+    // 当前时间戳
+    let now = new Date().getTime();
+    if (!selectedCan.value) {
+        console.log('未选择罐号数据.', selectedCan.value,0,now);
+        return;
+    }
+    window.Electron.ipcRenderer.invoke('get-data-by-can-and-time', selectedCan.value,0,now).then(
         (res) => {
             if (res) { // 确保res是有效的
                 if (debug){
-                    console.log('【批次比较】读取批次数据',selectedBatch.value,res)
+                    console.log('【罐号比较】读取批次数据',selectedCan.value,res)
                 }
                 // 进行数据处理relative_time保留三位小数，absolute_time从时间戳化为实际时间
                 res.forEach((item) => {
                     item.relative_time = item.relative_time.toFixed(4);
                     item.absolute_time = timestampToString(item.absolute_time);
                 });
-                
+                // 表格数据
                 gridOptions.data = res;
+                // 原始数据
                 tableData.value = res;
             } else {
                 console.error('请求批次内容数据没请求到.');
@@ -477,22 +415,42 @@ const updateBatchContentData = () => {
         console.error('请求批次内容数据没请求到,报错为:', error);
     });
 }
+// 批号筛选
+const batchFilter = () => {
+    
+    // 将批次数据进行字符串匹配，匹配到字符就存入showCanData，匹配不到不存入
+    let restName = canData.value.filter(item => item.batch_name.includes(filterName.value))
+    showCanData.value = restName
+
+    
+}
 
 
+watch(() => filterName.value, () => {
+    batchFilter()
+});
 // 监控数据变化
 watch(() => AppGlobal.pageChance, () => {
-    updateBatchData()
+    updateCanData()
 });
-watch(() => selectedBatch.value, () => {
+watch(() => selectedCan.value, () => {
     updateBatchContentData()
-    
+});
+watch(() => timeDataFilter.value, () => {
+    filterBatchContentData()
 });
 
-const isExpanded = ref(false);
+const filterBatchContentData = () =>{
+    if (timeDataFilter.value?.length!==2){
+        gridOptions.data = tableData.value
+        return
+    }
+    // 将item.absolute_time转换为时间戳
+    let rest = tableData.value.filter(item => new Date(item.absolute_time).getTime()>=new Date(timeDataFilter.value[0]).getTime()&&new Date(item.absolute_time).getTime()<=new Date(timeDataFilter.value[1]).getTime())
+    gridOptions.data = rest
+}
 
-const toggle = () => {
-    isExpanded.value = !isExpanded.value;
-};
+
 
 function timestampToString(timestamp) {
     // 将时间戳转换为毫秒
@@ -501,6 +459,8 @@ function timestampToString(timestamp) {
     let dateString = date.toLocaleString();
     return dateString;
 }
+
+
 </script>
 <style>
 
