@@ -5,7 +5,7 @@
                     v-show="isShowCharts"
                     class="rounded-2xl absolute bg-white bg-opacity-50 h-[calc(100%-2rem)] w-[calc(100%-2rem)]  z-30 backdrop-blur-sm items-center justify-center flex"
             >
-                <TableCharts v-model:data="tableData" v-model:name="batchName" v-model:switch="isShowCharts"
+                <TableCharts v-model:data="gridOptions.data" v-model:name="batchName" v-model:switch="isShowCharts"
                              class="w-full h-full z-40 "></TableCharts>
             </div>
         </transition>
@@ -73,21 +73,33 @@
                                            type="text" blur="" placeholder="请输入批号" v-model="filterName"
                                     />
                                 </div>
-                                <div class="w-[96%] h-px m-2 bg-zinc-300"></div>
                                 <div class="w-[100%] h-9 flex items-center justify-center">
-                                    批次时间查询
+                                    批次时间筛选
                                 </div>
                                 <div class="w-[100%]  flex items-center justify-center ">
-                                  
                                     <el-date-picker
                                             class="w-[90%]"
-                                            v-model="timeFilter"
+                                            v-model="timeBatchFilter"
                                             type="datetimerange"
                                             range-separator="To"
                                             start-placeholder="Start date"
                                             end-placeholder="End date"
                                     />
                                 </div>
+                                <div class="w-[100%] h-9 flex items-center justify-center">
+                                    数据时间筛选
+                                </div>
+                                <div class="w-[100%]  flex items-center justify-center ">
+                                    <el-date-picker
+                                            class="w-[90%]"
+                                            v-model="timeDataFilter"
+                                            type="datetimerange"
+                                            range-separator="To"
+                                            start-placeholder="Start date"
+                                            end-placeholder="End date"
+                                    />
+                                </div>
+                            
                             
                             </div>
                         
@@ -132,10 +144,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <p>
-                                    <vxe-input v-model="filterName" placeholder="试试全表搜索" type="search"
-                                               @keyup="searchEvent"></vxe-input>
-                                </p>
+                        
                                 
                                 <!--最大化表格-->
                                 
@@ -190,7 +199,7 @@
                             
                             </div>
                         </template>
-                        
+    
                         <!--自定义空数据模板-->
                         <template #empty>
                             <div class="flex flex-col justify-start items-center h-32">
@@ -230,6 +239,7 @@ import {useAppGlobal} from '@/store/AppGlobal'
 import {useDeviceManage} from '@/store/DeviceManage'
 import {useProcessPopupMangerState} from "@/store/ProcessPopupMangerState";
 import TableCharts from "@/components/Charts/TableCharts.vue";
+import XEUtils from 'xe-utils'
 const debug = true
 
 const AppGlobal = useAppGlobal()
@@ -319,7 +329,8 @@ const gridOptions = reactive<VxeGridProps<any>>({
     },
     columns: [
         
-        {field: 'absolute_time', title: '绝对时间', minWidth: 160, fixed: 'left'},
+        {title: '绝对时间', fixed: 'left',  minWidth: 160, field: 'absolute_time'},
+
         {field: 'timing_temp', title: '实时温度', minWidth: 160},
         {field: 'timing_PH', title: '实时PH值', minWidth: 160},
         {field: 'timing_DO', title: '实时溶氧值', minWidth: 160},
@@ -365,24 +376,8 @@ const exportDataEvent: VxeButtonEvents.Click = () => {
 }
 // 全表搜索
 const list = ref<any[]>([])
-const searchEvent = () => {
-    const filterVal = String(filterName.value).trim().toLowerCase()
-    if (filterVal) {
-        const filterRE = new RegExp(filterVal, 'gi')
-        const searchProps = ['name', 'role', 'age', 'address']
-        const rest = gridOptions.data?.filter(item => searchProps.some(key => String(item[key]).toLowerCase().indexOf(filterVal) > -1))
-        gridOptions.data = rest?.map(row => {
-            const item = Object.assign({}, row)
-            searchProps.forEach(key => {
-                item[key] = String(item[key]).replace(filterRE, match => `<span class="keyword-lighten">${match}</span>`)
-            })
-            console.log(item)
-            return item
-        })
-    }
-}
+
 onMounted(() => {
-    searchEvent()
     updateBatchData()
     updateBatchContentData()
 })
@@ -406,9 +401,9 @@ const disabled = computed(() => {
 const isShowCharts = ref(false)
 const showCharts = () => {
     isShowCharts.value = true
-    
-    
 }
+
+
 // 关闭页面
 const closePop = () => {
     isShowCharts.value = false
@@ -424,7 +419,8 @@ const selectBatch = (batch) => {
 };
 
 const filterName = ref('')
-const timeFilter=ref([])
+const timeBatchFilter=ref([])
+const timeDataFilter=ref([])
 // 查询批次列表数据
 const updateBatchData = () => {
     // 检查DeviceManage、deviceList和AppGlobal是否存在
@@ -480,8 +476,9 @@ const updateBatchContentData = () => {
                     item.relative_time = item.relative_time.toFixed(4);
                     item.absolute_time = timestampToString(item.absolute_time);
                 });
-                
+                // 表格数据
                 gridOptions.data = res;
+                // 原始数据
                 tableData.value = res;
             } else {
                 console.error('请求批次内容数据没请求到.');
@@ -491,14 +488,6 @@ const updateBatchContentData = () => {
         console.error('请求批次内容数据没请求到,报错为:', error);
     });
 }
-
-// 监听timeFilter变化和
-watch(() => timeFilter.value, () => {
-    batchFilter()
-});
-watch(() => filterName.value, () => {
-    batchFilter()
-});
 // 批号筛选
 const batchFilter = () => {
 
@@ -506,10 +495,10 @@ const batchFilter = () => {
     let restName = batchData.value.filter(item => item.batch_name.includes(filterName.value))
     showBatchData.value = restName
     
-    if (timeFilter.value?.length!==2){
+    if (timeBatchFilter.value?.length!==2){
         return
     }
-    let rest = restName.filter(item => item.start_time>=new Date(timeFilter.value[0]).getTime()&&item.start_time<=new Date(timeFilter.value[1]).getTime())
+    let rest = restName.filter(item => item.start_time>=new Date(timeBatchFilter.value[0]).getTime()&&item.start_time<=new Date(timeBatchFilter.value[1]).getTime())
     showBatchData.value = rest
     
     
@@ -518,7 +507,13 @@ const batchFilter = () => {
 
 }
 
-
+// 监听timeBatchFilter变化和
+watch(() => timeBatchFilter.value, () => {
+    batchFilter()
+});
+watch(() => filterName.value, () => {
+    batchFilter()
+});
 // 监控数据变化
 watch(() => AppGlobal.pageChance, () => {
     updateBatchData()
@@ -527,6 +522,19 @@ watch(() => selectedBatch.value, () => {
     updateBatchContentData()
     
 });
+watch(() => timeDataFilter.value, () => {
+    filterBatchContentData()
+});
+
+const filterBatchContentData = () =>{
+    if (timeDataFilter.value?.length!==2){
+        gridOptions.data = tableData.value
+        return
+    }
+    // 将item.absolute_time转换为时间戳
+    let rest = tableData.value.filter(item => new Date(item.absolute_time).getTime()>=new Date(timeDataFilter.value[0]).getTime()&&new Date(item.absolute_time).getTime()<=new Date(timeDataFilter.value[1]).getTime())
+    gridOptions.data = rest
+}
 
 const isExpanded = ref(false);
 
