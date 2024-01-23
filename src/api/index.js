@@ -227,6 +227,7 @@ export const sendData = async (index, data) => {
         
         let chunkIndex = 0;
         // 数据拦截器进入
+        // todo 数据仍会改变，记得修bug
         await dataInterceptor(index, data).then((res) => {
 
             if (res===false){
