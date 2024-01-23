@@ -19,28 +19,28 @@ module.exports = defineConfig({
   devServer: {
     allowedHosts: 'all',
   },
-  // configureWebpack: {
-  //
-  //   devtool: 'cheap-module-source-map',
-  //
-  //   plugins: [
-  //
-  //     new JavaScriptObfuscator({
-  //       compact: true,
-  //       rotateStringArray: true,
-  //       // 混淆后的代码,不能使用代码美化,同时需要配置 cpmpat:true;
-  //       seed: 0,
-  //       selfDefending: false,
-  //       sourceMap: false,
-  //       sourceMapBaseUrl: '',
-  //       sourceMapFileName: '',
-  //       sourceMapMode: 'separate',
-  //
-  //       },[])
-  //
-  //   ]
-  //
-  // },
+  configureWebpack: {
+
+    devtool: 'cheap-module-source-map',
+
+    plugins: [
+
+      new JavaScriptObfuscator({
+        compact: true,
+        rotateStringArray: true,
+        // 混淆后的代码,不能使用代码美化,同时需要配置 cpmpat:true;
+        seed: 0,
+        selfDefending: false,
+        sourceMap: false,
+        sourceMapBaseUrl: '',
+        sourceMapFileName: '',
+        sourceMapMode: 'separate',
+
+        },[])
+
+    ]
+
+  },
   
   transpileDependencies: true,
   runtimeCompiler: true,
@@ -50,13 +50,13 @@ module.exports = defineConfig({
       builderOptions: {
         asar: true,
         // build配置在此处
-        productName: 'HSBiologicalFermentation',
+        productName: 'QiWeiBiologicalFermentation',
         // options placed here will be merged with default configuration and passed to electron-builder
         extraResources: [
           "./src/database.db"
         ],
         win: {  // 更改build下选项
-          icon: "./src/assets/image/hospitable.ico",
+          icon: "./src/assets/image/icon.ico",
           publisherName: "LuChengLong", // 发布者名称
         },
         // NSIS配置放在这里
@@ -72,11 +72,11 @@ module.exports = defineConfig({
           // 卸载时删除用户数据
           deleteAppDataOnUninstall: true,
           // 安装图标
-          installerIcon: './src/assets/image/hospitable.ico',
+          installerIcon: './src/assets/image/icon.ico',
           // 卸载图标
-          uninstallerIcon: './src/assets/image/hospitable.ico',
+          uninstallerIcon: './src/assets/image/icon.ico',
           // 安装时头部图标
-          installerHeaderIcon: './src/assets/image/hospitable.ico',
+          installerHeaderIcon: './src/assets/image/icon.ico',
           // 创建桌面图标
           createDesktopShortcut: true,
           // 创建开始菜单图标

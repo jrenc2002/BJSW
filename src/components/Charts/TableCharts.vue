@@ -132,9 +132,7 @@ const updateChart = () => {
     
                 params.forEach((param,index) => {
                     // 帮我分割出-字符串
-                    const str = param.seriesName.split('-')
-        
-                    result += `${param.seriesName}: ${param.value[1].toFixed(2)}${unit[str[1]]} <br>`;
+                    result += `${param.seriesName}: ${param.value[1]?.toFixed(2)}${unit[param.seriesName]} <br>`;
                 });
                 return result;
             }
@@ -210,7 +208,7 @@ watch(() => props.data, (newData, oldValue) => {
     
     tableDataSeries.value = [
         {
-            name: "实时溶氧",
+            name: "溶氧",
             type: "line",
             smooth: true,
             symbol: "none",
@@ -220,7 +218,7 @@ watch(() => props.data, (newData, oldValue) => {
             ])
         },
         {
-            name: "实时PH",
+            name: "PH",
             type: "line",
             smooth: true,
             symbol: "none",
@@ -230,7 +228,7 @@ watch(() => props.data, (newData, oldValue) => {
             ])
         },
         {
-            name: "实时温度",
+            name: "温度",
             type: "line",
             smooth: true,
             symbol: "none",
@@ -240,7 +238,7 @@ watch(() => props.data, (newData, oldValue) => {
             ])
         },
         {
-            name: "实时转速",
+            name: "转速",
             type: "line",
             smooth: true,
             symbol: "none",
@@ -271,7 +269,7 @@ watch(() => props.data, (newData, oldValue) => {
             ])
         },
         {
-            name: "补料泵一补料量",
+            name: "补料一补料量",
             type: "line",
             smooth: true,
             symbol: "none",
@@ -281,7 +279,7 @@ watch(() => props.data, (newData, oldValue) => {
             ])
         },
         {
-            name: "补料泵二补料量",
+            name: "补料二补料量",
             type: "line",
             smooth: true,
             symbol: "none",
@@ -291,7 +289,7 @@ watch(() => props.data, (newData, oldValue) => {
             ])
         },
         {
-            name: "实时泵一速度",
+            name: "补料一流速",
             type: "line",
             smooth: true,
             symbol: "none",
@@ -301,7 +299,7 @@ watch(() => props.data, (newData, oldValue) => {
             ])
         },
         {
-            name: "实时泵二速度",
+            name: "补料二流速",
             type: "line",
             smooth: true,
             symbol: "none",

@@ -81,12 +81,12 @@
                                                                                 <MenuItems
                                                                                         class="p-2 shadow-xl menu dropdown-content z-[1] bg-base-100 rounded-md w-[7rem] border absolute origin-top-left left-0 mt-2">
                                                                                     <MenuItem v-slot="{ active }">
-                                                                                        <button @click="paramSend('DO_flag',AppGlobal.pageChance,1)" :class="[active ? 'bg-[#E0E0E0] text-[#000000]' : 'text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2]', 'block px-4 py-2 text-sm rounded']">
+                                                                                        <button @click="paramSend('DO_flag',AppGlobal.pageChance,0)" :class="[active ? 'bg-[#E0E0E0] text-[#000000]' : 'text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2]', 'block px-4 py-2 text-sm rounded']">
                                                                                             停止
                                                                                         </button>
                                                                                     </MenuItem>
                                                                                     <MenuItem v-slot="{ active }">
-                                                                                        <button @click="paramSend('DO_flag',AppGlobal.pageChance,0)" :class="[active ? 'bg-[#BAE7C7] text-[#256637]' : 'text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] mt-2', 'block px-4 py-2 text-sm rounded mt-2']">
+                                                                                        <button @click="paramSend('DO_flag',AppGlobal.pageChance,1)" :class="[active ? 'bg-[#BAE7C7] text-[#256637]' : 'text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] mt-2', 'block px-4 py-2 text-sm rounded mt-2']">
                                                                                             开启
                                                                                         </button>
                                                                                     </MenuItem>
@@ -100,7 +100,7 @@
                                                                     </td>
                                                                     <td class=" text-center  border-b border-r rounded-br-2xl  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
                                                                         <div class="flex justify-center items-center w-full">
-                                                                            <input id="name" v-model="localCache.setNum.target_DO"
+                                                                            <input id="name" v-model.lazy="localCache.setNum.target_DO"
                                                                                    @blur="paramSend('target_DO',AppGlobal.pageChance,localCache.setNum.target_DO)"
                                                                                    class="block w-[80%]  border-b-2 m-2 text-center bg-inherit"
                                                                                    name="name"
@@ -156,7 +156,7 @@
                                                                 <tr class=" justify-center items-center">
                                                                     <td class=" text-center border-t border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center rounded-tr-2xl">
                                                                         <div class="flex justify-center items-center w-full">
-                                                                            <input id="name" v-model="localCache.pidNum.DO_KP"
+                                                                            <input id="name" v-model.lazy="localCache.pidNum.DO_KP"
                                                                                    @blur="paramSend('DO_KP',AppGlobal.pageChance,localCache.setNum.DO_KP)"
                                                                                    class="block w-[80%]  border-b-2 m-2 text-center bg-inherit"
                                                                                    name="name" placeholder="比例P"
@@ -165,7 +165,7 @@
                                                                     </td>
                                                                     <td class=" text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
                                                                         <div class="flex justify-center items-center w-full">
-                                                                            <input id="name" v-model="localCache.pidNum.DO_KI"
+                                                                            <input id="name" v-model.lazy="localCache.pidNum.DO_KI"
                                                                                    @blur="paramSend('DO_KI',AppGlobal.pageChance,localCache.setNum.DO_KI)"
                                                                                    class="block w-[80%]  border-b-2 m-2 text-center bg-inherit"
                                                                                    name="name" placeholder="积分I"
@@ -174,7 +174,7 @@
                                                                     </td>
                                                                     <td class=" text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center rounded-br-2xl">
                                                                         <div class="flex justify-center items-center w-full">
-                                                                            <input id="name" v-model="localCache.pidNum.DO_KD"
+                                                                            <input id="name" v-model.lazy="localCache.pidNum.DO_KD"
                                                                                    @blur="paramSend('DO_KD',AppGlobal.pageChance,localCache.setNum.DO_KD)"
                                                                                    class="block w-[80%]  border-b-2 m-2 text-center bg-inherit"
                                                                                    name="name" placeholder="微分D"
@@ -231,7 +231,7 @@
                                                                     <td class=" text-center border-t border-b border-r rounded-tr-2xl  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
                                                                         <div class="flex justify-center items-center w-full">
                                                                             
-                                                                            <input id="name" v-model="localCache.alarmNum.doMaxWarn"
+                                                                            <input id="name" v-model.lazy="localCache.alarmNum.doMaxWarn"
                                                                                    @blur="DeviceManage.deviceList[AppGlobal.pageChance].deviceSet.doMaxWarn=localCache.alarmNum.doMaxWarn"
                                                                                    class="block w-[80%]  border-b-2 m-2 text-center bg-inherit"
                                                                                    name="name"
@@ -243,7 +243,7 @@
                                                                 <tr class="flex justify-center items-center">
                                                                     <td class=" text-center  border-b border-r  rounded-br-2xl hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
                                                                         <div class="flex justify-center items-center w-full">
-                                                                            <input id="name" v-model="localCache.alarmNum.doMinWarn"
+                                                                            <input id="name" v-model.lazy="localCache.alarmNum.doMinWarn"
                                                                                    @blur="DeviceManage.deviceList[AppGlobal.pageChance].deviceSet.doMinWarn=localCache.alarmNum.doMinWarn"
                                                                                    class="block w-[80%]  border-b-2 m-2 text-center bg-inherit"
                                                                                    name="name"
@@ -306,7 +306,7 @@
                                                                 <tr class=" justify-center items-center">
                                                                     <td class=" text-center border-t border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center rounded-tr-2xl">
                                                                         <div class="flex justify-center items-center w-full">
-                                                                            <input id="name" v-model="localCache.controlNum.DO_dead_zone"
+                                                                            <input id="name" v-model.lazy="localCache.controlNum.DO_dead_zone"
                                                                                    @blur="deadZoneControl()"
                                                                                    class="block w-[80%]  border-b-2 m-2 text-center bg-inherit"
                                                                                    name="name"
@@ -318,7 +318,7 @@
                                                                         <div class="flex justify-center items-center w-full">
                                                                             <input id="name"
                                                                                    class="block w-[80%]  border-b-2 m-2 text-center bg-inherit"
-                                                                                   name="name"  v-model="localCache.controlNum.DO_upper_limit"
+                                                                                   name="name"  v-model.lazy="localCache.controlNum.DO_upper_limit"
                                                                                    @blur="paramSend('DO_upper_limit',AppGlobal.pageChance,localCache.controlNum.DO_upper_limit)"
                                                                                    placeholder="请填溶氧上限"
                                                                                    required type="number"/>
@@ -328,7 +328,7 @@
                                                                         <div class="flex justify-center items-center w-full">
                                                                             <input id="name"
                                                                                    class="block w-[80%]  border-b-2 m-2 text-center bg-inherit"
-                                                                                   name="name"   v-model="localCache.controlNum.DO_lower_limit"
+                                                                                   name="name"   v-model.lazy="localCache.controlNum.DO_lower_limit"
                                                                                    @blur="paramSend('DO_lower_limit',AppGlobal.pageChance,localCache.controlNum.DO_lower_limit)"
                                                                                    placeholder="请填溶氧下限"
                                                                                    required type="number"/>
@@ -338,7 +338,7 @@
                                                                         <div class="flex justify-center items-center w-full">
                                                                             <input id="name"
                                                                                    class="block w-[80%]  border-b-2 m-2 text-center bg-inherit"
-                                                                                   name="name"   v-model="localCache.controlNum.motor_speed_u_limit"
+                                                                                   name="name"   v-model.lazy="localCache.controlNum.motor_speed_u_limit"
                                                                                    @blur="paramSend('motor_speed_u_limit',AppGlobal.pageChance,localCache.controlNum.motor_speed_u_limit)"
                                                                                    placeholder="请填转速上限"
                                                                                    required type="number"/>
@@ -348,7 +348,7 @@
                                                                         <div class="flex justify-center items-center w-full">
                                                                             <input id="name"
                                                                                    class="block w-[80%]  border-b-2 m-2 text-center bg-inherit"
-                                                                                   name="name" v-model="localCache.controlNum.motor_speed_l_limit"
+                                                                                   name="name" v-model.lazy="localCache.controlNum.motor_speed_l_limit"
                                                                                    @blur="paramSend('motor_speed_l_limit',AppGlobal.pageChance,localCache.controlNum.motor_speed_l_limit)"
                                                                                    placeholder="请填转速下限"
                                                                                    required type="number"/>

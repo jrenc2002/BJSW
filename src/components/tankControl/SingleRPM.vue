@@ -99,7 +99,7 @@
                                                                     </td>
                                                                     <td class=" text-center  border-b border-r rounded-br-2xl  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
                                                                         <div class="flex justify-center items-center w-full">
-                                                                            <input id="name" v-model="localCache.setNum.target_motor_speed"
+                                                                            <input id="name" v-model.lazy="localCache.setNum.target_motor_speed"
                                                                                    @blur="paramSend('target_motor_speed',AppGlobal.pageChance,localCache.controlNum.target_motor_speed)"
                                                                                    class="block w-[80%]  border-b-2 m-2 text-center bg-inherit"
                                                                                    name="name"
@@ -156,7 +156,7 @@
                                                     
                                                                             <input id="name"
                                                                                    class="block w-[80%]  border-b-2 m-2 text-center bg-inherit"
-                                                                                   name="name" v-model="localCache.alarmNum.rpmMaxWarn"
+                                                                                   name="name" v-model.lazy="localCache.alarmNum.rpmMaxWarn"
                                                                                    @blur="DeviceManage.deviceList[AppGlobal].deviceSet.rpmMaxWarn=localCache.alarmNum.rpmMaxWarn"
                                                                                    placeholder="请输报警上限"
                                                                                    required type="number"/>
@@ -168,7 +168,7 @@
                                                                         <div class="flex justify-center items-center w-full">
                                                                             <input id="name"
                                                                                    class="block w-[80%]  border-b-2 m-2 text-center bg-inherit"
-                                                                                   name="name" v-model="localCache.alarmNum.rpmMinWarn"
+                                                                                   name="name" v-model.lazy="localCache.alarmNum.rpmMinWarn"
                                                                                    @blur="DeviceManage.deviceList[AppGlobal].deviceSet.rpmMaxWarn=localCache.alarmNum.rpmMinWarn"
                                                                                    placeholder="请输报警下限"
                                                                                    required type="number"/>
@@ -233,7 +233,7 @@
                                                                 <tr class=" justify-center items-center">
                                                                     <td class=" text-center border-t border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center rounded-tr-2xl">
                                                                         <div class="flex justify-center items-center w-full">
-                                                                            <input id="name" v-model="localCache.controlNum.DO_dead_zone"
+                                                                            <input id="name" v-model.lazy="localCache.controlNum.DO_dead_zone"
                                                                                    @blur="deadZoneControl()"
                                                                                    class="block w-[80%]  border-b-2 m-2 text-center bg-inherit"
                                                                                    name="name"
@@ -245,7 +245,7 @@
                                                                         <div class="flex justify-center items-center w-full">
                                                                             <input id="name"
                                                                                    class="block w-[80%]  border-b-2 m-2 text-center bg-inherit"
-                                                                                   name="name"  v-model="localCache.controlNum.DO_upper_limit"
+                                                                                   name="name"  v-model.lazy="localCache.controlNum.DO_upper_limit"
                                                                                    @blur="paramSend('DO_upper_limit',AppGlobal.pageChance,localCache.controlNum.DO_upper_limit)"
                                                                                    placeholder="请填溶氧上限"
                                                                                    required type="number"/>
@@ -255,7 +255,7 @@
                                                                         <div class="flex justify-center items-center w-full">
                                                                             <input id="name"
                                                                                    class="block w-[80%]  border-b-2 m-2 text-center bg-inherit"
-                                                                                   name="name"   v-model="localCache.controlNum.DO_lower_limit"
+                                                                                   name="name"   v-model.lazy="localCache.controlNum.DO_lower_limit"
                                                                                    @blur="paramSend('DO_lower_limit',AppGlobal.pageChance,localCache.controlNum.DO_lower_limit)"
                                                                                    placeholder="请填溶氧下限"
                                                                                    required type="number"/>
@@ -265,7 +265,7 @@
                                                                         <div class="flex justify-center items-center w-full">
                                                                             <input id="name"
                                                                                    class="block w-[80%]  border-b-2 m-2 text-center bg-inherit"
-                                                                                   name="name"   v-model="localCache.controlNum.motor_speed_u_limit"
+                                                                                   name="name"   v-model.lazy="localCache.controlNum.motor_speed_u_limit"
                                                                                    @blur="paramSend('motor_speed_u_limit',AppGlobal.pageChance,localCache.controlNum.motor_speed_u_limit)"
                                                                                    placeholder="请填转速上限"
                                                                                    required type="number"/>
@@ -275,7 +275,7 @@
                                                                         <div class="flex justify-center items-center w-full">
                                                                             <input id="name"
                                                                                    class="block w-[80%]  border-b-2 m-2 text-center bg-inherit"
-                                                                                   name="name" v-model="localCache.controlNum.motor_speed_l_limit"
+                                                                                   name="name" v-model.lazy="localCache.controlNum.motor_speed_l_limit"
                                                                                    @blur="paramSend('motor_speed_l_limit',AppGlobal.pageChance,localCache.controlNum.motor_speed_l_limit)"
                                                                                    placeholder="请填转速下限"
                                                                                    required type="number"/>

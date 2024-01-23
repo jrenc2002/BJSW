@@ -19,7 +19,7 @@
               <!-- 用户名 -->
               <div class="self-center">
                 <div class=" antialiased font-bold text-zinc-600   leading-5 tracking-tight font-ibt text-lg pt-1.5">
-                  王雷
+                  测试员
                 </div>
                 <!-- 用户角色 -->
                 <div class=" antialiased mt-1 font-bold text-zinc-500 text-base font-normal leading-1 font-iwz">管理员

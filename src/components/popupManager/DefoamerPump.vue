@@ -107,7 +107,7 @@
                               @dblclick="inputVisible[i][index-2].control = !inputVisible[i][index-2].control">
                               <input
                                       v-if="inputVisible[i][index-2].control&&DeviceManage.deviceList[i]?.deviceSet!==null"
-                                      v-model="inputVisible[i][index-2].cache"
+                                      v-model.lazy="inputVisible[i][index-2].cache"
                                       :placeholder="placeholder[index-2]"
                                       class="w-[8.2rem]  h-full text-center break-all whitespace-normal "
                                       type="number"

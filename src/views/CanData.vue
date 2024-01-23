@@ -369,7 +369,7 @@ const updateCanData = () => {
                     canData.value = res;
                     showCanData.value = res;
                     selectedCan.value = res[0].can_number
-                    batchName.value = '设备罐号' + res[0].can_number + ' - 批次号' + res[0].batch_name
+                    batchName.value = '设备罐号' + res[0].can_number
                 } else {
                     console.error('请求批次内容数据没请求到.');
                 }
@@ -396,7 +396,7 @@ const updateBatchContentData = () => {
         (res) => {
             if (res) { // 确保res是有效的
                 if (debug){
-                    console.log('【罐号比较】读取批次数据',selectedCan.value,res)
+                    console.log('【罐号比较】读取罐号数据',selectedCan.value,res)
                 }
                 // 进行数据处理relative_time保留三位小数，absolute_time从时间戳化为实际时间
                 res.forEach((item) => {

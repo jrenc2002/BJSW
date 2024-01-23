@@ -81,12 +81,12 @@
                                                                                 <MenuItems
                                                                                         class="p-2 shadow-xl menu dropdown-content z-[1] bg-base-100 rounded-md w-[7rem] border absolute origin-top-left left-0 mt-2">
                                                                                     <MenuItem v-slot="{ active }">
-                                                                                        <button @click="paramSend('temp_flag',AppGlobal.pageChance,1)" :class="[active ? 'bg-[#E0E0E0] text-[#000000]' : 'text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2]', 'block px-4 py-2 text-sm rounded']">
+                                                                                        <button @click="paramSend('temp_flag',AppGlobal.pageChance,0)" :class="[active ? 'bg-[#E0E0E0] text-[#000000]' : 'text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2]', 'block px-4 py-2 text-sm rounded']">
                                                                                             停止
                                                                                         </button>
                                                                                     </MenuItem>
                                                                                     <MenuItem v-slot="{ active }">
-                                                                                        <button @click="paramSend('temp_flag',AppGlobal.pageChance,0)" :class="[active ? 'bg-[#BAE7C7] text-[#256637]' : 'text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] mt-2', 'block px-4 py-2 text-sm rounded mt-2']">
+                                                                                        <button @click="paramSend('temp_flag',AppGlobal.pageChance,1)" :class="[active ? 'bg-[#BAE7C7] text-[#256637]' : 'text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] mt-2', 'block px-4 py-2 text-sm rounded mt-2']">
                                                                                             开启
                                                                                         </button>
                                                                                     </MenuItem>
@@ -100,7 +100,7 @@
                                                                     </td>
                                                                     <td class=" text-center  border-b border-r rounded-br-2xl  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
                                                                         <div class="flex justify-center items-center w-full">
-                                                                            <input id="name" v-model="localCache.setNum.target_temp"
+                                                                            <input id="name" v-model.lazy="localCache.setNum.target_temp"
                                                                                    @blur="paramSend('timing_temp',AppGlobal.pageChance,localCache.setNum.target_temp)"
                                                                                    class="block w-[80%]  border-b-2 m-2 text-center bg-inherit"
                                                                                    name="name"
@@ -155,7 +155,7 @@
                                                                     <td class=" text-center border-t border-b border-r rounded-tr-2xl  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
                                                                         <div class="flex justify-center items-center w-full">
                                                                             
-                                                                            <input id="name" v-model="localCache.alarmNum.alarm_h_limit"
+                                                                            <input id="name" v-model.lazy="localCache.alarmNum.alarm_h_limit"
                                                                                    @blur="DeviceManage.deviceList[AppGlobal.pageChance].deviceSet.tempMaxWarn=localCache.alarmNum.alarm_h_limit"
                                                                                    class="block w-[80%]  border-b-2 m-2 text-center bg-inherit"
                                                                                    name="name"
@@ -167,7 +167,7 @@
                                                                 <tr class="flex justify-center items-center">
                                                                     <td class=" text-center  border-b border-r  rounded-br-2xl hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
                                                                         <div class="flex justify-center items-center w-full">
-                                                                            <input id="name" v-model="localCache.alarmNum.alarm_h_limit"
+                                                                            <input id="name" v-model.lazy="localCache.alarmNum.alarm_h_limit"
                                                                                    @blur="DeviceManage.deviceList[AppGlobal.pageChance].deviceSet.tempMinWarn=localCache.alarmNum.alarm_h_limit"
                                                                                    class="block w-[80%]  border-b-2 m-2 text-center bg-inherit"
                                                                                    name="name"
@@ -229,7 +229,7 @@
                                                                 <tr class=" justify-center items-center">
                                                                     <td class=" text-center border-t border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center rounded-tr-2xl">
                                                                         <div class="flex justify-center items-center w-full">
-                                                                            <input id="name" v-model="localCache.pidNum.temp_KP"
+                                                                            <input id="name" v-model.lazy="localCache.pidNum.temp_KP"
                                                                                    @blur="paramSend('temp_KP',AppGlobal.pageChance,localCache.pidNum.temp_KP)"
                                                                                    class="block w-[80%]  border-b-2 m-2 text-center bg-inherit"
                                                                                    name="name" placeholder="温度比例P"
@@ -238,7 +238,7 @@
                                                                     </td>
                                                                     <td class=" text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
                                                                         <div class="flex justify-center items-center w-full">
-                                                                            <input id="name" v-model="localCache.pidNum.temp_KI"
+                                                                            <input id="name" v-model.lazy="localCache.pidNum.temp_KI"
                                                                                    @blur="paramSend('temp_KI',AppGlobal.pageChance,localCache.pidNum.temp_KI)"
                                                                                    class="block w-[80%]  border-b-2 m-2 text-center bg-inherit"
                                                                                    name="name" placeholder="温度积分I"
@@ -247,7 +247,7 @@
                                                                     </td>
                                                                     <td class=" text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center rounded-br-2xl">
                                                                         <div class="flex justify-center items-center w-full">
-                                                                            <input id="name" v-model="localCache.pidNum.temp_KD"
+                                                                            <input id="name" v-model.lazy="localCache.pidNum.temp_KD"
                                                                                    @blur="paramSend('temp_KD',AppGlobal.pageChance,localCache.pidNum.temp_KD)"
                                                                                    class="block w-[80%]  border-b-2 m-2 text-center bg-inherit"
                                                                                    name="name" placeholder="温度微分D"
@@ -306,7 +306,7 @@
                                                                 <tr class=" justify-center items-center">
                                                                     <td class=" text-center border-t border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center rounded-tr-2xl">
                                                                         <div class="flex justify-center items-center w-full">
-                                                                            <input id="name" v-model="localCache.controlNum.dead_zone"
+                                                                            <input id="name" v-model.lazy="localCache.controlNum.dead_zone"
                                                                                    @blur="deadZoneControl()"
                                                                                    class="block w-[80%]  border-b-2 m-2 text-center bg-inherit"
                                                                                    name="name"
@@ -316,7 +316,7 @@
                                                                     </td>
                                                                     <td class=" text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
                                                                         <div class="flex justify-center items-center w-full">
-                                                                            <input id="name" v-model="localCache.controlNum.Temp_area_upper_limit"
+                                                                            <input id="name" v-model.lazy="localCache.controlNum.Temp_area_upper_limit"
                                                                                    @blur="paramSend('PH_area_upper_limit',AppGlobal.pageChance,localCache.controlNum.PH_area_upper_limit)"
                                                                                    class="block w-[80%]  border-b-2 m-2 text-center bg-inherit"
                                                                                    name="name"
@@ -326,7 +326,7 @@
                                                                     </td>
                                                                     <td class=" text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
                                                                         <div class="flex justify-center items-center w-full">
-                                                                            <input id="name" v-model="localCache.controlNum.Temp_area_lower_limit"
+                                                                            <input id="name" v-model.lazy="localCache.controlNum.Temp_area_lower_limit"
                                                                                    @blur="paramSend('PH_area_lower_limit',AppGlobal.pageChance,localCache.controlNum.PH_area_lower_limit)"
                                                                                    class="block w-[80%]  border-b-2 m-2 text-center bg-inherit"
                                                                                    name="name"
@@ -406,12 +406,12 @@
                                                                             <MenuItems
                                                                                     class="p-2 shadow-xl menu dropdown-content z-[1] bg-base-100 rounded-md w-[7rem] border absolute origin-top-left left-0 mt-2">
                                                                                 <MenuItem v-slot="{ active }">
-                                                                                    <button @click="paramSend('condensate_water_flag',AppGlobal.pageChance,1)" :class="[active ? 'bg-[#E0E0E0] text-[#000000]' : 'text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2]', 'block px-4 py-2 text-sm rounded']">
+                                                                                    <button @click="paramSend('condensate_water_flag',AppGlobal.pageChance,0)" :class="[active ? 'bg-[#E0E0E0] text-[#000000]' : 'text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2]', 'block px-4 py-2 text-sm rounded']">
                                                                                         停止
                                                                                     </button>
                                                                                 </MenuItem>
                                                                                 <MenuItem v-slot="{ active }">
-                                                                                    <button @click="paramSend('condensate_water_flag',AppGlobal.pageChance,0)" :class="[active ? 'bg-[#BAE7C7] text-[#256637]' : 'text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] mt-2', 'block px-4 py-2 text-sm rounded mt-2']">
+                                                                                    <button @click="paramSend('condensate_water_flag',AppGlobal.pageChance,1)" :class="[active ? 'bg-[#BAE7C7] text-[#256637]' : 'text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] mt-2', 'block px-4 py-2 text-sm rounded mt-2']">
                                                                                         开启
                                                                                     </button>
                                                                                 </MenuItem>
@@ -439,12 +439,12 @@
                                                                             <MenuItems
                                                                                     class="p-2 shadow-xl menu dropdown-content z-[1] bg-base-100 rounded-md w-[7rem] border absolute origin-top-left left-0 mt-2">
                                                                                 <MenuItem v-slot="{ active }">
-                                                                                    <button @click="paramSend('heated_blanket_flag',AppGlobal.pageChance,1)" :class="[active ? 'bg-[#E0E0E0] text-[#000000]' : 'text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2]', 'block px-4 py-2 text-sm rounded']">
+                                                                                    <button @click="paramSend('heated_blanket_flag',AppGlobal.pageChance,0)" :class="[active ? 'bg-[#E0E0E0] text-[#000000]' : 'text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2]', 'block px-4 py-2 text-sm rounded']">
                                                                                         停止
                                                                                     </button>
                                                                                 </MenuItem>
                                                                                 <MenuItem v-slot="{ active }">
-                                                                                    <button @click="paramSend('heated_blanket_flag',AppGlobal.pageChance,0)" :class="[active ? 'bg-[#BAE7C7] text-[#256637]' : 'text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] mt-2', 'block px-4 py-2 text-sm rounded mt-2']">
+                                                                                    <button @click="paramSend('heated_blanket_flag',AppGlobal.pageChance,1)" :class="[active ? 'bg-[#BAE7C7] text-[#256637]' : 'text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] mt-2', 'block px-4 py-2 text-sm rounded mt-2']">
                                                                                         开启
                                                                                     </button>
                                                                                 </MenuItem>
@@ -453,7 +453,7 @@
                                                                     </td>
                                                                     <td class=" text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center  rounded-br-2xl">
                                                                         <div class="flex justify-center items-center w-full">
-                                                                            <input id="name" v-model="localCache.temperatureControl.heatpower"
+                                                                            <input id="name" v-model.lazy="localCache.temperatureControl.heatpower"
                                                                                    class="block w-[80%]    m-2 text-center text-black"
                                                                                    name="name"  disabled
                                                                                    placeholder="实时功率"

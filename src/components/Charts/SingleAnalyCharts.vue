@@ -69,7 +69,7 @@ const updateChart = () => {
                     // 帮我分割出-字符串
                     const str = param.seriesName.split('-')
                     
-                    result += `${param.seriesName}: ${param.value[1].toFixed(2)}${unit[str[1]]} <br>`;
+                    result += `${param.seriesName}: ${param.value[1]?.toFixed(2)}${unit[str[1]]} <br>`;
                 });
                 return result;
             }
@@ -125,6 +125,7 @@ const updateChart = () => {
             }
         },
         series: dataSeries
+        
     };
     
     

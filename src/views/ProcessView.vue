@@ -37,7 +37,7 @@
                             <div class="w-full   flex h-[3vh] flex items-center justify-start mt-2  gap-1 ">
                                 <div class=" w-[5rem]   text-left relative ">设定值:</div>
                                 <span class="w-[5rem]   flex text-center items-center justify-center relative">
-                                  <input v-model="localCache.DoData.SetData"
+                                  <input v-model.lazy="localCache.DoData.SetData"
                                          class=" w-[4rem] border-b-2 text-right "
                                          max="100"
                                          min="0"
@@ -62,12 +62,12 @@
                                       <div>
                                         <MenuButton class="inline-flex w-[5rem] justify-center gap-x-1.5 scale-75">
                                           <summary
-                                                  v-if="localCache.DoData.oxy_flag!==1"
+                                                  v-if="localCache.DoData.DO_flag!==1"
                                                   class="m-1 btn btn-sm w-[7rem] text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2] rounded-md"
-                                                  @click="paramSend('oxy_flag',AppGlobal.pageChance,1)">关闭</summary>
-                                          <summary v-if="localCache.DoData.oxy_flag===1"
+                                                  @click="paramSend('DO_flag',AppGlobal.pageChance,1)">关闭</summary>
+                                          <summary v-if="localCache.DoData.DO_flag===1"
                                                    class="m-1 btn btn-sm w-[7rem] text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] rounded-md"
-                                                   @click="paramSend('oxy_flag',AppGlobal.pageChance,0)">关联</summary>
+                                                   @click="paramSend('DO_flag',AppGlobal.pageChance,0)">关联</summary>
                                         </MenuButton>
                                       </div>
                                
@@ -92,7 +92,7 @@
                                 <div class=" w-[5rem] text-left relative ">设定转速:</div>
                                 <span class="w-[5rem] flex text-center items-center justify-center relative">
                                   <input id="numberInput"
-                                         v-model="localCache.RPMData.SetSpeed"
+                                         v-model.lazy="localCache.RPMData.SetSpeed"
                                          class=" w-[4rem]  border-b-2 text-right "
                                          max="1600"
                                          min="0"
@@ -143,7 +143,7 @@
                                 <div class=" w-[5rem] mr-1 text-left relative ">设定值:</div>
                                 <span class="w-[5rem] flex text-center items-center justify-center relative">
                                   <input id="numberInput"
-                                         v-model="localCache.PHData.SetData"
+                                         v-model.lazy="localCache.PHData.SetData"
                                          class=" w-[4rem]  border-b-2 text-center pl-4"
                                          max="14.00"
                                          min="0.00"
@@ -167,10 +167,10 @@
                                           <summary
                                                   v-if="localCache.PHData.PH_flag!==1"
                                                   class="m-1 btn btn-sm w-[7rem] text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2] rounded-md"
-                                                  @click="paramSend('Ph_auto_handle',AppGlobal.pageChance,1)">手动</summary>
+                                                  @click="paramSend('PH_flag',AppGlobal.pageChance,1)">手动</summary>
                                           <summary v-if="localCache.PHData.PH_flag===1"
                                                    class="m-1 btn btn-sm w-[7rem] text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] rounded-md"
-                                                   @click="paramSend('Ph_auto_handle',AppGlobal.pageChance,0)">自动</summary>
+                                                   @click="paramSend('PH_flag',AppGlobal.pageChance,0)">自动</summary>
                                         </MenuButton>
                                       </div>
                                
@@ -184,12 +184,12 @@
                     <div class="card min-w-[10vw] bg-base-100 shadow-lg  border border-zinc-100  top-[62vh] absolute ">
                         <div class="w-full h-[2.5rem] mb-2 font-black  bg-[#D9F0E4] flex items-center justify-center cursor-pointer rounded-t-2xl "
                              @click="popProcessManager('温度')">
-    
+                            
                             
                             <div class="w-[5rem] text-center relative flex items-center justify-center gap-2">
                                 <div :class="[(localCache.TemperatureData.heatpower>0 &&!localCache.TemperatureData.water_flag )? 'bg-red-600' :(localCache.TemperatureData.water_flag)?'bg-blue-600':'bg-[#E0E0E0]' ]"
                                      class="w-3 h-3    rounded-full relative"></div>
-    
+                                
                                 温度
                             </div>
                         
@@ -199,7 +199,7 @@
                                 <div class=" w-[5rem] mr-1 text-left relative ">设定值:</div>
                                 <span class="w-[5rem]  flex text-center items-center justify-center relative">
                                   <input id="numberInput"
-                                         v-model="localCache.TemperatureData.SetData"
+                                         v-model.lazy="localCache.TemperatureData.SetData"
                                          class=" w-[80px]  border-b-2 text-center pl-8"
                                          max="150"
                                          min="0"
@@ -242,10 +242,10 @@
                                           <summary
                                                   v-if="localCache.TemperatureData.water_flag!==1"
                                                   class="m-1 btn btn-sm w-[7rem] text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2] rounded-md"
-                                                  @click="paramSend('water_flag',AppGlobal.pageChance,1)">停止</summary>
+                                                  @click="paramSend('condensate_water_flag',AppGlobal.pageChance,1)">停止</summary>
                                           <summary v-if="localCache.TemperatureData.water_flag===1"
                                                    class="m-1 btn btn-sm w-[7rem] text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] rounded-md"
-                                                   @click="paramSend('water_flag',AppGlobal.pageChance,0)">开启</summary>
+                                                   @click="paramSend('condensate_water_flag',AppGlobal.pageChance,0)">开启</summary>
                                         </MenuButton>
                                       </div>
                                   </Menu>
@@ -298,7 +298,7 @@
                             <div>
                                 <label class="block text font-medium leading-4 text-gray-900 mt-2">补料速度</label>
                                 <div class="mt-2">
-                                    <input v-model="stateManger.AcidPumpSpeed"
+                                    <input v-model.lazy="stateManger.AcidPumpSpeed"
                                            class="block w-full pl-2 rounded-md border-[#AEAEAE] border py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"/>
                                 </div>
                             </div>
@@ -309,7 +309,8 @@
                             
                             <div class="w-full text-center relative  h-[70%] flex items-center justify-center">
                                 <div class=" h-full w-3 flex justify-center items-center rounded mx-1 ">
-                                    <div class="w-2 h-2  rounded-full" :class="[  localCache.acidPumpData.SetData ===0?'bg-[#E0E0E0]':'bg-green-600']"></div>
+                                    <div :class="[  localCache.acidPumpData.SetData ===0?'bg-[#E0E0E0]':'bg-green-600']"
+                                         class="w-2 h-2  rounded-full"></div>
                                 </div>
                                 <div :class="[stateManger.AcidPump?'text-white bg-[#E1A1A9]':'bg-white']"
                                      class=" h-full w-[4.3rem] shadow flex justify-center items-center rounded mx-1 cursor-pointer "
@@ -348,7 +349,7 @@
                             <div>
                                 <label class="block text font-medium leading-4 text-gray-900 mt-2">补料速度</label>
                                 <div class="mt-2">
-                                    <input v-model="stateManger.LyePumpSpeed"
+                                    <input v-model.lazy="stateManger.LyePumpSpeed"
                                            class="block w-full pl-2 rounded-md border-[#AEAEAE] border py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"/>
                                 </div>
                             </div>
@@ -359,8 +360,9 @@
                         <div class="w-full h-[3rem]   mb-2   bg-[#E1EEFF] flex items-center justify-center rounded-t-2xl ">
                             <div class="w-full text-center relative  h-[70%] flex items-center justify-center">
                                 <div class=" h-full w-3 flex justify-center items-center rounded mx-1 ">
-    
-                                    <div class="w-2 h-2  rounded-full" :class="[  localCache.lyePumpData.SetData ===0?'bg-[#E0E0E0]':'bg-green-600']"></div>
+                                    
+                                    <div :class="[  localCache.lyePumpData.SetData ===0?'bg-[#E0E0E0]':'bg-green-600']"
+                                         class="w-2 h-2  rounded-full"></div>
                                 </div>
                                 
                                 <div :class="[stateManger.LyePump?'text-white bg-[#A8C2E4]':'bg-white']"
@@ -398,12 +400,13 @@
                         <div class="w-full h-[3rem]   mb-2   bg-[#FCF8DA] flex items-center justify-center rounded-t-2xl ">
                             <div class="w-full text-center relative  h-[70%] flex items-center justify-center">
                                 <div class=" h-full w-3 flex justify-center items-center rounded mx-1 ">
-                                    <div class="w-2 h-2  rounded-full" :class="[  localCache.defoamerPumpData.SetData ===0?'bg-[#E0E0E0]':'bg-green-600']"></div>
+                                    <div :class="[  localCache.defoamerPumpData.SetData ===0?'bg-[#E0E0E0]':'bg-green-600']"
+                                         class="w-2 h-2  rounded-full"></div>
                                 </div>
                                 
                                 <div :class="[stateManger.DefoamerPump?'text-white bg-[#E4DDA4]':'bg-white']"
                                      class=" h-full w-[4.3rem]  flex justify-center items-center rounded mx-1 border-gray-300 border "
-                                     >
+                                >
                                     补料泵1
                                 </div>
                                 <div :class="[stateManger.Defoamer?'text-white bg-[#E4DDA4]':'bg-white']"
@@ -436,12 +439,13 @@
                         <div class="w-full h-[3rem]   mb-2   bg-[#D9F0E4] flex items-center justify-center rounded-t-2xl ">
                             <div class="w-full text-center relative  h-[70%] flex items-center justify-center">
                                 <div class=" h-full w-3 flex justify-center items-center rounded mx-1 ">
-                                    <div class="w-2 h-2  rounded-full" :class="[  localCache.feedPumpData.SetData ===0?'bg-[#E0E0E0]':'bg-green-600']"></div>
+                                    <div :class="[  localCache.feedPumpData.SetData ===0?'bg-[#E0E0E0]':'bg-green-600']"
+                                         class="w-2 h-2  rounded-full"></div>
                                 </div>
                                 
                                 <div :class="[stateManger.FeedPump?'text-white bg-[#9AD1B5]':'bg-white']"
                                      class=" h-full w-[4.3rem]  flex justify-center items-center rounded mx-1 border-gray-300 border "
-                                     >
+                                >
                                     补料泵2
                                 </div>
                                 <div :class="[stateManger.AddFeed?'text-white bg-[#9AD1B5]':'bg-white']"
@@ -477,7 +481,9 @@
                              class=" swap w-[10rem] h-[4rem] mr-4 text-lg  relative  border-2 border-[#327E5B] rounded-xl text-black  flex items-center justify-center "
                              @click="popProcessManager('开始发酵')"
                         >
-                            {{ DeviceManage.deviceList[AppGlobal.pageChance]?.batch_name!==null? DeviceManage.deviceList[AppGlobal.pageChance]?.batch_name:'批号未定义' }}
+                            {{
+                                DeviceManage.deviceList[AppGlobal.pageChance]?.batch_name !== null ? DeviceManage.deviceList[AppGlobal.pageChance]?.batch_name : '批号未定义'
+                            }}
                         </div>
                         <button class="w-[10rem] h-[4rem]  text-lg  relative bg-[#E0E0E0] rounded-xl text-black hover:bg-[#CBCBCB]  "
                                 @click="controlSend('end_running',AppGlobal.pageChance,1)">
@@ -551,7 +557,7 @@ const localCache = reactive({
     DoData: {
         SetData: 0,
         MeasureData: 0,
-        oxy_flag: 0,
+        DO_flag: 0,
     },
     RPMData: {
         SetSpeed: 0,
@@ -567,7 +573,7 @@ const localCache = reactive({
         MeasureData: 0,
         temp_flag: 0,
         water_flag: 0,
-        heatpower:0
+        heatpower: 0
     },
     acidPumpData: {
         SetData: 0,
@@ -624,18 +630,17 @@ const initDataManger = () => {
     
     localCache.DoData.SetData = formatData(currentDevice.target_DO);
     localCache.DoData.MeasureData = formatData(currentDevice.timing_DO);
-    localCache.DoData.DOUpperLimit = formatData(currentDevice.DO_upper_limit);
-    localCache.DoData.DOLowerLimit = formatData(currentDevice.DO_lower_limit);
-    localCache.RPMData.RPMUpperLimit = currentDevice.motor_speed_u_limit;
-    localCache.RPMData.RPMLowerLimit = currentDevice.motor_speed_l_limit;
+    localCache.DoData.DO_flag = currentDevice.DO_flag;
     localCache.RPMData.NowSpeed = currentDevice.timing_motor_speed;
     localCache.RPMData.SetSpeed = currentDevice.target_motor_speed;
     localCache.PHData.SetData = formatData(currentDevice.target_PH);
+    localCache.PHData.PH_flag= currentDevice.PH_flag;
     localCache.PHData.MeasureData = formatData(currentDevice.timing_PH);
     localCache.TemperatureData.SetData = formatData(currentDevice.target_temp);
     localCache.TemperatureData.MeasureData = formatData(currentDevice.timing_temp);
-    localCache.TemperatureData.HeatingPower = formatData(currentDevice.heatpower);
-    localCache.TemperatureData.CondensateStatus = currentDevice.water_flag === 0 ? '关闭' : '开启';
+    localCache.TemperatureData.heatpower = formatData(currentDevice.heatpower);
+    localCache.TemperatureData.water_flag = currentDevice.condensate_water_flag;
+    localCache.TemperatureData.temp_flag = currentDevice.temp_flag;
     localCache.acidPumpData.SetData = formatData(currentDevice.acid_pump_now_speed);
     localCache.acidPumpData.FeedAmount = formatData(setDevice.acidPumpSumStepCount);
     localCache.lyePumpData.SetData = formatData(currentDevice.lye_pump_now_speed);
@@ -720,7 +725,7 @@ const paramSend = ((name, index, content) => {
 const ProcessPopupMangerState = useProcessPopupMangerState()
 
 // 弹窗管理
-const popProcessManager = (val ) => {
+const popProcessManager = (val) => {
     
     ProcessPopupMangerState.updateIsShowPop(true)
     ProcessPopupMangerState.updatePopupContent(name_translation[val])
@@ -812,7 +817,7 @@ onMounted(() => {
     window.addEventListener('keydown', handleKeydownEsc);
     initDataManger()
     
-    console.log(DeviceManage.deviceList[AppGlobal.pageChance]?.batch_name,'2222222')
+    console.log(DeviceManage.deviceList[AppGlobal.pageChance]?.batch_name, '2222222')
 // 使用 setInterval 定时器每秒更新一次时间差
     setInterval(() => {
         calculateTimeDifference()

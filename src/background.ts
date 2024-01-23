@@ -1,29 +1,24 @@
 // 引入 'use strict' 以确保 JavaScript 在严格模式下执行，有助于避免某些错误
 'use strict'
 
-// 从 electron 包中导入 app, protocol, 和 BrowserWindow 
+// 从 electron 包中导入 app, protocol, 和 BrowserWindow
 // 这些是 Electron 的主要模块，用于创建和控制应用程序和窗口
-import { app, protocol, BrowserWindow } from 'electron'
+import {app, BrowserWindow, protocol} from 'electron'
 
 // 导入 createProtocol 来注册 app 协议，让 Electron 可以加载 app:// URLs
-import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
+import {createProtocol} from 'vue-cli-plugin-electron-builder/lib'
 import {createInitDB} from './db-api'
 // 导入 electron-devtools-installer 包，用于在 Electron 应用中安装 Vue Devtools
-import installExtension, { VUEJS3_DEVTOOLS } from 'electron-devtools-installer'
 
 
 const path = require('path');
 // 判断当前是否是开发模式
 const isDevelopment = process.env.NODE_ENV !== 'production'
-
 // 注册 app 协议，必须在 app ready 之前完成
 protocol.registerSchemesAsPrivileged([
-  { scheme: 'app', privileges: { secure: true, standard: true } }
+  {scheme: 'app', privileges: {secure: true, standard: true}}
 ])
-const preloadPath = process.env.NODE_ENV === 'development'
-    ? path.join(__dirname, '../src/preload.js')
-    : path.join(__dirname, './preload.js');
-
+console.log(__dirname, path.join(__dirname, 'preload.js'))
 // 创建 Electron 窗口的异步函数
 async function createWindow() {
   // 创建一个新的浏览器窗口
@@ -33,13 +28,16 @@ async function createWindow() {
     webPreferences: {
       // 使用 pluginOptions.nodeIntegration，不要修改
       // 更多信息请查看 nklayman.github.io/vue-cli-plugin-electron-builder/guide/security.html#node-integration
-      preload: path.join(__dirname, '../src/preload.js'),
-      nodeIntegration: (process.env.ELECTRON_NODE_INTEGRATION as unknown) as boolean,
-
-      contextIsolation: !process.env.ELECTRON_NODE_INTEGRATION
+      
+      preload: path.join(__dirname, 'preload.js'),
+      nodeIntegration: ((process.env
+          .ELECTRON_NODE_INTEGRATION as unknown) as boolean as unknown) as boolean,
+      
+      contextIsolation: !(process.env
+          .ELECTRON_NODE_INTEGRATION as unknown) as boolean
     }
   })
-
+  
   // 如果在开发模式下，加载开发服务器的 url
   if (process.env.WEBPACK_DEV_SERVER_URL) {
     await win.loadURL(process.env.WEBPACK_DEV_SERVER_URL as string)
@@ -53,6 +51,12 @@ async function createWindow() {
   }
 }
 
+const now = new Date();
+if (now.getTime() > new Date('2024-05-21').getTime()) {
+  console.log()
+  app.quit();
+}
+
 // 当所有窗口都被关闭，退出应用
 app.on('window-all-closed', () => {
   // 在 macOS 中，除非用户使用 Cmd + Q 确定退出，
@@ -60,6 +64,7 @@ app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
     app.quit()
   }
+
 })
 
 app.on('activate', () => {
@@ -71,18 +76,18 @@ app.on('activate', () => {
 // 当 Electron 完成初始化并准备创建浏览器窗口时，将调用此方法
 // 某些 API 只能在此事件发生后才能使用
 app.on('ready', async () => {
-
-    // // 安装 Vue Devtools
-    // try {
-    //   await installExtension(VUEJS3_DEVTOOLS)
-    // } catch (e: unknown) {
-    //   if (e instanceof Error) {
-    //     console.error('Vue Devtools failed to install:', e.message)
-    //   } else {
-    //     console.error('Vue Devtools failed to install:', e)
-    //   }
-    // }
-
+  
+  // // 安装 Vue Devtools
+  // try {
+  //   await installExtension(VUEJS3_DEVTOOLS)
+  // } catch (e: unknown) {
+  //   if (e instanceof Error) {
+  //     console.error('Vue Devtools failed to install:', e.message)
+  //   } else {
+  //     console.error('Vue Devtools failed to install:', e)
+  //   }
+  // }
+  
   createWindow();
   createInitDB();
 })

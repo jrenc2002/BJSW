@@ -16,17 +16,17 @@
         <div class="h-[2vh]  justify-start items-center gap-1.5 inline-flex relative left-10 top-10">
           <img src="../assets/image/login-logo.png" class=" h-[1.25rem]   bg-cover ">
           <div class="text-white text-base font-medium leading-normal font-wz subpixel-antialiased text-1xl">
-            华生生物</div>
+            启维生物</div>
         </div>
         <!-- 左下标题样式 -->
         <div class="h-[14vh] absolute bottom-10 left-10 gap-6  flex justify-center items-center  ">
           <div class=" h-full gap-1 flex flex-col justify-center items-left ">
             <div
               class="font-bt leading-normal text-white text-[2.3vw] subpixel-antialiased font-semibold tracking-wide  ">
-              最趋于完美的生物发酵罐
+              启维生物发酵罐
             </div>
             <div class="w-[34vw] text-white text-wz font-normal text-[1.12vw] leading-normal subpixel-antialiased  ">
-                华生生物是一家致力于生物发酵产业的公司，如果您有需要可以致电0532-223212获取进一步相关信息₍ᐢ..ᐢ₎♡</div>
+                启维生物是一家致力于生物发酵产业的公司，我们的理想是用最新最先进的科技去赋能生物发酵行业。</div>
           </div>
         </div>
 
