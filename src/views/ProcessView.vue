@@ -238,15 +238,12 @@
                                 <span class="w-[5rem] flex text-center items-center justify-center relative">
                                        <Menu as="div" class="dropdown relative inline-block">
                                       <div>
-                                   <MenuButton class="inline-flex w-[5rem] justify-center gap-x-1.5 scale-75">
-                                          <summary
+                                   <div class="inline-flex w-[5rem] justify-center gap-x-1.5 scale-75">
+                                          <div
                                                   v-if="localCache.TemperatureData.water_flag!==1"
-                                                  class="m-1 btn btn-sm w-[7rem] text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2] rounded-md"
-                                                  @click="paramSend('condensate_water_flag',AppGlobal.pageChance,1)">停止</summary>
-                                          <summary v-if="localCache.TemperatureData.water_flag===1"
-                                                   class="m-1 btn btn-sm w-[7rem] text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] rounded-md"
-                                                   @click="paramSend('condensate_water_flag',AppGlobal.pageChance,0)">开启</summary>
-                                        </MenuButton>
+                                                  class="m-1  w-[7rem] text-[#000000]  "
+                                                 >{{(localCache.TemperatureData.heatpower>0 &&!localCache.TemperatureData.water_flag )? '加热' :(localCache.TemperatureData.water_flag)?'制冷':'--' }}</div>
+                                        </div>
                                       </div>
                                   </Menu>
                 </span>

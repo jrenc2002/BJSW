@@ -70,11 +70,11 @@
                                                                                         <summary
                                                                                                 v-if="localCache.setNum.temp_flag!==1"
                                                                                                 class="m-1 btn w-[7rem] text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2] rounded-md">
-                                                                                            停止
+                                                                                            手动
                                                                                         </summary>
                                                                                         <summary v-if="localCache.setNum.temp_flag===1"
                                                                                                  class="m-1 btn w-[7rem] text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] rounded-md">
-                                                                                            开启
+                                                                                            自动
                                                                                         </summary>
                                                                                     </MenuButton>
                                                                                 </div>
@@ -82,12 +82,12 @@
                                                                                         class="p-2 shadow-xl menu dropdown-content z-[1] bg-base-100 rounded-md w-[7rem] border absolute origin-top-left left-0 mt-2">
                                                                                     <MenuItem v-slot="{ active }">
                                                                                         <button @click="paramSend('temp_flag',AppGlobal.pageChance,0)" :class="[active ? 'bg-[#E0E0E0] text-[#000000]' : 'text-[#000000] bg-[#E0E0E0] hover:bg-[#C2C2C2]', 'block px-4 py-2 text-sm rounded']">
-                                                                                            停止
+                                                                                            手动
                                                                                         </button>
                                                                                     </MenuItem>
                                                                                     <MenuItem v-slot="{ active }">
                                                                                         <button @click="paramSend('temp_flag',AppGlobal.pageChance,1)" :class="[active ? 'bg-[#BAE7C7] text-[#256637]' : 'text-[#256637] bg-[#BAE7C7] hover:bg-[#A9CDB3] mt-2', 'block px-4 py-2 text-sm rounded mt-2']">
-                                                                                            开启
+                                                                                            自动
                                                                                         </button>
                                                                                     </MenuItem>
                                                                                 </MenuItems>
