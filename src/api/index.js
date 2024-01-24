@@ -226,16 +226,17 @@ export const sendData = async (index, data) => {
         }, []);
         
         let chunkIndex = 0;
+        let check = true;
         // 数据拦截器进入
-        // todo 数据仍会改变，记得修bug
         await dataInterceptor(index, data).then((res) => {
-
-            if (res===false){
-                return
-            }
-            console.log("数据拦截器通过",res)
+    
+            console.log("【数据拦截器】--------------------",res)
+            check=res
+       
         })
-        
+        if (check===false){
+            return
+        }
         
         const sendDataChunk = () => {
             if (chunkIndex < chunks.length) {

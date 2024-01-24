@@ -96,7 +96,7 @@
                                                                         </div>
                                                                     </td>
                                                                     <td class=" text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
-                                                                        {{DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.timing_temp!==undefined?DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.timing_temp+' ℃':'--'}}
+                                                                        {{DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.timing_temp!==undefined&&DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.timing_temp!==0?DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.timing_temp+' ℃':'--'}}
                                                                     </td>
                                                                     <td class=" text-center  border-b border-r rounded-br-2xl  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
                                                                         <div class="flex justify-center items-center w-full">

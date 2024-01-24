@@ -5,12 +5,12 @@
     <!-- 左侧样式 -->
     <!-- 'w-1/5' 意味着当抽屉可见时，其占据 1/5 的屏幕宽度。'w-0' 意味着当抽屉不可见时，其宽度为 0 -->
     <div
-        class="drawer h-full   relative rounded-[15px] flex items-center pl-[0.3rem] pt-[0.2rem] pb-[0.2rem] overflow-hidden transition-all duration-300 ease-in-out"
+        class="drawer    relative rounded-[15px] flex items-center pl-[0.3rem] pt-[0.2rem] pb-[0.2rem] overflow-hidden transition-all duration-300 ease-in-out"
         v-bind:class="{ 'w-[15rem]': isDrawerVisible.visible, 'w-0': !isDrawerVisible.visible }">
 
       <!-- 根据计算设置元素的宽度和高度，并设置元素的背景颜色，同时定义了元素的类名 -->
-      <div :style="{ width: 'calc(100% )', height: 'calc(100% - 0.3rem)' }"
-           class="box-border  shadow bg-white   rounded-[15px] flex flex-col p-[0.5rem] justify-center items-center gap-6 inline-flex bg-opacity-80">
+      <div
+           class="box-border  shadow bg-white w-full h-[calc(100%-0.3rem)]   rounded-[15px] flex flex-col p-[0.5rem] justify-center items-center gap-6 inline-flex bg-opacity-80">
         <!-- 创建一个用户卡片组件 -->
         <!-- 定义一个导航区域，标明其角色为"Sidebar" -->
         <nav v-if="isDrawerVisible.visible" aria-label="Sidebar" class="flex flex-1 flex-col w-[100%]  relative      ">

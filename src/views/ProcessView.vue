@@ -50,7 +50,7 @@
                             <div class="w-full  flex h-[3vh] flex items-center justify-start mt-2 gap-1 ">
                                 <div class=" w-[5rem] mr-1 text-left relative">测量值:</div>
                                 <span class="w-[5rem]  flex text-center items-center justify-center relative">
-                                  {{ localCache.DoData.MeasureData }} %
+                                  {{ localCache.DoData.MeasureData ==0?'--' :localCache.DoData.MeasureData }} %
                                 </span>
                             </div>
                             
@@ -104,7 +104,7 @@
                             <div class="w-full  flex h-[3vh] flex items-center justify-center mt-2 gap-2 ">
                                 <div class=" w-[5rem] mr-1 text-left relative">实时转速:</div>
                                 <span class="w-[5rem] flex text-center items-center justify-center relative">
-                  {{ localCache.RPMData.NowSpeed }} r/min
+                  {{ localCache.RPMData.NowSpeed== 0?'0':localCache.RPMData.NowSpeed }} r/min
                 </span>
                             </div>
                             <div class="w-full  flex h-[3vh] flex items-center justify-center mt-2 gap-2 ">
@@ -155,7 +155,7 @@
                             <div class="w-full  flex h-[3vh] flex items-center justify-center mt-2 gap-2 ">
                                 <div class=" w-[5rem] mr-1 text-left relative">测量值:</div>
                                 <span class="w-[5rem] flex text-center items-center justify-center relative">
-                   {{ localCache.PHData.MeasureData }}
+                   {{ localCache.PHData.MeasureData==0? '--': localCache.PHData.MeasureData}}
                 </span>
                             </div>
                             <div class="w-full  flex h-[3vh] flex items-center justify-center mt-2 gap-2 ">
@@ -212,7 +212,7 @@
                             <div class="w-full  flex h-[3vh] flex items-center justify-center mt-2 gap-3  ">
                                 <div class=" w-[5rem] mr-1 text-left relative">测量值:</div>
                                 <span class="w-[5rem] flex text-center items-center justify-center relative">
-                  {{ localCache.TemperatureData.MeasureData }}{{ ' ℃' }}
+                  {{ localCache.TemperatureData.MeasureData==0? '--':localCache.TemperatureData.MeasureData  }}{{ ' ℃' }}
                 </span>
                             </div>
                             <div class="w-full  flex h-[3vh] flex items-center justify-center mt-2 gap-2 ">
@@ -325,7 +325,7 @@
                         <div class="mx-6 my-3  mt-0 flex-col  ">
                             <div class="w-full  flex h-[3vh] flex items-center justify-center gap-2 ">
                                 <div class=" min-w-[7rem] mr-1 text-left relative ">实时速率:</div>
-                                <span class="min-w-[2rem] flex text-center items-center justify-center relative">
+                                <span class="min-w-[3rem] flex text-center items-center flex-nowrap justify-center relative">
                   {{ localCache.acidPumpData.SetData }} ml/h
                 </span>
                             </div>
@@ -378,7 +378,7 @@
                         <div class="mx-6 my-3  mt-0 flex-col  ">
                             <div class="w-full  flex h-[3vh] flex items-center justify-center gap-2 ">
                                 <div class=" min-w-[7rem] mr-1 text-left relative ">实时速率:</div>
-                                <span class="min-w-[2rem] flex text-center items-center justify-center relative">
+                                <span class="min-w-[3rem] flex text-center items-center flex-nowrap justify-center relative">
                   {{ localCache.lyePumpData.SetData }} ml/h
                 </span>
                             </div>
@@ -418,8 +418,8 @@
                         
                         <div class="mx-6 my-3  mt-0 flex-col  ">
                             <div class="w-full  flex h-[3vh] flex items-center justify-center gap-2 ">
-                                <div class=" min-w-[7rem] mr-1 text-left relative ">设定速率:</div>
-                                <span class="min-w-[2rem] flex text-center items-center justify-center relative">
+                                <div class=" min-w-[7rem] mr-1 text-left relative ">实时速率:</div>
+                                <span class="min-w-[3rem] flex text-center items-center flex-nowrap justify-center relative">
                   {{ localCache.defoamerPumpData.SetData }} ml/h
                 </span>
                             </div>
@@ -456,7 +456,7 @@
                         <div class="mx-6 my-3  mt-0 flex-col  ">
                             <div class="w-full  flex h-[3vh] flex items-center justify-center gap-2 ">
                                 <div class=" min-w-[7rem] mr-1 text-left relative ">实时速率:</div>
-                                <span class="min-w-[2rem] flex text-center items-center justify-center relative">
+                                <span class="min-w-[3rem] flex text-center items-center flex-nowrap justify-center relative">
                   {{ localCache.feedPumpData.SetData }} ml/h
                 </span>
                             </div>
