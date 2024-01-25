@@ -227,17 +227,20 @@ export const sendData = async (index, data) => {
         
         let chunkIndex = 0;
         let check = true;
+        
+    
         // 数据拦截器进入
         await dataInterceptor(index, data).then((res) => {
-    
             console.log("【数据拦截器】--------------------",res)
             check=res
-       
         })
         if (check===false){
             return
         }
-        
+        // 数据预存器进入
+        await dataPreserver(index, data);
+    
+    
         const sendDataChunk = () => {
             if (chunkIndex < chunks.length) {
                 const chunkData = {};
@@ -320,6 +323,13 @@ function dataInterceptor(index, data) {
     
 }
 
+// 数据预存器
+export const dataPreserver = (index, data) => {
+    // data是一个对象将data里的每个对象存入设备管理器对应的nowdata里相应的键名
+    for (const key in data) {
+        DeviceManage.deviceList[index].nowData[key] = data[key]
+    }
+}
 
 // 拼合接受数据
 let dataCache = "";

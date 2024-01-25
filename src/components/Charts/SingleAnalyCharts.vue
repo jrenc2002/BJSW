@@ -9,7 +9,6 @@ import {ECharts, EChartsOption, init} from 'echarts';
 import {useChartsData} from "@/store/ChartsData";
 import {useAppGlobal} from "@/store/AppGlobal";
 import {useRoute} from "vue-router";
-// todo 曲线刷新功能，为了保证内存只有监听到路由为曲线对比时才会定时渲染；
 const debug = true;
 
 const AppGlobal = useAppGlobal();
@@ -22,23 +21,25 @@ let chartEch: ECharts | null = null;
 const rootRef = ref();
 const chartDiv = ref<HTMLElement | null>(null);
 
-const updateChart = () => {
+const updateChart = async () => {
     
     if (!chartDiv.value || !chartEch) return;
-    const dataSeries = ChartsData.dataSeries
+    const dataSeries = await kValue(ChartsData.dataSeries)
     const dataLegend = ChartsData.dataLegend
-
+    
     // 获取当前的选项
     const currentOption = chartEch.getOption();
     let currentDataZoom;
     // 检查返回的结果是否是 undefined
     if (currentOption) {
-         currentDataZoom = currentOption.dataZoom;
+        currentDataZoom = currentOption.dataZoom;
     }
-    if (debug){
-        console.log('【曲线对比】曲线数据项-下游',dataSeries)
-        console.log('【曲线对比】曲线数据类型-下游',dataLegend)
+    if (debug) {
+        console.log('【曲线对比】曲线数据项-下游', dataSeries)
+        console.log('【曲线对比】曲线数据类型-下游', dataLegend)
     }
+    // 数据k值处理，将dataSeries
+    
     
     const option: EChartsOption = {
         tooltip: {
@@ -52,25 +53,42 @@ const updateChart = () => {
                     let date = new Date(params[0].axisValue);
                     result += `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}<br>`;
                 }
-                const unit={
-                    '温度':'℃',
-                    '酸泵补料量':' ml',
-                    '碱泵补料量':' ml',
-                    '转速':' r/min',
-                    '补料二补料量':' ml',
-                    '补料一补料量':' ml',
-                    'PH':' ',
-                    '溶氧':' %',
-                    '补料二流速':' ml/h',
-                    '补料一流速':' ml/h',
+                const unit = {
+                    '温度': '℃',
+                    '酸泵补料量': ' ml',
+                    '碱泵补料量': ' ml',
+                    '转速': ' r/min',
+                    '补料二补料量': ' ml',
+                    '补料一补料量': ' ml',
+                    'PH': ' ',
+                    '溶氧': ' %',
+                    '补料二流速': ' ml/h',
+                    '补料一流速': ' ml/h',
                 }
-                
-                params.forEach((param,index) => {
+                const chartScale = {
+                    '溶氧': AppGlobal.chartScale.do_k,
+                    'PH': AppGlobal.chartScale.ph_k,
+                    '温度': AppGlobal.chartScale.temp_k,
+                    '转速': AppGlobal.chartScale.rpm_k,
+                    '酸泵补料量': AppGlobal.chartScale.acid_ml_k,
+                    '碱泵补料量': AppGlobal.chartScale.lye_ml_k,
+                    '补料一补料量': AppGlobal.chartScale.feed0_ml_k,
+                    '补料二补料量': AppGlobal.chartScale.feed_ml_k,
+                    '补料一流速': AppGlobal.chartScale.feed0_ml_h_k,
+                    '补料二流速': AppGlobal.chartScale.feed_ml_h_k,
+                }
+                params.forEach((param, index) => {
                     // 帮我分割出-字符串
                     const str = param.seriesName.split('-')
-                    
-                    result += `${param.seriesName}: ${param.value[1]?.toFixed(2)}${unit[str[1]]} <br>`;
-                });
+                    if (chartScale[str[1]]!==0){
+                        result += `${param.seriesName}: ${(param.value[1] * chartScale[str[1]])?.toFixed(2)}${unit[str[1]]} <br>`;
+    
+                    }
+                    else {
+                        result += `${param.seriesName}: ${(param.value[1])?.toFixed(2)}${unit[str[1]]} <br>`;
+    
+                    }
+                           });
                 return result;
             }
         },
@@ -89,8 +107,8 @@ const updateChart = () => {
         legend: {
             data: dataLegend,
             type: 'scroll',
-            left:'5%',
-            width : '70%'
+            left: '5%',
+            width: '70%'
         },
         dataZoom: [
             {
@@ -118,8 +136,8 @@ const updateChart = () => {
                 dataZoom: {
                     yAxisIndex: 'none'
                 },
-                magicType: { type: ['line', 'bar'] },
-                dataView: { readOnly: false },
+                magicType: {type: ['line', 'bar']},
+                dataView: {readOnly: false},
                 restore: {},
                 saveAsImage: {}
             }
@@ -132,7 +150,7 @@ const updateChart = () => {
     chartEch.setOption(option, true);
     // 恢复保存的缩放比例
     if (currentOption) {
-        chartEch.setOption({ dataZoom: currentDataZoom });
+        chartEch.setOption({dataZoom: currentDataZoom});
     }
     chartEch.resize();
 };
@@ -149,15 +167,15 @@ const route = useRoute();
 const updateTimer = ref<any>(null);
 // 创建定时器的函数
 function startTimer(){
-    updateTimer.value = setInterval(() => {
+    updateTimer.value = setInterval(async () => {
         // 这里放置定时器的逻辑
-
+    
         if (ChartsData.dataSeries.length > 0) {
-            if (chartEch !== null){
-                if (debug){
+            if (chartEch !== null) {
+                if (debug) {
                     console.log('【曲线更新】曲线数据项-下游', ChartsData.dataSeries);
                 }
-                const dataSeries = ChartsData.dataSeries;
+                const dataSeries = await kValue(ChartsData.dataSeries)
                 chartEch.setOption({
                     series: dataSeries
                 });
@@ -165,6 +183,33 @@ function startTimer(){
         }
     }, AppGlobal.BeatTimer);
 }
+
+// 曲线k值函数,将曲线数据除k值
+const kValue = (dataSeries:any) => {
+    const chartScale={
+        '溶氧':AppGlobal.chartScale.do_k,
+        'PH':AppGlobal.chartScale.ph_k,
+        '温度':AppGlobal.chartScale.temp_k,
+        '转速':AppGlobal.chartScale.rpm_k,
+        '酸泵补料量':AppGlobal.chartScale.acid_ml_k,
+        '碱泵补料量':AppGlobal.chartScale.lye_ml_k,
+        '补料一补料量':AppGlobal.chartScale.feed0_ml_k,
+        '补料二补料量':AppGlobal.chartScale.feed_ml_k,
+        '补料一流速':AppGlobal.chartScale.feed0_ml_h_k,
+        '补料二流速':AppGlobal.chartScale.feed_ml_h_k,
+    }
+    dataSeries.forEach((item:any) => {
+        item.data.forEach((itemData:any) => {
+            if (chartScale[item.name.split('-')[1]]!==0){
+                itemData[1] = itemData[1]/chartScale[item.name.split('-')[1]]
+            }
+ 
+        })
+    })
+    return dataSeries
+}
+
+
 // 销毁定时器的函数
 const stopTimer = () => {
     if (updateTimer.value) {

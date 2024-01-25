@@ -14,6 +14,20 @@ const state = () => {
         selectedDeviceIndex:-1,
         // 通讯心跳定时器
         BeatTimer:3000,
+        //图表比例系数
+        chartScale:{
+            ph_k:0,
+            temp_k:10,
+            do_k:10,
+            rpm_k:100,
+            acid_ml_k:0,
+            lye_ml_k:0,
+            feed0_ml_k:0,
+            feed_ml_k:0,
+            feed0_ml_h_k:0,
+            feed_ml_h_k:0,
+        },
+        
 
 
 

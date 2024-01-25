@@ -61,7 +61,7 @@ const AppGlobal = useAppGlobal();
 // ______________________表格数据处理_______________________
 
 
-
+// todo 批次数据没有刷新名称罐号
 
 // 当按下键盘时的处理函数，ESC关闭弹窗
 const handleKeydown = (event) => {
@@ -89,11 +89,11 @@ const tableDatadLegend=ref(
     ['实时溶氧','实时PH','实时温度','实时转速','酸泵补料量','碱泵补料量','补料泵一补料量','补料泵二补料量','实时泵一速度','实时泵二速度']
 );
 
-const updateChart = () => {
+const updateChart = async () => {
     
     if (!chartDiv.value || !chartEch) return;
-    const dataSeries = tableDataSeries.value
-    const dataLegend=tableDatadLegend.value
+    const dataSeries = await kValue(tableDataSeries.value)
+    const dataLegend = tableDatadLegend.value
     
     // 获取当前的选项
     const currentOption = chartEch.getOption();
@@ -102,7 +102,6 @@ const updateChart = () => {
     if (currentOption) {
         currentDataZoom = currentOption.dataZoom;
     }
-    
     
     
     const option: EChartsOption = {
@@ -117,22 +116,41 @@ const updateChart = () => {
                     let date = new Date(params[0].axisValue);
                     result += `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}<br>`;
                 }
-                const unit={
-                    '温度':'℃',
-                    '酸泵补料量':' ml',
-                    '碱泵补料量':' ml',
-                    '转速':' r/min',
-                    '补料二补料量':' ml',
-                    '补料一补料量':' ml',
-                    'PH':' ',
-                    '溶氧':' %',
-                    '补料二流速':' ml/h',
-                    '补料一流速':' ml/h',
+                const unit = {
+                    '温度': '℃',
+                    '酸泵补料量': ' ml',
+                    '碱泵补料量': ' ml',
+                    '转速': ' r/min',
+                    '补料二补料量': ' ml',
+                    '补料一补料量': ' ml',
+                    'PH': ' ',
+                    '溶氧': ' %',
+                    '补料二流速': ' ml/h',
+                    '补料一流速': ' ml/h',
                 }
-    
-                params.forEach((param,index) => {
+                const chartScale = {
+                    '溶氧': AppGlobal.chartScale.do_k,
+                    'PH': AppGlobal.chartScale.ph_k,
+                    '温度': AppGlobal.chartScale.temp_k,
+                    '转速': AppGlobal.chartScale.rpm_k,
+                    '酸泵补料量': AppGlobal.chartScale.acid_ml_k,
+                    '碱泵补料量': AppGlobal.chartScale.lye_ml_k,
+                    '补料一补料量': AppGlobal.chartScale.feed0_ml_k,
+                    '补料二补料量': AppGlobal.chartScale.feed_ml_k,
+                    '补料一流速': AppGlobal.chartScale.feed0_ml_h_k,
+                    '补料二流速': AppGlobal.chartScale.feed_ml_h_k,
+                }
+                
+                params.forEach((param, index) => {
                     // 帮我分割出-字符串
-                    result += `${param.seriesName}: ${param.value[1]?.toFixed(2)}${unit[param.seriesName]} <br>`;
+                    if (chartScale[param.seriesName]!==0){
+                       result += `${param.seriesName}: ${(param.value[1] * chartScale[param.seriesName]*chartScale[param.seriesName])?.toFixed(2)}${unit[param.seriesName]} <br>`;
+    
+                    }
+                    else {
+                        result += `${param.seriesName}: ${(param.value[1])?.toFixed(2)}${unit[param.seriesName]} <br>`;
+    
+                    }
                 });
                 return result;
             }
@@ -152,8 +170,8 @@ const updateChart = () => {
         legend: {
             data: dataLegend,
             type: 'scroll',
-            left:'5%',
-            width : '70%',
+            left: '5%',
+            width: '70%',
         },
         dataZoom: [
             {
@@ -181,8 +199,8 @@ const updateChart = () => {
                 dataZoom: {
                     yAxisIndex: 'none'
                 },
-                magicType: { type: ['line', 'bar'] },
-                dataView: { readOnly: false },
+                magicType: {type: ['line', 'bar']},
+                dataView: {readOnly: false},
                 restore: {},
                 saveAsImage: {}
             }
@@ -194,7 +212,7 @@ const updateChart = () => {
     chartEch.setOption(option, true);
     // 恢复保存的缩放比例
     if (currentOption) {
-        chartEch.setOption({ dataZoom: currentDataZoom });
+        chartEch.setOption({dataZoom: currentDataZoom});
     }
     chartEch.resize();
 };
@@ -313,7 +331,30 @@ watch(() => props.data, (newData, oldValue) => {
         updateChart();
     }, 500);
 })
-
+const kValue = (dataSeries:any) => {
+    const chartScale={
+        '溶氧':AppGlobal.chartScale.do_k,
+        'PH':AppGlobal.chartScale.ph_k,
+        '温度':AppGlobal.chartScale.temp_k,
+        '转速':AppGlobal.chartScale.rpm_k,
+        '酸泵补料量':AppGlobal.chartScale.acid_ml_k,
+        '碱泵补料量':AppGlobal.chartScale.lye_ml_k,
+        '补料一补料量':AppGlobal.chartScale.feed0_ml_k,
+        '补料二补料量':AppGlobal.chartScale.feed_ml_k,
+        '补料一流速':AppGlobal.chartScale.feed0_ml_h_k,
+        '补料二流速':AppGlobal.chartScale.feed_ml_h_k,
+    }
+    
+    dataSeries?.forEach((item:any) => {
+        item.data.forEach((itemData:any) => {
+            if (chartScale[item.name]!==0){
+                itemData[1] = itemData[1]/chartScale[item.name]
+            }
+        })
+    })
+    
+    return dataSeries
+}
 /* ——————————————————————————生命周期配置—————————————————————————— */
 onMounted(() => {
     // 这里是由于图表渲染快于父元素导致图表比例溢出，做的一个延缓操作
