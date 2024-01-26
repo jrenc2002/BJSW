@@ -593,9 +593,7 @@ const localCache = reactive({
 
 
 const isAll = ref(false);
-watch(() => isAll.value, () => {
-    console.log(isAll.value)
-}, {deep: true});
+
 watch(() => DeviceManage.deviceList[AppGlobal.pageChance].nowData, () => {
     initDataManger()
 }, {deep: true});
@@ -670,30 +668,7 @@ const controlSend = ((name, index, content) => {
     
     lastClickTime = currentTime; // Update the last clicked time
     
-    if (name === 'begin_running') {
-        
-        if (isAll.value) {
-            // 四个同时开启运行
-            const data = {
-                PH_flag: 0,
-                DO_flag: 0,
-                temp_flag: 0,
-                start_flag: 0
-            }
-            
-            sendData(index, data);
-        } else {
-            // 四个同时开启运行
-            const data = {
-                PH_flag: 1,
-                DO_flag: 1,
-                temp_flag: 1,
-                start_flag: 1
-            }
-            sendData(index, data);
-        }
-        
-    } else if (name === 'end_running') {
+     if (name === 'end_running') {
         // TODO: 关闭运行时应该用什么逻辑
         const data = {
             PH_flag: 0,
@@ -701,6 +676,7 @@ const controlSend = ((name, index, content) => {
             temp_flag: 0,
             start_flag: 0
         }
+        
         
         sendData(index, data);
     } else if (name === 'acid_pump_set') {
@@ -818,17 +794,24 @@ const handleHandControl = ((content) => {
     
 })
 
+const timerControl=ref(false)
+watch(() => DeviceManage.deviceList[AppGlobal.pageChance].state, (newValue) => {
+    if (newValue === 1) {
+        timerControl.value=false
+    } else if (newValue === 2) {
+        timerControl.value=true
+    }
+});
 
 onMounted(() => {
     window.addEventListener('keydown', handleKeydownEsc);
     initDataManger()
-    
-    console.log(DeviceManage.deviceList[AppGlobal.pageChance]?.batch_name, '2222222')
-// 使用 setInterval 定时器每秒更新一次时间差
     setInterval(() => {
-        calculateTimeDifference()
+        if (timerControl.value){
+            calculateTimeDifference()
+        }
     }, 1000);
-    
+// 使用 setInterval 定时器每秒更新一次时间差
 })
 onUnmounted(() => {
     window.removeEventListener('keydown', handleKeydownEsc);
