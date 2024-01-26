@@ -500,6 +500,7 @@ const handleKeydown = (event) => {
 // 当组件挂载时添加事件监听器
 onMounted(() => {
     window.addEventListener('keydown', handleKeydown);
+    updateCache();
 //   循环
 //   setInterval(() => {
 //     // sendData(0)

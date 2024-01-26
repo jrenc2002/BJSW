@@ -111,6 +111,14 @@ onMounted(() => {
 
 });
 
+// todo 每一次更改deviceList就会将其存储到缓存
+// watch(() => DeviceManage.deviceList, () => {
+//
+//     localStorage.setItem('deviceList', JSON.stringify(DeviceManage.deviceList));
+//
+// }, {deep: true});
+
+
 // 使用 Vue3 的生命周期钩子函数 onUnmounted，在组件卸载之前移除窗口大小变化的监听事件
 onUnmounted(() => {
   window.removeEventListener('resize', updateWindowSize);

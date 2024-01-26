@@ -136,10 +136,10 @@
                                                         <table class="   bg-[#E8F6ED] py-4 rounded-l-2xl">
                                                             <tr>
                                                                 <td class="w-full  flex justify-center items-center   ">
-                                                                    <div>溶氧报警上限</div>
+                                                                    <div>转速报警上限</div>
                                                                 </td>
                                                                 <td class="w-full  flex justify-center items-center   ">
-                                                                    <div>溶氧报警下限</div>
+                                                                    <div>转速报警下限</div>
                                                                 </td>
                                                             </tr>
                                                         </table>
@@ -378,6 +378,7 @@ const updateCache = () => {
     localCache.value.controlNum.DO_dead_zone = DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.DO_area_upper_limit-DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.target_DO
     localCache.value.controlNum.motor_speed_u_limit = DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.motor_speed_u_limit
     localCache.value.controlNum.motor_speed_l_limit = DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.motor_speed_l_limit
+    
     localCache.value.controlNum.DO_upper_limit = DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.DO_upper_limit
     localCache.value.controlNum.DO_lower_limit = DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.DO_lower_limit
 
@@ -419,6 +420,7 @@ const handleKeydown = (event) => {
 // 当组件挂载时添加事件监听器
 onMounted(() => {
     window.addEventListener('keydown', handleKeydown);
+    updateCache();
 //   循环
 //   setInterval(() => {
 //     // sendData(0)

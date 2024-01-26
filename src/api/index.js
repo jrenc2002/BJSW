@@ -365,11 +365,9 @@ function onDataReceived(data) {
                 cancelButtonText: '取消',
             });
             console.log("通讯报错，请检查设备连接", completeData)
-            // TODO: 错误处理
             return -1
         }
     }
-    // 传输一半
     return -2
 }
 

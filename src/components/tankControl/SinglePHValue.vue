@@ -533,23 +533,23 @@ watch(() => DeviceManage.deviceList[AppGlobal.pageChance]?.nowData, (newVal, old
 // updateCache函数
 const updateCache = () => {
 // 更新数据
-    localCache.value.setNum.target_PH = DeviceManage.deviceList[AppGlobal.pageChance]?.nowData.target_PH;
-    localCache.value.setNum.PH_flag = DeviceManage.deviceList[AppGlobal.pageChance]?.nowData.PH_flag;
+    localCache.value.setNum.target_PH = DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.target_PH;
+    localCache.value.setNum.PH_flag = DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.PH_flag;
     
-    localCache.value.controlNum.PH_dead_zone=DeviceManage.deviceList[AppGlobal.pageChance]?.nowData.PH_area_upper_limit-DeviceManage.deviceList[AppGlobal.pageChance]?.nowData.target_PH;
-    localCache.value.controlNum.PH_area_upper_limit = DeviceManage.deviceList[AppGlobal.pageChance]?.nowData.PH_area_upper_limit;
-    localCache.value.controlNum.PH_area_lower_limit = DeviceManage.deviceList[AppGlobal.pageChance]?.nowData.PH_area_lower_limit;
+    localCache.value.controlNum.PH_dead_zone=DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.PH_area_upper_limit-DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.target_PH;
+    localCache.value.controlNum.PH_area_upper_limit = DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.PH_area_upper_limit;
+    localCache.value.controlNum.PH_area_lower_limit = DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.PH_area_lower_limit;
     
-    localCache.value.alarmNum.alarm_h_limit = DeviceManage.deviceList[AppGlobal.pageChance]?.deviceSet.alarm_h_limit;
-    localCache.value.alarmNum.alarm_l_limit = DeviceManage.deviceList[AppGlobal.pageChance]?.deviceSet.alarm_l_limit;
+    localCache.value.alarmNum.alarm_h_limit = DeviceManage.deviceList[AppGlobal.pageChance]?.deviceSet?.phMaxWarn;
+    localCache.value.alarmNum.alarm_l_limit = DeviceManage.deviceList[AppGlobal.pageChance]?.deviceSet?.phMinWarn;
+
+    localCache.value.acidNum.acid_KP = DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.acid_KP;
+    localCache.value.acidNum.acid_KI = DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.acid_KI;
+    localCache.value.acidNum.acid_KD = DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.acid_KD;
     
-    localCache.value.acidNum.acid_KP = DeviceManage.deviceList[AppGlobal.pageChance]?.nowData.acid_KP;
-    localCache.value.acidNum.acid_KI = DeviceManage.deviceList[AppGlobal.pageChance]?.nowData.acid_KI;
-    localCache.value.acidNum.acid_KD = DeviceManage.deviceList[AppGlobal.pageChance]?.nowData.acid_KD;
-    
-    localCache.value.lyeNum.lye_KP = DeviceManage.deviceList[AppGlobal.pageChance]?.nowData.lye_KP;
-    localCache.value.lyeNum.lye_KI = DeviceManage.deviceList[AppGlobal.pageChance]?.nowData.lye_KI;
-    localCache.value.lyeNum.lye_KD = DeviceManage.deviceList[AppGlobal.pageChance]?.nowData.lye_KD;
+    localCache.value.lyeNum.lye_KP = DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.lye_KP;
+    localCache.value.lyeNum.lye_KI = DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.lye_KI;
+    localCache.value.lyeNum.lye_KD = DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.lye_KD;
 
 }
 
@@ -568,6 +568,7 @@ const handleKeydown = (event) => {
 // 当组件挂载时添加事件监听器
 onMounted(() => {
     window.addEventListener('keydown', handleKeydown);
+    updateCache();
 //   循环
 //   setInterval(() => {
 //     // sendData(0)

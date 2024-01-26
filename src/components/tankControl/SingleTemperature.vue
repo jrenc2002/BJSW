@@ -167,8 +167,8 @@
                                                                 <tr class="flex justify-center items-center">
                                                                     <td class=" text-center  border-b border-r  rounded-br-2xl hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
                                                                         <div class="flex justify-center items-center w-full">
-                                                                            <input id="name" v-model.lazy="localCache.alarmNum.alarm_h_limit"
-                                                                                   @blur="DeviceManage.deviceList[AppGlobal.pageChance].deviceSet.tempMinWarn=localCache.alarmNum.alarm_h_limit"
+                                                                            <input id="name" v-model.lazy="localCache.alarmNum.alarm_l_limit"
+                                                                                   @blur="DeviceManage.deviceList[AppGlobal.pageChance].deviceSet.tempMinWarn=localCache.alarmNum.alarm_l_limit"
                                                                                    class="block w-[80%]  border-b-2 m-2 text-center bg-inherit"
                                                                                    name="name"
                                                                                    placeholder="报警下限"
@@ -611,7 +611,7 @@ const updateCache = () => {
 // 当组件挂载时添加事件监听器
 onMounted(() => {
     window.addEventListener('keydown', handleKeydown);
-    
+    updateCache();
 });
 
 // 当组件卸载时移除事件监听器

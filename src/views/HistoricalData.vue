@@ -29,13 +29,13 @@
               text-[15px]"
                             >
                                 
-                                <p class="text-[#295C3F]">
+                                <p class="text-[#295C3F] w-1/4 text-center">
                                     {{ item.batch_name }}
                                 </p>
-                                <p class="text-[#79930F]">
+                                <p class="text-[#79930F] w-1/4 text-center">
                                     {{ item.can_number }}
                                 </p>
-                                <p class="text-[#1A3A8D]">
+                                <p class="text-[#1A3A8D] w-1/2 text-center">
                                     {{ timestampToString(item.start_time) }}
                                 </p>
                             

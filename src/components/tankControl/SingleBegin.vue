@@ -67,6 +67,7 @@ import {sendData} from '@/api/index.js'
 import {useDeviceManage} from '@/store/DeviceManage'
 import {useAppGlobal} from '@/store/AppGlobal'
 import {toNumber} from "xe-utils";
+import Swal from "sweetalert2";
 
 const DeviceManage = useDeviceManage();
 const ProcessPopupMangerState = useProcessPopupMangerState()
@@ -76,34 +77,67 @@ const AppGlobal = useAppGlobal();
 const batch_name = ref(null);
 const batch_cycle = ref(null);
 
+const debug=true
 
 
 
-
-const controlSend = ((name, index) => {
+const controlSend = (async (name, index) => {
     if (name == 'beginFerment') {
-        if (batch_name.value!==null&&batch_name.value!==''&&batch_name.value!==undefined){
-            DeviceManage.deviceList[index].batch_name=batch_name.value;
-            if (batch_cycle.value!==null&&batch_cycle.value!==''&&batch_cycle.value!==undefined){
-                DeviceManage.deviceList[index].batch_cycle=toNumber(batch_cycle.value);
+        if (batch_name.value !== null && batch_name.value !== '' && batch_name.value !== undefined) {
+            DeviceManage.deviceList[index].batch_name = batch_name.value;
+            if (batch_cycle.value !== null && batch_cycle.value !== '' && batch_cycle.value !== undefined) {
+                DeviceManage.deviceList[index].batch_cycle = toNumber(batch_cycle.value);
             }
-            const data = {
-                start_flag: 1,
-                lyePumpSpeed: 0.00001,
-                feed0PumpSpeed: 0.00001,
-                feedPumpSpeed:0.00001
-            }
-            sendData(index, data);
-            ProcessPopupMangerState.updateIsShowPop(false)
-            DeviceManage.deviceList[index].recordFlag=true;
-            DeviceManage.deviceList[index].start_time = new Date();
-        }
-     
+            
+            if (DeviceManage.deviceList[index].state == 1 && DeviceManage.deviceList[index].nowData?.communicate_flag === 1 && DeviceManage.deviceList[index].nowData?.start_flag === 1){
+       
+                DeviceManage.deviceList[index].state = 2
+                const currentDate = new Date();
+                const batchData = {
+                    batch_name: DeviceManage.deviceList[index].batch_name,
+                    can_number: DeviceManage.deviceList[index].nowData?.decive_id,
+                    start_time: currentDate,
+                };
+                if (debug) {
+                    console.log('【开始发酵】批次数据批次号', batchData)
+                }
+                await window.Electron.ipcRenderer.invoke('add-fermentation-batch', batchData).then(
+                    (res) => {
+                        if (res) { // 确保res是有效的
+                
+                            DeviceManage.deviceList[index].batch_id = res;
+                        } else {
+                            console.error('存储批次数据失败.');
+                        }
+                    }
+                ).catch((error) => {
         
-   
+                    Swal.fire({
+                        icon: 'error', //error\warning\info\question
+                        title: '添加批次',
+                        text: '添加批次内容至数据库报错,报错为:' + error,
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: '确认',
+                        cancelButtonText: '取消',
+                    });
+        
+                    console.error('添加批次内容至数据库报错,报错为:', error);
+                });
+                ProcessPopupMangerState.updateIsShowPop(false)
+                DeviceManage.deviceList[index].recordFlag = true;
+                DeviceManage.deviceList[index].start_time = new Date();
+            }
+            
+            
+
+        }
+        
+        
     }
-
-
+    
+    
 })
 
 

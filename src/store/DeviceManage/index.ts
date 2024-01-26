@@ -704,49 +704,7 @@ export const useDeviceManage = defineStore('DeviceManage', {
                 if (debug){
                     console.log('【更新数据】是否新建批次数据', this.deviceList[index].state == 1 && newDeviceData.communicate_flag === 1 && newDeviceData.start_flag === 1)
                 }
-                // 运行中-刚开始运行，状态还没变过来
-                if (this.deviceList[index].state == 1 && newDeviceData.communicate_flag === 1 && newDeviceData.start_flag === 1) {
-                    this.deviceList[index].state = 2
-                    // 如果没有这个批次数据存入批次数据
-                    
-                    const batchData = {
-                        batch_name: this.deviceList[index].batch_name,
-                        can_number: newDeviceData.decive_id,
-                        start_time: currentDate,
-                    };
-                  
-                   await window.Electron.ipcRenderer.invoke('add-fermentation-batch', batchData).then(
-                        (res) => {
-                            if (res) { // 确保res是有效的
-                                if (debug){
-                                    console.log('【更新数据】已存储批次数据', batchData,res)
-                       
-                                }
-                                
-                                this.deviceList[index].batch_id = res;
-                            } else {
-                                console.error('存储批次数据失败.');
-                            }
-                        }
-                    ).catch((error) => {
-                        
-                        Swal.fire({
-                            icon: 'error', //error\warning\info\question
-                            title: '添加批次',
-                            text: '添加批次内容至数据库报错,报错为:' + error,
-                            showCancelButton: true,
-                            confirmButtonColor: '#3085d6',
-                            cancelButtonColor: '#d33',
-                            confirmButtonText: '确认',
-                            cancelButtonText: '取消',
-                        });
-                        
-                        console.error('添加批次内容至数据库报错,报错为:', error);
-                    });
-                    
-                    
-                }
-    
+
                 if (debug){
                     console.log('【更新数据】设备报警进入',this.deviceList[index].deviceSet,index,this.deviceList[index].state,newDeviceData.communicate_flag,newDeviceData.start_flag)
                 }

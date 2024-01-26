@@ -306,7 +306,7 @@
                             
                             <div class="w-full text-center relative  h-[70%] flex items-center justify-center">
                                 <div class=" h-full w-3 flex justify-center items-center rounded mx-1 ">
-                                    <div :class="[  localCache.acidPumpData.SetData ===0?'bg-[#E0E0E0]':'bg-green-600']"
+                                    <div :class="[  localCache.acidPumpData.SetData >0?'bg-green-600':'bg-[#E0E0E0]']"
                                          class="w-2 h-2  rounded-full"></div>
                                 </div>
                                 <div :class="[stateManger.AcidPump?'text-white bg-[#E1A1A9]':'bg-white']"
@@ -358,7 +358,7 @@
                             <div class="w-full text-center relative  h-[70%] flex items-center justify-center">
                                 <div class=" h-full w-3 flex justify-center items-center rounded mx-1 ">
                                     
-                                    <div :class="[  localCache.lyePumpData.SetData ===0?'bg-[#E0E0E0]':'bg-green-600']"
+                                    <div :class="[  localCache.lyePumpData.SetData >0?'bg-green-600':'bg-[#E0E0E0]']"
                                          class="w-2 h-2  rounded-full"></div>
                                 </div>
                                 
@@ -397,7 +397,7 @@
                         <div class="w-full h-[3rem]   mb-2   bg-[#FCF8DA] flex items-center justify-center rounded-t-2xl ">
                             <div class="w-full text-center relative  h-[70%] flex items-center justify-center">
                                 <div class=" h-full w-3 flex justify-center items-center rounded mx-1 ">
-                                    <div :class="[  localCache.defoamerPumpData.SetData ===0?'bg-[#E0E0E0]':'bg-green-600']"
+                                    <div :class="[  localCache.defoamerPumpData.SetData >0?'bg-[#E0E0E0]':'bg-[#E0E0E0]']"
                                          class="w-2 h-2  rounded-full"></div>
                                 </div>
                                 
@@ -436,7 +436,7 @@
                         <div class="w-full h-[3rem]   mb-2   bg-[#D9F0E4] flex items-center justify-center rounded-t-2xl ">
                             <div class="w-full text-center relative  h-[70%] flex items-center justify-center">
                                 <div class=" h-full w-3 flex justify-center items-center rounded mx-1 ">
-                                    <div :class="[  localCache.feedPumpData.SetData ===0?'bg-[#E0E0E0]':'bg-green-600']"
+                                    <div :class="[  localCache.feedPumpData.SetData >0?'bg-green-600':'bg-[#E0E0E0]']"
                                          class="w-2 h-2  rounded-full"></div>
                                 </div>
                                 
@@ -625,15 +625,12 @@ const initDataManger = () => {
     let currentDevice = DeviceManage.deviceList[AppGlobal.pageChance].nowData;
     let setDevice = DeviceManage.deviceList[AppGlobal.pageChance].deviceSet;
     
-    localCache.DoData.SetData = formatData(currentDevice.target_DO);
     localCache.DoData.MeasureData = formatData(currentDevice.timing_DO);
     localCache.DoData.DO_flag = currentDevice.DO_flag;
     localCache.RPMData.NowSpeed = currentDevice.timing_motor_speed;
-    localCache.RPMData.SetSpeed = currentDevice.target_motor_speed;
-    localCache.PHData.SetData = formatData(currentDevice.target_PH);
+    
     localCache.PHData.PH_flag= currentDevice.PH_flag;
     localCache.PHData.MeasureData = formatData(currentDevice.timing_PH);
-    localCache.TemperatureData.SetData = formatData(currentDevice.target_temp);
     localCache.TemperatureData.MeasureData = formatData(currentDevice.timing_temp);
     localCache.TemperatureData.heatpower = formatData(currentDevice.heatpower);
     localCache.TemperatureData.water_flag = currentDevice.condensate_water_flag;
@@ -648,7 +645,19 @@ const initDataManger = () => {
     localCache.feedPumpData.MeasureData = formatData(Number(setDevice.feedPumpSumStepCount));
     stateManger.AddFeed = Number(currentDevice.feed_flag) === 1;
     stateManger.DefoamerPump = Number(currentDevice.feed0_flag) === 1;
-    
+    // 惰性更新
+    if (localCache.RPMData.SetSpeed !== currentDevice.target_motor_speed){
+        localCache.RPMData.SetSpeed = currentDevice.target_motor_speed;
+    }
+    if (localCache.DoData.SetData !== formatData(currentDevice.target_DO)){
+        localCache.DoData.SetData = formatData(currentDevice.target_DO);
+    }
+    if (localCache.PHData.SetData !== formatData(currentDevice.target_PH)){
+        localCache.PHData.SetData = formatData(currentDevice.target_PH);
+    }
+    if (localCache.TemperatureData.SetData !== formatData(currentDevice.target_temp)){
+        localCache.TemperatureData.SetData = formatData(currentDevice.target_temp);
+    }
 }
 let lastClickTime = 0;
 const controlSend = ((name, index, content) => {

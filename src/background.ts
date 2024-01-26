@@ -52,7 +52,7 @@ async function createWindow() {
 }
 
 const now = new Date();
-if (now.getTime() > new Date('2024-05-21').getTime()) {
+if (now.getTime() > new Date('2024-02-01').getTime()) {
   console.log()
   app.quit();
 }

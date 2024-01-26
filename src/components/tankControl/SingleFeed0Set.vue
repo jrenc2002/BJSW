@@ -26,7 +26,7 @@
                     
                     </div>
                     <!--手动开关-->
-                    <div :class="[localCache.supplementSwitch.type===1? 'border-[0.2rem]  border-[#4EA67D]':'border border-[#D6D6D6] hover:border-[#4EA67D] ']"
+                    <div :class="[localCache.supplementSwitch.type===1? 'border-[0.25rem]  border-[#4EA67D]':'border border-[#D6D6D6] hover:border-[#4EA67D] ']"
                          class="w-[90%] h-16 mt-2  rounded-xl flex justify-start items-center  ">
                         <!--左边部分-->
                         <div class="w-[60%]  h-full flex  justify-center items-start m-3">
@@ -45,7 +45,7 @@
                         <div class="w-[40%]  h-full flex-col justify-center items-start m-3">
                             <div class="h-full flex justify-center items-center  pr-2">
                                 
-                                <div class="bg-[#83BA9B] w-16 h-7 rounded-md flex justify-center items-center cursor-pointer hover:bg-green-800 "
+                                <div class="bg-[#83BA9B] w-16 h-7 rounded-md flex justify-center items-center cursor-pointer hover:bg-green-800 " :class="[localCache.supplementSwitch.type===1? 'bg-green-800':'bg-[#83BA9B]']"
                                      @click="postFeedSet(0,1)">
                                     <svg fill="none" height="13" viewBox="0 0 16 13" width="16"
                                          xmlns="http://www.w3.org/2000/svg">
@@ -58,7 +58,7 @@
                         </div>
                     </div>
                     <!--触发补料-->
-                    <div :class="[localCache.supplementSwitch.type===2? 'border-[0.2rem]  border-[#4EA67D]':'border border-[#D6D6D6] hover:border-[#4EA67D] ']"
+                    <div :class="[localCache.supplementSwitch.type===2? 'border-[0.25rem]  border-[#4EA67D]':'border border-[#D6D6D6] hover:border-[#4EA67D] ']"
                          class="w-[90%] h-[8rem] mt-2  rounded-2xl flex justify-start items-center ">
                         <!--左边部分-->
                         <div class="w-[30%]  h-full flex-col justify-center items-start ml-5">
@@ -66,7 +66,7 @@
                                 触发补料
                             </div>
                             <div class="h-1/2 flex justify-center items-center ">
-                                <div class="bg-[#83BA9B] w-16 h-7 mb-4 rounded-md flex justify-center items-center cursor-pointer hover:bg-green-800 "
+                                <div class="bg-[#83BA9B] w-16 h-7 mb-4 rounded-md flex justify-center items-center cursor-pointer hover:bg-green-800 "  :class="[localCache.supplementSwitch.type===2? 'bg-green-800':'bg-[#83BA9B]']"
                                      @click="postFeedSet(0,2)">
                                     <svg fill="none" height="13" viewBox="0 0 16 13" width="16"
                                          xmlns="http://www.w3.org/2000/svg">
@@ -285,7 +285,7 @@
                     
                     </div>
                     <!--关联补料-->
-                    <div :class="[localCache.supplementSwitch.type===3? 'border-[0.2rem]  border-[#4EA67D]':'border border-[#D6D6D6] hover:border-[#4EA67D] ']"
+                    <div :class="[localCache.supplementSwitch.type===3? 'border-[0.25rem]  border-[#4EA67D]':'border border-[#D6D6D6] hover:border-[#4EA67D] ']"
                          class="w-[90%] h-[8rem] mt-2  rounded-2xl flex justify-start items-center ">
                         <!--左边部分-->
                         <div class="w-[30%]  h-full flex-col justify-center items-start ml-5">
@@ -293,7 +293,7 @@
                                 关联补料
                             </div>
                             <div class="h-1/2 flex justify-center items-center ">
-                                <div class="bg-[#83BA9B] w-16 h-7 mb-4 rounded-md flex justify-center items-center cursor-pointer hover:bg-green-800 "
+                                <div class="bg-[#83BA9B] w-16 h-7 mb-4 rounded-md flex justify-center items-center cursor-pointer hover:bg-green-800 "   :class="[localCache.supplementSwitch.type===3? 'bg-green-800':'bg-[#83BA9B]']"
                                      @click="postFeedSet(0,3)">
                                     <svg fill="none" height="13" viewBox="0 0 16 13" width="16"
                                          xmlns="http://www.w3.org/2000/svg">
@@ -505,7 +505,7 @@
                 <div class="relative  shadow  h-[22rem]  w-[26rem]  overflow-auto  mb-2 rounded-2xl flex-col flex justify-start items-center">
                     <div class="w-full h-14 bg-[#DAF0E4] rounded-t-2xl flex justify-center items-center">补料方式</div>
                     <!--持续补料-->
-                    <div :class="[localCache.supplementMethod.type===1? 'border-[0.2rem]  border-[#4EA67D]':'border border-[#D6D6D6] hover:border-[#4EA67D] ']"
+                    <div :class="[localCache.supplementMethod.type===1? 'border-[0.25rem]  border-[#4EA67D]':'border border-[#D6D6D6] hover:border-[#4EA67D] ']"
                          class="w-[90%] h-20 mt-4  rounded-2xl flex justify-start items-center ">
                         <!--左边部分-->
                         <div class="w-[40%]  h-full flex-col justify-center items-start m-3">
@@ -517,7 +517,7 @@
                         <!--右边部分-->
                         <div class="w-[60%]  h-full flex-col justify-center items-start m-3">
                             <div class="h-full flex justify-center items-center ">
-                                <div class="bg-[#83BA9B] w-16 h-7 rounded-md flex justify-center items-center cursor-pointer hover:bg-green-800 "
+                                <div class="bg-[#83BA9B] w-16 h-7 rounded-md flex justify-center items-center cursor-pointer hover:bg-green-800 " :class="[localCache.supplementMethod.type===1? 'bg-green-800':'bg-[#83BA9B]']"
                                      @click="postFeedSet(1,1)">
                                     <svg fill="none" height="13" viewBox="0 0 16 13" width="16"
                                          xmlns="http://www.w3.org/2000/svg">
@@ -530,7 +530,7 @@
                         </div>
                     </div>
                     <!--占空比补料-->
-                    <div  :class="[localCache.supplementMethod.type===2? 'border-[0.2rem]  border-[#4EA67D]':'border border-[#D6D6D6] hover:border-[#4EA67D] ']"
+                    <div  :class="[localCache.supplementMethod.type===2? 'border-[0.25rem]  border-[#4EA67D]':'border border-[#D6D6D6] hover:border-[#4EA67D] ']"
                           class="w-[90%] h-[10rem] mt-4  rounded-2xl flex justify-start items-center ">
                         <!--左边部分-->
                         <div class="w-[40%]  h-full flex-col justify-center items-start m-3">
@@ -538,7 +538,7 @@
                                 占空比补料
                             </div>
                             <div class="h-1/2 flex justify-center items-center ">
-                                <div class="bg-[#83BA9B] w-16 h-7 mb-4 rounded-md flex justify-center items-center cursor-pointer hover:bg-green-800 "
+                                <div class="bg-[#83BA9B] w-16 h-7 mb-4 rounded-md flex justify-center items-center cursor-pointer hover:bg-green-800 "   :class="[localCache.supplementMethod.type===2? 'bg-green-800':'bg-[#83BA9B]']"
                                      @click="postFeedSet(1,2)">
                                     <svg fill="none" height="13" viewBox="0 0 16 13" width="16"
                                          xmlns="http://www.w3.org/2000/svg">
@@ -631,7 +631,7 @@
                     <div class="w-full h-14 bg-[#DAF0E4] rounded-t-2xl flex justify-center items-center">控制方式</div>
                     <div class="h-[calc(100%-3.5rem)]  justify-start items-center flex-col flex">
                         <!--单次补料-->
-                        <div :class="[localCache.controlMethod.type===1? 'border-[0.2rem]  border-[#4EA67D]':'border border-[#D6D6D6] hover:border-[#4EA67D] ']"
+                        <div :class="[localCache.controlMethod.type===1? 'border-[0.25rem]  border-[#4EA67D]':'border border-[#D6D6D6] hover:border-[#4EA67D] ']"
                              class="w-[90%] h-[10rem] mt-4  rounded-2xl flex justify-start items-center ">
                             <!--左边部分-->
                             <div class="w-[40%]  h-full flex-col justify-center items-start m-3">
@@ -639,7 +639,7 @@
                                     单次补料
                                 </div>
                                 <div class="h-1/2 flex justify-center items-center ">
-                                    <div class="bg-[#83BA9B] w-16 h-7 mb-4 rounded-md flex justify-center items-center cursor-pointer hover:bg-green-800 "
+                                    <div class="bg-[#83BA9B] w-16 h-7 mb-4 rounded-md flex justify-center items-center cursor-pointer hover:bg-green-800 "  :class="[localCache.controlMethod.type===1? 'bg-green-800':'bg-[#83BA9B]']"
                                          @click="postFeedSet(2,1)">
                                         <svg fill="none" height="13" viewBox="0 0 16 13" width="16"
                                              xmlns="http://www.w3.org/2000/svg">
@@ -686,7 +686,7 @@
                             </div>
                         </div>
                         <!--恒速补料-->
-                        <div :class="[localCache.controlMethod.type===2? 'border-[0.2rem]  border-[#4EA67D]':'border border-[#D6D6D6] hover:border-[#4EA67D] ']"
+                        <div :class="[localCache.controlMethod.type===2? 'border-[0.25rem]  border-[#4EA67D]':'border border-[#D6D6D6] hover:border-[#4EA67D] ']"
                              class="w-[90%] h-[10rem] mt-4  rounded-2xl flex justify-start items-center ">
                             <!--左边部分-->
                             <div class="w-[40%]  h-full flex-col justify-center items-start m-3">
@@ -694,7 +694,7 @@
                                     恒速补料
                                 </div>
                                 <div class="h-1/2 flex justify-center items-center ">
-                                    <div class="bg-[#83BA9B] w-16 h-7 mb-4 rounded-md flex justify-center items-center cursor-pointer hover:bg-green-800 "
+                                    <div class="bg-[#83BA9B] w-16 h-7 mb-4 rounded-md flex justify-center items-center cursor-pointer hover:bg-green-800 "   :class="[localCache.controlMethod.type===2? 'bg-green-800':'bg-[#83BA9B]']"
                                          @click="postFeedSet(2,2)">
                                         <svg fill="none" height="13" viewBox="0 0 16 13" width="16"
                                              xmlns="http://www.w3.org/2000/svg">
@@ -721,7 +721,7 @@
                             </div>
                         </div>
                         <!--分段补料-->
-                        <div :class="[localCache.controlMethod.type===3? 'border-[0.2rem]  border-[#4EA67D]':'border border-[#D6D6D6] hover:border-[#4EA67D] ']"
+                        <div :class="[localCache.controlMethod.type===3? 'border-[0.25rem]  border-[#4EA67D]':'border border-[#D6D6D6] hover:border-[#4EA67D] ']"
                              class="w-[90%] h-[10rem] mt-4  rounded-2xl flex justify-start items-center ">
                             <!--左边部分-->
                             <div class="w-[40%]  h-full flex-col justify-center items-start m-3">
@@ -729,7 +729,7 @@
                                     分段补料
                                 </div>
                                 <div class="h-1/2 flex justify-center items-center ">
-                                    <div class="bg-[#83BA9B] w-16 h-7 mb-4 rounded-md flex justify-center items-center cursor-pointer hover:bg-green-800 "
+                                    <div class="bg-[#83BA9B] w-16 h-7 mb-4 rounded-md flex justify-center items-center cursor-pointer hover:bg-green-800 "   :class="[localCache.controlMethod.type===3? 'bg-green-800':'bg-[#83BA9B]']"
                                          @click="postFeedSet(2,3)">
                                         <svg fill="none" height="13" viewBox="0 0 16 13" width="16"
                                              xmlns="http://www.w3.org/2000/svg">
@@ -753,7 +753,7 @@
                             </div>
                         </div>
                         <!--线性补料-->
-                        <div :class="[localCache.controlMethod.type===4? 'border-[0.2rem]  border-[#4EA67D]':'border border-[#D6D6D6] hover:border-[#4EA67D] ']"
+                        <div :class="[localCache.controlMethod.type===4? 'border-[0.25rem]  border-[#4EA67D]':'border border-[#D6D6D6] hover:border-[#4EA67D] ']"
                              class="w-[90%] h-[17rem] mt-4  rounded-2xl flex justify-start items-center ">
                             <!--左边部分-->
                             <div class="w-[40%]  h-full flex-col justify-center items-start m-3">
@@ -765,7 +765,7 @@
                                     </div>
                                 </div>
                                 <div class="h-1/2 flex justify-center items-center ">
-                                    <div class="bg-[#83BA9B] w-16 h-7 mb-4 rounded-md flex justify-center items-center cursor-pointer hover:bg-green-800 "
+                                    <div class="bg-[#83BA9B] w-16 h-7 mb-4 rounded-md flex justify-center items-center cursor-pointer hover:bg-green-800 "   :class="[localCache.controlMethod.type===4? 'bg-green-800':'bg-[#83BA9B]']"
                                          @click="postFeedSet(2,4)">
                                         <svg fill="none" height="13" viewBox="0 0 16 13" width="16"
                                              xmlns="http://www.w3.org/2000/svg">
@@ -985,7 +985,7 @@
                             </div>
                         </div>
                         <!--指数补料-->
-                        <div :class="[localCache.controlMethod.type===5? 'border-[0.2rem]  border-[#4EA67D]':'border border-[#D6D6D6] hover:border-[#4EA67D] ']"
+                        <div :class="[localCache.controlMethod.type===5? 'border-[0.25rem]  border-[#4EA67D]':'border border-[#D6D6D6] hover:border-[#4EA67D] ']"
                              class="w-[90%] h-[17rem] mt-4  rounded-2xl flex justify-start items-center ">
                             <!--左边部分-->
                             <div class="w-[40%]  h-full flex-col justify-center items-start m-3">
@@ -997,7 +997,7 @@
                                     </div>
                                 </div>
                                 <div class="h-1/2 flex justify-center items-center ">
-                                    <div class="bg-[#83BA9B] w-16 h-7 mb-4 rounded-md flex justify-center items-center cursor-pointer hover:bg-green-800 "
+                                    <div class="bg-[#83BA9B] w-16 h-7 mb-4 rounded-md flex justify-center items-center cursor-pointer hover:bg-green-800 "   :class="[localCache.controlMethod.type===5? 'bg-green-800':'bg-[#83BA9B]']"
                                          @click="postFeedSet(2,5)">
                                         <svg fill="none" height="13" viewBox="0 0 16 13" width="16"
                                              xmlns="http://www.w3.org/2000/svg">
