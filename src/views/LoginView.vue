@@ -37,17 +37,7 @@
       <!-- 右侧白底 -->
       <div :style="{ width: 'calc(100% - 0.3rem)', height: 'calc(100% - 0.3rem)' }"
         class=" box-border  shadow bg-white rounded-3xl   absoluteflex-col justify-center items-center gap-6 inline-flex">
-        <!-- 图标 -->
-        <div class="w-[92.5%]  absolute  top-[2%]  bg-black ">
-          <div
-            class="h-8 w-8 p-2 bg-[#F5F5F5] rounded-[2.5rem] right-[0%] justify-center items-center inline-flex  absolute">
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-              <path d="M12 4.7L11.3 4L8 7.3L4.7 4L4 4.7L7.3 8L4 11.3L4.7 12L8 8.7L11.3 12L12 11.3L8.7 8L12 4.7Z"
-                fill="#19161D" />
-            </svg>
-            <div />
-          </div>
-        </div>
+
         <!-- 登录成功悬浮栏样式 -->
         <div v-if="loginStatus === 'success'" class="rounded-md bg-green-50 p-4 absolute z-40 top-[10vh]">
           <div class="flex">

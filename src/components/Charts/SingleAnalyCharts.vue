@@ -222,6 +222,9 @@ watch(route, (to, from) => {
     if (to.path === '/curvecompare') {
         // 当进入目标路由时执行的操作
         startTimer();
+        setTimeout(() => {
+            updateChart();
+        }, 100);
     } else {
         // 当离开目标路由时执行的操作
         stopTimer()

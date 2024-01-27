@@ -23,8 +23,8 @@ console.log(__dirname, path.join(__dirname, 'preload.js'))
 async function createWindow() {
   // 创建一个新的浏览器窗口
   const win = new BrowserWindow({
-    width: 800,
-    height: 600,
+    width: 1920,
+    height: 1080,
     webPreferences: {
       // 使用 pluginOptions.nodeIntegration，不要修改
       // 更多信息请查看 nklayman.github.io/vue-cli-plugin-electron-builder/guide/security.html#node-integration
@@ -35,7 +35,9 @@ async function createWindow() {
       
       contextIsolation: !(process.env
           .ELECTRON_NODE_INTEGRATION as unknown) as boolean
-    }
+      
+    },
+    frame: false
   })
   
   // 如果在开发模式下，加载开发服务器的 url

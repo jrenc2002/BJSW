@@ -239,10 +239,8 @@
                                        <Menu as="div" class="dropdown relative inline-block">
                                       <div>
                                    <div class="inline-flex w-[5rem] justify-center gap-x-1.5 scale-75">
-                                          <div
-                                                  v-if="localCache.TemperatureData.water_flag!==1"
-                                                  class="m-1  w-[7rem] text-[#000000]  "
-                                                 >{{(localCache.TemperatureData.heatpower>0 &&!localCache.TemperatureData.water_flag )? '加热' :(localCache.TemperatureData.water_flag)?'制冷':'--' }}</div>
+                                          <div class="m-1  w-[7rem] text-[#000000]  "
+                                                 >{{(localCache.TemperatureData.heatpower>0 &&!localCache.TemperatureData.water_flag )? '加热' :((localCache.TemperatureData.water_flag)?'制冷':'--' )}}</div>
                                         </div>
                                       </div>
                                   </Menu>
