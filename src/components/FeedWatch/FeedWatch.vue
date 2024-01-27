@@ -31,6 +31,7 @@ onMounted(() => {
                 }
                 // 前置检验未通过会跳过
                 if (!checkDevice(feedSet.id)) {
+                    controlSend('持续补料', deviceIndex, feedSet, 0);
                     return;
                 }
                 if (debug) {
@@ -43,12 +44,14 @@ onMounted(() => {
                 if (feedSet.supplementSwitch.type === 0) {
                     // 等于0的时候就跳过，因为补料与否都无所谓
                     return;
-                } else if (feedSet.supplementSwitch.type === 1) {
+                }
+                else if (feedSet.supplementSwitch.type === 1) {
                     // 是否进行手动补料，如果为false就不补，跳过
                     if (!feedSet.supplementSwitch.manual) {
                         return;
                     }
-                } else if (feedSet.supplementSwitch.type === 2) {
+                }
+                else if (feedSet.supplementSwitch.type === 2) {
                     // 触发补料，设立一个监控器，监控溶氧，ph，转速，且关系如果在这个范围内执行补料并销毁
                     const currentValues = DeviceManage.deviceList[Math.floor(feedSet.id / 2)].nowData;
                     let triggers = {
@@ -90,7 +93,8 @@ onMounted(() => {
                             console.log('【t0捕捉】t0_time', feedSet.time.t0_time, 't0_time_diff', feedSet.time.t0_time_diff)
                         }
                     }
-                } else if (feedSet.supplementSwitch.type === 3) {
+                }
+                else if (feedSet.supplementSwitch.type === 3) {
                     // 触发补料，设立一个监控器，监控溶氧，ph，转速，且关系如果在这个范围内执行补料并销毁
                     const currentValues = DeviceManage.deviceList[Math.floor(feedSet.id / 2)].nowData;
                     let related = {
@@ -133,6 +137,7 @@ onMounted(() => {
                     // 占空比补料
                     feedMethod = '占空比补料';
                 } else {
+                    controlSend('持续补料', deviceIndex, feedSet, 0);
                     Swal.fire({
                         icon: 'warning', //error\warning\info\question
                         title: '补料警告',
@@ -263,6 +268,7 @@ onMounted(() => {
                             confirmButton: false,
                             cancelButtonText: '取消',
                         });
+                        controlSend(feedMethod, deviceIndex, feedSet, 0);
                         return;
                     }
                     // 计算当前时间和t0的时间差（以小时为单位）
@@ -301,6 +307,7 @@ onMounted(() => {
                             confirmButton: false,
                             cancelButtonText: '取消',
                         });
+                        controlSend(feedMethod, deviceIndex, feedSet, 0);
                         return;
                     }
                     
@@ -322,6 +329,7 @@ onMounted(() => {
                             confirmButton: false,
                             cancelButtonText: '取消',
                         });
+                        controlSend(feedMethod, deviceIndex, feedSet, 0);
                         return;
                     }
                     // 计算当前时间和t0的时间差（以小时为单位）
@@ -360,6 +368,7 @@ onMounted(() => {
                             confirmButton: false,
                             cancelButtonText: '取消',
                         });
+                        controlSend(feedMethod, deviceIndex, feedSet, 0);
                         return;
                     }
                     controlSend(feedMethod, deviceIndex, feedSet, currentSupplementSpeed);
@@ -375,6 +384,7 @@ onMounted(() => {
                         confirmButton: false,
                         cancelButtonText: '取消',
                     });
+                    controlSend('线性补料', deviceIndex, feedSet, 0);
                     return;
                 }
             }, AppGlobal.BeatTimer)
@@ -395,6 +405,7 @@ const controlSend = ((name, deviceIndex, feedSet, content) => {
     if (debug) {
         console.log('补料方式：' + name, '补料速度：' + content, '设备编号：' + deviceIndex + '-' + feedSet.id, '补料数据：' + feedSet);
     }
+
     //
     if (feedSet.id === 0) {
         // 泵1
