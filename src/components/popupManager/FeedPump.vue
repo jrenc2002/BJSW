@@ -239,10 +239,9 @@ const initTableData = () => {
 
             else if (deviceProp.prop == "feed_pump") {
                 if (DeviceManage.deviceList[index]?.nowData?.feedPumpSpeed !== null) {
-                    const feedPumpSpeed = DeviceManage.deviceList[index]?.nowData?.feedPumpSpeed ?? 0;
-                    const feed_pump_sum_step_count = DeviceManage.deviceList[index]?.nowData?.feed_pump_sum_step_count ?? 0;
-                    tableItem[header.props] = feedPumpSpeed * feed_pump_sum_step_count;
-        
+
+    
+                    tableItem[header.props] = DeviceManage.deviceList[index]?.deviceSet?.feedPumpSumStepCount;
                 } else {
                     tableItem[header.props] = '--';
                 }

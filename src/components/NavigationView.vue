@@ -329,9 +329,7 @@ const isValidDevice = (Ip, Port) => {
     
     const isSameIpDevica = !DeviceManage.deviceList.some(device => device.ip === Ip && device.port === Port);
     
-    const ipPatternIp = /^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
-    const ipPatternPort = /^(102[4-9]|10[3-9][0-9]|1[1-9][0-9]{2}|[2-9][0-9]{3}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$/;
-    return ipPatternIp.test(Ip) && ipPatternPort.test(Port) && isSameIpDevica;
+   return  isSameIpDevica;
 };
 
 const newDevice = () => {

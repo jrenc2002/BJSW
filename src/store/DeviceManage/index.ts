@@ -27,14 +27,12 @@ interface SetData {
     acid_pump_calibration_flag: number; //酸泵标定开始标志位 0 1
     acid_pump_sum_step_count: number;  	//整个PH控制过程酸泵总步数
     acid_pump_now_speed: number;       	//酸泵当前速度-泵速==0为关闭
-    acid_pump_now_set_speed: number;    //酸泵当前设定速度-上位机设定的
     lye_pump_step_count: number;    		//在校准模式时，碱泵发送给上位机的总步数，用来上位机计算每步加碱量
     lye_pump_calibration_flag: number;  //碱泵标定开始标志位 0 1
     lye_pump_sum_step_count: number; 		//整个PH控制过程碱泵总步数
     lye_pump_now_speed: number;         //碱泵当前速度-泵速==0为关闭
     
-    lye_pump_now_set_speed: number;     //碱泵当前设定速度-上位机设定的
-    
+
     /*温控部分变量*/
     timing_temp: number;          //实时温度值
     heatpower: number;						//加热毯实时功率
@@ -88,7 +86,8 @@ interface SetData {
     feed0_period: number;					//手动补料周期
     feed0_way: number;             //补料方式
     feed0_ml_h: number;             //补料速度，ml/h
-    
+    acid_ml_h: number;              //酸泵速度，ml/h
+    lye_ml_h: number;               //碱泵速度，ml/h
     /*补料控制部分*/
     feed_DO_upper_limit: number;					//补料溶氧上限
     feed_DO_lower_limit: number;					//补料溶氧下限

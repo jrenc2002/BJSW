@@ -144,7 +144,7 @@
                                 <span class="w-[5rem] flex text-center items-center justify-center relative">
                                   <input id="numberInput"
                                          v-model.lazy="localCache.PHData.SetData"
-                                         class=" w-[4rem]  border-b-2 text-center pl-4"
+                                         class=" w-[5rem]  border-b-2 text-center pl-2"
                                          max="14.00"
                                          min="0.00"
                                          step="0.01" type="number"
@@ -200,7 +200,7 @@
                                 <span class="w-[5rem]  flex text-center items-center justify-center relative">
                                   <input id="numberInput"
                                          v-model.lazy="localCache.TemperatureData.SetData"
-                                         class=" w-[80px]  border-b-2 text-center pl-8"
+                                         class=" w-[5rem]  border-b-2 text-center pl-3"
                                          max="150"
                                          min="0"
                                          step="0.1" type="number"
@@ -681,14 +681,14 @@ const controlSend = ((name, index, content) => {
         sendData(index, data);
     } else if (name === 'acid_pump_set') {
         const data = {
-            acid_pump_now_set_speed: toNumber(content)
+            acid_ml_h: toNumber(content)
         }
         
         console.log(data)
         sendData(index, data);
     } else if (name === 'lye_pump_set') {
         const data = {
-            lye_pump_now_set_speed: toNumber(content)
+            lye_ml_h: toNumber(content)
         }
         
         console.log(data)

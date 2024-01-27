@@ -196,9 +196,10 @@ const initTableData = () => {
     initheaderData.forEach(item => headerData.push(item));  // 添加新的数据
     
     const deviceProperties = [
-        {name: '状态', prop: 'feed0_flag'},
-        {name: '累计补料量', prop: 'defoamer_pump'},  // 这里选择了补料关联氧含量标志位，因为它看起来是一个功能关联标志
-        {name: '补料速度', prop: 'feed0_pump_now_set_speed'}  ]
+        {name: '状态', prop: 'lye_pump_now_speed'},
+        {name: '累计补料量 ml', prop: 'lye_pump'},  // 这里选择了补料关联氧含量标志位，因为它看起来是一个功能关联标志
+        {name: '补料速度 ml/h', prop: 'lye_ml_h'}
+    ]
     
     
     
@@ -230,11 +231,10 @@ const initTableData = () => {
                 return;
             }
             
-            else if (deviceProp.prop == "defoamer_pump") {
+            else if (deviceProp.prop == "lye_pump") {
                 if (DeviceManage.deviceList[index]?.nowData?.feedPumpSpeed !== null) {
-                    const feedPumpSpeed = DeviceManage.deviceList[index]?.nowData?.feedPumpSpeed ?? 0;
-                    const feed0_pump_sum_step_count = DeviceManage.deviceList[index]?.nowData?.feed0_pump_sum_step_count ?? 0;
-                    tableItem[header.props] = feedPumpSpeed * feed0_pump_sum_step_count;
+
+                    tableItem[header.props] = DeviceManage.deviceList[index]?.deviceSet?.lyePumpSumStepCount;
                     
                 } else {
                     tableItem[header.props] = '--';

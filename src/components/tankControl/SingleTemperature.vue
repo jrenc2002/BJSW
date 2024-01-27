@@ -101,8 +101,8 @@
                                                                     <td class=" text-center  border-b border-r rounded-br-2xl  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
                                                                         <div class="flex justify-center items-center w-full">
                                                                             <input id="name" v-model.lazy="localCache.setNum.target_temp"
-                                                                                   @blur="paramSend('timing_temp',AppGlobal.pageChance,localCache.setNum.target_temp)"
-                                                                                   class="block w-[80%]  border-b-2 m-2 text-center bg-inherit"
+                                                                                   @blur="paramSend('target_temp',AppGlobal.pageChance,localCache.setNum.target_temp)"
+                                                                                   class="block w-[80%]   border-b-2 m-2 text-left bg-inherit"
                                                                                    name="name"
                                                                                    placeholder="温度设定值"
                                                                                    required type="number"/>

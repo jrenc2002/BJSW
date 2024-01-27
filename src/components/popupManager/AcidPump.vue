@@ -184,8 +184,8 @@ const initTableData = () => {
     
     const deviceProperties = [
         {name: '状态', prop: 'acid_pump_now_speed'},
-        {name: '累计补料量 c', prop: 'acid_pump'},  // 这里选择了补料关联氧含量标志位，因为它看起来是一个功能关联标志
-        {name: '补料速度 ml/h', prop: 'acid_pump_now_set_speed'}  ]
+        {name: '累计补料量 ml', prop: 'acid_pump'},  // 这里选择了补料关联氧含量标志位，因为它看起来是一个功能关联标志
+        {name: '补料速度 ml/h', prop: 'acid_ml_h'}  ]
     
     
     
@@ -219,9 +219,7 @@ const initTableData = () => {
             
             else if (deviceProp.prop == "acid_pump") {
                 if (DeviceManage.deviceList[index]?.nowData?.acidPumpSpeed !== null) {
-                    const acidPumpSpeed = DeviceManage.deviceList[index]?.nowData?.acidPumpSpeed ?? 0;
-                    const acid_pump_sum_step_count = DeviceManage.deviceList[index]?.nowData?.acid_pump_sum_step_count ?? 0;
-                    tableItem[header.props] = acidPumpSpeed * acid_pump_sum_step_count;
+                    tableItem[header.props] = DeviceManage.deviceList[index]?.deviceSet?.acidPumpSumStepCount;
                     
                 } else {
                     tableItem[header.props] = '--';
@@ -317,7 +315,7 @@ const keyupEnterInput = (deviceID: number, setIndex: number) => {
     
     if (setIndex == 0 && inputVisible.value[deviceID][setIndex].cache != null) {
         if (DeviceManage.deviceList[deviceID] && DeviceManage.deviceList[deviceID]!.nowData) {
-            DeviceManage.deviceList[deviceID]!.nowData!.acid_pump_now_set_speed = inputVisible.value[deviceID][setIndex].cache || 0;
+            DeviceManage.deviceList[deviceID]!.nowData!.acid_ml_h = inputVisible.value[deviceID][setIndex].cache || 0;
         }
     }
     controlSend('feed0_pump_now_set_speed',deviceID,inputVisible.value[deviceID][setIndex].cache)
@@ -326,8 +324,8 @@ const keyupEnterInput = (deviceID: number, setIndex: number) => {
 }
 const controlSend = ((name, index, content) => {
 
-    if (name=='acid_pump_now_set_speed'){
-        DeviceManage.deviceList[index]!.nowData!.acid_pump_now_set_speed=content
+    if (name=='acid_ml_h'){
+        DeviceManage.deviceList[index]!.nowData!.acid_ml_h=content
     }
     
     
