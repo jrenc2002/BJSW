@@ -154,14 +154,18 @@ onMounted(() => {
                     // 单次补料
                     // 目前问题是，我单次补料其实要有一个时间维度的考量的，分段，线性，幂函数。对于后者线性和幂的话，是可以通过T0
                     // 时间差，来进行计算时间与其对应的值，但是对于单次补料，或许我需要在补料完设置一个计时器表示我已经补了。
-                    
+                    if (debug){
+                        console.log('【单次补料】检查补料状态', isSupplementing, coolingTimer, supplementTimer)
+                    }
                     // 如果应该触发补料且当前不在补料中，也不在冷却周期中
                     if (!isSupplementing && !coolingTimer) {
                         // 标记为正在补料
                         isSupplementing = true;
                         
                         // 计算补料时间（秒）
-  
+                        if (debug){
+                             console.log("【单次补料】计算补料时间",feedSet.controlMethod.single.amount / feedSet.controlMethod.single.speed * 3600, feedSet.controlMethod.single.amount, feedSet.controlMethod.single.speed)
+                        }
                         const supplementDuration = feedSet.controlMethod.single.amount / feedSet.controlMethod.single.speed * 3600
                         
                         // 发送开始补料的指令

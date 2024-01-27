@@ -257,7 +257,7 @@
                             </div>
                             <!--完成命令-在定体积完成时Flag=1，定时间为Flag=0-->
                             <div v-if="(!CalibrationPumpSet.acidPumpKind&&DeviceManage.deviceList[AppGlobal.pageChance].nowData!==null&&DeviceManage.deviceList[AppGlobal.pageChance].nowData.acid_pump_calibration_flag ==1)
-              ||(CalibrationPumpSet.acidPumpKind&&DeviceManage.deviceList[AppGlobal.pageChance].nowData!==null&&DeviceManage.deviceList[AppGlobal.pageChance].nowData.acid_pump_calibration_flag ==0&&CalibrationPumpSet.isAcidFinish==true)"
+              ||(CalibrationPumpSet.acidPumpKind&&DeviceManage.deviceList[AppGlobal.pageChance].nowData!==null&&DeviceManage.deviceList[AppGlobal.pageChance].nowData.acid_pump_calibration_flag ===0&&CalibrationPumpSet.isAcidFinish==true)"
                                  class="w-[3rem] h-full  relative bg-[#83BA9B] rounded-[18px] hover:bg-[#668F78] cursor-pointer"
                                  @click="AcidPumpCalibrate('Finish')">
                                 <svg fill="none" height="30" viewBox="0 0 50 30" width="50"
@@ -622,11 +622,11 @@ import Swal from 'sweetalert2';
 const AppGlobal = useAppGlobal();
 const DeviceManage = useDeviceManage();
 
-watch(() => DeviceManage.deviceList[AppGlobal.pageChance].nowData, () => {
-    console.log(DeviceManage.deviceList[AppGlobal.pageChance].nowData)
-    // console.log(!DeviceManage?.deviceList?.[AppGlobal?.pageChance]?.nowData, DeviceManage.deviceList[AppGlobal.pageChance].nowData != null, '4-', DeviceManage.deviceList[AppGlobal.pageChance].nowData.PH_calibration_status == 4, '3-', DeviceManage.deviceList[AppGlobal.pageChance].nowData.PH_calibration_status == 3, '2-', DeviceManage.deviceList[AppGlobal.pageChance].nowData.PH_calibration_status == 2, '1-', DeviceManage.deviceList[AppGlobal.pageChance].nowData.PH_calibration_status == 1, '0-', DeviceManage.deviceList[AppGlobal.pageChance].nowData.PH_calibration_status == 0)
-    console.log(DeviceManage.deviceList[AppGlobal.pageChance].nowData.DO_zero_calibration_flag)
-}, {deep: true});
+// watch(() => DeviceManage.deviceList[AppGlobal.pageChance].nowData, () => {
+//     console.log(DeviceManage.deviceList[AppGlobal.pageChance].nowData)
+//     // console.log(!DeviceManage?.deviceList?.[AppGlobal?.pageChance]?.nowData, DeviceManage.deviceList[AppGlobal.pageChance].nowData != null, '4-', DeviceManage.deviceList[AppGlobal.pageChance].nowData.PH_calibration_status == 4, '3-', DeviceManage.deviceList[AppGlobal.pageChance].nowData.PH_calibration_status == 3, '2-', DeviceManage.deviceList[AppGlobal.pageChance].nowData.PH_calibration_status == 2, '1-', DeviceManage.deviceList[AppGlobal.pageChance].nowData.PH_calibration_status == 1, '0-', DeviceManage.deviceList[AppGlobal.pageChance].nowData.PH_calibration_status == 0)
+//     console.log(DeviceManage.deviceList[AppGlobal.pageChance].nowData.DO_zero_calibration_flag)
+// }, {deep: true});
 
 
 const CalibrationPumpSet = reactive({
@@ -684,6 +684,7 @@ const SendToHandle = (() => {
     }
     
 })
+
 
 const DoCalibrate = ((data) => {
     if (data === 'zeroBegin') {
@@ -893,21 +894,21 @@ const AcidPumpCalibrate = ((data) => {
             
             DeviceManage.deviceList[AppGlobal.pageChance].nowData.acid_pump_calibration_flag = 0;
             SendToHandle();
-    
+            
             if (DeviceManage.deviceList[AppGlobal.pageChance].nowData?.acid_pump_step_count === undefined || DeviceManage.deviceList[AppGlobal.pageChance].nowData?.acid_pump_step_count == 0) {
                 message.value.content = '补料泵1校准失败，下位机返回电机步数为' + DeviceManage.deviceList[AppGlobal.pageChance].nowData?.acid_pump_step_count;  // 使用 message.value 来访问或修改 ref 的值
             } else {
                 let SpeedValue = CalibrationPumpSet.acidVolume / DeviceManage.deviceList[AppGlobal.pageChance].nowData.acid_pump_step_count;
-                DeviceManage.deviceList[AppGlobal.pageChance].deviceSet.acidPumpSpeed = parseFloat(SpeedValue.toFixed(2));
+                DeviceManage.deviceList[AppGlobal.pageChance].deviceSet.acidPumpSpeed = parseFloat(SpeedValue.toFixed(6));
                 console.log('酸泵速度', DeviceManage.deviceList[AppGlobal.pageChance].deviceSet.acidPumpSpeed)
-        
+                
                 if (DeviceManage.deviceList[AppGlobal.pageChance].deviceSet.acidPumpSpeed == 0) {
                     message.value.content = '酸泵校准完成，泵速约等于0';  // 使用 message.value 来访问或修改 ref 的值
                 } else {
                     message.value.content = '酸泵校准完成，泵速已保存';  // 使用 message.value 来访问或修改 ref 的值
                 }
             }
-
+            
             
         } else {
             message.value.content = '数据检收异常，可能是设备未连接';  // 使用 message.value 来访问或修改 ref 的值
@@ -976,7 +977,7 @@ const AcidPumpCalibrate = ((data) => {
             
             let SpeedValue = CalibrationPumpSet.acidVolume / DeviceManage.deviceList[AppGlobal.pageChance].nowData.acid_pump_step_count;
             console.log(SpeedValue, 'SpeedValue', CalibrationPumpSet.acidVolume, DeviceManage.deviceList[AppGlobal.pageChance].nowData.acid_pump_step_count)
-            DeviceManage.deviceList[AppGlobal.pageChance].deviceSet.acidPumpSpeed = parseFloat(SpeedValue.toFixed(2));
+            DeviceManage.deviceList[AppGlobal.pageChance].deviceSet.acidPumpSpeed = parseFloat(SpeedValue.toFixed(6));
             
             if (DeviceManage.deviceList[AppGlobal.pageChance].deviceSet.acidPumpSpeed == 0) {
                 message.value.content = '酸泵校准完成，泵速约等于0';  // 使用 message.value 来访问或修改 ref 的值
@@ -1034,16 +1035,16 @@ const LyePumpCalibrate = ((data) => {
                 message.value.content = '补料泵1校准失败，下位机返回电机步数为' + DeviceManage.deviceList[AppGlobal.pageChance].nowData?.lye_pump_step_count;  // 使用 message.value 来访问或修改 ref 的值
             } else {
                 let SpeedValue = CalibrationPumpSet.lyeVolume / DeviceManage.deviceList[AppGlobal.pageChance].nowData.lye_pump_step_count;
-                DeviceManage.deviceList[AppGlobal.pageChance].deviceSet.lyePumpSpeed = parseFloat(SpeedValue.toFixed(2));
+                DeviceManage.deviceList[AppGlobal.pageChance].deviceSet.lyePumpSpeed = parseFloat(SpeedValue.toFixed(6));
                 console.log('碱泵速度', DeviceManage.deviceList[AppGlobal.pageChance].deviceSet.lyePumpSpeed)
-    
+                
                 if (DeviceManage.deviceList[AppGlobal.pageChance].deviceSet.lyePumpSpeed == 0) {
                     message.value.content = '碱泵校准完成，泵速约等于0';  // 使用 message.value 来访问或修改 ref 的值
                 } else {
                     message.value.content = '碱泵校准完成，泵速已保存';  // 使用 message.value 来访问或修改 ref 的值
                 }
             }
-  
+            
             
         } else {
             message.value.content = '数据检收异常，可能是设备未连接';  // 使用 message.value 来访问或修改 ref 的值
@@ -1112,7 +1113,7 @@ const LyePumpCalibrate = ((data) => {
                 message.value.content = '碱泵校准失败，下位机返回电机步数为' + DeviceManage.deviceList[AppGlobal.pageChance].nowData?.lye_pump_step_count;  // 使用 message.value 来访问或修改 ref 的值
             } else {
                 let SpeedValue = CalibrationPumpSet.lyeVolume / DeviceManage.deviceList[AppGlobal.pageChance].nowData.lye_pump_step_count;
-                DeviceManage.deviceList[AppGlobal.pageChance].deviceSet.lyePumpSpeed = parseFloat(SpeedValue.toFixed(2));
+                DeviceManage.deviceList[AppGlobal.pageChance].deviceSet.lyePumpSpeed = parseFloat(SpeedValue.toFixed(6));
                 console.log('碱泵速度', DeviceManage.deviceList[AppGlobal.pageChance].deviceSet.lyePumpSpeed)
                 if (DeviceManage.deviceList[AppGlobal.pageChance].deviceSet.lyePumpSpeed == 0) {
                     message.value.content = '碱泵校准完成，泵速约等于0';  // 使用 message.value 来访问或修改 ref 的值
@@ -1175,7 +1176,7 @@ const FeedPumpCalibrate = ((data) => {
                 message.value.content = '补料泵1校准失败，下位机返回电机步数为' + DeviceManage.deviceList[AppGlobal.pageChance].nowData?.feed_pump_step_count;  // 使用 message.value 来访问或修改 ref 的值
             } else {
                 let SpeedValue = CalibrationPumpSet.feedVolume / DeviceManage.deviceList[AppGlobal.pageChance].nowData.feed_pump_step_count;
-                DeviceManage.deviceList[AppGlobal.pageChance].deviceSet.feedPumpSpeed = parseFloat(SpeedValue.toFixed(2));
+                DeviceManage.deviceList[AppGlobal.pageChance].deviceSet.feedPumpSpeed = parseFloat(SpeedValue.toFixed(6));
                 console.log('补料泵2速度', DeviceManage.deviceList[AppGlobal.pageChance].deviceSet.feedPumpSpeed)
                 
                 
@@ -1252,7 +1253,7 @@ const FeedPumpCalibrate = ((data) => {
                 message.value.content = '补料泵1校准失败，下位机返回电机步数为' + DeviceManage.deviceList[AppGlobal.pageChance].nowData?.feed_pump_step_count;  // 使用 message.value 来访问或修改 ref 的值
             } else {
                 let SpeedValue = CalibrationPumpSet.feedVolume / DeviceManage.deviceList[AppGlobal.pageChance].nowData.feed_pump_step_count;
-                DeviceManage.deviceList[AppGlobal.pageChance].deviceSet.feedPumpSpeed = parseFloat(SpeedValue.toFixed(2));
+                DeviceManage.deviceList[AppGlobal.pageChance].deviceSet.feedPumpSpeed = parseFloat(SpeedValue.toFixed(6));
                 
                 if (DeviceManage.deviceList[AppGlobal.pageChance].deviceSet.feedPumpSpeed == 0) {
                     message.value.content = '补料泵2校准完成，泵速约等于0';  // 使用 message.value 来访问或修改 ref 的值
@@ -1312,7 +1313,7 @@ const DefoamPumpCalibrate = ((data) => {
                 message.value.content = '补料泵1校准失败，下位机返回电机步数为' + DeviceManage.deviceList[AppGlobal.pageChance].nowData?.feed0_pump_step_count;  // 使用 message.value 来访问或修改 ref 的值
             } else {
                 let SpeedValue = CalibrationPumpSet.defoamerVolume / DeviceManage.deviceList[AppGlobal.pageChance].nowData.feed0_pump_step_count;
-                DeviceManage.deviceList[AppGlobal.pageChance].deviceSet.defoamerPumpSpeed = parseFloat(SpeedValue.toFixed(2));
+                DeviceManage.deviceList[AppGlobal.pageChance].deviceSet.defoamerPumpSpeed = parseFloat(SpeedValue.toFixed(6));
                 console.log('补料泵1速度', DeviceManage.deviceList[AppGlobal.pageChance].deviceSet.defoamerPumpSpeed)
                 
                 if (DeviceManage.deviceList[AppGlobal.pageChance].deviceSet.defoamerPumpSpeed == 0) {
@@ -1391,7 +1392,7 @@ const DefoamPumpCalibrate = ((data) => {
                 message.value.content = '补料泵1校准失败，下位机返回电机步数为' + DeviceManage.deviceList[AppGlobal.pageChance].nowData?.feed0_pump_step_count;  // 使用 message.value 来访问或修改 ref 的值
             } else {
                 let SpeedValue = CalibrationPumpSet.defoamerVolume / DeviceManage.deviceList[AppGlobal.pageChance].nowData?.feed0_pump_step_count;
-                DeviceManage.deviceList[AppGlobal.pageChance].deviceSet.defoamerPumpSpeed = parseFloat(SpeedValue.toFixed(2));
+                DeviceManage.deviceList[AppGlobal.pageChance].deviceSet.defoamerPumpSpeed = parseFloat(SpeedValue.toFixed(6));
                 
             }
             
@@ -1489,6 +1490,40 @@ const PumpCalibrateReset = (() => {
     Swal.fire({
         icon: 'question', // 由于是确认操作，使用 'question' 图标
         title: '确认重置蠕动泵校准参数吗?', // 设置标题
+        showCancelButton: true, // 显示取消按钮
+        confirmButtonColor: '#3085d6', // 确认按钮颜色
+        cancelButtonColor: '#d33', // 取消按钮颜色
+        confirmButtonText: '确认', // 确认按钮文本
+        cancelButtonText: '取消' // 取消按钮文本
+    }).then((result) => {
+        if (result.value) {
+            // 用户点击了确认按钮
+            const data = {
+                zero_point_value: DeviceManage.deviceList[AppGlobal.pageChance].nowData.zero_point_value,
+                DO_zero_calibration_flag: DeviceManage.deviceList[AppGlobal.pageChance].nowData.DO_zero_calibration_flag,
+                saturation_value: DeviceManage.deviceList[AppGlobal.pageChance].nowData.saturation_value,
+                DO_saturation_calibration_flag: DeviceManage.deviceList[AppGlobal.pageChance].nowData.DO_saturation_calibration_flag,
+                PH_calibration_progress: DeviceManage.deviceList[AppGlobal.pageChance].nowData.PH_calibration_progress,
+                feed_pump_calibration_flag: DeviceManage.deviceList[AppGlobal.pageChance].nowData.feed_pump_calibration_flag,
+                feed0_pump_calibration_flag: DeviceManage.deviceList[AppGlobal.pageChance].nowData.feed0_pump_calibration_flag,
+                lye_pump_calibration_flag: DeviceManage.deviceList[AppGlobal.pageChance].nowData.lye_pump_calibration_flag,
+                acid_pump_calibration_flag: DeviceManage.deviceList[AppGlobal.pageChance].nowData.acid_pump_calibration_flag,
+                acidPumpSpeed: DeviceManage.deviceList[AppGlobal.pageChance].deviceSet.acidPumpSpeed,
+                lyePumpSpeed: DeviceManage.deviceList[AppGlobal.pageChance].deviceSet.lyePumpSpeed,
+                feedPumpSpeed: DeviceManage.deviceList[AppGlobal.pageChance].deviceSet.feedPumpSpeed,
+                feed0PumpSpeed: DeviceManage.deviceList[AppGlobal.pageChance].deviceSet.defoamerPumpSpeed,
+            }
+            sendData(AppGlobal.pageChance, data);
+        }
+    });
+    
+})
+
+// 校准初始化
+const InitData = (() => {
+    Swal.fire({
+        icon: 'question', // 由于是确认操作，使用 'question' 图标
+        title: '确认重置传感器校准参数吗?', // 设置标题
         showCancelButton: true, // 显示取消按钮
         confirmButtonColor: '#3085d6', // 确认按钮颜色
         cancelButtonColor: '#d33', // 取消按钮颜色

@@ -32,9 +32,9 @@ export const initDeviceManage = () => {
             console.log(item.ip, ':', item.port, '连接成功');
             // todo debug测试记得
             
-            setTimeout(() => {
-                initValue(index)
-            }, 1500);
+            // setTimeout(() => {
+            //     initValue(index)
+            // }, 1500);
         });
         
         // 假设你的设备API有一个'error'或'fail'事件来处理连接失败的情况
@@ -88,9 +88,9 @@ export const addDevice = (ip, port, name) => {
     
     device.on('connect', () => {
         setDeviceStatus(1, device);
-        setTimeout(() => {
-            initValue(index)
-        }, 1500);
+        // setTimeout(() => {
+        //     initValue(index)
+        // }, 1500);
         console.log(`${deviceInfo.ip}:${deviceInfo.port} 连接成功`);
     });
     
@@ -185,9 +185,9 @@ export const openDevice = (index) => {
     
     device.on('connect', () => {
         setDeviceStatus(1, device);
-        setTimeout(() => {
-            initValue(index)
-        }, 1500);
+        // setTimeout(() => {
+        //     initValue(index)
+        // }, 1500);
         
         console.log(`${ip}:${port} 连接成功`);
     });
@@ -371,25 +371,3 @@ function onDataReceived(data) {
     return -2
 }
 
-function initValue(index) {
-    const data = {
-        Temp_KP: 500,
-        Temp_KI: 5,
-        Temp_KD: 1,
-        DO_KP: 80,
-        DO_KI: 0.5,
-        DO_KD: 0,
-        acid_KP: 10,
-        acid_KI: 0.02,
-        acid_KD: 0,
-        lye_KP: 10,
-        lye_KI: 0.02,
-        lye_KD: 0,
-        motor_speed_u_limit: 1000,
-        motor_speed_l_limit: 300,
-        zero_point_value: 0.057787,
-        saturation_value: 19.5,
-        
-    }
-    sendData(index, data)
-}

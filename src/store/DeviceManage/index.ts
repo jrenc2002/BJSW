@@ -1,5 +1,4 @@
 import {defineStore} from "pinia";
-import Swal from 'sweetalert2';
 // 给开发人员使用的debug
 const debug = true;
 
@@ -56,7 +55,7 @@ interface SetData {
     DO_KP: number;       					//氧含量KP
     DO_KI: number;      					//氧含量KI
     DO_KD: number;       					//氧含量KD
-    zero_po_value: number;  		//零点值
+    zero_point_value: number;  		//零点值
     saturation_value: number;  		//饱和值
     oxygen_percentage: number; 		//溶氧百分值
     DO_upper_limit: number;				//DO上限值
@@ -570,7 +569,7 @@ export const useDeviceManage = defineStore('DeviceManage', {
                     },
                 },
                 {
-                    id:newId+1,
+                    id: newId + 1,
                     time: {
                         t0_time: new Date(), // t0时间
                         t0_time_diff: 0, // t0时间差
@@ -662,21 +661,21 @@ export const useDeviceManage = defineStore('DeviceManage', {
         },
         // 更新设备数据
         async updateDeviceListData(index: number, newDeviceData: (SetData | number)) {
-        
-            if (debug){
-                if (newDeviceData!=-2){
+            
+            if (debug) {
+                if (newDeviceData != -2) {
                     console.log('【更新数据】读取到传入数据---------------', newDeviceData)
                 }
             }
             
-           
+            
             if (typeof newDeviceData === 'number') {
                 if (newDeviceData === -1) console.log("Error")
                 return;
             }
             // 将数据的时间归为现在时间
             const currentDate = new Date();
-        
+            
             if (newDeviceData) {  // 确保 nowData 不为 null
                 /*——————————————————————————————对状态的处理———————————————————————————————————*/
                 // 四种状态：未连接0，已连接1，运行中2，报警3
@@ -686,7 +685,7 @@ export const useDeviceManage = defineStore('DeviceManage', {
                 // deviceNum赋值
                 if (newDeviceData.decive_id && this.deviceList[index].deviceNum !== newDeviceData.decive_id) {
                     this.deviceList[index].deviceNum = newDeviceData.decive_id;
-                    if (debug){
+                    if (debug) {
                         console.log('【更新数据】设备号已赋值', newDeviceData.decive_id)
                     }
                 }
@@ -697,23 +696,23 @@ export const useDeviceManage = defineStore('DeviceManage', {
                         communicate_flag: 1,
                     }
                     this.deviceList[index].deviceSocket.send(JSON.stringify(data));
-                    if (debug){
+                    if (debug) {
                         console.log('【更新数据】设备已连接状态', newDeviceData.decive_id)
                     }
                 }
-                if (debug){
+                if (debug) {
                     console.log('【更新数据】是否新建批次数据', this.deviceList[index].state == 1 && newDeviceData.communicate_flag === 1 && newDeviceData.start_flag === 1)
                 }
-
-                if (debug){
-                    console.log('【更新数据】设备报警进入',this.deviceList[index].deviceSet,index,this.deviceList[index].state,newDeviceData.communicate_flag,newDeviceData.start_flag)
+                
+                if (debug) {
+                    console.log('【更新数据】设备报警进入', this.deviceList[index].deviceSet, index, this.deviceList[index].state, newDeviceData.communicate_flag, newDeviceData.start_flag)
                 }
                 if (this.deviceList && this.deviceList[index] && this.deviceList[index].deviceSet != null && this.deviceList[index].state === 2) {
                     // 使用类型断言
-                 
+                    
                     const currentDeviceSet = this.deviceList[index].deviceSet as deviceSet;
-                    if (debug){
-                        console.log('【更新数据】设备报警状态', newDeviceData.timing_temp, newDeviceData.timing_PH, newDeviceData.timing_DO,currentDeviceSet)
+                    if (debug) {
+                        console.log('【更新数据】设备报警状态', newDeviceData.timing_temp, newDeviceData.timing_PH, newDeviceData.timing_DO, currentDeviceSet)
                     }
                     let isAlarmFlag = false;
                     if (!(newDeviceData.timing_temp >= currentDeviceSet.tempMinWarn &&
@@ -721,7 +720,7 @@ export const useDeviceManage = defineStore('DeviceManage', {
                         this.deviceList[index].state = 3;
                         currentDeviceSet.tempState = 1;
                         isAlarmFlag = true;
-                        if (debug){
+                        if (debug) {
                             console.log('【更新数据】设备温度报警状态', currentDeviceSet.tempMaxWarn, currentDeviceSet.tempMinWarn, newDeviceData.timing_temp)
                         }
                     }
@@ -730,7 +729,7 @@ export const useDeviceManage = defineStore('DeviceManage', {
                         this.deviceList[index].state = 3;
                         currentDeviceSet.phState = 1;
                         isAlarmFlag = true;
-                        if (debug){
+                        if (debug) {
                             console.log('【更新数据】设备PH报警状态', currentDeviceSet.phMaxWarn, currentDeviceSet.phMinWarn, newDeviceData.timing_PH)
                         }
                     }
@@ -739,7 +738,7 @@ export const useDeviceManage = defineStore('DeviceManage', {
                         this.deviceList[index].state = 3;
                         currentDeviceSet.doState = 1;
                         isAlarmFlag = true;
-                        if (debug){
+                        if (debug) {
                             console.log('【更新数据】设备DO报警状态', currentDeviceSet.doMaxWarn, currentDeviceSet.doMinWarn, newDeviceData.timing_DO)
                         }
                     }
@@ -748,27 +747,39 @@ export const useDeviceManage = defineStore('DeviceManage', {
                         currentDeviceSet.tempState = 0;
                         currentDeviceSet.phState = 0;
                         currentDeviceSet.doState = 0;
-                        if (debug){
+                        if (debug) {
                             console.log('【更新数据】设备运行中状态', newDeviceData.decive_id)
                         }
                     }
                 }
-                if (debug){
+                if (debug) {
                     console.log('【更新数据】start_time为', this.deviceList[index].start_time)
                 }
-
-                // 获取相对时间单位为h
-                const relativeTime = this.deviceList[index].start_time!==null?((currentDate.getTime() - this.deviceList[index].start_time.getTime()) / 1000 / 60 / 60):0;
                 
-                if (this.deviceList[index].batch_id===null&&this.deviceList[index].batch_name!==null){
+                // 更新补料量
+                if (this.deviceList[index] && this.deviceList[index].deviceSet) {
+                    this.deviceList[index]!.deviceSet!.acidPumpSumStepCount = newDeviceData.acid_pump_sum_step_count * newDeviceData.acidPumpSpeed;
+                    this.deviceList[index]!.deviceSet!.lyePumpSumStepCount = newDeviceData.lye_pump_sum_step_count * newDeviceData.lyePumpSpeed;
+                    this.deviceList[index]!.deviceSet!.defoamerPumpSumStepCount = newDeviceData.feed0_pump_sum_step_count * newDeviceData.feed0PumpSpeed;
+                    this.deviceList[index]!.deviceSet!.feedPumpSumStepCount = newDeviceData.feed_pump_sum_step_count * newDeviceData.feedPumpSpeed;
+                }
+               
+                    console.log('【更新数据】补料量为', this.deviceList[index].deviceSet)
+               
+    
+    
+                // 获取相对时间单位为h
+                const relativeTime = this.deviceList[index].start_time !== null ? ((currentDate.getTime() - this.deviceList[index].start_time.getTime()) / 1000 / 60 / 60) : 0;
+                
+                if (this.deviceList[index].batch_id === null && this.deviceList[index].batch_name !== null) {
                     // 查询数据库获取batch_id
-                    window.Electron.ipcRenderer.invoke('get-batch-id', this.deviceList[index].batch_name,newDeviceData.decive_id,currentDate).then(
+                    window.Electron.ipcRenderer.invoke('get-batch-id', this.deviceList[index].batch_name, newDeviceData.decive_id, currentDate).then(
                         (res) => {
                             if (res) { // 确保res是有效的
-                                if (debug){
+                                if (debug) {
                                     console.log('【更新数据】已获取批次数据', res)
                                 }
-            
+                                
                                 this.deviceList[index].batch_id = res;
                             } else {
                                 console.error('请求批次内容数据没请求到.');
@@ -798,13 +809,13 @@ export const useDeviceManage = defineStore('DeviceManage', {
                     feedPumpSpeed: newDeviceData.feedPumpSpeed,
                     fermentation_flag: newDeviceData.start_flag,
                 };
-    
+                
                 window.Electron.ipcRenderer.invoke('add-fermentation-data', fermentationData).then(
                     (res) => {
                         if (res) {
-                            if (debug) {
-                                console.log('【更新数据】已存储数据', fermentationData);
-                            }
+                            // if (debug) {
+                            //     console.log('【更新数据】已存储数据', fermentationData);
+                            // }
                             
                         } else {
                             throw new Error('添加数据失败');
@@ -813,9 +824,8 @@ export const useDeviceManage = defineStore('DeviceManage', {
                 ).catch((error) => {
                     console.error('操作失败, 报错为:', error);
                 });
-    
-    
-    
+                
+                
             }
             
             

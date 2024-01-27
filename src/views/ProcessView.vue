@@ -637,9 +637,9 @@ const initDataManger = () => {
     localCache.acidPumpData.FeedAmount = formatData(setDevice.acidPumpSumStepCount);
     localCache.lyePumpData.SetData = formatData(currentDevice.lye_pump_now_speed);
     localCache.lyePumpData.MeasureData = formatData(Number(setDevice.lyePumpSumStepCount));
-    localCache.defoamerPumpData.SetData = formatData(Number(currentDevice.feed0_pump_now_speed));
+    localCache.defoamerPumpData.SetData = formatData(Number(currentDevice.feed0_ml_h));
     localCache.defoamerPumpData.MeasureData = formatData(Number(setDevice.defoamerPumpSumStepCount));
-    localCache.feedPumpData.SetData = formatData(currentDevice.feed_pump_now_speed);
+    localCache.feedPumpData.SetData = formatData(currentDevice.feed_ml_h);
     localCache.feedPumpData.MeasureData = formatData(Number(setDevice.feedPumpSumStepCount));
     stateManger.AddFeed = Number(currentDevice.feed_flag) === 1;
     stateManger.DefoamerPump = Number(currentDevice.feed0_flag) === 1;
@@ -811,6 +811,40 @@ onMounted(() => {
             calculateTimeDifference()
         }
     }, 1000);
+    
+
+    setTimeout(() => {
+        function initValue(index) {
+            const data = {
+                Temp_KP: 500,
+                Temp_KI: 5,
+                Temp_KD: 1,
+                DO_KP: 80,
+                DO_KI: 0.5,
+                DO_KD: 0,
+                acid_KP: 10,
+                acid_KI: 0.02,
+                acid_KD: 0,
+                lye_KP: 10,
+                lye_KI: 0.02,
+                lye_KD: 0,
+                motor_speed_u_limit: 1000,
+                motor_speed_l_limit: 300,
+                zero_point_value: 0.057787,
+                saturation_value: 19.5,
+                acidPumpSpeed: 0.000147,
+                lyePumpSpeed: 0.000147,
+                feedPumpSpeed: 0.000147,
+                feed0PumpSpeed: 0.000147,
+            
+            
+            
+            }
+            sendData(index, data)
+        }
+    
+        initValue(AppGlobal.pageChance)
+    }, 2000);
 // 使用 setInterval 定时器每秒更新一次时间差
 })
 onUnmounted(() => {
@@ -886,6 +920,7 @@ watch(() => localCache.TemperatureData.SetData, (newValue) => {
         localCache.TemperatureData.SetData = 150; // 将值设为100
     }
 });
+
 </script>
 
 <style lang="scss" scoped>

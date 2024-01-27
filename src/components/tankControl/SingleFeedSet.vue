@@ -14,7 +14,7 @@
                 
                 <!--开关选择-->
                 <div class="relative  shadow w-[26rem]   h-[26rem] overflow-auto  m-2 rounded-2xl flex-col flex justify-start items-center">
-                    <div class="w-full h-14 bg-[#DAF0E4] rounded-t-2xl flex justify-center items-center">补料泵1总开关
+                    <div class="w-full h-14 bg-[#DAF0E4] rounded-t-2xl flex justify-center items-center">补料泵2总开关
                         
                         <Switch v-model="localCache.totalSwitch"
                                 :class="[localCache.totalSwitch ? 'bg-green-600' : 'bg-gray-200', 'relative inline-flex ml-2 h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2']">
