@@ -102,7 +102,7 @@
                                                                         <div class="flex justify-center items-center w-full">
                                                                             <input id="name" v-model.lazy="localCache.setNum.target_temp"
                                                                                    @blur="paramSend('target_temp',AppGlobal.pageChance,localCache.setNum.target_temp)"
-                                                                                   class="block w-[80%]   border-b-2 m-2 text-left bg-inherit"
+                                                                                   class="block w-[80%]   border-b-2 m-2 text-center bg-inherit"
                                                                                    name="name"
                                                                                    placeholder="温度设定值"
                                                                                    required type="number"/>
@@ -590,9 +590,9 @@ const updateCache = () => {
     localCache.value.setNum.temp_flag=DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.temp_flag
     localCache.value.setNum.target_temp=DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.target_temp
     
-    localCache.value.pidNum.temp_KP=DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.temp_KP
-    localCache.value.pidNum.temp_KI=DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.temp_KI
-    localCache.value.pidNum.temp_KD=DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.temp_KD
+    localCache.value.pidNum.temp_KP=DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.Temp_KP
+    localCache.value.pidNum.temp_KI=DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.Temp_KI
+    localCache.value.pidNum.temp_KD=DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.Temp_KD
     
     localCache.value.alarmNum.alarm_h_limit=DeviceManage.deviceList[AppGlobal.pageChance]?.deviceSet?.tempMaxWarn
     localCache.value.alarmNum.alarm_l_limit=DeviceManage.deviceList[AppGlobal.pageChance]?.deviceSet?.tempMinWarn
