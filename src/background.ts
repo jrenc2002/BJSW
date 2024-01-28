@@ -36,8 +36,7 @@ async function createWindow() {
       contextIsolation: !(process.env
           .ELECTRON_NODE_INTEGRATION as unknown) as boolean
       
-    },
-    frame: false
+    }
   })
   
   // 如果在开发模式下，加载开发服务器的 url
