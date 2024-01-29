@@ -489,7 +489,7 @@ const popManager = (val: any) => {
         PopupMangerState.updateIsShowPop(true)
         PopupMangerState.updatePopupContent(name_translation[val])
         console.log(PopupMangerState.isShowPop)
-        console.log(PopupMangerState.popupContent)
+        console.log(PopupMangerState.popupContent,name_translation[val],val)
     }
 }
 // ______________________生命周期_______________________
@@ -519,14 +519,14 @@ const name_translation = {
     '运行状态': 'None',
     '运行时间': 'None',
     '发酵批号': 'None',
-    '温度': 'Temperature',
+    '温度 ℃': 'Temperature',
     'PH值': 'PHValue',
-    '溶氧': 'DissolvedOxygen',
-    '转速': 'RPM',
-    '酸泵': 'AcidPump',
-    '碱泵': 'LyePump',
-    '补料泵1': 'DefoamerPump',
-    '补料泵2': 'FeedPump',
+    '溶氧 %': 'DissolvedOxygen',
+    '转速 r/min': 'RPM',
+    '酸泵 ml': 'AcidPump',
+    '碱泵 ml': 'LyePump',
+    '补料泵1 ml': 'DefoamerPump',
+    '补料泵2 ml': 'FeedPump',
 }
 
 </script>

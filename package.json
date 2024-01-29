@@ -1,6 +1,6 @@
 {
   "name": "Biology",
-  "version": "0.1.9",
+  "version": "0.3.7",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
