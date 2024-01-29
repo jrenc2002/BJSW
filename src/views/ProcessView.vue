@@ -50,7 +50,7 @@
                             <div class="w-full  flex h-[3vh] flex items-center justify-start mt-2 gap-1 ">
                                 <div class=" w-[5rem] mr-1 text-left relative">测量值:</div>
                                 <span class="w-[5rem]  flex text-center items-center justify-center relative">
-                                  {{ localCache.DoData.MeasureData ==0?'--' :localCache.DoData.MeasureData }} %
+                                  {{ localCache.DoData.MeasureData == 0 ? '--' : localCache.DoData.MeasureData }} %
                                 </span>
                             </div>
                             
@@ -104,7 +104,7 @@
                             <div class="w-full  flex h-[3vh] flex items-center justify-center mt-2 gap-2 ">
                                 <div class=" w-[5rem] mr-1 text-left relative">实时转速:</div>
                                 <span class="w-[5rem] flex text-center items-center justify-center relative">
-                  {{ localCache.RPMData.NowSpeed== 0?'0':localCache.RPMData.NowSpeed }} r/min
+                  {{ localCache.RPMData.NowSpeed == 0 ? '0' : localCache.RPMData.NowSpeed }} r/min
                 </span>
                             </div>
                             <div class="w-full  flex h-[3vh] flex items-center justify-center mt-2 gap-2 ">
@@ -155,7 +155,7 @@
                             <div class="w-full  flex h-[3vh] flex items-center justify-center mt-2 gap-2 ">
                                 <div class=" w-[5rem] mr-1 text-left relative">测量值:</div>
                                 <span class="w-[5rem] flex text-center items-center justify-center relative">
-                   {{ localCache.PHData.MeasureData==0? '--': localCache.PHData.MeasureData}}
+                   {{ localCache.PHData.MeasureData == 0 ? '--' : localCache.PHData.MeasureData }}
                 </span>
                             </div>
                             <div class="w-full  flex h-[3vh] flex items-center justify-center mt-2 gap-2 ">
@@ -212,7 +212,9 @@
                             <div class="w-full  flex h-[3vh] flex items-center justify-center mt-2 gap-3  ">
                                 <div class=" w-[5rem] mr-1 text-left relative">测量值:</div>
                                 <span class="w-[5rem] flex text-center items-center justify-center relative">
-                  {{ localCache.TemperatureData.MeasureData==0? '--':localCache.TemperatureData.MeasureData  }}{{ ' ℃' }}
+                  {{
+                                        localCache.TemperatureData.MeasureData == 0 ? '--' : localCache.TemperatureData.MeasureData
+                                    }}{{ ' ℃' }}
                 </span>
                             </div>
                             <div class="w-full  flex h-[3vh] flex items-center justify-center mt-2 gap-2 ">
@@ -240,7 +242,9 @@
                                       <div>
                                    <div class="inline-flex w-[5rem] justify-center gap-x-1.5 scale-75">
                                           <div class="m-1  w-[7rem] text-[#000000]  "
-                                                 >{{(localCache.TemperatureData.heatpower>0 &&!localCache.TemperatureData.water_flag )? '加热' :((localCache.TemperatureData.water_flag)?'制冷':'--' )}}</div>
+                                          >{{
+                                                  (localCache.TemperatureData.heatpower > 0 && !localCache.TemperatureData.water_flag) ? '加热' : ((localCache.TemperatureData.water_flag) ? '制冷' : '--')
+                                              }}</div>
                                         </div>
                                       </div>
                                   </Menu>
@@ -277,6 +281,21 @@
                                   <span :style="'--value:'+countdown.seconds"></span>
                                 </span>
                                 秒
+                            </div>
+                            <div class="flex flex-col">
+                                <div>
+                                          <span class="countdown font-mono text-4xl">
+                                          
+                                  <span :style="'--value:'+fermentationHour"></span>.
+                           </span>
+                                    <span class="countdown font-mono text-4xl">
+                                    
+                                  <span :style="'--value:'+fermentationPart"></span>
+                           </span>
+                                </div>
+                                
+                                
+                                等量小时
                             </div>
                         </div>
                     
@@ -625,7 +644,7 @@ const initDataManger = () => {
     localCache.DoData.DO_flag = currentDevice.DO_flag;
     localCache.RPMData.NowSpeed = currentDevice.timing_motor_speed;
     
-    localCache.PHData.PH_flag= currentDevice.PH_flag;
+    localCache.PHData.PH_flag = currentDevice.PH_flag;
     localCache.PHData.MeasureData = formatData(currentDevice.timing_PH);
     localCache.TemperatureData.MeasureData = formatData(currentDevice.timing_temp);
     localCache.TemperatureData.heatpower = formatData(currentDevice.heatpower);
@@ -642,16 +661,16 @@ const initDataManger = () => {
     stateManger.AddFeed = Number(currentDevice.feed_flag) === 1;
     stateManger.DefoamerPump = Number(currentDevice.feed0_flag) === 1;
     // 惰性更新
-    if (localCache.RPMData.SetSpeed !== currentDevice.target_motor_speed){
+    if (localCache.RPMData.SetSpeed !== currentDevice.target_motor_speed) {
         localCache.RPMData.SetSpeed = currentDevice.target_motor_speed;
     }
-    if (localCache.DoData.SetData !== formatData(currentDevice.target_DO)){
+    if (localCache.DoData.SetData !== formatData(currentDevice.target_DO)) {
         localCache.DoData.SetData = formatData(currentDevice.target_DO);
     }
-    if (localCache.PHData.SetData !== formatData(currentDevice.target_PH)){
+    if (localCache.PHData.SetData !== formatData(currentDevice.target_PH)) {
         localCache.PHData.SetData = formatData(currentDevice.target_PH);
     }
-    if (localCache.TemperatureData.SetData !== formatData(currentDevice.target_temp)){
+    if (localCache.TemperatureData.SetData !== formatData(currentDevice.target_temp)) {
         localCache.TemperatureData.SetData = formatData(currentDevice.target_temp);
     }
 }
@@ -666,7 +685,7 @@ const controlSend = ((name, index, content) => {
     
     lastClickTime = currentTime; // Update the last clicked time
     
-     if (name === 'end_running') {
+    if (name === 'end_running') {
         // TODO: 关闭运行时应该用什么逻辑
         const data = {
             PH_flag: 0,
@@ -750,6 +769,20 @@ const stateManger = reactive({
     LyePumpSpeed: 0,
     DefoamerPumpSpeed: 0,
 })
+const fermentationHour=ref(0)
+const fermentationPart=ref(0)
+setInterval(() => {
+    if (DeviceManage.deviceList[AppGlobal.pageChance]?.start_time === null||
+        DeviceManage.deviceList[AppGlobal.pageChance]?.start_time === undefined ) return '0h'
+    // 把当前时间给到t0
+    const nowDate = new Date().getTime();
+    // 把t0和发酵开始时间差给到具体值
+    let diff = nowDate - new Date(DeviceManage.deviceList[AppGlobal.pageChance].start_time).getTime();
+    // 将差值转换为小时
+    let hours =Math.floor((diff / 3600000) * 100) / 100;
+    fermentationPart.value = hours - Math.floor(hours)
+    fermentationHour.value = Math.floor(hours)
+}, 2000)
 
 const handleHandControl = ((content) => {
     
@@ -792,12 +825,12 @@ const handleHandControl = ((content) => {
     
 })
 
-const timerControl=ref(false)
+const timerControl = ref(false)
 watch(() => DeviceManage.deviceList[AppGlobal.pageChance].state, (newValue) => {
     if (newValue === 1) {
-        timerControl.value=false
+        timerControl.value = false
     } else if (newValue === 2) {
-        timerControl.value=true
+        timerControl.value = true
     }
 });
 
@@ -805,12 +838,12 @@ onMounted(() => {
     window.addEventListener('keydown', handleKeydownEsc);
     initDataManger()
     setInterval(() => {
-        if (timerControl.value){
+        if (timerControl.value) {
             calculateTimeDifference()
         }
     }, 1000);
     
-
+    
     setTimeout(() => {
         function initValue(index) {
             const data = {
@@ -834,13 +867,12 @@ onMounted(() => {
                 lyePumpSpeed: 0.000147,
                 feedPumpSpeed: 0.000147,
                 feed0PumpSpeed: 0.000147,
-            
-            
-            
+                
+                
             }
             sendData(index, data)
         }
-    
+        
         initValue(AppGlobal.pageChance)
     }, 2000);
 // 使用 setInterval 定时器每秒更新一次时间差

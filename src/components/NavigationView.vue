@@ -196,8 +196,6 @@
 <script lang="js" setup>
 import {useRoute} from 'vue-router'
 import {computed, onMounted, ref, watch} from 'vue'
-import AlarmData from '@/assets/image/AlarmData.png'
-import AlarmData1 from '@/assets/image/AlarmData1.png'
 import CalibrateBatchIcon from '@/assets/image/CalibrateBatchIcon.png'
 import CalibrateBatchIcon1 from '@/assets/image/CalibrateBatchIcon1.png'
 import CurveCompareIcon from '@/assets/image/CurveCompareIcon.png'
@@ -258,20 +256,7 @@ const navigation = computed(() => [
         href: '/calibratebatch',
         icon: route.path === '/calibratebatch' ? CalibrateBatchIcon1 : CalibrateBatchIcon,
         current: route.path === '/calibratebatch'
-    },
-    {
-        name: '报警数据',
-        href: '/alarmdata',
-        icon: route.path === '/alarmdata' ? AlarmData1 : AlarmData,
-        current: route.path === '/alarmdata'
-    },
-    {
-        name: '测试页面',
-        href: '/testview',
-        icon: route.path === '/testview' ? AlarmData1 : AlarmData,
-        current: route.path === '/testview'
-    },
-
+    }
 ])
 // 分页名称
 const basePages = ref([]);
@@ -314,7 +299,7 @@ const changePageName = (id) => {
 }
 // 监听分页名称输入框
 const enterEdit = (id) => {
-    basePages.value[id - 1].name = updateName.value;
+    basePages.value[id].name = updateName.value;
     editID.value = -1;
     updateName.value = ''
 }
@@ -329,7 +314,7 @@ const isValidDevice = (Ip, Port) => {
     
     const isSameIpDevica = !DeviceManage.deviceList.some(device => device.ip === Ip && device.port === Port);
     
-   return  isSameIpDevica;
+    return isSameIpDevica;
 };
 
 const newDevice = () => {

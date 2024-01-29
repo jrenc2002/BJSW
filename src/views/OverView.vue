@@ -235,14 +235,14 @@ const initTableData = () => {
         {name: '运行状态', prop: 'start_flag'},
         {name: '运行时间', prop: 'running_time'},
         {name: '发酵批号', prop: 'batchnum'},
-        {name: '转速', prop: 'timing_motor_speed'},
-        {name: '温度', prop: 'timing_temp'},
+        {name: '转速 r/min', prop: 'timing_motor_speed'},
+        {name: '温度 ℃', prop: 'timing_temp'},
         {name: 'PH值', prop: 'timing_PH'},
-        {name: '溶氧', prop: 'timing_DO'},
-        {name: '酸泵', prop: 'acid_pump'},
-        {name: '碱泵', prop: 'lye_pump'},
-        {name: '补料泵1', prop: 'defoamer_pump'},
-        {name: '补料泵2', prop: 'feed_pump'}
+        {name: '溶氧 %', prop: 'timing_DO'},
+        {name: '酸泵 ml', prop: 'acid_pump'},
+        {name: '碱泵 ml', prop: 'lye_pump'},
+        {name: '补料泵1 ml', prop: 'defoamer_pump'},
+        {name: '补料泵2 ml', prop: 'feed_pump'}
     ];
     
     let resultItems: any[] = []; // 声明结果数组
