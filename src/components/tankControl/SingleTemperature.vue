@@ -193,8 +193,7 @@
                             <div class="relative  shadow w-[19rem]      m-2 rounded-2xl  justify-start items-center  border border-gray-300">
                                 <div class="w-full h-14  rounded-t-2xl flex   items-center text-lg font-medium">
                                     <div class="ml-4">
-                                        自动参数-
-                                        <span class="font-bold underline-offset-2 decoration-solid underline  ">温度</span>设置
+                                        自动参数
                                     </div>
                                 </div>
                                 <!--表格内容-->
@@ -270,8 +269,7 @@
                             <div class="relative  shadow w-[19rem] mt-6     m-2 rounded-2xl  justify-start items-center  border border-gray-300">
                                 <div class="w-full h-14  rounded-t-2xl flex   items-center text-lg font-medium">
                                     <div class="ml-4">
-                                        控制参数-
-                                        <span class="font-bold underline-offset-2 decoration-solid underline ">死区</span>设置
+                                        控制参数
                                     </div>
                                 </div>
                                 <!--表格内容-->
@@ -352,8 +350,7 @@
                             <div class="relative  shadow w-[19rem]      m-2 rounded-2xl  justify-start items-center  border border-gray-300">
                                 <div class="w-full h-14  rounded-t-2xl flex   items-center text-lg font-medium">
                                     <div class="ml-4">
-                                        控制参数-
-                                        <span class="font-bold underline-offset-2 decoration-solid underline ">温控</span>设置
+                                        温控参数
                                     </div>
                                 </div>
                                 <!--表格内容-->
@@ -371,6 +368,9 @@
                                                                 </td>
                                                                 <td class="w-full  flex justify-center items-center   ">
                                                                     <div>加热毯开关</div>
+                                                                </td>
+                                                                <td class="w-full  flex justify-center items-center   ">
+                                                                    <div>温控状态</div>
                                                                 </td>
                                                                 <td class="w-full  flex justify-center items-center   ">
                                                                     <div>加热实时功率</div>
@@ -449,6 +449,21 @@
                                                                                     </button>
                                                                                 </MenuItem>
                                                                             </MenuItems>
+                                                                        </Menu>
+                                                                    </td>
+                                                                    <td class=" text-center border-t border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center ">
+                                                                        <Menu as="div"
+                                                                              class="dropdown relative inline-block">
+                                                                            <div>
+                                                                                <MenuButton
+                                                                                        class="inline-flex w-[7rem] justify-center gap-x-1.5">
+                                                                                    {{
+                                                                                        (localCache.temperatureControl.heatpower > 0 && !localCache.temperatureControl.condensate_water_flag) ? '加热' : ((localCache.temperatureControl.condensate_water_flag) ? '制冷' : '--')
+                                                                                    }}
+                                                           
+                                                                                </MenuButton>
+                                                                            </div>
+                                                         
                                                                         </Menu>
                                                                     </td>
                                                                     <td class=" text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center  rounded-br-2xl">

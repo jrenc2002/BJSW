@@ -310,7 +310,7 @@
                         <div v-if="stateManger.AcidPump" class=" w-[10rem] p-3 flex-col flex justify-start items-center
                                  bg-base-100 shadow-lg min-h-[6rem] rounded-xl  border border-[#874C53] top-[4vh] absolute left-[-12rem]  ">
                             <div>
-                                <label class="block text font-medium leading-4 text-gray-900 mt-2">补料速度</label>
+                                <label class="block text font-medium leading-4 text-gray-900 mt-2">补料速度 ml/h</label>
                                 <div class="mt-2">
                                     <input v-model.lazy="stateManger.AcidPumpSpeed"
                                            class="block w-full pl-2 rounded-md border-[#AEAEAE] border py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"/>
@@ -361,7 +361,7 @@
            bg-base-100 shadow-lg min-h-[6rem] rounded-xl  border border-[#A7C2E4] top-[21vh] absolute left-[-12rem]  ">
                             
                             <div>
-                                <label class="block text font-medium leading-4 text-gray-900 mt-2">补料速度</label>
+                                <label class="block text font-medium leading-4 text-gray-900 mt-2">补料速度 ml/h</label>
                                 <div class="mt-2">
                                     <input v-model.lazy="stateManger.LyePumpSpeed"
                                            class="block w-full pl-2 rounded-md border-[#AEAEAE] border py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"/>
@@ -414,7 +414,7 @@
                         <div class="w-full h-[3rem]   mb-2   bg-[#FCF8DA] flex items-center justify-center rounded-t-2xl ">
                             <div class="w-full text-center relative  h-[70%] flex items-center justify-center">
                                 <div class=" h-full w-3 flex justify-center items-center rounded mx-1 ">
-                                    <div :class="[  localCache.defoamerPumpData.SetData >0?'bg-[#E0E0E0]':'bg-[#E0E0E0]']"
+                                    <div :class="[  localCache.defoamerPumpData.SetData >0?'bg-green-600':'bg-[#E0E0E0]']"
                                          class="w-2 h-2  rounded-full"></div>
                                 </div>
                                 
@@ -691,7 +691,9 @@ const controlSend = ((name, index, content) => {
             PH_flag: 0,
             DO_flag: 0,
             temp_flag: 0,
-            start_flag: 0
+            target_motor_speed: 0,
+            
+            
         }
         
         

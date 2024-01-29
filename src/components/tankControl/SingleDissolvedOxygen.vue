@@ -266,7 +266,7 @@
                             <div class="relative  shadow w-[19rem] mt-6     m-2 rounded-2xl  justify-start items-center  border border-gray-300">
                                 <div class="w-full h-14  rounded-t-2xl flex   items-center text-lg font-medium">
                                     <div class="ml-4">
-                                        控制参数
+                                        关联控制参数
                                     </div>
                                 </div>
                                 <!--表格内容-->

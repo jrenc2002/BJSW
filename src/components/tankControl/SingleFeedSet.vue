@@ -83,7 +83,7 @@
                             <div class="    w-full origin-top-right divide-y divide-gray-100  bg-white  ring-1 ring-black ring-opacity-5 focus:outline-none">
                                 
                                 <div class="py-1" >
-                                    <div :class="[localCache.supplementSwitch.trigger.dissolvedOxygen.selected ? 'bg-gray-100 text-gray-900' : 'text-gray-700', 'group flex items-center text-sm cursor-pointer  py-1']">
+                                    <div :class="[localCache.supplementSwitch.trigger.dissolvedOxygen.selected ? 'bg-[rgb(218,240,228)] text-gray-900' : 'text-gray-700', 'group flex items-center text-sm cursor-pointer  py-1']">
                                         
                                         
                                         <input id="name" v-model="localCache.supplementSwitch.trigger.dissolvedOxygen.upperLimit"
@@ -144,7 +144,7 @@
                                 </div>
                                 <div class="py-1" >
                                     
-                                    <div :class="[localCache.supplementSwitch.trigger.pH.selected ? 'bg-gray-100 text-gray-900' : 'text-gray-700', 'group flex items-center text-sm cursor-pointer  py-1']">
+                                    <div :class="[localCache.supplementSwitch.trigger.pH.selected ? 'bg-[rgb(218,240,228)] text-gray-900' : 'text-gray-700', 'group flex items-center text-sm cursor-pointer  py-1']">
                                         <input id="name" v-model="localCache.supplementSwitch.trigger.pH.upperLimit"
                                                class="block w-[2rem]  h-[100%] bg-transparent " name="name"
                                                placeholder="上限"
@@ -202,7 +202,7 @@
                                 </div>
                                 <div class="py-1" >
                                     
-                                    <div :class="[localCache.supplementSwitch.trigger.speed.selected ? 'bg-gray-100 text-gray-900' : 'text-gray-700', 'group flex items-center text-sm cursor-pointer  py-1']">
+                                    <div :class="[localCache.supplementSwitch.trigger.speed.selected ? 'bg-[rgb(218,240,228)] text-gray-900' : 'text-gray-700', 'group flex items-center text-sm cursor-pointer  py-1']">
                                         <input id="name" v-model="localCache.supplementSwitch.trigger.speed.upperLimit"
                                                class="block w-[2rem]  h-[100%]  bg-transparent" name="name"
                                                placeholder="上限"
@@ -310,7 +310,7 @@
                             <div class="    w-full origin-top-right divide-y divide-gray-100  bg-white  ring-1 ring-black ring-opacity-5 focus:outline-none">
                                 
                                 <div class="py-1" >
-                                    <div :class="[localCache.supplementSwitch.related.dissolvedOxygen.selected ? 'bg-gray-100 text-gray-900' : 'text-gray-700', 'group flex items-center text-sm cursor-pointer  py-1']">
+                                    <div :class="[localCache.supplementSwitch.related.dissolvedOxygen.selected ? 'bg-[rgb(218,240,228)] text-gray-900' : 'text-gray-700', 'group flex items-center text-sm cursor-pointer  py-1']">
                                         <input id="name" v-model="localCache.supplementSwitch.related.dissolvedOxygen.upperLimit"
                                                class="block w-[2rem]  h-[100%] bg-transparent " name="name"
                                                placeholder="上限"
@@ -369,7 +369,7 @@
                                 </div>
                                 <div class="py-1" >
                                     
-                                    <div :class="[localCache.supplementSwitch.related.pH.selected ? 'bg-gray-100 text-gray-900' : 'text-gray-700', 'group flex items-center text-sm cursor-pointer  py-1']">
+                                    <div :class="[localCache.supplementSwitch.related.pH.selected ? 'bg-[rgb(218,240,228)] text-gray-900' : 'text-gray-700', 'group flex items-center text-sm cursor-pointer  py-1']">
                                         <input id="name" v-model="localCache.supplementSwitch.related.pH.upperLimit"
                                                class="block w-[2rem]  h-[100%] bg-transparent " name="name"
                                                placeholder="上限"
@@ -427,7 +427,7 @@
                                 </div>
                                 <div class="py-1" >
                                     
-                                    <div :class="[localCache.supplementSwitch.related.speed.selected ? 'bg-gray-100 text-gray-900' : 'text-gray-700', 'group flex items-center text-sm cursor-pointer  py-1']">
+                                    <div :class="[localCache.supplementSwitch.related.speed.selected ? 'bg-[rgb(218,240,228)] text-gray-900' : 'text-gray-700', 'group flex items-center text-sm cursor-pointer  py-1']">
                                         <input id="name" v-model="localCache.supplementSwitch.related.speed.upperLimit"
                                                class="block w-[2rem]  h-[100%]  bg-transparent" name="name"
                                                placeholder="上限"
@@ -556,7 +556,7 @@
                                     补料开度
                                 </div>
                                 <input id="name" v-model="localCache.supplementMethod.dutyCycle.opening"
-                                       class="block w-[80%]  border-b-2 m-2" name="name" placeholder="补料开度"
+                                       class="block w-[80%]  border-b-2 m-2" name="name" placeholder="单位 s"
                                        required type="number"/>
                             
                             </div>
@@ -612,7 +612,7 @@
                                 <div class="w-24 justify-start items-center flex">
                                     实际流速
                                 </div>
-                                <div  class="block w-[80%]  border-b-2  m-2 text-gray-400 ">
+                                <div  class="block w-[80%]    pt-3   text-gray-400 cursor-no-drop ">
                                     {{!isNumber( DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.feed_ml_h*DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.feed_period/DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.feed_opening_degree)? DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.feed_ml_h*DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.feed_period/DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.feed_opening_degree+'ml/h':"实际流速"}}
                                 </div>
                             
@@ -628,10 +628,11 @@
                 
                 <div class="relative  shadow  h-[100%] overflow-auto  m-2 rounded-2xl flex-col flex justify-start items-center">
                     <div class="w-full h-14 bg-[#DAF0E4] rounded-t-2xl flex justify-center items-center">控制方式</div>
-                    <div class="h-[calc(100%-3.5rem)]  justify-start items-center flex-col flex">
+                    <div class="h-[calc(100%-3.5rem)]  justify-start items-center flex-col flex ">
                         <!--单次补料-->
+                    <div class="relative w-[90%] h-[10rem] mt-4  rounded-2xl" >
                         <div :class="[localCache.controlMethod.type===1? 'border-[0.2rem]  border-[#4EA67D]':'border border-[#D6D6D6] hover:border-[#4EA67D] ']"
-                             class="w-[90%] h-[10rem] mt-4  rounded-2xl flex justify-start items-center ">
+                             class="w-[100%] h-[10rem]   rounded-2xl flex justify-start items-center  ">
                             <!--左边部分-->
                             <div class="w-[40%]  h-full flex-col justify-center items-start m-3">
                                 <div class="h-1/2  flex justify-center items-center mt-2">
@@ -657,20 +658,20 @@
                                     </div>
                                     <input id="name" v-model="localCache.controlMethod.single.amount"
                                            class="block w-[80%]  border-b-2 m-2"
-                                           name="name" placeholder="补料量" required
+                                           name="name" placeholder="单位 ml" required
                                            type="number"/>
-                                
+            
                                 </div>
-                                
+            
                                 <div class="h-1/3  flex ">
                                     <div class="w-24 justify-start items-center flex">
                                         补料速度
                                     </div>
                                     <input id="name" v-model="localCache.controlMethod.single.speed"
                                            class="block w-[80%]  border-b-2  m-2" name="name"
-                                           placeholder="补料速度" required
+                                           placeholder="单位 ml/h" required
                                            type="number"/>
-                                
+            
                                 </div>
                                 <div class="h-1/3  flex ">
                                     <div class="w-24 justify-start items-center flex">
@@ -678,13 +679,18 @@
                                     </div>
                                     <input id="name" v-model="localCache.controlMethod.single.cycle"
                                            class="block w-[80%]  border-b-2  m-2" name="name"
-                                           placeholder="冷却周期" required
+                                           placeholder="单位 s" required
                                            type="number"/>
-                                
+            
                                 </div>
                             </div>
                         </div>
-                        <!--恒速补料-->
+                        <div v-if="localCache.supplementSwitch.type!==3" class=" absolute top-0 left-0 rounded-2xl w-full h-full bg-gray-200 opacity-50"></div> <!-- 遮罩层 -->
+
+                    </div>
+                
+                     
+                          <!--恒速补料-->
                         <div :class="[localCache.controlMethod.type===2? 'border-[0.2rem]  border-[#4EA67D]':'border border-[#D6D6D6] hover:border-[#4EA67D] ']"
                              class="w-[90%] h-[10rem] mt-4  rounded-2xl flex justify-start items-center ">
                             <!--左边部分-->
@@ -712,7 +718,7 @@
                                     </div>
                                     <input id="name" v-model="localCache.controlMethod.constant.speed"
                                            class="block w-[80%]  border-b-2 m-2 h-8" name="name"
-                                           placeholder="补料速度" required
+                                           placeholder="单位 ml/h" required
                                            type="number"/>
                                 
                                 </div>
@@ -760,7 +766,7 @@
                                     线性补料
                                     <div class="w-24">
                                         <input class="input input-bordered w-full max-w-xs m-1 " disabled
-                                               placeholder="补料速度" type="text"/>
+                                               placeholder="单位 ml/h" type="text"/>
                                     </div>
                                 </div>
                                 <div class="h-1/2 flex justify-center items-center ">
@@ -992,7 +998,7 @@
                                     指数补料
                                     <div class="w-24">
                                         <input class="input input-bordered w-full max-w-xs m-1 " disabled
-                                               placeholder="补料速度" type="text"/>
+                                               placeholder="单位 ml/h" type="text"/>
                                     </div>
                                 </div>
                                 <div class="h-1/2 flex justify-center items-center ">
@@ -1246,7 +1252,7 @@
                                     type="button" @click="updateTotalSegmentTime()">
                                 <div class="w-1/5 text-center "> 序号</div>
                                 
-                                <div class="w-1/5 text-center ">速度</div>
+                                <div class="w-1/5 text-center   ">速度</div>
                                 
                                 <div class="w-1/5 text-center ">设定时间</div>
                                 
@@ -1257,9 +1263,9 @@
                             <form @submit.prevent="submitForm">
                                 <div v-for="(item, index) in formData.items" :key="item.id"
                                      class="flex m-2 border-2 p-4 border-[#83BA9B] rounded-lg">
-                                    <input v-model="item.id" @blur="updateForm()" class="w-1/5 text-center " placeholder="序号" type="text">
-                                    <input v-model="item.supplementSpeed" @blur="updateForm()" class="w-1/5 text-center" type="number">
-                                    <input v-model="item.segmentTime" @blur="updateForm()" class="w-1/5 text-center" type="number">
+                                    <input v-model="item.id" @blur="updateForm()" class="w-1/5 text-center border " placeholder="序号" type="text">
+                                    <input v-model="item.supplementSpeed" @blur="updateForm()" class="w-1/5 text-center  border  " type="number">
+                                    <input v-model="item.segmentTime" @blur="updateForm()" class="w-1/5 text-center   border" type="number">
                                     <div  class="w-1/5 text-center bg-gray-100" disabled>{{item.totalSegmentTime}}h</div>
                                     <button class="w-1/5 text-center" type="button" @click="removeItem(index)">删除
                                     </button>
