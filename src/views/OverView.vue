@@ -144,7 +144,7 @@
                                                     <td v-else
                                                         class="w-[8.2rem] leading-4 text-center border-b border-r hover:bg-[#FAFAFA] cursor-pointer whitespace-normal break-all flex justify-center items-center">
                                                         
-                                                        {{ body[col.props] }}
+                                                        {{formatNumber(body[col.props])  }}
                                                     </td>
                                                 
                                                 </template>
@@ -432,6 +432,20 @@ const tableBodyCols = computed(() => {
     })
     return arr;
 })
+
+// 帮我写一个函数，如果是数字，保留两位小数，如果是字符串，尝试转换成数字，转换失败直接返回
+const formatNumber = (value: string | number) => {
+    if (typeof value === 'number') {
+        return parseFloat(value.toFixed(2));
+    } else {
+        const num = parseFloat(value);
+        if (isNaN(num)) {
+            return value;
+        } else {
+            return parseFloat(num.toFixed(2));
+        }
+    }
+}
 
 
 // ______________________表格数据变量_______________________

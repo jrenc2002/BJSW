@@ -45,7 +45,8 @@
                         <div class="w-[40%]  h-full flex-col justify-center items-start m-3">
                             <div class="h-full flex justify-center items-center  pr-2">
                                 
-                                <div class="bg-[#83BA9B] w-16 h-7 rounded-md flex justify-center items-center cursor-pointer hover:bg-green-800 "
+                                <div class="bg-gray-300 border border-gray-400 w-16 h-7 rounded-md flex justify-center items-center cursor-pointer hover:bg-green-800  hover:bg-green-800 "
+                                     :class="[localCache.supplementSwitch.type===1? 'bg-green-800 ':'']"
                                      @click="postFeedSet(0,1)">
                                     <svg fill="none" height="13" viewBox="0 0 16 13" width="16"
                                          xmlns="http://www.w3.org/2000/svg">
@@ -66,7 +67,8 @@
                                 触发补料
                             </div>
                             <div class="h-1/2 flex justify-center items-center ">
-                                <div class="bg-[#83BA9B] w-16 h-7 mb-4 rounded-md flex justify-center items-center cursor-pointer hover:bg-green-800 "
+                                <div class="bg-gray-300 border border-gray-400 w-16 h-7 rounded-md flex justify-center items-center cursor-pointer hover:bg-green-800  hover:bg-green-800 "
+                                     :class="[localCache.supplementSwitch.type===2? 'bg-green-800 ':'']"
                                      @click="postFeedSet(0,2)">
                                     <svg fill="none" height="13" viewBox="0 0 16 13" width="16"
                                          xmlns="http://www.w3.org/2000/svg">
@@ -293,7 +295,8 @@
                                 关联补料
                             </div>
                             <div class="h-1/2 flex justify-center items-center ">
-                                <div class="bg-[#83BA9B] w-16 h-7 mb-4 rounded-md flex justify-center items-center cursor-pointer hover:bg-green-800 "
+                                <div class="bg-gray-300 border border-gray-400 w-16 h-7 rounded-md flex justify-center items-center cursor-pointer hover:bg-green-800  hover:bg-green-800 "
+                                     :class="[localCache.supplementSwitch.type===3? 'bg-green-800 ':'']"
                                      @click="postFeedSet(0,3)">
                                     <svg fill="none" height="13" viewBox="0 0 16 13" width="16"
                                          xmlns="http://www.w3.org/2000/svg">
@@ -517,7 +520,8 @@
                         <!--右边部分-->
                         <div class="w-[60%]  h-full flex-col justify-center items-start m-3">
                             <div class="h-full flex justify-center items-center ">
-                                <div class="bg-[#83BA9B] w-16 h-7 rounded-md flex justify-center items-center cursor-pointer hover:bg-green-800 "
+                                <div class="bg-gray-300 border border-gray-400 w-16 h-7 rounded-md flex justify-center items-center cursor-pointer hover:bg-green-800  hover:bg-green-800 "
+                                     :class="[localCache.supplementMethod.type===1? 'bg-green-800 ':'']"
                                      @click="postFeedSet(1,1)">
                                     <svg fill="none" height="13" viewBox="0 0 16 13" width="16"
                                          xmlns="http://www.w3.org/2000/svg">
@@ -538,7 +542,8 @@
                                 占空比补料
                             </div>
                             <div class="h-1/2 flex justify-center items-center ">
-                                <div class="bg-[#83BA9B] w-16 h-7 mb-4 rounded-md flex justify-center items-center cursor-pointer hover:bg-green-800 "
+                                <div class="bg-gray-300 border border-gray-400 w-16 h-7 rounded-md flex justify-center items-center cursor-pointer hover:bg-green-800  hover:bg-green-800 "
+                                     :class="[localCache.supplementMethod.type===2? 'bg-green-800 ':'']"
                                      @click="postFeedSet(1,2)">
                                     <svg fill="none" height="13" viewBox="0 0 16 13" width="16"
                                          xmlns="http://www.w3.org/2000/svg">
@@ -640,7 +645,8 @@
                                         单次补料
                                     </div>
                                     <div class="h-1/2 flex justify-center items-center ">
-                                        <div class="bg-[#83BA9B] w-16 h-7 mb-4 rounded-md flex justify-center items-center cursor-pointer hover:bg-green-800 "
+                                        <div class="bg-gray-300 border border-gray-400 w-16 h-7 rounded-md flex justify-center items-center cursor-pointer hover:bg-green-800  hover:bg-green-800 "
+                                     :class="[localCache.controlMethod.type===1? 'bg-green-800 ':'']"
                                              @click="postFeedSet(2,1)">
                                             <svg fill="none" height="13" viewBox="0 0 16 13" width="16"
                                                  xmlns="http://www.w3.org/2000/svg">
@@ -679,15 +685,16 @@
                                             冷却周期
                                         </div>
                                         <input id="name" v-model="localCache.controlMethod.single.cycle"
+                                               v-if="localCache.supplementSwitch.type===3"
                                                class="block w-[80%]  border-b-2  m-2" name="name"
                                                placeholder="单位 s" required
                                                type="number"/>
+                                        <input type="text" v-if="localCache.supplementSwitch.type!==3" class="block w-[80%]  border-b-2  m-2 cursor-no-drop bg-gray-200 " disabled/>
                 
                                     </div>
                                 </div>
                             </div>
-                            <div v-if="localCache.supplementSwitch.type!==3" class=" absolute top-0 left-0 rounded-2xl w-full h-full bg-gray-200 opacity-50"></div> <!-- 遮罩层 -->
-    
+                          
                         </div>
                         <!--恒速补料-->
                         <div :class="[localCache.controlMethod.type===2? 'border-[0.2rem]  border-[#4EA67D]':'border border-[#D6D6D6] hover:border-[#4EA67D] ']"
@@ -698,7 +705,8 @@
                                     恒速补料
                                 </div>
                                 <div class="h-1/2 flex justify-center items-center ">
-                                    <div class="bg-[#83BA9B] w-16 h-7 mb-4 rounded-md flex justify-center items-center cursor-pointer hover:bg-green-800 "
+                                    <div class="bg-gray-300 border border-gray-400 w-16 h-7 rounded-md flex justify-center items-center cursor-pointer hover:bg-green-800  hover:bg-green-800 "
+                                     :class="[localCache.controlMethod.type===2? 'bg-green-800 ':'']"
                                          @click="postFeedSet(2,2)">
                                         <svg fill="none" height="13" viewBox="0 0 16 13" width="16"
                                              xmlns="http://www.w3.org/2000/svg">
@@ -733,7 +741,8 @@
                                     分段补料
                                 </div>
                                 <div class="h-1/2 flex justify-center items-center ">
-                                    <div class="bg-[#83BA9B] w-16 h-7 mb-4 rounded-md flex justify-center items-center cursor-pointer hover:bg-green-800 "
+                                    <div class="bg-gray-300 border border-gray-400 w-16 h-7 rounded-md flex justify-center items-center cursor-pointer hover:bg-green-800  hover:bg-green-800 "
+                                     :class="[localCache.controlMethod.type===3? 'bg-green-800 ':'']"
                                          @click="postFeedSet(2,3)">
                                         <svg fill="none" height="13" viewBox="0 0 16 13" width="16"
                                              xmlns="http://www.w3.org/2000/svg">
@@ -769,7 +778,8 @@
                                     </div>
                                 </div>
                                 <div class="h-1/2 flex justify-center items-center ">
-                                    <div class="bg-[#83BA9B] w-16 h-7 mb-4 rounded-md flex justify-center items-center cursor-pointer hover:bg-green-800 "
+                                    <div class="bg-gray-300 border border-gray-400 w-16 h-7 rounded-md flex justify-center items-center cursor-pointer hover:bg-green-800  hover:bg-green-800 "
+                                     :class="[localCache.controlMethod.type===4? 'bg-green-800 ':'']"
                                          @click="postFeedSet(2,4)">
                                         <svg fill="none" height="13" viewBox="0 0 16 13" width="16"
                                              xmlns="http://www.w3.org/2000/svg">
@@ -1001,7 +1011,8 @@
                                     </div>
                                 </div>
                                 <div class="h-1/2 flex justify-center items-center ">
-                                    <div class="bg-[#83BA9B] w-16 h-7 mb-4 rounded-md flex justify-center items-center cursor-pointer hover:bg-green-800 "
+                                    <div class="bg-gray-300 border border-gray-400 w-16 h-7 rounded-md flex justify-center items-center cursor-pointer hover:bg-green-800  hover:bg-green-800 "
+                                     :class="[localCache.controlMethod.type===5? 'bg-green-800 ':'']"
                                          @click="postFeedSet(2,5)">
                                         <svg fill="none" height="13" viewBox="0 0 16 13" width="16"
                                              xmlns="http://www.w3.org/2000/svg">
@@ -1263,8 +1274,8 @@
                                 <div v-for="(item, index) in formData.items" :key="item.id"
                                      class="flex m-2 border-2 p-4 border-[#83BA9B] rounded-lg">
                                     <input v-model="item.id" @blur="updateForm()" class="w-1/5 text-center  border" placeholder="序号" type="text">
-                                    <input v-model="item.supplementSpeed" @blur="updateForm()" class="w-1/5 text-center border" type="number">
-                                    <input v-model="item.segmentTime" @blur="updateForm()" class="w-1/5 text-center border" type="number">
+                                    <input v-model="item.supplementSpeed" @blur="updateForm()" class="w-1/5 text-center border" type="number"  placeholder="ml/h">
+                                    <input v-model="item.segmentTime" @blur="updateForm()" class="w-1/5 text-center border" type="number" placeholder="h">
                                     <div  class="w-1/5 text-center bg-gray-100" disabled>{{item.totalSegmentTime}}h</div>
                                     <button class="w-1/5 text-center" type="button" @click="removeItem(index)">删除
                                     </button>

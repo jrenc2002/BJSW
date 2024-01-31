@@ -260,20 +260,20 @@ const gridOptions = reactive<VxeGridProps<any>>({
         zoom: true
     },
     columns: [
-        
+
         {title: '绝对时间', fixed: 'left',  minWidth: 160, field: 'absolute_time'},
         
-        {field: 'timing_temp', title: '实时温度', minWidth: 160},
+        {field: 'timing_temp', title: '实时温度 ℃', minWidth: 160},
         {field: 'timing_PH', title: '实时PH值', minWidth: 160},
-        {field: 'timing_DO', title: '实时溶氧值', minWidth: 160},
-        {field: 'timing_motor_speed', title: '电机速度', minWidth: 160},
-        {field: 'relative_time', title: '相对时间', minWidth: 160},
-        {field: 'acid_ml', title: '酸泵目前送料量', minWidth: 160},
-        {field: 'lye_ml', title: '碱泵目前送料量', minWidth: 160},
-        {field: 'clean_ml', title: '补料泵一目前送料量', minWidth: 160},
-        {field: 'feed_ml', title: '补料泵二目前送料量', minWidth: 160},
-        {field: 'defoamerPumpSpeed', title: '补料泵一速度', minWidth: 160},
-        {field: 'feedPumpSpeed', title: '补料泵二速度', minWidth: 160},
+        {field: 'timing_DO', title: '实时溶氧值 %', minWidth: 160},
+        {field: 'timing_motor_speed', title: '电机速度 r/min', minWidth: 160},
+        {field: 'relative_time', title: '相对时间 h', minWidth: 160},
+        {field: 'acid_ml', title: '酸泵目前送料量 ml', minWidth: 160},
+        {field: 'lye_ml', title: '碱泵目前送料量 ml', minWidth: 160},
+        {field: 'clean_ml', title: '补料泵一目前送料量 ml', minWidth: 160},
+        {field: 'feed_ml', title: '补料泵二目前送料量 ml', minWidth: 160},
+        {field: 'defoamerPumpSpeed', title: '补料泵一速度  ml/h', minWidth: 160},
+        {field: 'feedPumpSpeed', title: '补料泵二速度  ml/h', minWidth: 160},
         {field: 'fermentation_flag', title: '发酵标志', minWidth: 160},
         {field: 'data_id', title: '数据ID', minWidth: 160},
         {field: 'batch_id', title: '批次ID', minWidth: 160},

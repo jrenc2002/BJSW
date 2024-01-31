@@ -100,7 +100,7 @@
                                                                     <td class=" text-center  border-b border-r rounded-br-2xl  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
                                                                         <div class="flex justify-center items-center w-full">
                                                                             <input id="name" v-model.lazy="localCache.setNum.target_motor_speed"
-                                                                                   @blur="paramSend('target_motor_speed',AppGlobal.pageChance,localCache.controlNum.target_motor_speed)"
+                                                                                   @blur="paramSend('target_motor_speed',AppGlobal.pageChance,localCache.setNum.target_motor_speed)"
                                                                                    class="block w-[80%]  border-b-2 m-2 text-center bg-inherit"
                                                                                    name="name"
                                                                                    placeholder="请填设定值"

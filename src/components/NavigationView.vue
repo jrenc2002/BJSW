@@ -126,7 +126,7 @@
                                     <input id="name"
                                            v-model="ipAddress"
                                            class="block w-2/3 border p-0 text-gray-900 placeholder:text-gray-400 sm:text-sm sm:leading-6 pl-1 mr-1"
-                                           name="name" placeholder="192.168.1.2"
+                                           name="name" placeholder="192.168.XX.XX"
                                            type="text"/>
                                     <input id="name"
                                            v-model="port"
@@ -142,7 +142,7 @@
                                 <input id="job-title"
                                        v-model="nameDevice"
                                        class="block w-full border p-0 text-gray-900 placeholder:text-gray-400  sm:text-sm sm:leading-6 pl-1 "
-                                       name="job-title" placeholder="F1"
+                                       name="job-title" placeholder="XX"
                                        type="text"/>
                             
                             </div>
