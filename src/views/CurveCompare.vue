@@ -31,7 +31,8 @@
                         </div>
                     
                     </div>
-                    <div class="h-full w-[calc(100%-20rem)] flex justify-center items-center "
+                    <div class="h-full flex justify-center items-center  relative"
+                         :class="[AppGlobal.isDrawerState? 'w-[calc(100%-20rem)] ':'w-[calc(100%-10rem)]']"
                     >
                         <!--单罐-->
                         <SingleAnalyCharts id="1" ref="SingleTank" :data="data"

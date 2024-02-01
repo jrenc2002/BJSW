@@ -123,6 +123,8 @@ interface SetData {
     start_flag: number;     								//发酵开始标志位
     communicate_flag: number;   						//通讯连接成功标志位
     decive_id: any;
+    
+     Turn_off_motor_flag: number;
 }
 
 interface deviceSet {
@@ -207,8 +209,8 @@ const state = (): {
                 name: '设备A',
                 deviceNum: "RM000001",
                 batch_name: null,
-                ip: '192.168.1.3',
-                port: 2000,
+                ip: 's4.v100.vip',
+                port: 24512,
                 batch_cycle: 0,
                 state: 0,
                 nowData: null,

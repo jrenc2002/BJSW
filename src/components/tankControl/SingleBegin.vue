@@ -128,6 +128,21 @@ const controlSend = (async (name, index) => {
                 ProcessPopupMangerState.updateIsShowPop(false)
                 DeviceManage.deviceList[index].recordFlag = true;
                 DeviceManage.deviceList[index].start_time = new Date();
+                // 清空补料量
+                DeviceManage.deviceList[index].deviceSet!.acidPumpSumStepCount = 0;
+                DeviceManage.deviceList[index].deviceSet!.lyePumpSumStepCount = 0;
+                DeviceManage.deviceList[index].deviceSet!.defoamerPumpSumStepCount = 0;
+                DeviceManage.deviceList[index].deviceSet!.feedPumpSumStepCount = 0;
+                
+                const data = {
+                    acidPumpSumStepCount: 0,
+                    lyePumpSumStepCount: 0,
+                    defoamerPumpSumStepCount: 0,
+                    feedPumpSumStepCount: 0,
+                    
+                }
+                
+                await sendData(index, data);
             }
             
             

@@ -3,7 +3,7 @@
 </template>
 
 <script setup>
-import {onMounted} from "vue";
+import {onMounted, watch} from "vue";
 import {useDeviceManage} from "@/store/DeviceManage";
 import Swal from 'sweetalert2';
 import {sendData} from "@/api";
@@ -30,8 +30,13 @@ onMounted(() => {
                     console.log('------------------计时器仍在进行---------------')
                 }
                 // 前置检验未通过会跳过
-                if (!checkDevice(feedSet.id)) {
+                const checkResult=checkDevice(feedSet.id)
+                if (checkResult==='关闭开关') {
+    
                     controlSend('持续补料', deviceIndex, feedSet, 0);
+                    return;
+                }
+                if (!checkResult) {
                     return;
                 }
                 if (debug) {
@@ -451,19 +456,22 @@ const controlSend = ((name, deviceIndex, feedSet, content) => {
     
     
 })
-
+let lastResult=false;
 // 设备前置检验
 function checkDevice(feedDeviceID) {
     // 设备是否开机
     const isPower = DeviceManage.deviceList[Math.floor(feedDeviceID / 2)].state > 1;
     // 总开关是否开启
     const isSwitch = DeviceManage.supplementSystem[Math.floor(feedDeviceID / 2)][feedDeviceID % 2]?.totalSwitch !== undefined ? DeviceManage.supplementSystem[Math.floor(feedDeviceID / 2)][feedDeviceID % 2].totalSwitch : false;
-
-    if (debug){
-        console.log(feedDeviceID,'isPower', isPower, 'isSwitch', isSwitch)
+    if ((lastResult!==(isPower && isSwitch))&&lastResult===true){
+        return '关闭开关';
     }
+    
+    lastResult=isPower && isSwitch;
+    
     return isPower && isSwitch;
 }
+
 
 // 设备前置检验
 function checkTimeDiff(feedSet) {

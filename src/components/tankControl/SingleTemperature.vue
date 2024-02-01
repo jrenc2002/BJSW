@@ -192,9 +192,12 @@
                             <!--自动参数-温度-->
                             <div class="relative  shadow w-[19rem]      m-2 rounded-2xl  justify-start items-center  border border-gray-300">
                                 <div class="w-full h-14  rounded-t-2xl flex   items-center text-lg font-medium">
-                                    <div class="ml-4">
+                                    <div class="mx-4">
                                         自动参数
                                     </div>
+                                    <button class="bg-white p-1 border-gray-300 border text-sm hover:bg-gray-100"
+                                            @click="PIDReset()">PID重置
+                                    </button>
                                 </div>
                                 <!--表格内容-->
                                 <div class="  w-[100%]   top-0    justify-center flex  ">
@@ -309,6 +312,7 @@
                                                                                    class="block w-[80%]  border-b-2 m-2 text-center bg-inherit"
                                                                                    name="name"
                                                                                    placeholder="请填控制死区"
+                                                                                   step="0.01"
                                                                                    required type="number"/>
                                                                         </div>
                                                                     </td>
@@ -555,7 +559,8 @@ const deadZoneControl=()=>{
     if (localCache.value.controlNum.dead_zone!==null&&localCache.value.controlNum.dead_zone!==undefined){
         if (localCache.value.setNum.target_temp!==null&&localCache.value.setNum.target_temp!==undefined){
             paramSend('Temp_area_upper_limit',AppGlobal.pageChance,Number(localCache.value.setNum.target_temp)+Number(localCache.value.controlNum.dead_zone))
-            paramSend('Temp_area_lower_limit',AppGlobal.pageChance,Number(localCache.value.setNum.target_temp)-Number(localCache.value.controlNum.dead_zone))
+            paramSend('Temp_area_lower_limit',AppGlobal.pageChance,(Number(localCache.value.setNum.target_temp)-Number(localCache.value.controlNum.dead_zone))>=0?(Number(localCache.value.setNum.target_temp)-Number(localCache.value.controlNum.dead_zone)):0)
+    
         }else {
             Swal.fire({
                 icon: 'error', // 由于是确认操作，使用 'question' 图标
@@ -566,6 +571,16 @@ const deadZoneControl=()=>{
             })
         }
     }
+    
+}
+const PIDReset = () => {
+    paramSend('temp_KP',AppGlobal.pageChance,500)
+    paramSend('temp_KI',AppGlobal.pageChance,5)
+    paramSend('temp_KD',AppGlobal.pageChance,1)
+    localCache.value.pidNum.temp_KP=500
+    localCache.value.pidNum.temp_KI=5
+    localCache.value.pidNum.temp_KD=1
+    
     
 }
 

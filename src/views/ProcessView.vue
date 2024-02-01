@@ -532,7 +532,12 @@ import Swal from 'sweetalert2';
 
 const rpmConfirm = (status) => {
     if (status === 'on') {
-        if (localCache.RPMData.SetSpeed === 0) {
+        
+        if (DeviceManage.deviceList[AppGlobal.pageChance].nowData?.Turn_off_motor_flag===1) {
+            paramSend('Turn_off_motor_flag', AppGlobal.pageChance, 0)
+    
+        }
+        else if (localCache.RPMData.SetSpeed === 0) {
             Swal.fire({
                 icon: 'error', // 由于是确认操作，使用 'question' 图标
                 title: '请先设置转速不为0', // 设置标题
@@ -556,7 +561,26 @@ const rpmConfirm = (status) => {
         }).then((result) => {
             if (result.value) {
                 // 用户点击了确认按钮
-                paramSend('target_motor_speed', AppGlobal.pageChance, 0)
+                if (DeviceManage.deviceList[AppGlobal.pageChance].nowData?.DO_flag === 1) {
+                    Swal.fire({
+                        icon: 'question', // 由于是确认操作，使用 'question' 图标
+                        title: '当前溶氧为关联转速状态，确定关闭电机吗?', // 设置标题
+                        showCancelButton: true, // 显示取消按钮
+                        confirmButtonColor: '#3085d6', // 确认按钮颜色
+                        cancelButtonColor: '#d33', // 取消按钮颜色
+                        confirmButtonText: '确认', // 确认按钮文本
+                        cancelButtonText: '取消' // 取消按钮文本
+                    }).then((result) => {
+                        if (result.value) {
+                            // 用户点击了确认按钮
+                            paramSend('Turn_off_motor_flag', AppGlobal.pageChance, 1)
+                        }
+                    });
+                }
+                else {
+    
+                    paramSend('target_motor_speed', AppGlobal.pageChance, 0)
+                }
             }
         });
     }
@@ -686,19 +710,27 @@ const controlSend = ((name, index, content) => {
     lastClickTime = currentTime; // Update the last clicked time
     
     if (name === 'end_running') {
-        // TODO: 关闭运行时应该用什么逻辑
         const data = {
             PH_flag: 0,
             DO_flag: 0,
             temp_flag: 0,
             target_motor_speed: 0,
-            
-            
+            feed0_ml_h:0,
+            acid_ml_h:0,
+            lye_ml_h:0,
+            feed_ml_h:0,
+            Turn_off_motor_flag:0
         }
-        
+        if (DeviceManage.deviceList[AppGlobal.pageChance].state>=1){
+            DeviceManage.deviceList[AppGlobal.pageChance].state=1
+        }
+        // 将补料泵的总开关设置为flase
+        DeviceManage.supplementSystem[AppGlobal.pageChance][0].totalSwitch = false
+        DeviceManage.supplementSystem[AppGlobal.pageChance][1].totalSwitch = false
         
         sendData(index, data);
-    } else if (name === 'acid_pump_set') {
+    }
+    else if (name === 'acid_pump_set') {
         const data = {
             acid_ml_h: toNumber(content)
         }
@@ -773,18 +805,7 @@ const stateManger = reactive({
 })
 const fermentationHour=ref(0)
 const fermentationPart=ref(0)
-setInterval(() => {
-    if (DeviceManage.deviceList[AppGlobal.pageChance]?.start_time === null||
-        DeviceManage.deviceList[AppGlobal.pageChance]?.start_time === undefined ) return '0h'
-    // 把当前时间给到t0
-    const nowDate = new Date().getTime();
-    // 把t0和发酵开始时间差给到具体值
-    let diff = nowDate - new Date(DeviceManage.deviceList[AppGlobal.pageChance].start_time).getTime();
-    // 将差值转换为小时
-    let hours =Math.floor((diff / 3600000) * 100) / 100;
-    fermentationPart.value = hours - Math.floor(hours)
-    fermentationHour.value = Math.floor(hours)
-}, 2000)
+
 
 const handleHandControl = ((content) => {
     
@@ -910,6 +931,13 @@ function calculateTimeDifference() {
         minutes,
         seconds
     };
+    
+    // 把当前时间给到t0
+    const nowDate = now.getTime();
+    let diffhours =Math.floor((timeDiff % (24 * 3600000)) / 36000) / 100;
+    fermentationPart.value = (diffhours - Math.floor(diffhours))*100
+    fermentationHour.value = Math.floor(diffhours)*100
+    
 }
 
 

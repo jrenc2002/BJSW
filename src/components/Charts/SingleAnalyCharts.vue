@@ -158,7 +158,7 @@ const updateChart = async () => {
 watch(() => AppGlobal.isDrawerState, (newData, oldValue) => {
     setTimeout(() => {
     updateChart();
-}, 100);
+}, 300);
 
 })
 

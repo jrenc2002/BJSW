@@ -192,9 +192,12 @@
                             <!--自动参数-酸泵-->
                             <div class="relative  shadow w-[19rem]      m-2 rounded-2xl  justify-start items-center  border border-gray-300">
                                 <div class="w-full h-14  rounded-t-2xl flex   items-center text-lg font-medium">
-                                    <div class="ml-4">
+                                    <div class="mx-4">
                                         自动参数-酸泵设置
                                     </div>
+                                    <button class="bg-white p-1 border-gray-300 border text-sm hover:bg-gray-100"
+                                            @click="PIDReset('acid')">PID重置
+                                    </button>
                                 </div>
                                 <!--表格内容-->
                                 <div class="  w-[100%]   top-0    justify-center flex  ">
@@ -268,9 +271,12 @@
                             <!--自动参数-碱泵-->
                             <div class="relative  shadow w-[19rem] mt-6     m-2 rounded-2xl  justify-start items-center  border border-gray-300">
                                 <div class="w-full h-14  rounded-t-2xl flex   items-center text-lg font-medium">
-                                    <div class="ml-4">
+                                    <div class="mx-4">
                                         自动参数-碱泵设置
                                     </div>
+                                    <button class="bg-white p-1 border-gray-300 border text-sm hover:bg-gray-100"
+                                            @click="PIDReset('lye')">PID重置
+                                    </button>
                                 </div>
                                 <!--表格内容-->
                                 <div class="  w-[100%]   top-0    justify-center flex  ">
@@ -388,6 +394,7 @@
                                                                                    class="block w-[80%]  border-b-2 m-2 text-center bg-inherit"
                                                                                    name="name"
                                                                                    placeholder="请填控制死区"
+                                                                                   step="0.01"
                                                                                    required type="number"/>
                                                                         </div>
                                                                     </td>
@@ -489,7 +496,7 @@ const deadZoneControl=()=>{
     if (localCache.value.controlNum.PH_dead_zone!==null&&localCache.value.controlNum.PH_dead_zone!==undefined){
         if (localCache.value.setNum.target_PH!==null&&localCache.value.setNum.target_PH!==undefined){
             paramSend('PH_area_upper_limit',AppGlobal.pageChance,Number(localCache.value.setNum.target_PH)+Number(localCache.value.controlNum.PH_dead_zone))
-            paramSend('PH_area_lower_limit',AppGlobal.pageChance,Number(localCache.value.setNum.target_PH)-Number(localCache.value.controlNum.PH_dead_zone))
+            paramSend('PH_area_lower_limit',AppGlobal.pageChance,(Number(localCache.value.setNum.target_PH)-Number(localCache.value.controlNum.PH_dead_zone))>=0?(Number(localCache.value.setNum.target_PH)-Number(localCache.value.controlNum.PH_dead_zone)):0)
         }else {
             Swal.fire({
                 icon: 'error', // 由于是确认操作，使用 'question' 图标
@@ -559,7 +566,25 @@ const handleKeydown = (event) => {
         ProcessPopupMangerState.updateIsShowPop(false)
     }
 };
-// 弹窗管理
+const PIDReset = (kind) => {
+    if (kind === 'acid') {
+       paramSend('acid_KP',AppGlobal.pageChance,10)
+         paramSend('acid_KI',AppGlobal.pageChance,0.02)
+            paramSend('acid_KD',AppGlobal.pageChance,0)
+        localCache.value.acidNum.acid_KP = 10
+        localCache.value.acidNum.acid_KI = 0.02
+        localCache.value.acidNum.acid_KD = 0
+    } else {
+        paramSend('lye_KP',AppGlobal.pageChance,10)
+        paramSend('lye_KI',AppGlobal.pageChance,0.02)
+        paramSend('lye_KD',AppGlobal.pageChance,0)
+        localCache.value.lyeNum.lye_KP = 10
+        localCache.value.lyeNum.lye_KI = 0.02
+        localCache.value.lyeNum.lye_KD = 0
+    }
+
+    
+}
 
 // ______________________生命周期_______________________
 

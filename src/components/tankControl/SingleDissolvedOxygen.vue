@@ -122,9 +122,12 @@
                             <!--pid 自动参数-->
                             <div class="relative  shadow w-[19rem] m-2 mt-6 rounded-2xl  justify-start items-center border border-gray-300 ">
                                 <div class="w-full h-14  rounded-t-2xl flex   items-center text-lg font-medium ">
-                                    <div class="ml-4 ">
+                                    <div class="mx-4 ">
                                         自动参数
                                     </div>
+                                    <button class="bg-white p-1 border-gray-300 border text-sm hover:bg-gray-100"
+                                            @click="PIDReset">PID重置
+                                    </button>
                                 </div>
                                 <!--表格内容-->
                                 <div class="  w-[100%] h-[calc(92%-3.5rem)]  top-0    justify-center flex mb-4  ">
@@ -311,6 +314,7 @@
                                                                                    class="block w-[80%]  border-b-2 m-2 text-center bg-inherit"
                                                                                    name="name"
                                                                                    placeholder="请填控制死区"
+                                                                                   step="0.01"
                                                                                    required type="number"/>
                                                                         </div>
                                                                      </td>
@@ -426,7 +430,8 @@ const deadZoneControl=()=>{
     if (localCache.value.controlNum.DO_dead_zone!==null&&localCache.value.controlNum.DO_dead_zone!==undefined){
        if (localCache.value.setNum.target_DO!==null&&localCache.value.setNum.target_DO!==undefined){
            paramSend('DO_area_upper_limit',AppGlobal.pageChance,Number(localCache.value.setNum.target_DO)+Number(localCache.value.controlNum.DO_dead_zone))
-           paramSend('DO_area_lower_limit',AppGlobal.pageChance,Number(localCache.value.setNum.target_DO)-Number(localCache.value.controlNum.DO_dead_zone))
+           paramSend('DO_area_lower_limit',AppGlobal.pageChance,(Number(localCache.value.setNum.target_DO)-Number(localCache.value.controlNum.DO_dead_zone))>=0?(Number(localCache.value.setNum.target_DO)-Number(localCache.value.controlNum.DO_dead_zone)):0)
+    
        }else {
            Swal.fire({
                icon: 'error', // 由于是确认操作，使用 'question' 图标
@@ -460,8 +465,8 @@ const updateCache = () => {
     localCache.value.alarmNum.doMinWarn = DeviceManage.deviceList[AppGlobal.pageChance]?.deviceSet?.doMinWarn;
     
     localCache.value.controlNum.DO_dead_zone = DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.DO_area_upper_limit-DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.target_DO;
-    localCache.value.controlNum.DO_upper_limit = DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.DO_upper_limit;
-    localCache.value.controlNum.DO_lower_limit = DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.DO_lower_limit;
+    localCache.value.controlNum.DO_upper_limit = DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.DO_area_upper_limit;
+    localCache.value.controlNum.DO_lower_limit = DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.DO_area_lower_limit;
     localCache.value.controlNum.motor_speed_u_limit = DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.motor_speed_u_limit;
     localCache.value.controlNum.motor_speed_l_limit = DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.motor_speed_l_limit;
     
@@ -482,7 +487,15 @@ const closePop = () => {
     ProcessPopupMangerState.updateIsShowPop(false)
 }
 
-
+const PIDReset = () => {
+    paramSend('DO_KP', AppGlobal.pageChance, 80)
+    paramSend('DO_KI', AppGlobal.pageChance, 0.5)
+    paramSend('DO_KD', AppGlobal.pageChance, 0)
+    localCache.value.pidNum.DO_KP = 80
+    localCache.value.pidNum.DO_KI = 0.5
+    localCache.value.pidNum.DO_KD = 0
+    
+}
 
 
 // 当按下键盘时的处理函数，ESC关闭弹窗

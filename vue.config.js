@@ -25,18 +25,18 @@ module.exports = defineConfig({
 
     plugins: [
 
-      new JavaScriptObfuscator({
-        compact: true,
-        rotateStringArray: true,
-        // 混淆后的代码,不能使用代码美化,同时需要配置 cpmpat:true;
-        seed: 0,
-        selfDefending: false,
-        sourceMap: false,
-        sourceMapBaseUrl: '',
-        sourceMapFileName: '',
-        sourceMapMode: 'separate',
-
-        },[])
+      // new JavaScriptObfuscator({
+      //   compact: true,
+      //   rotateStringArray: true,
+      //   // 混淆后的代码,不能使用代码美化,同时需要配置 cpmpat:true;
+      //   seed: 0,
+      //   selfDefending: false,
+      //   sourceMap: false,
+      //   sourceMapBaseUrl: '',
+      //   sourceMapFileName: '',
+      //   sourceMapMode: 'separate',
+      //
+      //   },[])
 
     ]
 

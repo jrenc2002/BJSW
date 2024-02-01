@@ -231,7 +231,7 @@ export const sendData = async (index, data) => {
     
         // 数据拦截器进入
         await dataInterceptor(index, data).then((res) => {
-            console.log("【数据拦截器】--------------------",res)
+            console.log("【数据拦截器】--------------------",res,data)
             check=res
         })
         if (check===false){
@@ -298,23 +298,7 @@ function dataInterceptor(index, data) {
                 resolve(true)
             }
         }
-        if (data.target_motor_speed !== undefined) {
-            // 将设定的转速与上下限进行比较,然后重新发送一下数据
-            if (data.target_motor_speed > DeviceManage.deviceList[index].nowData.motor_speed_u_limit) {
-                sendData(index, {target_motor_speed: DeviceManage.deviceList[index].nowData.motor_speed_u_limit})
-                resolve(false)
-                
-            }
-            if (data.target_motor_speed < DeviceManage.deviceList[index].nowData.motor_speed_l_limit) {
-                sendData(index, {target_motor_speed: DeviceManage.deviceList[index].nowData.motor_speed_l_limit})
-                resolve(false)
-                
-            }
-            resolve(true)
-            
-     
-            
-        }
+
         resolve(true)
         
         

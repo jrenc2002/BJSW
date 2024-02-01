@@ -5,7 +5,7 @@
         <!--    标题-->
         <div class="h-[6%] self-stretch justify-start items-center  inline-flex mt-3  w-full ">
             <div class="w-[30rem] text-xl  leading-10 text-zinc-900 text-2xl font-semibold leading-loose left-10 relative">
-                {{ props.name }}
+                {{ getDeviceName(props.name) }}
             </div>
             <div class="w-[calc(100%-10rem)] relative justify-end flex mr-3 ">
                 
@@ -57,9 +57,9 @@ const switchEmit = defineEmits(['update:switch']);
 const DeviceManage = useDeviceManage();
 const PopupMangerState = usePopupMangerState()
 const AppGlobal = useAppGlobal();
-
+import {useRoute} from "vue-router";
 // ______________________表格数据处理_______________________
-
+const route = useRoute();
 
 // todo 批次数据没有刷新名称罐号
 
@@ -216,7 +216,20 @@ const updateChart = async () => {
     }
     chartEch.resize();
 };
-
+watch(route, (to, from) => {
+    // 当路由发生变化时执行的操作
+    if (to.path === '/historicaldata'||to.path === '/candata') {
+        // 当进入目标路由时执行的操作
+        setTimeout(() => {
+            updateChart();
+        }, 500);
+    }
+});
+watch(() => AppGlobal.isDrawerState, (newData, oldValue) => {
+    setTimeout(() => {
+        updateChart();
+    }, 300);
+})
 watch(() => props.switch, (newData, oldValue) => {
     setTimeout(() => {
         updateChart();
@@ -355,6 +368,17 @@ const kValue = (dataSeries:any) => {
     
     return dataSeries
 }
+
+// 我希望你给我写个函数根据罐号cannumber在DeviceManage.deviceList里面找到对应的相同deviceNum的name，没找到返回罐号
+const getDeviceName = (cannumber) => {
+    let deviceName = cannumber;
+    DeviceManage.deviceList.forEach((device) => {
+        if (device.deviceNum === cannumber) {
+            deviceName = device.name;
+        }
+    });
+    return deviceName;
+};
 /* ——————————————————————————生命周期配置—————————————————————————— */
 onMounted(() => {
     // 这里是由于图表渲染快于父元素导致图表比例溢出，做的一个延缓操作

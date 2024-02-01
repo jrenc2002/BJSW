@@ -238,6 +238,7 @@
                                                                                    class="block w-[80%]  border-b-2 m-2 text-center bg-inherit"
                                                                                    name="name"
                                                                                    placeholder="请填控制死区"
+                                                                                   step="0.01"
                                                                                    required type="number"/>
                                                                         </div>
                                                                     </td>
@@ -246,7 +247,7 @@
                                                                             <input id="name"
                                                                                    class="block w-[80%]  border-b-2 m-2 text-center bg-inherit"
                                                                                    name="name"  v-model.lazy="localCache.controlNum.DO_upper_limit"
-                                                                                   @blur="paramSend('DO_upper_limit',AppGlobal.pageChance,localCache.controlNum.DO_upper_limit)"
+                                                                                   @blur="paramSend('DO_area_upper_limit',AppGlobal.pageChance,localCache.controlNum.DO_upper_limit)"
                                                                                    placeholder="请填溶氧上限"
                                                                                    required type="number"/>
                                                                         </div>
@@ -256,7 +257,7 @@
                                                                             <input id="name"
                                                                                    class="block w-[80%]  border-b-2 m-2 text-center bg-inherit"
                                                                                    name="name"   v-model.lazy="localCache.controlNum.DO_lower_limit"
-                                                                                   @blur="paramSend('DO_lower_limit',AppGlobal.pageChance,localCache.controlNum.DO_lower_limit)"
+                                                                                   @blur="paramSend('DO_area_lower_limit',AppGlobal.pageChance,localCache.controlNum.DO_lower_limit)"
                                                                                    placeholder="请填溶氧下限"
                                                                                    required type="number"/>
                                                                         </div>
@@ -348,7 +349,8 @@ const deadZoneControl=()=>{
     if (localCache.value.controlNum.DO_dead_zone!==null&&localCache.value.controlNum.DO_dead_zone!==undefined){
         if (localCache.value.setNum.target_DO!==null&&localCache.value.setNum.target_DO!==undefined){
             paramSend('DO_area_upper_limit',AppGlobal.pageChance,Number(localCache.value.setNum.target_DO)+Number(localCache.value.controlNum.DO_dead_zone))
-            paramSend('DO_area_lower_limit',AppGlobal.pageChance,Number(localCache.value.setNum.target_DO)-Number(localCache.value.controlNum.DO_dead_zone))
+              paramSend('DO_area_lower_limit',AppGlobal.pageChance,(Number(localCache.value.setNum.target_DO)-Number(localCache.value.controlNum.DO_dead_zone))>=0?(Number(localCache.value.setNum.target_DO)-Number(localCache.value.controlNum.DO_dead_zone)):0)
+    
         }else {
             Swal.fire({
                 icon: 'error', // 由于是确认操作，使用 'question' 图标
@@ -379,8 +381,8 @@ const updateCache = () => {
     localCache.value.controlNum.motor_speed_u_limit = DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.motor_speed_u_limit
     localCache.value.controlNum.motor_speed_l_limit = DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.motor_speed_l_limit
     
-    localCache.value.controlNum.DO_upper_limit = DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.DO_upper_limit
-    localCache.value.controlNum.DO_lower_limit = DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.DO_lower_limit
+    localCache.value.controlNum.DO_upper_limit = DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.DO_area_upper_limit
+    localCache.value.controlNum.DO_lower_limit = DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.DO_area_lower_limit
 
 }
 
