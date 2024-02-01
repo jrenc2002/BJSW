@@ -100,7 +100,7 @@
                                                                     </td>
                                                                     <td class=" text-center  border-b border-r rounded-br-2xl  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
                                                                         <div class="flex justify-center items-center w-full">
-                                                                            <input id="name" v-model="localCache.setNum.target_PH"
+                                                                            <input id="name" v-model.lazy="localCache.setNum.target_PH"
                                                                                    @blur="deadZoneControl();"
                                                                                    class="block w-[80%]  border-b-2 m-2 text-center bg-inherit"
                                                                                    name="name"
@@ -493,12 +493,11 @@ const deadZoneControl=()=>{
     paramSend('target_PH',AppGlobal.pageChance,localCache.value.setNum.target_PH);
     if (localCache.value.controlNum.PH_dead_zone!==null&&localCache.value.controlNum.PH_dead_zone!==undefined){
         if (localCache.value.setNum.target_PH!==null&&localCache.value.setNum.target_PH!==undefined){
-            paramSend('PH_area_upper_limit',AppGlobal.pageChance,Number(localCache.value.setNum.target_PH)+Number(localCache.value.controlNum.PH_dead_zone))
-            paramSend('PH_area_lower_limit',AppGlobal.pageChance,(Number(localCache.value.setNum.target_PH)-Number(localCache.value.controlNum.PH_dead_zone))>=0?(Number(localCache.value.setNum.target_PH)-Number(localCache.value.controlNum.PH_dead_zone)):0)
+            paramSend('PH_area_limit',AppGlobal.pageChance,Number(localCache.value.controlNum.PH_dead_zone))
         }else {
             Swal.fire({
                 icon: 'error', // 由于是确认操作，使用 'question' 图标
-                title: '请先设置目标溶氧值不为空', // 设置标题
+                title: '请先设置目标PH值不为空', // 设置标题
                 showCancelButton: false, // 显示取消按钮
                 confirmButtonColor: '#3085d6', // 确认按钮颜色
                 confirmButtonText: '确认', // 确认按钮文本
@@ -539,9 +538,9 @@ const updateCache = () => {
     localCache.value.setNum.target_PH = DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.target_PH;
     localCache.value.setNum.PH_flag = DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.PH_flag;
     
-    localCache.value.controlNum.PH_dead_zone=DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.PH_area_upper_limit-DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.target_PH;
-    localCache.value.controlNum.PH_area_upper_limit = DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.PH_area_upper_limit;
-    localCache.value.controlNum.PH_area_lower_limit = DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.PH_area_lower_limit;
+    localCache.value.controlNum.PH_dead_zone=DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.PH_area_limit;
+    localCache.value.controlNum.PH_area_upper_limit = DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.target_PH+DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.PH_area_limit;
+    localCache.value.controlNum.PH_area_lower_limit = returnZero(DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.target_PH-DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.PH_area_limit);
     
     localCache.value.alarmNum.alarm_h_limit = DeviceManage.deviceList[AppGlobal.pageChance]?.deviceSet?.phMaxWarn;
     localCache.value.alarmNum.alarm_l_limit = DeviceManage.deviceList[AppGlobal.pageChance]?.deviceSet?.phMinWarn;
@@ -555,7 +554,14 @@ const updateCache = () => {
     localCache.value.lyeNum.lye_KD = DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.lye_KD;
 
 }
-
+// 帮我写个函数如何小于0就返回0
+const returnZero = (num) => {
+    if (num < 0) {
+        return 0
+    } else {
+        return num
+    }
+}
 // 当按下键盘时的处理函数，ESC关闭弹窗
 const handleKeydown = (event) => {
     if (event.keyCode === 27) { // 27 是 esc 键的 keyCode

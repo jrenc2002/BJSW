@@ -60,7 +60,9 @@ interface SetData {
     DO_lower_limit: number;				//DO下限值
     DO_area_upper_limit: number;	//DO死区上限值
     DO_area_lower_limit: number;	//DO死区下限值
-    
+     PH_area_limit: number;  //PH死区限制
+     Temp_area_limit: number; //温度死区限制
+     DO_area_limit: number;//DO死区限制
     DO_flag: number;								//氧含量控制开启标志位
     target_motor_speed: number;			//手动设定电机转速
     timing_motor_speed: number;			//电机实时转速

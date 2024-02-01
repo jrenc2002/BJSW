@@ -234,7 +234,7 @@
                                                                     <td class=" text-center border-t border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center rounded-tr-2xl">
                                                                         <div class="flex justify-center items-center w-full">
                                                                             <input id="name" v-model.lazy="localCache.controlNum.DO_dead_zone"
-                                                                                   @blur="deadZoneControl()"
+                                                                                   @blur="paramSend('DO_area_limit',AppGlobal.pageChance,localCache.controlNum.DO_dead_zone);"
                                                                                    class="block w-[80%]  border-b-2 m-2 text-center bg-inherit"
                                                                                    name="name"
                                                                                    placeholder="请填控制死区"
@@ -375,16 +375,23 @@ const updateCache = () => {
     localCache.value.alarmNum.rpmMaxWarn = DeviceManage.deviceList[AppGlobal.pageChance]?.deviceSet?.rpmMaxWarn
     localCache.value.alarmNum.rpmMinWarn = DeviceManage.deviceList[AppGlobal.pageChance]?.deviceSet?.rpmMinWarn
     
-    localCache.value.controlNum.DO_dead_zone = DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.DO_area_upper_limit-DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.target_DO
+    localCache.value.controlNum.DO_dead_zone = DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.DO_area_limit
     localCache.value.controlNum.motor_speed_u_limit = DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.motor_speed_u_limit
     localCache.value.controlNum.motor_speed_l_limit = DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.motor_speed_l_limit
     
-    localCache.value.controlNum.DO_upper_limit = DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.DO_area_upper_limit
-    localCache.value.controlNum.DO_lower_limit = DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.DO_area_lower_limit
-
+    localCache.value.controlNum.DO_upper_limit = DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.target_DO+ DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.DO_area_limit
+    localCache.value.controlNum.DO_lower_limit =returnZero( DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.target_DO- DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.DO_area_limit)
+    
+    
 }
 
-
+const returnZero = (num) => {
+    if (num < 0) {
+        return 0
+    } else {
+        return num
+    }
+}
 
 // ______________________表格数据变量_______________________
 

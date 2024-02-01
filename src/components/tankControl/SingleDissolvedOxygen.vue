@@ -427,9 +427,8 @@ const deadZoneControl=()=>{
     paramSend('target_DO',AppGlobal.pageChance,localCache.value.setNum.target_DO);
     if (localCache.value.controlNum.DO_dead_zone!==null&&localCache.value.controlNum.DO_dead_zone!==undefined){
        if (localCache.value.setNum.target_DO!==null&&localCache.value.setNum.target_DO!==undefined){
-           paramSend('DO_area_upper_limit',AppGlobal.pageChance,Number(localCache.value.setNum.target_DO)+Number(localCache.value.controlNum.DO_dead_zone))
-           paramSend('DO_area_lower_limit',AppGlobal.pageChance,(Number(localCache.value.setNum.target_DO)-Number(localCache.value.controlNum.DO_dead_zone))>=0?(Number(localCache.value.setNum.target_DO)-Number(localCache.value.controlNum.DO_dead_zone)):0)
-    
+           paramSend('DO_area_limit',AppGlobal.pageChance,Number(localCache.value.controlNum.DO_dead_zone))
+
        }else {
            Swal.fire({
                icon: 'error', // 由于是确认操作，使用 'question' 图标
@@ -462,12 +461,19 @@ const updateCache = () => {
     localCache.value.alarmNum.doMaxWarn = DeviceManage.deviceList[AppGlobal.pageChance]?.deviceSet?.doMaxWarn;
     localCache.value.alarmNum.doMinWarn = DeviceManage.deviceList[AppGlobal.pageChance]?.deviceSet?.doMinWarn;
     
-    localCache.value.controlNum.DO_dead_zone = DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.DO_area_upper_limit-DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.target_DO;
-    localCache.value.controlNum.DO_upper_limit = DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.DO_area_upper_limit;
-    localCache.value.controlNum.DO_lower_limit = DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.DO_area_lower_limit;
+    localCache.value.controlNum.DO_dead_zone = DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.DO_area_limit
+    localCache.value.controlNum.DO_upper_limit = DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.target_DO+ DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.DO_area_limit;
+    localCache.value.controlNum.DO_lower_limit = returnZero( DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.target_DO- DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.DO_area_limit);
     localCache.value.controlNum.motor_speed_u_limit = DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.motor_speed_u_limit;
     localCache.value.controlNum.motor_speed_l_limit = DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.motor_speed_l_limit;
     
+}
+const returnZero = (num) => {
+    if (num < 0) {
+        return 0
+    } else {
+        return num
+    }
 }
 // ______________________表格数据变量_______________________
 

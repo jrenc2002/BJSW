@@ -348,7 +348,7 @@ function onDataReceived(data) {
                 confirmButton: false,
                 cancelButtonText: '取消',
             });
-            console.log("通讯报错，请检查设备连接", completeData)
+            console.log("通讯报错，请检查设备连接", completeData,error)
             return -1
         }
     }

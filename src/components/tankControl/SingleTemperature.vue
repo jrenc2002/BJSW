@@ -556,13 +556,12 @@ const deadZoneControl=()=>{
     paramSend('target_temp',AppGlobal.pageChance,localCache.value.setNum.target_temp)
     if (localCache.value.controlNum.dead_zone!==null&&localCache.value.controlNum.dead_zone!==undefined){
         if (localCache.value.setNum.target_temp!==null&&localCache.value.setNum.target_temp!==undefined){
-            paramSend('Temp_area_upper_limit',AppGlobal.pageChance,Number(localCache.value.setNum.target_temp)+Number(localCache.value.controlNum.dead_zone))
-            paramSend('Temp_area_lower_limit',AppGlobal.pageChance,(Number(localCache.value.setNum.target_temp)-Number(localCache.value.controlNum.dead_zone))>=0?(Number(localCache.value.setNum.target_temp)-Number(localCache.value.controlNum.dead_zone)):0)
+            paramSend('Temp_area_limit',AppGlobal.pageChance,Number(localCache.value.controlNum.dead_zone))
     
         }else {
             Swal.fire({
                 icon: 'error', // 由于是确认操作，使用 'question' 图标
-                title: '请先设置目标溶氧值不为空', // 设置标题
+                title: '请先设置目标温度值不为空', // 设置标题
                 showCancelButton: false, // 显示取消按钮
                 confirmButtonColor: '#3085d6', // 确认按钮颜色
                 confirmButtonText: '确认', // 确认按钮文本
@@ -625,15 +624,21 @@ const updateCache = () => {
     localCache.value.alarmNum.alarm_h_limit=DeviceManage.deviceList[AppGlobal.pageChance]?.deviceSet?.tempMaxWarn
     localCache.value.alarmNum.alarm_l_limit=DeviceManage.deviceList[AppGlobal.pageChance]?.deviceSet?.tempMinWarn
     
-    localCache.value.controlNum.dead_zone=DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.Temp_area_upper_limit-DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.target_temp
-    localCache.value.controlNum.Temp_area_upper_limit=DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.Temp_area_upper_limit
-    localCache.value.controlNum.Temp_area_lower_limit=DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.Temp_area_lower_limit
+    localCache.value.controlNum.dead_zone=DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.Temp_area_limit
+    localCache.value.controlNum.Temp_area_upper_limit=DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.target_temp+DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.Temp_area_limit
+    localCache.value.controlNum.Temp_area_lower_limit=returnZero(DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.target_temp-DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.Temp_area_limit)
     
     localCache.value.temperatureControl.condensate_water_flag=DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.condensate_water_flag
     localCache.value.temperatureControl.heated_blanket_flag=DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.heated_blanket_flag
     localCache.value.temperatureControl.heatpower=DeviceManage.deviceList[AppGlobal.pageChance]?.nowData?.heatpower
 }
-
+const returnZero = (num) => {
+    if (num < 0) {
+        return 0
+    } else {
+        return num
+    }
+}
 // ______________________生命周期_______________________
 
 // 当组件挂载时添加事件监听器
