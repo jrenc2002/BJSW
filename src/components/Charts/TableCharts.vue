@@ -61,7 +61,8 @@ import {useRoute} from "vue-router";
 // ______________________表格数据处理_______________________
 const route = useRoute();
 
-// todo 批次数据没有刷新名称罐号
+// todo 批次数据
+//  没有刷新名称罐号
 
 // 当按下键盘时的处理函数，ESC关闭弹窗
 const handleKeydown = (event) => {

@@ -101,7 +101,7 @@
                                                                     <td class=" text-center  border-b border-r rounded-br-2xl  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
                                                                         <div class="flex justify-center items-center w-full">
                                                                             <input id="name" v-model="localCache.setNum.target_PH"
-                                                                                   @blur="paramSend('target_PH',AppGlobal.pageChance,localCache.setNum.target_PH)"
+                                                                                   @blur="deadZoneControl();"
                                                                                    class="block w-[80%]  border-b-2 m-2 text-center bg-inherit"
                                                                                    name="name"
                                                                                    placeholder="PH设定值"
@@ -401,9 +401,8 @@
                                                                     <td class=" text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
                                                                         <div class="flex justify-center items-center w-full">
                                                                             <input id="name" v-model="localCache.controlNum.PH_area_upper_limit"
-                                                                                   @blur="paramSend('PH_area_upper_limit',AppGlobal.pageChance,localCache.controlNum.PH_area_upper_limit)"
-                                                                                   class="block w-[80%]  border-b-2 m-2 text-center bg-inherit"
-                                                                                   name="name"
+                                                                                   class="block w-[80%]   m-2 text-center bg-inherit "
+                                                                                   name="name" disabled
                                                                                    placeholder="误差上限"
                                                                                    required type="number"/>
                                                                         </div>
@@ -411,9 +410,8 @@
                                                                     <td class=" text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
                                                                         <div class="flex justify-center items-center w-full">
                                                                             <input id="name" v-model="localCache.controlNum.PH_area_lower_limit"
-                                                                                   @blur="paramSend('PH_area_lower_limit',AppGlobal.pageChance,localCache.controlNum.PH_area_lower_limit)"
-                                                                                   class="block w-[80%]  border-b-2 m-2 text-center bg-inherit"
-                                                                                   name="name"
+                                                                                   class="block w-[80%]   m-2 text-center bg-inherit"
+                                                                                   name="name" disabled
                                                                                    placeholder="误差下限"
                                                                                    required type="number"/>
                                                                         </div>
@@ -492,7 +490,7 @@ const localCache = ref({
 
 
 const deadZoneControl=()=>{
-    
+    paramSend('target_PH',AppGlobal.pageChance,localCache.value.setNum.target_PH);
     if (localCache.value.controlNum.PH_dead_zone!==null&&localCache.value.controlNum.PH_dead_zone!==undefined){
         if (localCache.value.setNum.target_PH!==null&&localCache.value.setNum.target_PH!==undefined){
             paramSend('PH_area_upper_limit',AppGlobal.pageChance,Number(localCache.value.setNum.target_PH)+Number(localCache.value.controlNum.PH_dead_zone))

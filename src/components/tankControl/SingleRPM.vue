@@ -245,20 +245,18 @@
                                                                     <td class=" text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
                                                                         <div class="flex justify-center items-center w-full">
                                                                             <input id="name"
-                                                                                   class="block w-[80%]  border-b-2 m-2 text-center bg-inherit"
+                                                                                   class="block w-[80%]   m-2 text-center bg-inherit"
                                                                                    name="name"  v-model.lazy="localCache.controlNum.DO_upper_limit"
-                                                                                   @blur="paramSend('DO_area_upper_limit',AppGlobal.pageChance,localCache.controlNum.DO_upper_limit)"
-                                                                                   placeholder="请填溶氧上限"
+                                                                                  placeholder="请填溶氧上限" disabled
                                                                                    required type="number"/>
                                                                         </div>
                                                                     </td>
                                                                     <td class=" text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
                                                                         <div class="flex justify-center items-center w-full">
                                                                             <input id="name"
-                                                                                   class="block w-[80%]  border-b-2 m-2 text-center bg-inherit"
+                                                                                   class="block w-[80%]   m-2 text-center bg-inherit"
                                                                                    name="name"   v-model.lazy="localCache.controlNum.DO_lower_limit"
-                                                                                   @blur="paramSend('DO_area_lower_limit',AppGlobal.pageChance,localCache.controlNum.DO_lower_limit)"
-                                                                                   placeholder="请填溶氧下限"
+                                                                                  placeholder="请填溶氧下限" disabled
                                                                                    required type="number"/>
                                                                         </div>
                                                                     </td>

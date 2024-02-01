@@ -101,7 +101,7 @@
                                                                     <td class=" text-center  border-b border-r rounded-br-2xl  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
                                                                         <div class="flex justify-center items-center w-full">
                                                                             <input id="name" v-model.lazy="localCache.setNum.target_temp"
-                                                                                   @blur="paramSend('target_temp',AppGlobal.pageChance,localCache.setNum.target_temp)"
+                                                                                   @blur="deadZoneControl()"
                                                                                    class="block w-[80%]   border-b-2 m-2 text-center bg-inherit"
                                                                                    name="name"
                                                                                    placeholder="温度设定值"
@@ -307,7 +307,7 @@
                                                                 <tr class=" justify-center items-center">
                                                                     <td class=" text-center border-t border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center rounded-tr-2xl">
                                                                         <div class="flex justify-center items-center w-full">
-                                                                            <input id="name" v-model.lazy="localCache.controlNum.dead_zone"
+                                                                            <input id="name" v-model="localCache.controlNum.dead_zone"
                                                                                    @blur="deadZoneControl()"
                                                                                    class="block w-[80%]  border-b-2 m-2 text-center bg-inherit"
                                                                                    name="name"
@@ -318,20 +318,18 @@
                                                                     </td>
                                                                     <td class=" text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
                                                                         <div class="flex justify-center items-center w-full">
-                                                                            <input id="name" v-model.lazy="localCache.controlNum.Temp_area_upper_limit"
-                                                                                   @blur="paramSend('PH_area_upper_limit',AppGlobal.pageChance,localCache.controlNum.PH_area_upper_limit)"
-                                                                                   class="block w-[80%]  border-b-2 m-2 text-center bg-inherit"
-                                                                                   name="name"
+                                                                            <input id="name" v-model="localCache.controlNum.Temp_area_upper_limit"
+                                                                                  class="block w-[80%]  m-2 text-center bg-inherit"
+                                                                                   name="name" disabled
                                                                                    placeholder="误差上限"
                                                                                    required type="number"/>
                                                                         </div>
                                                                     </td>
                                                                     <td class=" text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
                                                                         <div class="flex justify-center items-center w-full">
-                                                                            <input id="name" v-model.lazy="localCache.controlNum.Temp_area_lower_limit"
-                                                                                   @blur="paramSend('PH_area_lower_limit',AppGlobal.pageChance,localCache.controlNum.PH_area_lower_limit)"
-                                                                                   class="block w-[80%]  border-b-2 m-2 text-center bg-inherit"
-                                                                                   name="name"
+                                                                            <input id="name" v-model="localCache.controlNum.Temp_area_lower_limit"
+                                                                                  class="block w-[80%]   m-2 text-center bg-inherit"
+                                                                                   name="name" disabled
                                                                                    placeholder="误差下限"
                                                                                    required type="number"/>
                                                                         </div>
@@ -555,7 +553,7 @@ const localCache = ref({
 
 
 const deadZoneControl=()=>{
-    
+    paramSend('target_temp',AppGlobal.pageChance,localCache.value.setNum.target_temp)
     if (localCache.value.controlNum.dead_zone!==null&&localCache.value.controlNum.dead_zone!==undefined){
         if (localCache.value.setNum.target_temp!==null&&localCache.value.setNum.target_temp!==undefined){
             paramSend('Temp_area_upper_limit',AppGlobal.pageChance,Number(localCache.value.setNum.target_temp)+Number(localCache.value.controlNum.dead_zone))

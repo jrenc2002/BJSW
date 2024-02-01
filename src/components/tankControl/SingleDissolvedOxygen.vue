@@ -101,7 +101,7 @@
                                                                     <td class=" text-center  border-b border-r rounded-br-2xl  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
                                                                         <div class="flex justify-center items-center w-full">
                                                                             <input id="name" v-model.lazy="localCache.setNum.target_DO"
-                                                                                   @blur="paramSend('target_DO',AppGlobal.pageChance,localCache.setNum.target_DO)"
+                                                                                   @blur="deadZoneControl()"
                                                                                    class="block w-[80%]  border-b-2 m-2 text-center bg-inherit"
                                                                                    name="name"
                                                                                    placeholder="溶氧设定值"
@@ -309,7 +309,7 @@
                                                                 <tr class=" justify-center items-center">
                                                                     <td class=" text-center border-t border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center rounded-tr-2xl">
                                                                         <div class="flex justify-center items-center w-full">
-                                                                            <input id="name" v-model.lazy="localCache.controlNum.DO_dead_zone"
+                                                                            <input id="name" v-model="localCache.controlNum.DO_dead_zone"
                                                                                    @blur="deadZoneControl()"
                                                                                    class="block w-[80%]  border-b-2 m-2 text-center bg-inherit"
                                                                                    name="name"
@@ -321,20 +321,18 @@
                                                                     <td class=" text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
                                                                         <div class="flex justify-center items-center w-full">
                                                                             <input id="name"
-                                                                                   class="block w-[80%]  border-b-2 m-2 text-center bg-inherit"
-                                                                                   name="name"  v-model.lazy="localCache.controlNum.DO_upper_limit"
-                                                                                   @blur="paramSend('DO_upper_limit',AppGlobal.pageChance,localCache.controlNum.DO_upper_limit)"
-                                                                                   placeholder="请填溶氧上限"
+                                                                                   class="block w-[80%]   m-2 text-center bg-inherit"
+                                                                                   name="name"  v-model="localCache.controlNum.DO_upper_limit"
+                                                                                   disabled        placeholder="请填溶氧上限"
                                                                                    required type="number"/>
                                                                         </div>
                                                                     </td>
                                                                     <td class=" text-center  border-b border-r  hover:bg-[#FAFAFA] cursor-pointer flex justify-center items-center">
                                                                         <div class="flex justify-center items-center w-full">
                                                                             <input id="name"
-                                                                                   class="block w-[80%]  border-b-2 m-2 text-center bg-inherit"
-                                                                                   name="name"   v-model.lazy="localCache.controlNum.DO_lower_limit"
-                                                                                   @blur="paramSend('DO_lower_limit',AppGlobal.pageChance,localCache.controlNum.DO_lower_limit)"
-                                                                                   placeholder="请填溶氧下限"
+                                                                                   class="block w-[80%]   m-2 text-center bg-inherit"
+                                                                                   name="name"   v-model="localCache.controlNum.DO_lower_limit"
+                                                                                   placeholder="请填溶氧下限" disabled
                                                                                    required type="number"/>
                                                                         </div>
                                                                     </td>
@@ -426,7 +424,7 @@ const localCache = ref({
 
 
 const deadZoneControl=()=>{
-
+    paramSend('target_DO',AppGlobal.pageChance,localCache.value.setNum.target_DO);
     if (localCache.value.controlNum.DO_dead_zone!==null&&localCache.value.controlNum.DO_dead_zone!==undefined){
        if (localCache.value.setNum.target_DO!==null&&localCache.value.setNum.target_DO!==undefined){
            paramSend('DO_area_upper_limit',AppGlobal.pageChance,Number(localCache.value.setNum.target_DO)+Number(localCache.value.controlNum.DO_dead_zone))
