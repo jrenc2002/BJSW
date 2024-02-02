@@ -9,7 +9,7 @@ import Swal from 'sweetalert2';
 import {sendData} from "@/api";
 import {useAppGlobal} from "@/store/AppGlobal";
 
-const debug = false;
+const debug = true;
 const DeviceManage = useDeviceManage();
 // 创建定时器群组
 const timerGroup = new Map();
@@ -60,17 +60,23 @@ onMounted(() => {
                     // 触发补料，设立一个监控器，监控溶氧，ph，转速，且关系如果在这个范围内执行补料并销毁
                     const currentValues = DeviceManage.deviceList[Math.floor(feedSet.id / 2)].nowData;
                     let triggers = {
-                        oxygen: feedSet.supplementSwitch.trigger.dissolvedOxygen.selected && currentValues.oxygen_percentage >= feedSet.supplementSwitch.trigger.dissolvedOxygen.lowerLimit && currentValues.oxygen_percentage <= feedSet.supplementSwitch.trigger.dissolvedOxygen.upperLimit,
-                        pH: feedSet.supplementSwitch.trigger.pH.selected && currentValues.timing_PH >= feedSet.supplementSwitch.trigger.pH.lowerLimit && currentValues.timing_PH <= feedSet.supplementSwitch.trigger.pH.upperLimit,
-                        speed: feedSet.supplementSwitch.trigger.speed.selected && currentValues.timing_motor_speed >= feedSet.supplementSwitch.trigger.speed.lowerLimit && currentValues.timing_motor_speed <= feedSet.supplementSwitch.trigger.speed.upperLimit,
+                        oxygen: feedSet.supplementSwitch.trigger.dissolvedOxygen.selected && currentValues.oxygen_percentage > feedSet.supplementSwitch.trigger.dissolvedOxygen.lowerLimit && currentValues.oxygen_percentage < feedSet.supplementSwitch.trigger.dissolvedOxygen.upperLimit,
+                        pH: feedSet.supplementSwitch.trigger.pH.selected && currentValues.timing_PH > feedSet.supplementSwitch.trigger.pH.lowerLimit && currentValues.timing_PH < feedSet.supplementSwitch.trigger.pH.upperLimit,
+                        speed: feedSet.supplementSwitch.trigger.speed.selected && currentValues.timing_motor_speed > feedSet.supplementSwitch.trigger.speed.lowerLimit && currentValues.timing_motor_speed < feedSet.supplementSwitch.trigger.speed.upperLimit,
                     };
                     
+                   if (debug){
+                       console.log(feedSet.supplementSwitch.trigger.logic)
+                       console.log('【触发补料】触发条件',triggers,currentValues.timing_motor_speed,feedSet.supplementSwitch.trigger.speed.lowerLimit,feedSet.supplementSwitch.trigger.speed.upperLimit)
+                   }
                     let shouldTrigger = false;
                     
-                    // 2是且，且就是选择的都得有，1是或，或就是选择的有一个就行
-                    if (feedSet.supplementSwitch.trigger.logic === 1) {
+                    // 0是且，且就是选择的都得有，1是或，或就是选择的有一个就行
+                    // 如果是且,这三个如果选中了都必须符合条件
+                    // 如果是或,这三个如果选中了只要一个符合条件就行
+                    if (feedSet.supplementSwitch.trigger.logic === 0) {
                         shouldTrigger = (!feedSet.supplementSwitch.trigger.dissolvedOxygen.selected || triggers.oxygen) && (!feedSet.supplementSwitch.trigger.pH.selected || triggers.pH) && (!feedSet.supplementSwitch.trigger.speed.selected || triggers.speed);
-                    } else if (feedSet.supplementSwitch.trigger.logic === 0) {
+                    } else if (feedSet.supplementSwitch.trigger.logic === 1) {
                         shouldTrigger = (feedSet.supplementSwitch.trigger.dissolvedOxygen.selected && triggers.oxygen) || (feedSet.supplementSwitch.trigger.pH.selected && triggers.pH) || (feedSet.supplementSwitch.trigger.speed.selected && triggers.speed);
                     } else {
                         return;
@@ -103,17 +109,17 @@ onMounted(() => {
                     // 触发补料，设立一个监控器，监控溶氧，ph，转速，且关系如果在这个范围内执行补料并销毁
                     const currentValues = DeviceManage.deviceList[Math.floor(feedSet.id / 2)].nowData;
                     let related = {
-                        oxygen: feedSet.supplementSwitch.related.dissolvedOxygen.selected && currentValues.oxygen_percentage >= feedSet.supplementSwitch.related.dissolvedOxygen.lowerLimit && currentValues.oxygen_percentage <= feedSet.supplementSwitch.related.dissolvedOxygen.upperLimit,
-                        pH: feedSet.supplementSwitch.related.pH.selected && currentValues.timing_PH >= feedSet.supplementSwitch.related.pH.lowerLimit && currentValues.timing_PH <= feedSet.supplementSwitch.related.pH.upperLimit,
-                        speed: feedSet.supplementSwitch.related.speed.selected && currentValues.timing_motor_speed >= feedSet.supplementSwitch.related.speed.lowerLimit && currentValues.timing_motor_speed <= feedSet.supplementSwitch.related.speed.upperLimit,
+                        oxygen: feedSet.supplementSwitch.related.dissolvedOxygen.selected && currentValues.oxygen_percentage > feedSet.supplementSwitch.related.dissolvedOxygen.lowerLimit && currentValues.oxygen_percentage < feedSet.supplementSwitch.related.dissolvedOxygen.upperLimit,
+                        pH: feedSet.supplementSwitch.related.pH.selected && currentValues.timing_PH > feedSet.supplementSwitch.related.pH.lowerLimit && currentValues.timing_PH < feedSet.supplementSwitch.related.pH.upperLimit,
+                        speed: feedSet.supplementSwitch.related.speed.selected && currentValues.timing_motor_speed > feedSet.supplementSwitch.related.speed.lowerLimit && currentValues.timing_motor_speed < feedSet.supplementSwitch.related.speed.upperLimit,
                     };
                     
                     let shouldRelated = false;
                     
                     // 1是且，且就是选择的都得有，0是或，或就是选择的有一个就行
-                    if (feedSet.supplementSwitch.related.logic === 1) {
+                    if (feedSet.supplementSwitch.related.logic === 0) {
                         shouldRelated = (!feedSet.supplementSwitch.related.dissolvedOxygen.selected || related.oxygen) && (!feedSet.supplementSwitch.related.pH.selected || related.pH) && (!feedSet.supplementSwitch.related.speed.selected || related.speed);
-                    } else if (feedSet.supplementSwitch.related.logic === 0) {
+                    } else if (feedSet.supplementSwitch.related.logic === 1) {
                         shouldRelated = (feedSet.supplementSwitch.related.dissolvedOxygen.selected && related.oxygen) || (feedSet.supplementSwitch.related.pH.selected && related.pH) || (feedSet.supplementSwitch.related.speed.selected && related.speed);
                     } else {
                         return;

@@ -205,7 +205,7 @@ const initTableData = () => {
 
   const deviceProperties = [
       {name: '状态', prop: 'DO_flag'}, // 0: 停止, 1: 自动
-    {name: '测量值-%', prop: 'timing_DO'},
+    {name: '测量值-%', prop: 'oxygen_percentage'},
     {name: '设定值-%', prop: 'target_DO'},
       {name: '比例P', prop: 'DO_KP'},
       {name: '积分I', prop: 'DO_KI'},

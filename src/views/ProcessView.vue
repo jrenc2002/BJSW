@@ -243,7 +243,7 @@
                                    <div class="inline-flex w-[5rem] justify-center gap-x-1.5 scale-75">
                                           <div class="m-1  w-[7rem] text-[#000000]  "
                                           >{{
-                                                  (localCache.TemperatureData.heatpower > 0 && !localCache.TemperatureData.water_flag) ? '加热' : ((localCache.TemperatureData.water_flag) ? '制冷' : '--')
+                                                  (localCache.TemperatureData.heatpower > 0 && !localCache.TemperatureData.water_flag) ? '加热' : ((localCache.TemperatureData.water_flag) ? '冷却' : '--')
                                               }}</div>
                                         </div>
                                       </div>
@@ -664,7 +664,7 @@ const initDataManger = () => {
     let currentDevice = DeviceManage.deviceList[AppGlobal.pageChance].nowData;
     let setDevice = DeviceManage.deviceList[AppGlobal.pageChance].deviceSet;
     
-    localCache.DoData.MeasureData = formatData(currentDevice.timing_DO);
+    localCache.DoData.MeasureData = formatData(currentDevice.oxygen_percentage);
     localCache.DoData.DO_flag = currentDevice.DO_flag;
     localCache.RPMData.NowSpeed = currentDevice.timing_motor_speed;
     

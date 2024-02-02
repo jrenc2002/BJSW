@@ -238,7 +238,7 @@ const initTableData = () => {
         {name: '转速 r/min', prop: 'timing_motor_speed'},
         {name: '温度 ℃', prop: 'timing_temp'},
         {name: 'PH值', prop: 'timing_PH'},
-        {name: '溶氧 %', prop: 'timing_DO'},
+        {name: '溶氧 %', prop: 'oxygen_percentage'},
         {name: '酸泵 ml', prop: 'acid_pump'},
         {name: '碱泵 ml', prop: 'lye_pump'},
         {name: '补料泵1 ml', prop: 'defoamer_pump'},

@@ -460,7 +460,7 @@
                                                                                 <MenuButton
                                                                                         class="inline-flex w-[7rem] justify-center gap-x-1.5">
                                                                                     {{
-                                                                                        (localCache.temperatureControl.heatpower > 0 && !localCache.temperatureControl.condensate_water_flag) ? '加热' : ((localCache.temperatureControl.condensate_water_flag) ? '制冷' : '--')
+                                                                                        (localCache.temperatureControl.heatpower > 0 && !localCache.temperatureControl.condensate_water_flag) ? '加热' : ((localCache.temperatureControl.condensate_water_flag) ? '冷却' : '--')
                                                                                     }}
                                                            
                                                                                 </MenuButton>

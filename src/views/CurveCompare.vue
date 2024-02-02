@@ -151,7 +151,7 @@ function updateRecentChartData() {
         if (device.selected) {
             ChartsData.paramSelected.forEach((param) => {
                 if (param.selected) {
-                    window.Electron.ipcRenderer.invoke('get-recent-fermentation-data', device.deviceNum, param.fieldName, 10).then(
+                    window.Electron.ipcRenderer.invoke('get-recent-fermentation-data', device.deviceNum, param.fieldName, 10000).then(
                         (res) => {
                         
                             if (res) {
@@ -164,7 +164,7 @@ function updateRecentChartData() {
                                 if (existingSeries) {
                                  
                                     // 合并数据，并确保数据不超过10000条
-                                    existingSeries.data = mergeChartData(existingSeries.data, newData);
+                                    existingSeries.data = newData;
                                 }
                             } else {
                                 console.error('请求批次内容数据没请求到.');
@@ -184,7 +184,7 @@ function updateRecentChartData() {
 }
 
 function mergeChartData(existingData, newData) {
-
+    // todo 代码有bug
     const maxSize = 10000;
     // 去除与最新10条数据重复的数据
     newData.forEach(itemB => {

@@ -1,21 +1,22 @@
 <template>
-  <div :id="props.id" ref="chartDiv" :style="{ width: '98%', height: '98%' }"></div>
+    <div :id="props.id" ref="chartDiv" :style="{ width: '98%', height: '98%' }"></div>
 </template>
 <script lang="ts" name="checkReport" setup>
-import {defineProps, onMounted, ref, onUnmounted, watch} from 'vue';
+import {defineProps, onMounted, onUnmounted, ref, watch} from 'vue';
 // Echarts 为init（dom元素后的类型）
 // EChartsOption 为 option 的类型
 import {ECharts, EChartsOption, init} from 'echarts';
 import {useChartsData} from "@/store/ChartsData";
 import {useAppGlobal} from "@/store/AppGlobal";
 import {useRoute} from "vue-router";
+
 const debug = true;
 
 const AppGlobal = useAppGlobal();
-const ChartsData= useChartsData()
+const ChartsData = useChartsData()
 const props = defineProps<{
-  id: any ,
-  data:any
+    id: any,
+    data: any
 }>();
 let chartEch: ECharts | null = null;
 const rootRef = ref();
@@ -80,15 +81,14 @@ const updateChart = async () => {
                 params.forEach((param, index) => {
                     // 帮我分割出-字符串
                     const str = param.seriesName.split('-')
-                    if (chartScale[str[1]]!==0){
+                    if (chartScale[str[1]] !== 0) {
                         result += `${param.seriesName}: ${(param.value[1] * chartScale[str[1]])?.toFixed(2)}${unit[str[1]]} <br>`;
-    
-                    }
-                    else {
+                        
+                    } else {
                         result += `${param.seriesName}: ${(param.value[1])?.toFixed(2)}${unit[str[1]]} <br>`;
-    
+                        
                     }
-                           });
+                });
                 return result;
             }
         },
@@ -157,19 +157,19 @@ const updateChart = async () => {
 
 watch(() => AppGlobal.isDrawerState, (newData, oldValue) => {
     setTimeout(() => {
-    updateChart();
-}, 300);
-
+        updateChart();
+    }, 300);
+    
 })
 
 
 const route = useRoute();
 const updateTimer = ref<any>(null);
+
 // 创建定时器的函数
-function startTimer(){
+function startTimer() {
     updateTimer.value = setInterval(async () => {
         // 这里放置定时器的逻辑
-    
         if (ChartsData.dataSeries.length > 0) {
             if (chartEch !== null) {
                 if (debug) {
@@ -185,25 +185,25 @@ function startTimer(){
 }
 
 // 曲线k值函数,将曲线数据除k值
-const kValue = (dataSeries:any) => {
-    const chartScale={
-        '溶氧':AppGlobal.chartScale.do_k,
-        'PH':AppGlobal.chartScale.ph_k,
-        '温度':AppGlobal.chartScale.temp_k,
-        '转速':AppGlobal.chartScale.rpm_k,
-        '酸泵补料量':AppGlobal.chartScale.acid_ml_k,
-        '碱泵补料量':AppGlobal.chartScale.lye_ml_k,
-        '补料一补料量':AppGlobal.chartScale.feed0_ml_k,
-        '补料二补料量':AppGlobal.chartScale.feed_ml_k,
-        '补料一流速':AppGlobal.chartScale.feed0_ml_h_k,
-        '补料二流速':AppGlobal.chartScale.feed_ml_h_k,
+const kValue = (dataSeries: any) => {
+    const chartScale = {
+        '溶氧': AppGlobal.chartScale.do_k,
+        'PH': AppGlobal.chartScale.ph_k,
+        '温度': AppGlobal.chartScale.temp_k,
+        '转速': AppGlobal.chartScale.rpm_k,
+        '酸泵补料量': AppGlobal.chartScale.acid_ml_k,
+        '碱泵补料量': AppGlobal.chartScale.lye_ml_k,
+        '补料一补料量': AppGlobal.chartScale.feed0_ml_k,
+        '补料二补料量': AppGlobal.chartScale.feed_ml_k,
+        '补料一流速': AppGlobal.chartScale.feed0_ml_h_k,
+        '补料二流速': AppGlobal.chartScale.feed_ml_h_k,
     }
-    dataSeries.forEach((item:any) => {
-        item.data.forEach((itemData:any) => {
-            if (chartScale[item.name.split('-')[1]]!==0){
-                itemData[1] = itemData[1]/chartScale[item.name.split('-')[1]]
+    dataSeries.forEach((item: any) => {
+        item.data.forEach((itemData: any) => {
+            if (chartScale[item.name.split('-')[1]] !== 0) {
+                itemData[1] = itemData[1] / chartScale[item.name.split('-')[1]]
             }
- 
+            
         })
     })
     return dataSeries
@@ -239,7 +239,7 @@ watch(() => ChartsData.dataLegend, () => {
 }, {deep: true});
 /* ——————————————————————————生命周期配置—————————————————————————— */
 onMounted(() => {
-  // 这里是由于图表渲染快于父元素导致图表比例溢出，做的一个延缓操作
+    // 这里是由于图表渲染快于父元素导致图表比例溢出，做的一个延缓操作
     setTimeout(() => {
         if (chartDiv.value) {
             chartEch = init(chartDiv.value);
@@ -250,8 +250,11 @@ onMounted(() => {
             });
             
             updateChart();
+    
+            startTimer();
         }
     }, 100); // 延迟 500 毫秒
+    
 });
 onUnmounted(() => {
     if (chartEch) {

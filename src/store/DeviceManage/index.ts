@@ -32,7 +32,7 @@ interface SetData {
     lye_pump_sum_step_count: number; 		//整个PH控制过程碱泵总步数
     lye_pump_now_speed: number;         //碱泵当前速度-泵速==0为关闭
     
-
+    
     /*温控部分变量*/
     timing_temp: number;          //实时温度值
     heatpower: number;						//加热毯实时功率
@@ -60,9 +60,9 @@ interface SetData {
     DO_lower_limit: number;				//DO下限值
     DO_area_upper_limit: number;	//DO死区上限值
     DO_area_lower_limit: number;	//DO死区下限值
-     PH_area_limit: number;  //PH死区限制
-     Temp_area_limit: number; //温度死区限制
-     DO_area_limit: number;//DO死区限制
+    PH_area_limit: number;  //PH死区限制
+    Temp_area_limit: number; //温度死区限制
+    DO_area_limit: number;//DO死区限制
     DO_flag: number;								//氧含量控制开启标志位
     target_motor_speed: number;			//手动设定电机转速
     timing_motor_speed: number;			//电机实时转速
@@ -126,7 +126,7 @@ interface SetData {
     communicate_flag: number;   						//通讯连接成功标志位
     decive_id: any;
     
-     Turn_off_motor_flag: number;
+    Turn_off_motor_flag: number;
 }
 
 interface deviceSet {
@@ -211,8 +211,8 @@ const state = (): {
                 name: '设备A',
                 deviceNum: "RM000001",
                 batch_name: null,
-                ip: 's4.v100.vip',
-                port: 24512,
+                ip: '192.168.1.2',
+                port: 2000,
                 batch_cycle: 0,
                 state: 0,
                 nowData: null,
@@ -715,7 +715,7 @@ export const useDeviceManage = defineStore('DeviceManage', {
                     
                     const currentDeviceSet = this.deviceList[index].deviceSet as deviceSet;
                     if (debug) {
-                        console.log('【更新数据】设备报警状态', newDeviceData.timing_temp, newDeviceData.timing_PH, newDeviceData.timing_DO, currentDeviceSet)
+                        console.log('【更新数据】设备报警状态', newDeviceData.timing_temp, newDeviceData.timing_PH, newDeviceData.oxygen_percentage, currentDeviceSet)
                     }
                     let isAlarmFlag = false;
                     if (!(newDeviceData.timing_temp >= currentDeviceSet.tempMinWarn &&
@@ -736,13 +736,13 @@ export const useDeviceManage = defineStore('DeviceManage', {
                             console.log('【更新数据】设备PH报警状态', currentDeviceSet.phMaxWarn, currentDeviceSet.phMinWarn, newDeviceData.timing_PH)
                         }
                     }
-                    if (!(newDeviceData.timing_DO >= currentDeviceSet.doMinWarn &&
-                        newDeviceData.timing_DO <= currentDeviceSet.doMaxWarn)) {
+                    if (!(newDeviceData.oxygen_percentage >= currentDeviceSet.doMinWarn &&
+                        newDeviceData.oxygen_percentage <= currentDeviceSet.doMaxWarn)) {
                         this.deviceList[index].state = 3;
                         currentDeviceSet.doState = 1;
                         isAlarmFlag = true;
                         if (debug) {
-                            console.log('【更新数据】设备DO报警状态', currentDeviceSet.doMaxWarn, currentDeviceSet.doMinWarn, newDeviceData.timing_DO)
+                            console.log('【更新数据】设备DO报警状态', currentDeviceSet.doMaxWarn, currentDeviceSet.doMinWarn, newDeviceData.oxygen_percentage)
                         }
                     }
                     if (!isAlarmFlag && newDeviceData.communicate_flag === 1 && newDeviceData.start_flag === 1) {
@@ -766,11 +766,10 @@ export const useDeviceManage = defineStore('DeviceManage', {
                     this.deviceList[index]!.deviceSet!.defoamerPumpSumStepCount = newDeviceData.feed0_pump_sum_step_count * newDeviceData.feed0PumpSpeed;
                     this.deviceList[index]!.deviceSet!.feedPumpSumStepCount = newDeviceData.feed_pump_sum_step_count * newDeviceData.feedPumpSpeed;
                 }
-               
-                    console.log('【更新数据】补料量为', this.deviceList[index].deviceSet)
-               
-    
-    
+                
+                console.log('【更新数据】补料量为', this.deviceList[index].deviceSet)
+                
+                
                 // 获取相对时间单位为h
                 const relativeTime = this.deviceList[index].start_time !== null ? ((currentDate.getTime() - this.deviceList[index].start_time.getTime()) / 1000 / 60 / 60) : 0;
                 
@@ -800,7 +799,7 @@ export const useDeviceManage = defineStore('DeviceManage', {
                     batch_name: this.deviceList[index].batch_name,
                     timing_temp: newDeviceData.timing_temp,
                     timing_PH: newDeviceData.timing_PH,
-                    timing_DO: newDeviceData.timing_DO,
+                    timing_DO: newDeviceData.oxygen_percentage,
                     timing_motor_speed: newDeviceData.timing_motor_speed,
                     relative_time: relativeTime,
                     absolute_time: currentDate,
@@ -816,9 +815,9 @@ export const useDeviceManage = defineStore('DeviceManage', {
                 window.Electron.ipcRenderer.invoke('add-fermentation-data', fermentationData).then(
                     (res) => {
                         if (res) {
-                            // if (debug) {
-                            //     console.log('【更新数据】已存储数据', fermentationData);
-                            // }
+                            if (debug) {
+                                console.log('【更新数据】已存储数据', fermentationData);
+                            }
                             
                         } else {
                             throw new Error('添加数据失败');
