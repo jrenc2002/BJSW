@@ -418,8 +418,8 @@
                                          class="w-2 h-2  rounded-full"></div>
                                 </div>
                                 
-                                <div :class="[stateManger.DefoamerPump?'text-white bg-[#E4DDA4]':'bg-white']"
-                                     class=" h-full w-[4.3rem]  flex justify-center items-center rounded mx-1 border-gray-300 border "
+                                <div
+                                     class=" h-full w-[4.3rem]  flex justify-center items-center rounded mx-1 bg-white border-gray-300 border "
                                 >
                                     补料泵1
                                 </div>
@@ -457,13 +457,13 @@
                                          class="w-2 h-2  rounded-full"></div>
                                 </div>
                                 
-                                <div :class="[stateManger.FeedPump?'text-white bg-[#9AD1B5]':'bg-white']"
-                                     class=" h-full w-[4.3rem]  flex justify-center items-center rounded mx-1 border-gray-300 border "
+                                <div
+                                     class=" h-full w-[4.3rem]  flex bg-white justify-center items-center rounded mx-1 border-gray-300 border "
                                 >
                                     补料泵2
                                 </div>
-                                <div :class="[stateManger.AddFeed?'text-white bg-[#9AD1B5]':'bg-white']"
-                                     class=" h-full w-[4.3rem] shadow flex justify-center items-center rounded mx-2 cursor-pointer "
+                                <div
+                                     class=" h-full w-[4.3rem] shadow flex bg-white justify-center items-center rounded mx-2 cursor-pointer "
                                      @click="popProcessManager('补料设置')">
                                     设置
                                 </div>
