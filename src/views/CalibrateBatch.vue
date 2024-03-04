@@ -169,7 +169,7 @@
                 </div>
                 <!--蠕动泵标定-->
                 <div
-                        class="w-[35rem] h-[20rem] relative bg-white overflow-hidden bg-opacity-80 border border-gray-100 rounded-xl shadow m-3">
+                        class="w-[40rem] h-[20rem] relative bg-white overflow-hidden bg-opacity-80 border border-gray-100 rounded-xl shadow m-3">
                     <div class="w-full h-[4rem] left-0 top-0 relative bg-blue-50">
                         <div
                                 class="w-full h-full ml-5 relative flex items-center justify-start text-black text-xl font-normal font-['Inter'] leading-none  gap-2">
@@ -231,7 +231,7 @@
                             <input
                                     v-if="(CalibrationPumpSet.acidPumpKind&&DeviceManage.deviceList[AppGlobal.pageChance].nowData!==null&&CalibrationPumpSet.isAcidFinish==true)"
                                     v-model="CalibrationPumpSet.acidVolume"
-                                    class="  w-[6rem] h-full  relative bg-white bg-opacity-80 rounded-[5px] border border-zinc-400 pl-2"
+                                    class="  w-[5rem] h-full  relative bg-white bg-opacity-80 rounded-[5px] border border-zinc-400 pl-2"
                                     placeholder="体积/ml"/>
                             
                             <!--对号-->
@@ -282,6 +282,10 @@
                                     DeviceManage.deviceList[AppGlobal.pageChance] != null && DeviceManage.deviceList[AppGlobal.pageChance].deviceSet.acidPumpSpeed == 0 ? '标定结果' : DeviceManage.deviceList[AppGlobal.pageChance].deviceSet.acidPumpSpeed
                                 }}
                             </div>
+    
+                            <input v-model="Cache.acidPumpSpeed" @blur="paramSend('acidPumpSpeed',AppGlobal.pageChance,Cache.acidPumpSpeed)"
+                                   placeholder="手动填写"
+                                   class="w-[6rem] h-full  flex items-center relative bg-white bg-opacity-80 rounded-[5px] border border-zinc-400 pl-2"/>
                         </div>
                     </div>
                     <div class="w-full h-[4rem] relative  flex items-center justify-center ">
@@ -387,6 +391,10 @@
                                     DeviceManage.deviceList[AppGlobal.pageChance] != null && DeviceManage.deviceList[AppGlobal.pageChance].deviceSet.lyePumpSpeed == 0 ? '标定结果' : DeviceManage.deviceList[AppGlobal.pageChance].deviceSet.lyePumpSpeed
                                 }}
                             </div>
+                 
+                            <input v-model="Cache.lyePumpSpeed" @blur="paramSend('lyePumpSpeed',AppGlobal.pageChance,Cache.lyePumpSpeed)"
+                                   placeholder="手动填写"
+                                   class="w-[6rem] h-full  flex items-center relative bg-white bg-opacity-80 rounded-[5px] border border-zinc-400 pl-2"/>
                         </div>
                     </div>
                     <div class="w-full h-[4rem] relative  flex items-center justify-center ">
@@ -492,6 +500,10 @@
                                     DeviceManage.deviceList[AppGlobal.pageChance] != null && DeviceManage.deviceList[AppGlobal.pageChance].deviceSet.defoamerPumpSpeed == 0 ? '标定结果' : DeviceManage.deviceList[AppGlobal.pageChance].deviceSet.defoamerPumpSpeed
                                 }}
                             </div>
+                   
+                            <input v-model="Cache.defoamerPumpSpeed" @blur="paramSend('defoamerPumpSpeed',AppGlobal.pageChance,Cache.defoamerPumpSpeed)"
+                                   placeholder="手动填写"
+                                   class="w-[6rem] h-full  flex items-center relative bg-white bg-opacity-80 rounded-[5px] border border-zinc-400 pl-2"/>
                         </div>
                     </div>
                     <div class="w-full h-[4rem] relative  flex items-center justify-center ">
@@ -597,6 +609,10 @@
                                     DeviceManage.deviceList[AppGlobal.pageChance] != null && DeviceManage.deviceList[AppGlobal.pageChance].deviceSet.feedPumpSpeed == 0 ? '标定结果' : DeviceManage.deviceList[AppGlobal.pageChance].deviceSet.feedPumpSpeed
                                 }}
                             </div>
+                 
+                            <input v-model="Cache.feedPumpSpeed" @blur="paramSend('feedPumpSpeed',AppGlobal.pageChance,Cache.feedPumpSpeed)"
+                                   placeholder="手动填写"
+                                   class="w-[6rem] h-full  flex items-center relative bg-white bg-opacity-80 rounded-[5px] border border-zinc-400 pl-2"/>
                         </div>
                     </div>
                 
@@ -628,6 +644,12 @@ const DeviceManage = useDeviceManage();
 //     console.log(DeviceManage.deviceList[AppGlobal.pageChance].nowData.DO_zero_calibration_flag)
 // }, {deep: true});
 
+const Cache =ref({
+    acidPumpSpeed: 0,
+    lyePumpSpeed: 0,
+    feedPumpSpeed: 0,
+    defoamerPumpSpeed: 0,
+})
 
 const CalibrationPumpSet = reactive({
     acidPumpKind: false,
@@ -685,6 +707,14 @@ const SendToHandle = (() => {
     
 })
 
+const paramSend = ((name, index, content) => {
+    // 使用方括号来设置动态属性名
+    const data = {
+        [name]: content
+    };
+    sendData(index, data);
+    
+});
 
 const DoCalibrate = ((data) => {
     if (data === 'zeroBegin') {

@@ -20,9 +20,37 @@ onMounted(() => {
     // 遍历数组创建监听器
     DeviceManage.supplementSystem.forEach((feedDevice, deviceIndex) => {
         feedDevice.forEach((feedSet) => {
+    
             let isSupplementing = false;
             let coolingTimer = null;
             let supplementTimer = null;
+            
+            watch(() => feedSet.totalSwitch, (newValues, oldValues) => {
+                if (newValues===false){
+                    isSupplementing=false;
+                    coolingTimer=null;
+                    controlSend('持续补料', deviceIndex, feedSet, 0);
+                    console.log('---------------触发监听---------------')
+                }
+            });
+            watch(() => feedSet.controlMethod.single, (newValues, oldValues) => {
+
+                    isSupplementing=false;
+                    coolingTimer=null;
+                    controlSend('持续补料', deviceIndex, feedSet, 0);
+                    console.log('---------------触发监听---------------')
+                
+            },{deep:true});
+            watch(() => feedSet.supplementSwitch.manual, (newValues, oldValues) => {
+    
+                if (newValues===false){
+                    isSupplementing=false;
+                    coolingTimer=null;
+                    controlSend('持续补料', deviceIndex, feedSet, 0);
+                    console.log('---------------触发监听---------------')
+                }
+        
+            },{deep:true});
             
             // 创建定时器
             const timer = setInterval(() => {
@@ -31,12 +59,9 @@ onMounted(() => {
                 }
                 // 前置检验未通过会跳过
                 const checkResult=checkDevice(feedSet.id)
-                if (checkResult==='关闭开关') {
-                    console.log('【前置检验】设备关闭开关')
-                    controlSend('持续补料', deviceIndex, feedSet, 0);
-                    return;
-                }
+         
                 if (!checkResult) {
+
                     return;
                 }
                 if (debug) {
@@ -48,11 +73,15 @@ onMounted(() => {
                 // 补料开关逻辑判断
                 if (feedSet.supplementSwitch.type === 0) {
                     // 等于0的时候就跳过，因为补料与否都无所谓
+                    isSupplementing=false;
+                    coolingTimer=null;
+                    controlSend('持续补料', deviceIndex, feedSet, 0);
                     return;
                 }
                 else if (feedSet.supplementSwitch.type === 1) {
                     // 是否进行手动补料，如果为false就不补，跳过
                     if (!feedSet.supplementSwitch.manual) {
+             
                         return;
                     }
                 }
@@ -160,12 +189,19 @@ onMounted(() => {
                         confirmButton: false,
                         cancelButtonText: '取消',
                     });
+                    isSupplementing=false;
+                    coolingTimer=null;
                     return;
                 }
                 if (debug) {
                     console.log('补料方式：' + feedMethod);
                 }
                 // ————————————————— 控制方式的逻辑判断 —————————————————————————
+                if (feedSet.controlMethod.type !== 1){
+                    isSupplementing=false;
+                    coolingTimer=null;
+                }
+                
                 if (feedSet.controlMethod.type === 1) {
                     // 单次补料
                     // 目前问题是，我单次补料其实要有一个时间维度的考量的，分段，线性，幂函数。对于后者线性和幂的话，是可以通过T0
@@ -196,13 +232,22 @@ onMounted(() => {
                             // 标记补料结束
                             feedSet.isSupplementing = false;
                             
-                            // 进入冷却周期
-                            coolingTimer = setTimeout(() => {
-                                
-                                // 清除冷却周期定时器标识
-                                feedSet.coolingTimer = null;
-                                
-                            }, feedSet.controlMethod.single.cycle * 1000); // 将冷却周期转换为毫秒
+                            if (feedSet.controlMethod.single.cycle>0){
+                                // 进入冷却周期
+                                coolingTimer = setTimeout(() => {
+                                    if (debug){
+                                        console.log('【单次补料】冷却周期进行中')
+                                    }
+                                    // 清除冷却周期定时器标识
+                                    coolingTimer = null;
+                                    // feedSet.
+                                }, feedSet.controlMethod.single.cycle * 1000); // 将冷却周期转换为毫秒
+                            }
+                            if (feedSet.supplementSwitch.type === 1) {
+                                // 手动补料
+                                feedSet.supplementSwitch.manual = false;
+                            }
+                   
                             
                             // 清除补料定时器标识
                             supplementTimer = null;
@@ -403,9 +448,9 @@ onMounted(() => {
             timerGroup.set(feedSet.id, timer);
         })
     })
-    
-    
+
 })
+
 /*
 * @name: controlSend 控制发送函数
 * @param: name:补料方式，index:设备编号，feedSet:补料数据，content:补料速度
@@ -468,7 +513,7 @@ function checkDevice(feedDeviceID) {
     const isPower = DeviceManage.deviceList[Math.floor(feedDeviceID / 2)].state > 1;
     // 总开关是否开启
     const isSwitch = DeviceManage.supplementSystem[Math.floor(feedDeviceID / 2)][feedDeviceID % 2]?.totalSwitch !== undefined ? DeviceManage.supplementSystem[Math.floor(feedDeviceID / 2)][feedDeviceID % 2].totalSwitch : false;
-
+    
     
     return isPower && isSwitch;
 }

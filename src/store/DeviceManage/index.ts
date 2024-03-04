@@ -211,6 +211,8 @@ const state = (): {
                 name: '设备A',
                 deviceNum: "RM000001",
                 batch_name: null,
+                // ip: 's4.v100.vip',
+                // port: 24512,
                 ip: '192.168.1.3',
                 port: 2000,
                 batch_cycle: 0,

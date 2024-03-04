@@ -685,14 +685,15 @@
                                             冷却周期
                                         </div>
                                         <input id="name" v-model="localCache.controlMethod.single.cycle"
+                                               v-if="localCache.supplementSwitch.type===3"
                                                class="block w-[80%]  border-b-2  m-2" name="name"
                                                placeholder="单位 s" required
                                                type="number"/>
+                                        <input type="text" v-if="localCache.supplementSwitch.type!==3" class="block w-[80%]  border-b-2  m-2 cursor-no-drop bg-gray-200 " disabled/>
                                     
                                     </div>
                                 </div>
                             </div>
-                            <div v-if="localCache.supplementSwitch.type!==3" class=" absolute top-0 left-0 rounded-2xl w-full h-full bg-gray-200 opacity-50"></div> <!-- 遮罩层 -->
                         
                         </div>
                         <!--恒速补料-->

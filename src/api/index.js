@@ -337,17 +337,7 @@ function onDataReceived(data) {
             
             return jsonData
         } catch (error) {
-            Swal.fire({
-                icon: 'warning', //error\warning\info\question
-                title: '通讯警告',
-                text: '通讯报错，请检查设备连接',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: '确认',
-                confirmButton: false,
-                cancelButtonText: '取消',
-            });
+
             console.log("通讯报错，请检查设备连接", completeData,error)
             return -1
         }
