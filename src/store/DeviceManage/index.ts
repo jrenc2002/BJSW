@@ -186,7 +186,7 @@ interface Device {
     start_time: any;
     batch_name: any;
     alarm: boolean;
-    deviceSet: deviceSet | null
+    deviceSet: deviceSet;
     batch_cycle: number;
     recordFlag: boolean;
     batch_id: number | null;
@@ -799,21 +799,22 @@ export const useDeviceManage = defineStore('DeviceManage', {
                     can_number: newDeviceData.decive_id,
                     batch_id: this.deviceList[index].batch_id,
                     batch_name: this.deviceList[index].batch_name,
-                    timing_temp: newDeviceData.timing_temp,
-                    timing_PH: newDeviceData.timing_PH,
-                    timing_DO: newDeviceData.oxygen_percentage,
-                    timing_motor_speed: newDeviceData.timing_motor_speed,
+                    timing_temp: parseFloat(newDeviceData.timing_temp.toFixed(1)),
+                    timing_PH: parseFloat(newDeviceData.timing_PH.toFixed(2)),
+                    timing_DO: Math.floor(newDeviceData.oxygen_percentage),
+                    timing_motor_speed: Math.floor(newDeviceData.timing_motor_speed),
                     relative_time: relativeTime,
                     absolute_time: currentDate,
-                    acid_ml: this.deviceList[index]?.deviceSet?.acidPumpSumStepCount,
-                    lye_ml: this.deviceList[index].deviceSet?.lyePumpSumStepCount,
-                    clean_ml: this.deviceList[index].deviceSet?.defoamerPumpSumStepCount,
-                    feed_ml: this.deviceList[index].deviceSet?.feedPumpSumStepCount,
+                    acid_ml: parseFloat(this.deviceList[index].deviceSet.acidPumpSumStepCount.toFixed(2)),
+                    lye_ml: parseFloat(this.deviceList[index].deviceSet.lyePumpSumStepCount.toFixed(2)),
+                    clean_ml: parseFloat(this.deviceList[index].deviceSet.defoamerPumpSumStepCount.toFixed(2)),
+                    feed_ml: parseFloat(this.deviceList[index].deviceSet.feedPumpSumStepCount.toFixed(2)),
                     defoamerPumpSpeed: newDeviceData.feed0PumpSpeed,
                     feedPumpSpeed: newDeviceData.feedPumpSpeed,
                     fermentation_flag: newDeviceData.start_flag,
                 };
-                
+                // 将数据保留两位小数
+                fermentationData.timing_temp = parseFloat(fermentationData.timing_temp.toFixed(2));
                 window.Electron.ipcRenderer.invoke('add-fermentation-data', fermentationData).then(
                     (res) => {
                         if (res) {
