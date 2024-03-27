@@ -196,7 +196,7 @@
                             </div>
                         
                         </div>
-                        <!--右侧-->
+                        <!--中侧-->
                         <div class="relative w-[22rem]   h-[calc(100%-1rem)]     flex-col flex justify-start items-center">
                             <!--报警参数-->
                             <div class="relative  shadow w-[19rem]      m-2 rounded-2xl  justify-start items-center  border border-gray-300">
@@ -368,6 +368,93 @@
                             </div>
                         
                         </div>
+                        <!--右侧-->
+                        <div class="relative w-[22rem]   h-[calc(100%-1rem)]     flex-col flex justify-start items-center">
+                            <div class="relative  shadow  h-[100%] overflow-y-auto  m-2 rounded-2xl flex-col flex justify-start items-center">
+                                <div class="w-full h-14 bg-[#DAF0E4] rounded-t-2xl flex justify-center items-center">分段补料设置</div>
+                                <div class="h-[calc(100%-3.5rem)] w-[23rem] justify-start items-center flex-col flex">
+                                    <div class="w-[calc(100%-0.5rem)] h-[85%] absolute overflow-y-auto">
+                                        <button class="flex m-2 w-[96%] text-sm hover:bg-green-50 border-2 p-4 border-[#83BA9B] rounded-lg justify-center items-center"
+                                                type="button" @click="updateTotalSegmentTime()">
+                                            <div class="w-1/5 text-center "> 序号</div>
+                    
+                                            <div class="w-1/5 text-center ">速度</div>
+                    
+                                            <div class="w-1/5 text-center ">设定时间</div>
+                    
+                                            <div class="w-1/5 text-center ">已分配</div>
+                    
+                                            <div class="w-1/5 text-center ">删除</div>
+                                        </button>
+                                        <form @submit.prevent="submitForm">
+                                            <div v-for="(item, index) in formData.items" :key="item.id"
+                                                 class="flex m-2 border-2 p-4 border-[#83BA9B] rounded-lg">
+                                                <input v-model="item.id" @blur="updateForm()" class="w-1/5 text-center  border" placeholder="序号" type="text">
+                                                <input v-model="item.supplementSpeed" @blur="updateForm()" class="w-1/5 text-center border" type="number"  placeholder="ml/h">
+                                                <input v-model="item.segmentTime" @blur="updateForm()" class="w-1/5 text-center border" type="number" placeholder="h">
+                                                <div  class="w-1/5 text-center bg-gray-100" disabled>{{item.totalSegmentTime}}h</div>
+                                                <button class="w-1/5 text-center" type="button" @click="removeItem(index)">删除
+                                                </button>
+                                            </div>
+                                        </form>
+                                        <button class="flex ml-2 w-[96%] hover:bg-green-50 border-2 p-4 border-[#83BA9B] rounded-lg justify-center items-center"
+                                                type="button"
+                                                @click="addItem">
+                                            <svg fill="none" height="20" viewBox="0 0 21 20" width="21"
+                                                 xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M11.5 9V0H9.5V9H0.5V11H9.5V20H11.5V11H20.5V9H11.5Z" fill="#83BA9B"/>
+                                            </svg>
+                                        </button>
+                                    </div>
+            
+                                    <div class="flex  w-full h-12 absolute bottom-2 justify-center items-center flex ">
+                                        <div class="absolute bg-[#83BA9B] text-white rounded-md w-32 h-10  p-2 left-6 justify-center items-center flex">发酵时间 {{ fermentationTime }}</div>
+                                        <div class="absolute   rounded-md w-36 h-10   right-6 justify-center items-center flex">
+                                            <div class="w-10 justify-start items-center flex">
+                                                <kbd class="kbd kbd-md">
+                                                    <svg aria-hidden="true" height="1.791ex" style=""
+                                                         viewBox="0 -626 764.6 791.6" width="1.73ex"
+                                                         xmlns="http://www.w3.org/2000/svg"
+                                                         xmlns:xlink="http://www.w3.org/1999/xlink">
+                                                        <defs>
+                                                            <path id="MJX-44-TEX-I-1D461"
+                                                                  d="M26 385Q19 392 19 395Q19 399 22 411T27 425Q29 430 36 430T87 431H140L159 511Q162 522 166 540T173 566T179 586T187 603T197 615T211 624T229 626Q247 625 254 615T261 596Q261 589 252 549T232 470L222 433Q222 431 272 431H323Q330 424 330 420Q330 398 317 385H210L174 240Q135 80 135 68Q135 26 162 26Q197 26 230 60T283 144Q285 150 288 151T303 153H307Q322 153 322 145Q322 142 319 133Q314 117 301 95T267 48T216 6T155 -11Q125 -11 98 4T59 56Q57 64 57 83V101L92 241Q127 382 128 383Q128 385 77 385H26Z"></path>
+                                                            <path id="MJX-44-TEX-N-30"
+                                                                  d="M96 585Q152 666 249 666Q297 666 345 640T423 548Q460 465 460 320Q460 165 417 83Q397 41 362 16T301 -15T250 -22Q224 -22 198 -16T137 16T82 83Q39 165 39 320Q39 494 96 585ZM321 597Q291 629 250 629Q208 629 178 597Q153 571 145 525T137 333Q137 175 145 125T181 46Q209 16 250 16Q290 16 318 46Q347 76 354 130T362 333Q362 478 354 524T321 597Z"></path>
+                                                        </defs>
+                                                        <g fill="currentColor" stroke="currentColor" stroke-width="0"
+                                                           transform="matrix(1 0 0 -1 0 0)">
+                                                            <g data-mml-node="math">
+                                                                <g data-mml-node="msub">
+                                                                    <g data-mml-node="mi">
+                                                                        <use xlink:href="#MJX-44-TEX-I-1D461"></use>
+                                                                    </g>
+                                                                    <g data-mml-node="mn"
+                                                                       transform="translate(361, -150) scale(0.707)">
+                                                                        <use xlink:href="#MJX-44-TEX-N-30"></use>
+                                                                    </g>
+                                                                </g>
+                                                            </g>
+                                                        </g>
+                                                    </svg>
+                                                </kbd>
+                                            </div>
+                                            <input id="name"
+                                                   class="block w-[6rem] border-b-2 m-2" name="name"
+                                                   placeholder="时间初始值" required
+                                                   type="number"/>
+                                        </div>
+            
+                                    </div>
+        
+                                </div>
+    
+    
+                            </div>
+
+
+                        </div>
+
                     </div>
                 
                 </div>
@@ -532,7 +619,49 @@ onUnmounted(() => {
 
 
 
+// 溶氧顺控
+const formData = reactive({
+    items: [
+    
+    ]
+});
 
+const addItem = () => {
+    const nextId = formData.items.length + 1;
+    
+    formData.items.push( { id: nextId, supplementSpeed: null, segmentTime: null, totalSegmentTime: null });
+    updateTotalSegmentTime();
+};
+
+const removeItem = (index) => {
+    formData.items.splice(index, 1);
+    updateTotalSegmentTime();
+};
+const updateTotalSegmentTime = () => {
+    // 重新排序 id
+    formData.items.forEach((item, index) => {
+        item.id = index + 1;
+    });
+    
+    // 计算 totalSegmentTime
+    formData.items.forEach((item, index) => {
+        let total = 0;
+        for (let i = 0; i < index+1; i++) {
+            
+            total += formData.items[i].segmentTime;
+        }
+        item.totalSegmentTime = total;
+    });
+};
+const updateForm= () => {
+    updateTotalSegmentTime();
+    submitForm();
+};
+const submitForm = () => {
+    // 本地缓存提交全局
+    DeviceManage.deviceList[AppGlobal.pageChance].SequenceControl.DO = formData.items
+    
+};
 </script>
 <style lang="scss" scoped>
 

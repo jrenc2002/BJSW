@@ -2,7 +2,7 @@
     <template v-if="localCache">
         <div class="h-[92vh] w-[82vw] overflow-auto relative transition-all duration-300 ease-in-out shadow bg-white rounded-2xl border-2  border-[#4EA67D] flex justify-start items-center">
             <!-- 关闭按钮 -->
-            <div class="bg-[#F5F5F5] z-10 fixed right-[9vw] top-[4vh] top-0 w-7 h-7 justify-center items-center flex rounded-2xl hover:bg-[#F8F8F8] cursor-pointer"
+            <div :class="[AppGlobal.isDrawerState? 'right-[calc(9vw-7rem)]':'right-[9vw]']" class="bg-[#F5F5F5] z-10 fixed transition-all duration-300 ease-in-out top-[4vh] top-0 w-7 h-7 justify-center items-center flex rounded-2xl hover:bg-[#F8F8F8] cursor-pointer"
                  @click="closePop">
                 <svg fill="none" height="16" viewBox="0 0 16 16" width="16" xmlns="http://www.w3.org/2000/svg">
                     <path d="M12 4.7L11.3 4L8 7.3L4.7 4L4 4.7L7.3 8L4 11.3L4.7 12L8 8.7L11.3 12L12 11.3L8.7 8L12 4.7Z"

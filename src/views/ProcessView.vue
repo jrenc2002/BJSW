@@ -259,38 +259,38 @@
                     <div class="  top-[10vh] absolute ">
                         <div class="grid grid-flow-col gap-5 text-center auto-cols-max">
                             <div class="flex flex-col">
-                                <span class="countdown font-mono text-4xl">
-                                  <span :style="'--value:'+countdown.days"></span>
+                                <span class=" font-mono text-4xl">
+                                  <span>{{countdown.days}}</span>
                                 </span>
                                 日
                             </div>
                             <div class="flex flex-col">
-                                <span class="countdown font-mono text-4xl">
-                                  <span :style="'--value:'+countdown.hours"></span>
+                                <span class=" font-mono text-4xl">
+                                  <span>{{countdown.hours}}</span>
                                 </span>
                                 小时
                             </div>
                             <div class="flex flex-col">
-                                <span class="countdown font-mono text-4xl">
-                                  <span :style="'--value:'+countdown.minutes"></span>
+                                <span class=" font-mono text-4xl">
+                                  <span>{{countdown.minutes}}</span>
                                 </span>
                                 分钟
                             </div>
                             <div class="flex flex-col">
-                                <span class="countdown font-mono text-4xl">
-                                  <span :style="'--value:'+countdown.seconds"></span>
+                                <span class=" font-mono text-4xl">
+                                  <span>{{countdown.seconds}}</span>
                                 </span>
                                 秒
                             </div>
                             <div class="flex flex-col">
                                 <div>
-                                          <span class="countdown font-mono text-4xl">
+                                          <span class=" font-mono text-4xl">
                                           
-                                  <span :style="'--value:'+fermentationHour"></span>.
+                                  <span>{{fermentationHour}}.</span>
                            </span>
-                                    <span class="countdown font-mono text-4xl">
+                                    <span class=" font-mono text-4xl">
                                     
-                                  <span :style="'--value:'+fermentationPart"></span>
+                                  <span>{{fermentationPart}}</span>
                            </span>
                                 </div>
                                 
@@ -933,7 +933,6 @@ function calculateTimeDifference() {
     };
     
     // 把当前时间给到t0
-    const nowDate = now.getTime();
     let diffhours =Math.floor((timeDiff % (24 * 3600000)) / 36000) / 100;
     fermentationPart.value = (diffhours - Math.floor(diffhours))*100
     fermentationHour.value = Math.floor(diffhours)*100

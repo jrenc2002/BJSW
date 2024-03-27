@@ -173,6 +173,36 @@ interface deviceSet {
     feedPumpSpeed: number;
     
 }
+interface SequenceControl {
+    
+    DO: {
+        id: number;
+        supplementSpeed: number;
+        segmentTime: number;
+        totalSegmentTime: number;
+    }[];
+    
+    PH: {
+        id: number;
+        supplementSpeed: number;
+        segmentTime: number;
+        totalSegmentTime: number;
+    }[];
+    
+    RPM: {
+        id: number;
+        supplementSpeed: number;
+        segmentTime: number;
+        totalSegmentTime: number;
+    }[];
+    
+    Temp: {
+        id: number;
+        supplementSpeed: number;
+        segmentTime: number;
+        totalSegmentTime: number;
+    }[];
+}
 
 interface Device {
     id: number;
@@ -190,6 +220,7 @@ interface Device {
     batch_cycle: number;
     recordFlag: boolean;
     batch_id: number | null;
+    SequenceControl:SequenceControl;
     
 }
 
@@ -247,6 +278,12 @@ const state = (): {
                     defoamerPumpSpeed: 0,
                     /** 补料泵单步速度 */
                     feedPumpSpeed: 0
+                },
+                SequenceControl: {
+                    DO:[],
+                    PH:[],
+                    RPM:[],
+                    Temp:[],
                 }
             },
         
@@ -480,6 +517,12 @@ export const useDeviceManage = defineStore('DeviceManage', {
                     defoamerPumpSpeed: 0,
                     /** 补料泵单步速度 */
                     feedPumpSpeed: 0
+                },
+                SequenceControl: {
+                    DO:[],
+                    PH:[],
+                    RPM:[],
+                    Temp:[],
                 }
             };
             
@@ -809,8 +852,8 @@ export const useDeviceManage = defineStore('DeviceManage', {
                     lye_ml: parseFloat(this.deviceList[index].deviceSet.lyePumpSumStepCount.toFixed(2)),
                     clean_ml: parseFloat(this.deviceList[index].deviceSet.defoamerPumpSumStepCount.toFixed(2)),
                     feed_ml: parseFloat(this.deviceList[index].deviceSet.feedPumpSumStepCount.toFixed(2)),
-                    defoamerPumpSpeed: newDeviceData.feed0PumpSpeed,
-                    feedPumpSpeed: newDeviceData.feedPumpSpeed,
+                    defoamerPumpSpeed: parseFloat(newDeviceData.feed0PumpSpeed.toFixed(2)),
+                    feedPumpSpeed: parseFloat(newDeviceData.feedPumpSpeed.toFixed(2)),
                     fermentation_flag: newDeviceData.start_flag,
                 };
                 // 将数据保留两位小数
