@@ -1273,10 +1273,10 @@
                             <form @submit.prevent="submitForm">
                                 <div v-for="(item, index) in formData.items" :key="item.id"
                                      class="flex m-2 border-2 p-4 border-[#83BA9B] rounded-lg">
-                                    <input v-model="item.id" @blur="updateForm()" class="w-1/5 text-center  border" placeholder="序号" type="text">
-                                    <input v-model="item.supplementSpeed" @blur="updateForm()" class="w-1/5 text-center border" type="number"  placeholder="ml/h">
-                                    <input v-model="item.segmentTime" @blur="updateForm()" class="w-1/5 text-center border" type="number" placeholder="h">
-                                    <div  class="w-1/5 text-center bg-gray-100" disabled>{{item.totalSegmentTime}}h</div>
+                                    <input v-model="item.id" @blur="updateForm()" class="w-1/5 text-center  border-y border-l" placeholder="序号" type="text">
+                                    <input v-model="item.supplementSpeed" @blur="updateForm()" class="w-1/5 text-center border-y border-l" type="number"  placeholder="ml/h">
+                                    <input v-model="item.segmentTime" @blur="updateForm()" class="w-1/5 text-center border-y border-l" type="number" placeholder="h">
+                                    <div  class="w-1/5 text-center bg-gray-100 border" disabled>{{item.totalSegmentTime}}h</div>
                                     <button class="w-1/5 text-center" type="button" @click="removeItem(index)">删除
                                     </button>
                                 </div>

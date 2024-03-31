@@ -41,7 +41,7 @@
         </div>
 
         <div>
-
+<!--todo 没输数据也会显示已经添加成功 && 输入提示颜色再淡一点-->
           <Transition name="fade">
             <div v-if="isExpanded" class="
               w-[25.7rem] h-[232px] border-[2px] border-[#83BA9B] rounded-[14px] fixed bottom-4 m-3 bg-white">
