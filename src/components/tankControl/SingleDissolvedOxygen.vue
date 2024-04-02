@@ -1,5 +1,6 @@
 <template>
-    <div class="h-[95vh] border transition-all duration-300 ease-in-out shadow bg-white rounded-2xl">
+    <div :class="[AppGlobal.isDrawerState? 'w-[calc(86vw-15rem)]':'w-[86vw]']"
+            class="h-[95vh]  border transition-all duration-300 ease-in-out shadow bg-white rounded-2xl">
         
         <!--    标题-->
         <div class="h-[3rem] self-stretch justify-start items-center  inline-flex mt-3  w-full ">
@@ -17,7 +18,7 @@
             </div>
         </div>
         <!--    表格栏-->
-        <div class="  w-[100%] h-[92%]     items-center justify-center  flex  ">
+        <div class="  w-[100%] h-[92%]  overflow-auto   items-center justify-center  flex  ">
             <div class="rounded-2xl  h-[calc(100%-1.5rem)] w-[calc(100%-1.5rem)]  items-center justify-center flex     ">
                 <div class=" w-full h-[100%] ">
                     <div class=" box-border  w-full h-full flex" style="overflow: auto;">
@@ -369,31 +370,37 @@
                         
                         </div>
                         <!--右侧-->
-                        <div class=" relative w-[22rem]   h-[calc(100%-1rem)]   mx-2    flex-col flex justify-start items-center">
+                        <div class=" relative w-[30rem]   h-[calc(100%-1rem)]   mx-2    flex-col flex justify-start items-center">
                             <div class="relative  shadow  h-[100%] overflow-y-auto  m-2 rounded-2xl flex-col flex justify-start items-center border border-gray-300">
-                                <div class="w-full h-14 rounded-t-2xl flex justify-center items-center text-lg font-medium">分段补料设置</div>
-                                <div class="h-[calc(100%-3.5rem)] w-[22rem] justify-start items-center flex-col flex">
+                                <div class="w-full h-14 rounded-t-2xl flex justify-center items-center text-lg font-medium">分段溶氧设置</div>
+                                <div class="h-[calc(100%-3.5rem)] w-[30rem] justify-start items-center flex-col flex">
                                     <div class="w-[calc(100%-0.5rem)] h-[85%] absolute">
-                                        <button class="flex m-2 w-[96%]  text-sm hover:bg-green-50 border-2 p-4 border-[#83BA9B] rounded-lg justify-center items-center"
+                                        <button class="flex m-2 w-[96%]  text-sm hover:bg-green-50 border-2 p-4 border-[#83BA9B] rounded-lg   justify-center items-center"
                                                 type="button" @click="updateTotalSegmentTime()">
-                                            <div class="w-1/5 text-center "> 序号</div>
+                                            <div class="w-[14.28%] text-center "> 序号</div>
                     
-                                            <div class="w-1/5 text-center ">速度</div>
+                                            <div class="w-[14.28%] text-center ">设定值</div>
                     
-                                            <div class="w-1/5 text-center ">设定值</div>
-
-                                            <div class="w-1/5 text-center ">已分配</div>
+                                            <div class="w-[14.28%] text-center ">转速上限</div>
+    
+                                            <div class="w-[14.28%] text-center ">转速下限</div>
+    
+                                            <div class="w-[14.28%] text-center ">设定值</div>
+                                            <div class="w-[14.28%] text-center ">已分配</div>
                     
-                                            <div class="w-1/5 text-center ">删除</div>
+                                            <div class="w-[14.28%] text-center ">删除</div>
                                         </button>
                                         <form @submit.prevent="submitForm">
                                             <div v-for="(item, index) in formData.items" :key="item.id"
-                                                 class="flex m-2 border-2 p-4 border-[#83BA9B] rounded-lg">
-                                                <input v-model="item.id" @blur="updateForm()" class="w-1/5 text-center  border-y border-l" placeholder="序号" type="text">
-                                                <input v-model="item.supplementSpeed" @blur="updateForm()" class="w-1/5 text-center border-y border-l" type="number"  placeholder="ml/h">
-                                                <input v-model="item.segmentTime" @blur="updateForm()" class="w-1/5 text-center border-y border-l" type="number" placeholder="h">
-                                                <div  class="w-1/5 text-center bg-gray-100 border" disabled>{{item.totalSegmentTime}}h</div>
-                                                <button class="w-1/5 text-center" type="button" @click="removeItem(index)">删除
+                                                 class="flex m-2 border-2 p-4 border-[#83BA9B] rounded-lg   justify-center items-center flex  ">
+                                                <input v-model="item.id" @blur="updateForm()" class="w-[14.28%] text-center  border" placeholder="序号" type="text">
+                                                <input v-model="item.setValue" @blur="updateForm()" class="w-[14.28%] text-center border-y border-r" type="number"  placeholder="%">
+                                                <input v-model="item.speedUpperLimit" @blur="updateForm()" class="w-[14.28%] text-center border-y border-r" type="number" placeholder="r">
+                                                <input v-model="item.speedLowerLimit" @blur="updateForm()" class="w-[14.28%] text-center border-y border-r" type="number" placeholder="r">
+                                                <input v-model="item.segmentTime" @blur="updateForm()" class="w-[14.28%] text-center border-y border-r" type="number" placeholder="h">
+    
+                                                <div  class=" text-center bg-gray-100 border-y border-r w-[14.28%]" disabled>{{item.totalSegmentTime}}h</div>
+                                                <button class=" text-center w-[14.28%]" type="button " @click="removeItem(index)">删除
                                                 </button>
                                             </div>
                                         </form>
@@ -590,7 +597,7 @@ const formData = reactive({
 const addItem = () => {
     const nextId = formData.items.length + 1;
     
-    formData.items.push( { id: nextId, supplementSpeed: null, segmentTime: null, totalSegmentTime: null });
+    formData.items.push( { id: nextId, setValue: null,speedUpperLimit:null,speedLowerLimit:null, segmentTime: null, totalSegmentTime: null });
     updateTotalSegmentTime();
 };
 
@@ -621,7 +628,6 @@ const updateForm= () => {
 const submitForm = () => {
     // 本地缓存提交全局
     DeviceManage.deviceList[AppGlobal.pageChance].SequenceControl.DO = formData.items
-    
 };
 </script>
 <style lang="scss" scoped>

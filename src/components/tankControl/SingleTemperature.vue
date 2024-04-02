@@ -1,5 +1,6 @@
 <template>
-    <div class="h-[90vh] border   transition-all duration-300 ease-in-out shadow bg-white rounded-2xl">
+    <div :class="[AppGlobal.isDrawerState? 'w-[calc(86vw-15rem)]':'w-[86vw]']"
+            class="h-[90vh] border   transition-all duration-300 ease-in-out shadow bg-white rounded-2xl">
         
         <!--    标题-->
         <div class="h-[3rem] self-stretch justify-start items-center  inline-flex mt-3  w-full ">
@@ -493,6 +494,53 @@
                         
                         
                         </div>
+                        <div class=" relative w-[24rem]   h-[calc(100%-1rem)]   mx-2    flex-col flex justify-start items-center">
+                            <div class="relative  shadow  h-[100%] overflow-y-auto  m-2 rounded-2xl flex-col flex justify-start items-center border border-gray-300">
+                                <div class="w-full h-14 rounded-t-2xl flex justify-center items-center text-lg font-medium">分段温度设置</div>
+                                <div class="h-[calc(100%-3.5rem)] w-[24rem] justify-start items-center flex-col flex">
+                                    <div class="w-[calc(100%-0.5rem)] h-[85%] absolute">
+                                        <button class="flex m-2 w-[96%]  text-sm hover:bg-green-50 border-2 p-4 border-[#83BA9B] rounded-lg   justify-center items-center"
+                                                type="button" @click="updateTotalSegmentTime()">
+                                            <div class="w-1/5 text-center "> 序号</div>
+                        
+                                            <div class="w-1/5 text-center ">设定值</div>
+                        
+                                            <div class="w-1/5 text-center ">设定时间</div>
+                                            <div class="w-1/5 text-center ">已分配</div>
+                        
+                                            <div class="w-1/5 text-center ">删除</div>
+                                        </button>
+                                        <form @submit.prevent="submitForm">
+                                            <div v-for="(item, index) in formData.items" :key="item.id"
+                                                 class="flex m-2 border-2 p-4 border-[#83BA9B] rounded-lg   justify-center items-center flex  ">
+                                                <input v-model="item.id" @blur="updateForm()" class="w-1/5 text-center  border" placeholder="序号" type="text">
+                                                <input v-model="item.setValue" @blur="updateForm()" class="w-1/5 text-center border-y border-r" type="number"  placeholder="℃">
+                                                <input v-model="item.segmentTime" @blur="updateForm()" class="w-1/5 text-center border-y border-r" type="number" placeholder="h">
+                            
+                                                <div  class=" text-center bg-gray-100 border-y border-r w-1/5" disabled>{{item.totalSegmentTime}}h</div>
+                                                <button class=" text-center w-1/5" type="button " @click="removeItem(index)">删除
+                                                </button>
+                                            </div>
+                                        </form>
+                                        <button class="flex ml-2 w-[96%] hover:bg-green-50 border-2 p-4 border-[#83BA9B] rounded-lg justify-center items-center"
+                                                type="button"
+                                                @click="addItem">
+                                            <svg fill="none" height="20" viewBox="0 0 21 20" width="21"
+                                                 xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M11.5 9V0H9.5V9H0.5V11H9.5V20H11.5V11H20.5V9H11.5Z" fill="#83BA9B"/>
+                                            </svg>
+                                        </button>
+                                    </div>
+            
+            
+                                </div>
+        
+        
+                            </div>
+    
+    
+                        </div>
+
                     </div>
                 
                 </div>
@@ -652,6 +700,52 @@ onUnmounted(() => {
     window.removeEventListener('keydown', handleKeydown);
 });
 
+
+
+
+// 顺控
+const formData = reactive({
+    items: [
+    
+    ]
+});
+
+const addItem = () => {
+    const nextId = formData.items.length + 1;
+    
+    formData.items.push( { id: nextId, setValue: null, segmentTime: null, totalSegmentTime: null });
+    updateTotalSegmentTime();
+};
+
+const removeItem = (index) => {
+    formData.items.splice(index, 1);
+    updateTotalSegmentTime();
+};
+const updateTotalSegmentTime = () => {
+    // 重新排序 id
+    formData.items.forEach((item, index) => {
+        item.id = index + 1;
+    });
+    
+    // 计算 totalSegmentTime
+    formData.items.forEach((item, index) => {
+        let total = 0;
+        for (let i = 0; i < index+1; i++) {
+            
+            total += formData.items[i].segmentTime;
+        }
+        item.totalSegmentTime = total;
+    });
+};
+const updateForm= () => {
+    updateTotalSegmentTime();
+    submitForm();
+};
+const submitForm = () => {
+    // 本地缓存提交全局
+    DeviceManage.deviceList[AppGlobal.pageChance].SequenceControl.Temp = formData.items
+
+};
 
 
 </script>

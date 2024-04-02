@@ -177,30 +177,32 @@ interface SequenceControl {
     
     DO: {
         id: number;
-        supplementSpeed: number;
-        segmentTime: number;
-        totalSegmentTime: number;
+        setValue: number| null;
+        speedUpperLimit: number | null;
+        speedLowerLimit: number;
+        segmentTime: number| null;
+        totalSegmentTime: number| null;
     }[];
     
     PH: {
         id: number;
-        supplementSpeed: number;
-        segmentTime: number;
-        totalSegmentTime: number;
+        setValue: number| null;
+        segmentTime: number| null;
+        totalSegmentTime: number| null;
     }[];
     
     RPM: {
         id: number;
-        supplementSpeed: number;
-        segmentTime: number;
-        totalSegmentTime: number;
+        setValue: number| null;
+        segmentTime: number| null;
+        totalSegmentTime: number| null;
     }[];
     
     Temp: {
         id: number;
-        supplementSpeed: number;
-        segmentTime: number;
-        totalSegmentTime: number;
+        setValue: number| null;
+        segmentTime: number| null;
+        totalSegmentTime: number| null;
     }[];
 }
 

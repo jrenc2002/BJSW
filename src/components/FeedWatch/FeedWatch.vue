@@ -9,15 +9,17 @@ import Swal from 'sweetalert2';
 import {sendData} from "@/api";
 import {useAppGlobal} from "@/store/AppGlobal";
 
-const debug = true;
+const debug = false;
 const DeviceManage = useDeviceManage();
 // 创建定时器群组
 const timerGroup = new Map();
-// 补料逻辑检验的定时时间
+// 创建分段定时器
+const sectionTimerGroup = new Map();
+
 
 const AppGlobal = useAppGlobal()
 onMounted(() => {
-    // 遍历数组创建监听器
+    // 补料监听器
     DeviceManage.supplementSystem.forEach((feedDevice, deviceIndex) => {
         feedDevice.forEach((feedSet) => {
     
@@ -448,9 +450,101 @@ onMounted(() => {
             timerGroup.set(feedSet.id, timer);
         })
     })
+    // 溶氧，转速，PH，温度分段监听器
+    DeviceManage.deviceList.forEach((sectionDevice, deviceIndex) => {
+        const timer = setInterval(() => {
+            // // 根据当前时间进行分段补料
+            // sectionDevice.SequenceControl.PH
+            
+            // 1.获取当前时间
+            const currentTime = new Date();
+            // 2.获取设备的开始时间
+            const startTime = new Date(sectionDevice.start_time);
+            // 设备如果开始时间为空就跳过
+            if (startTime === null || startTime === undefined) {
+                return;
+            }
+            // 3.计算时间差
+            const timeDiff = currentTime.getTime() - startTime.getTime();
+            // 4.将时间差转换为小时
+            const hours = parseFloat((timeDiff / 3600000).toFixed(2));
+            
+            // 5.根据时间差进行分段补料
+            // 进行DO的分段补料查看
+            sectionDevice.SequenceControl.DO.forEach((sectionDO) => {
+                // 如果当前时间差在分段时间内
+                if (hours >= sectionDO.totalSegmentTime - sectionDO.segmentTime && hours < sectionDO.totalSegmentTime) {
+                    // 如果当前时间差在分段时间内
+                    if (debug){
+                        console.log('【分段补料】DO分段补料', sectionDO)
+                    }
+                    // 如果当前时间差在分段时间内
+                    paramSend('rpmMaxWarn', AppGlobal.pageChance, sectionDO.speedUpperLimit)
+                    paramSend('rpmMinWarn', AppGlobal.pageChance, sectionDO.speedLowerLimit)
+                    paramSend('target_DO', AppGlobal.pageChance, sectionDO.setValue)
+    
+                }
+            })
+            // 进行PH的分段补料查看
+            sectionDevice.SequenceControl.PH.forEach((sectionPH) => {
+                // 如果当前时间差在分段时间内
+                if (hours >= sectionPH.totalSegmentTime - sectionPH.segmentTime && hours < sectionPH.totalSegmentTime) {
+                    // 如果当前时间差在分段时间内
+                    if (debug){
+                        console.log('【分段补料】PH分段补料', sectionPH)
+                    }
+                    // 如果当前时间差在分段时间内
+                    paramSend('target_PH', AppGlobal.pageChance, sectionPH.setValue)
+                }
+            })
+            // 进行温度的分段补料查看
+            sectionDevice.SequenceControl.Temp.forEach((sectionTemperature) => {
+                // 如果当前时间差在分段时间内
+                if (hours >= sectionTemperature.totalSegmentTime - sectionTemperature.segmentTime && hours < sectionTemperature.totalSegmentTime) {
+                    // 如果当前时间差在分段时间内
+                    if (debug){
+                        console.log('【分段补料】温度分段补料', sectionTemperature)
+                    }
+                    // 如果当前时间差在分段时间内
+                    paramSend('target_temp', AppGlobal.pageChance, sectionTemperature.setValue)
+                }
+            })
+            // 进行转速的分段补料查看
+            sectionDevice.SequenceControl.RPM.forEach((sectionRPM) => {
+                // 如果当前时间差在分段时间内
+                if (hours >= sectionRPM.totalSegmentTime - sectionRPM.segmentTime && hours < sectionRPM.totalSegmentTime) {
+                    // 如果当前时间差在分段时间内
+                    if (debug){
+                        console.log('【分段补料】转速分段补料', sectionRPM)
+                    }
+                    // 如果当前时间差在分段时间内
+                    paramSend('target_motor_speed', AppGlobal.pageChance, sectionRPM.setValue)
+                }
+            })
+            
+            
+            
+            
 
+
+        }, AppGlobal.BeatTimer)
+        //  设定计时器
+        sectionTimerGroup.set(sectionDevice.id, timer);
+        
+        
+        
+    })
+    
+    
 })
-
+const paramSend = ((name, index, content) => {
+    // 使用方括号来设置动态属性名
+    const data = {
+        [name]: content
+    };
+    sendData(index, data);
+    
+});
 /*
 * @name: controlSend 控制发送函数
 * @param: name:补料方式，index:设备编号，feedSet:补料数据，content:补料速度
